@@ -358,6 +358,9 @@ struct BookCollection: Identifiable, Codable, Hashable {
 // MARK: - BookNote
 
 /// A user annotation attached to a book, optionally anchored to a page.
+/// WP-1.1 extends it so a note can also represent a highlight or quote with a
+/// durable logical anchor (`anchor`). Legacy fields are untouched: a note with
+/// only the pre-P1.1 keys decodes with all new fields `nil`.
 struct BookNote: Identifiable, Codable, Hashable {
     var id: UUID
     var bookID: UUID
@@ -367,12 +370,26 @@ struct BookNote: Identifiable, Codable, Hashable {
     var text: String
     var tag: NoteTag
 
+    /// WP-1.1: the text the user selected in the reader when the note was
+    /// created (a highlight or quote). nil for plain editorial notes.
+    var selectedText: String?
+
+    /// WP-1.1: highlight color. nil for plain editorial notes.
+    var color: AnnotationColor?
+
+    /// WP-1.1: durable logical anchor for where the selection lives in the
+    /// book. nil for plain editorial notes.
+    var anchor: BookNoteAnchor?
+
     enum NoteTag: String, Codable, CaseIterable {
         case general = "General"
         case highlight = "Highlight"
         case question = "Question"
         case idea = "Idea"
         case vocabulary = "Vocabulary"
+        /// WP-1.1: copy the user lifted from the book. Added last so every
+        /// pre-existing raw value keeps decoding; never reorder or reuse.
+        case quote = "Quote"
     }
 
     init(
@@ -382,7 +399,10 @@ struct BookNote: Identifiable, Codable, Hashable {
         modifiedAt: Date = Date(),
         pageNumber: Int? = nil,
         text: String,
-        tag: NoteTag = .general
+        tag: NoteTag = .general,
+        selectedText: String? = nil,
+        color: AnnotationColor? = nil,
+        anchor: BookNoteAnchor? = nil
     ) {
         self.id = id
         self.bookID = bookID
@@ -391,6 +411,54 @@ struct BookNote: Identifiable, Codable, Hashable {
         self.pageNumber = pageNumber
         self.text = text
         self.tag = tag
+        self.selectedText = selectedText
+        self.color = color
+        self.anchor = anchor
+    }
+}
+
+// MARK: - AnnotationColor
+
+/// WP-1.1: user-facing highlight colors. Raw values are stable persistence
+/// keys; never rename an existing case when extending this list.
+enum AnnotationColor: String, Codable, CaseIterable, Hashable, Sendable {
+    case yellow
+    case green
+    case blue
+    case pink
+    case purple
+}
+
+// MARK: - BookNoteAnchor
+
+/// WP-1.1: a durable, format-specific location for an annotation. The anchor
+/// is stored as JSON next to the note, so every associated value must stay
+/// Codable. When extending, keep old cases and payload shapes decodable.
+enum BookNoteAnchor: Codable, Hashable, Sendable {
+    /// EPUB: logical position inside the chapter. `pageInChapter` is optional
+    /// because text reflow means a page number may not be meaningful yet.
+    case epub(chapterIndex: Int, cfi: String, pageInChapter: Int?)
+    /// PDF: a 0-based page index plus the selection's rectangle in normalized
+    /// page coordinates (0…1), invariant to page render size.
+    case pdf(pageIndex: Int, rect: NormalizedRect)
+}
+
+// MARK: - NormalizedRect
+
+/// WP-1.1: a rectangle in normalized page coordinates. All values are
+/// Doubles in 0…1, relative to the page's rendered bounds, so the anchor
+/// survives device/orientation changes and PDF rescaling.
+struct NormalizedRect: Codable, Hashable, Sendable {
+    var x: Double
+    var y: Double
+    var width: Double
+    var height: Double
+
+    init(x: Double, y: Double, width: Double, height: Double) {
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
     }
 }
 

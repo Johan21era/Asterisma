@@ -187,8 +187,38 @@ nonisolated final class LibraryDatabase: @unchecked Sendable {
                 t.column("value", .text).notNull()
             }
         }
+
+        // WP-1.1: annotation highlights/quotes. All columns are nullable so a
+        // v1 store migrates with no data change: every pre-P1.1 note keeps its
+        // NULL columns until the next save writes them.
+        migrator.registerMigration("v2") { db in
+            try db.alter(table: "notes") { t in
+                t.add(column: "selected_text", .text)
+                t.add(column: "color", .text)
+                t.add(column: "anchor_json", .text)
+            }
+        }
+
         return migrator
     }()
+
+    // MARK: - WP-1.1 anchor helpers
+
+    /// Encode a note's anchor as UTF-8 JSON text for the `anchor_json` column.
+    /// JSON text keeps the flat column queryable/inspectable in SQL while
+    /// `books.payload_json` remains the authoritative load path.
+    static func anchorJSON(for note: BookNote, with encoder: JSONEncoder) throws -> String? {
+        guard let anchor = note.anchor else { return nil }
+        return String(decoding: try encoder.encode(anchor), as: UTF8.self)
+    }
+
+    /// Decode an `anchor_json` column value back into a `BookNoteAnchor`.
+    static func decodeAnchor(
+        from text: String,
+        with decoder: JSONDecoder
+    ) throws -> BookNoteAnchor {
+        try decoder.decode(BookNoteAnchor.self, from: Data(text.utf8))
+    }
 
     // MARK: - Import / parity source
 
@@ -284,12 +314,16 @@ nonisolated final class LibraryDatabase: @unchecked Sendable {
                     try db.execute(
                         sql: """
                             INSERT INTO notes
-                            (id, book_id, page_number, text, tag, created_at, modified_at)
-                            VALUES (?, ?, ?, ?, ?, ?, ?)
+                            (id, book_id, page_number, text, tag, selected_text,
+                             color, anchor_json, created_at, modified_at)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                             """,
                         arguments: [
                             note.id.uuidString, book.id.uuidString, note.pageNumber,
                             note.text, note.tag.rawValue,
+                            note.selectedText,
+                            note.color?.rawValue,
+                            try Self.anchorJSON(for: note, with: enc),
                             note.createdAt.timeIntervalSince1970,
                             note.modifiedAt.timeIntervalSince1970,
                         ])
@@ -448,12 +482,16 @@ nonisolated final class LibraryDatabase: @unchecked Sendable {
             try db.execute(
                 sql: """
                     INSERT INTO notes
-                    (id, book_id, page_number, text, tag, created_at, modified_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    (id, book_id, page_number, text, tag, selected_text,
+                     color, anchor_json, created_at, modified_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                 arguments: [
                     note.id.uuidString, book.id.uuidString, note.pageNumber,
                     note.text, note.tag.rawValue,
+                    note.selectedText,
+                    note.color?.rawValue,
+                    try Self.anchorJSON(for: note, with: enc),
                     note.createdAt.timeIntervalSince1970,
                     note.modifiedAt.timeIntervalSince1970,
                 ])
