@@ -1740,3 +1740,21 @@ because the full graph exceeds the 5,000-node limit. No browser/WebGL re-check
 was run in this stage; the generator and `--check` are the only receipts.
 Graphify left its ignored backup under `graphify-out/2026-11-06/`; no tracked
 source was changed by the refresh.
+
+## Stage AT — collection rename UI (2026-11-07)
+
+**What changed.** `BookDetailsView` gains a pencil action on each collection
+row. It prefills the current name, opens a rename alert, disables Save for a
+blank name, and calls the existing `DataStore.renameCollection(id:to:)`; no new
+persistence path. Rename and delete also carry explicit accessibility labels.
+
+**Checks.**
+
+| Command | Result |
+|---|---|
+| `xcodebuild build -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS'` | **BUILD SUCCEEDED**, exit **0** |
+| Focused `xcodebuild test` (`LibraryCollectionTests`, `LibraryMetadataPinsTests`) | **6 tests in 2 suites passed**, exit **0**, `Test-AsterismaV2.0-2026.11.06_22-01-28--0500.xcresult` |
+
+**Limits.** No UI automation or screenshot; the alert is build-verified, not
+clicked in this session. The rename API itself was already pinned. No new test
+count; the canonical census remains 518.

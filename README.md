@@ -162,10 +162,11 @@ The audit-era **NEW-DE-1 … NEW-DE-8 punch list was fixed and pinned** during B
 | 1 | **Distribution readiness** | The build is ad-hoc signed, not notarized, so first launch needs right-click → Open. Public/friend distribution needs Developer ID signing and notarization. The bundle ID is still `johan.Reading-Tracker` for MVP container compatibility; changing it needs a dedicated container migration. | Signing/account setup + migration session |
 | 2 | **Swift 6 strict concurrency** | Flipping to Swift 6 produced 148 actor-isolation errors; the project stays in Swift 5 mode until those surfaces are fixed. | Multi-session arc |
 | 3 | **Reader selection highlights/quotes** | Notes, tags, page anchors, and collections work; EPUB/PDF text-selection highlighting is not wired. | 1–2 sessions |
-| 4 | **Collection rename UI** | Create/delete/membership work; rename has no UI. | Small |
-| 5 | **Legacy artifact cleanup** | Repository graphify cache/backup, duplicate playbook, and OS metadata were removed on 2026-10-29 (102 MB → 77 MB); old P5-G `library.sqlite3`/`.migrated` app-support artifacts remain outside the repo and are not live. | App-support check |
-| 6 | **Remaining dead code** | Some zero-caller fragments remain after G7's −1,157-line sweep. | 3–5 h |
-| 7 | **Mirage era — standing items** | TB-M0 observation cadence; a perf-budget report; the engine-side backup-surface gap. The packaged app-embed exercise is now done (runtime embedded and signed). | Process, not code |
+| 4 | **Legacy artifact cleanup** | Repository graphify cache/backup, duplicate playbook, and OS metadata were removed on 2026-10-29 (102 MB → 77 MB); old P5-G `library.sqlite3`/`.migrated` app-support artifacts remain outside the repo and are not live. | App-support check |
+| 5 | **Remaining dead code** | Some zero-caller fragments remain after G7's −1,157-line sweep. | 3–5 h |
+| 6 | **Mirage era — standing items** | TB-M0 observation cadence; a perf-budget report; the engine-side backup-surface gap. The packaged app-embed exercise is now done (runtime embedded and signed). | Process, not code |
+
+**Closed 2026-11-07 — Collection rename UI:** Book Details now has a pencil action on every collection row; it opens a prefilled rename alert and saves through the existing `DataStore.renameCollection`. The rename API is already pinned by `LibraryCollectionTests`.
 
 **Closed 2026-11-07 — Behavior evidence to SQLite:** the four existing behavior tables (`behavior_events`, `application_sessions`, `inactivity_records`, `device_state_events`) are now the live store. The JSON archive is retained only as an import seed and compatibility mirror; see Stage AR in `docs/registers/03-fix-log.md`.
 

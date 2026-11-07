@@ -22,6 +22,8 @@ struct BookDetailsView: View {
     @State private var editingNoteID: UUID?
 
     @State private var newCollectionName = ""
+    @State private var renamingCollectionID: UUID?
+    @State private var renameDraft = ""
     @State private var relinkError: String?
 
     private var book: Book? { dataStore.book(id: bookID) }
@@ -43,6 +45,24 @@ struct BookDetailsView: View {
                 Button("Done") { dismiss() }
             }
         }
+        .alert("Rename Collection", isPresented: renamePresented) {
+            TextField("Collection name", text: $renameDraft)
+            Button("Cancel", role: .cancel) { renamingCollectionID = nil }
+            Button("Save") {
+                if let id = renamingCollectionID {
+                    dataStore.renameCollection(id: id, to: renameDraft)
+                }
+                renamingCollectionID = nil
+            }
+            .disabled(renameDraft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        }
+    }
+
+    private var renamePresented: Binding<Bool> {
+        Binding(
+            get: { renamingCollectionID != nil },
+            set: { if !$0 { renamingCollectionID = nil } }
+        )
     }
 
     // MARK: - Details
@@ -277,12 +297,22 @@ struct BookDetailsView: View {
                             }
                             Spacer()
                             Button {
+                                renamingCollectionID = collection.id
+                                renameDraft = collection.name
+                            } label: {
+                                Image(systemName: "pencil")
+                            }
+                            .buttonStyle(.plain)
+                            .help("Rename collection")
+                            .accessibilityLabel("Rename \(collection.name)")
+                            Button {
                                 dataStore.removeCollection(id: collection.id)
                             } label: {
                                 Image(systemName: "trash")
                             }
                             .buttonStyle(.plain)
                             .help("Delete collection")
+                            .accessibilityLabel("Delete \(collection.name)")
                         }
                     }
                 }

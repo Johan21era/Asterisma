@@ -73,9 +73,9 @@
 | Build and test commands: Debug build, test, and census summary | `README.md#L254` | `scripts/census.sh`, `AGENTS.md#L117` |
 | Last local unit census tests and runs record | `docs/audits/synthetic-reading-evaluation.md` | `scripts/census.sh` |
 | Release receipts: git tag, package SHA-256, historical unit census record | `docs/registers/04-handoff.md#L91` | `README.md#L7` |
-| CI receipts: last remote census run id, green Sentinel tranche | `docs/registers/04-handoff.md#L87` | `.github/workflows/census.yml` |
-| Clean test session: Erase Library & Data… menu action | `README.md#L318` | `docs/registers/04-handoff.md` |
-| CI run id verified the Sentinel v2 tranche `40758619365` | `docs/registers/04-handoff.md#L87` | `.github/workflows/census.yml` |
+| CI receipts: last remote census run id, green Sentinel tranche | `docs/registers/04-handoff.md#L88` | `.github/workflows/census.yml` |
+| Clean test session: Erase Library & Data… menu action | `README.md#L319` | `docs/registers/04-handoff.md` |
+| CI run id verified the Sentinel v2 tranche `40758619365` | `docs/registers/04-handoff.md#L88` | `.github/workflows/census.yml` |
 | CI workflow: GitHub Actions census runs on the runner image, Xcode version, test steps | `.github/workflows/census.yml#L10-L13` | `AGENTS.md` |
 
 ## Knowledge graph
