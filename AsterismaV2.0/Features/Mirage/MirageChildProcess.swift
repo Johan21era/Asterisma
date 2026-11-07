@@ -131,6 +131,16 @@ nonisolated final class MiragePythonLocator: @unchecked Sendable {
         return found
     }
 
+    /// Off-main resolution for the app path. The probe can spawn up to six
+    /// interpreters with multi-second timeouts; the first analyze gesture must
+    /// never pay that on the main thread. Memoisation still makes every later
+    /// call a cached return.
+    func executableURLAsync() async throws -> URL {
+        try await Task.detached(priority: .userInitiated) { [self] in
+            try executableURL()
+        }.value
+    }
+
     /// Executes `-c "import json"` and requires a clean exit within a few seconds.
     private static func canRun(_ url: URL, report: inout String) -> Bool {
         let process = Process()

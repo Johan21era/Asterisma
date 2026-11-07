@@ -249,5 +249,6 @@ private struct MirageStatusSection: View {
                 .foregroundColor(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
+        .task { await controller.refreshLocalStatus() }
     }
 }

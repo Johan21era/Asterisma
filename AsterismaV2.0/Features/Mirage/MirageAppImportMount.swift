@@ -32,7 +32,13 @@ protocol MirageEngineSessionProtocol: AnyObject {
 
 @MainActor
 final class MirageAnalyzeSession {
-    private(set) var supervisor: MirageSidecarSupervisor
+    /// Built lazily on first acquire: resolving the dev interpreter spawns
+    /// probe processes, and a session init must never block a UI gesture with
+    /// that work. Nil until used; `shutdown()` clears it.
+    private(set) var supervisor: MirageSidecarSupervisor?
+    private let engineCheckout: URL
+    private let interpreterURL: URL?
+    private let baseDirectory: URL
     private let store: MirageIdentityMapStore
     private var transport: MirageProcessTransport?
 
@@ -58,32 +64,42 @@ final class MirageAnalyzeSession {
         // same data root (DataStore3:91-95); mirage/ inside it is Mirage-write
         // territory (ledger db + identity map + pid guard). RT creates the
         // directory with an existence check before the first spawn.
+        self.engineCheckout = engineCheckout
+        self.interpreterURL = interpreterURL
         let base = MirageSupportPaths.mirageDirectory()
         if !FileManager.default.fileExists(atPath: base.path) {
             try FileManager.default.createDirectory(at: base, withIntermediateDirectories: false)
         }
-        var config = MirageProcessTransportConfig()
-        config.bannerTimeout = 25 // import requests wait on real engine work
-        config.responseTimeout = 25
-        // PR-8 (ADR-3): the bundled channel passes its verified interpreter;
-        // the dev channel keeps the proven locator resolution at spawn time.
+        self.baseDirectory = base
+        store = MirageIdentityMapStore(
+            fileURL: base.appendingPathComponent("identity-map.json"))
+    }
+
+    /// Resolves the interpreter off-main and builds the supervisor exactly
+    /// once. The dev channel's probe is the expensive part; the bundled channel
+    /// just hands over its verified interpreter.
+    private func ensureSupervisor() async throws -> MirageSidecarSupervisor {
+        if let supervisor { return supervisor }
         let pythonURL: URL
         if let interpreterURL {
             pythonURL = interpreterURL
         } else {
-            pythonURL = try MiragePythonLocator.shared.executableURL()
+            pythonURL = try await MiragePythonLocator.shared.executableURLAsync()
         }
-        supervisor = MirageSidecarSupervisor(
+        var config = MirageProcessTransportConfig()
+        config.bannerTimeout = 25 // import requests wait on real engine work
+        config.responseTimeout = 25
+        let made = MirageSidecarSupervisor(
             configuration: .init(
                 launcher: MirageProcessLauncher(
                     executableURL: pythonURL,
                     arguments: ["-B",
                                 engineCheckout.path + "/examples/mirage_sidecar.py",
-                                base.appendingPathComponent("mirage.sqlite3").path]),
-                pidFileURL: base.appendingPathComponent("guard.pid"),
+                                baseDirectory.appendingPathComponent("mirage.sqlite3").path]),
+                pidFileURL: baseDirectory.appendingPathComponent("guard.pid"),
                 transportConfig: config))
-        store = MirageIdentityMapStore(
-            fileURL: base.appendingPathComponent("identity-map.json"))
+        supervisor = made
+        return made
     }
 
     /// The public serialized client door. All callers must hold the service's
@@ -99,6 +115,7 @@ final class MirageAnalyzeSession {
             return MirageClient(transport: existingTransport,
                                 idProvider: { UUID().uuidString })
         }
+        let supervisor = try await ensureSupervisor()
         let fresh = try await supervisor.acquireTransport()
         transport = fresh
         return MirageClient(transport: fresh, idProvider: { UUID().uuidString })
@@ -127,11 +144,12 @@ final class MirageAnalyzeSession {
     /// Operator-gated reset for terminal handshake states. The next acquire
     /// performs a fresh handshake; nothing is implied about stored analyses.
     func clearTerminalState() {
-        supervisor.clearTerminalState()
+        supervisor?.clearTerminalState()
     }
 
     func shutdown() async {
-        await supervisor.shutdown()
+        if let supervisor { await supervisor.shutdown() }
+        supervisor = nil
         transport = nil
     }
 }

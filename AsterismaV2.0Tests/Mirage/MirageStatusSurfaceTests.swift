@@ -264,4 +264,91 @@ struct MirageStatusSurfaceTests {
         #expect(line?.contains("read-only") == true)
         #expect(MirageStatusCopy.detailDisabledNote.contains("ADR-7"))
     }
+
+    // ---- Map-only open path: no file read, no hash, no engine --------------
+
+    @Test func mapOnlyStatusNeverResolvesTheSourceFile() throws {
+        let dir = try makeMirageTestTempDir("map-only")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let store = MirageIdentityMapStore(
+            fileURL: dir.appendingPathComponent("mirage/identity-map.json"))
+        let counter = MirageSourceResolutionCounter()
+        let source = MirageImportSource(rtBookID: UUID(), fileTypeIsEpub: true) {
+            counter.record()
+            return nil
+        }
+        let entry = MirageIdentityMapEntry.fromReceipt(
+            rtBookID: source.rtBookID, mirageBookID: "book_map_only",
+            mirageEditionID: "edition_map_only",
+            fingerprint: String(repeating: "cd", count: 32),
+            resumeHint: nil, createdAt: MirageIdentityMapTime.canonical(Date()))
+        try store.save(MirageIdentityMapFile.empty.activating(entry, now: entry.createdAt))
+
+        let status = MirageStatusSurface.mapOnlyStatus(store: store, source: source)
+        guard case .linked(let linked, let counts) = status.linkState else {
+            Issue.record("expected linked from the map alone, got \(status.linkState)"); return
+        }
+        #expect(linked == entry)
+        #expect(counts == nil)
+        #expect(counter.count == 0, "opening the sheet must never read the book file")
+    }
+
+    @Test func localRefreshHashesOffTheOpenPathAndOrphansSourceChanges() async throws {
+        let dir = try makeMirageTestTempDir("local-refresh")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let epubURL = dir.appendingPathComponent("local-refresh.epub")
+        try Data("LOCAL STATUS FIXTURE v1".utf8).write(to: epubURL)
+        let book = Book(title: "Refresh Fixture", author: "Fixture",
+                        fileURL: epubURL, fileType: .epub,
+                        totalPages: 10, currentPage: 1)
+        let store = MirageIdentityMapStore(
+            fileURL: dir.appendingPathComponent("mirage/identity-map.json"))
+        let fingerprint = try MirageSourceFingerprint.sha256Hex(fileAt: epubURL)
+        let entry = MirageIdentityMapEntry.fromReceipt(
+            rtBookID: book.id, mirageBookID: "book_refresh",
+            mirageEditionID: "edition_refresh", fingerprint: fingerprint,
+            resumeHint: nil, createdAt: MirageIdentityMapTime.canonical(Date()))
+        try store.save(MirageIdentityMapFile.empty.activating(entry, now: entry.createdAt))
+
+        let source = MirageAppImportMount.importSource(for: book)
+        let initial = MirageStatusSurface.mapOnlyStatus(store: store, source: source)
+        guard case .linked(let loaded, let counts) = initial.linkState else {
+            Issue.record("map-only init should see the link, got \(initial.linkState)"); return
+        }
+        #expect(loaded == entry)
+        #expect(counts == nil)
+
+        let controller = MirageStatusController(
+            book: book, localStatus: initial, store: store,
+            runner: { _, _ in initial })
+        await controller.refreshLocalStatus()
+        guard case .linked(_, _) = controller.localStatus.linkState else {
+            Issue.record("a matching file must stay linked, got \(controller.localStatus.linkState)")
+            return
+        }
+
+        try Data("LOCAL STATUS FIXTURE v2 — changed".utf8).write(to: epubURL)
+        await controller.refreshLocalStatus()
+        guard case .orphaned(let reason) = controller.localStatus.linkState else {
+            Issue.record("a changed file must orphan, got \(controller.localStatus.linkState)")
+            return
+        }
+        #expect(reason == MirageIdentityMapEntry.OrphanReason.sourceChanged.rawValue)
+    }
+}
+
+/// Counts source-resolution attempts so the open path can prove it never
+/// touches the file. A lock box keeps the @Sendable closure legal.
+private final class MirageSourceResolutionCounter: @unchecked Sendable {
+    private let lock = NSLock()
+    private var calls = 0
+
+    func record() {
+        lock.lock(); calls += 1; lock.unlock()
+    }
+
+    var count: Int {
+        lock.lock(); defer { lock.unlock() }
+        return calls
+    }
 }

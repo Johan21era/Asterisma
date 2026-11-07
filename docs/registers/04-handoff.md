@@ -784,3 +784,38 @@ performance measurement was taken for EPUB resolution, which runs
 
 **Next.** The owner's 10-step G1 script, then WP-1.5 (export, orphan recovery,
 backup) or WP-1.6 (accessibility).
+
+## Session close — 2026-11-07 (Mirage × Asterisma integration smoothing)
+
+**Delivered.** Three main-thread stalls removed from the Mirage path, and the
+whole pipeline measured against the real engine.
+
+1. Opening the analysis sheet read and hashed the entire EPUB on the main actor
+   (`MirageStatusController.init` → `MirageStatusSurface.localStatus`). The
+   sheet now builds from the identity map alone (`mapOnlyStatus`) and upgrades
+   through `refreshLocalStatus()`, which hashes off-main.
+2. `MirageSourceFingerprint` loaded the whole book into `Data` for a digest. It
+   now streams 1 MiB chunks; the digest is byte-identical (pinned).
+3. The dev interpreter probe (up to six spawns with 4 s timeouts) ran inside
+   `MirageAnalyzeSession.init` on the main actor. Resolution is now detached
+   (`executableURLAsync`), and the supervisor is built lazily on first acquire.
+
+**Verified.** Real engine (pinned checkout 8142261): handshake/health passed
+(3.805 s); full import suite passed (0.332 s: fresh import, `reused:true`,
+`books_list`, degraded refusal); latency run reports probe 51.5 ms, cold start
+95.2 ms, warm median 0.1 ms / p95 0.1 ms, first import 2.4 ms, reuse 0.5 ms.
+Focused suites 25 tests passed. Unit census exit 0: 563 tests / 553 passed /
+10 skipped / 0 failed. Explicit build logs `Embedded Mirage runtime at …`
+(48 MB in the app); `bundle_smoke.py` boots the bundled copy with its own
+interpreter and answers version + `books_list`, and both manifest-pinned file
+hashes match.
+
+**Limits.** The app was not launched; the sheet path is unit-pinned, not
+visually inspected. The bundled channel was proven by the Python-side bundle
+smoke and the locator's tests, not by a signed `.app` spawning through the
+locator. Import timeouts remain 25 s; no large-book analysis was timed, so a
+book needing longer would time out and restart. Warm numbers come from a tiny
+fixture, measured once.
+
+**Next.** G1's owner script; then WP-1.5. Watch the 25 s import timeout if a
+real library book is slower than the fixture.

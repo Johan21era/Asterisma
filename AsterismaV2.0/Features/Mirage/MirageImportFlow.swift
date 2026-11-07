@@ -60,12 +60,27 @@ nonisolated enum MirageIdentityState: Sendable, Equatable {
 }
 
 nonisolated enum MirageSourceFingerprint {
+    /// 1 MiB: few enough syscalls to stay fast, small enough that a 2 GB EPUB
+    /// is never resident all at once.
+    static let chunkBytes = 1 << 20
+
     static func sha256Hex(_ data: Data) -> String {
         SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
 
+    /// Streams the file through SHA-256. `Data(contentsOf:)` would hold the
+    /// whole book in memory for a digest; both the import flow and the status
+    /// refresh hash library books, so the streaming form is the smooth one.
     static func sha256Hex(fileAt url: URL) throws -> String {
-        sha256Hex(try Data(contentsOf: url))
+        let handle = try FileHandle(forReadingFrom: url)
+        defer { try? handle.close() }
+        var hasher = SHA256()
+        while true {
+            let chunk = try handle.read(upToCount: chunkBytes) ?? Data()
+            if chunk.isEmpty { break }
+            hasher.update(data: chunk)
+        }
+        return hasher.finalize().map { String(format: "%02x", $0) }.joined()
     }
 }
 

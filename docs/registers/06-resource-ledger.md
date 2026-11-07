@@ -137,6 +137,27 @@ Checks: build exit 0; focused run 29 tests in 3 suites passed; full census exit
 tests in 105 suites; `rt-census-20261107-002415.xcresult`); `git diff --check`
 exit 0. No live reader run, no owner visual pass, no live-library migration.
 
+## Mirage integration smoothing — 2026-11-07 (Buffy)
+
+No model was used. Scope: the live Asterisma–Mirage path (sheet, warm engine,
+import, status, runtime bundling).
+
+Three main-thread stalls fixed. (1) Sheet init hashed the whole EPUB on the
+main actor; init is now map-only and the hash moved to a detached
+`refreshLocalStatus()`. (2) Digests loaded the whole file via
+`Data(contentsOf:)`; hashing now streams 1 MiB chunks with the identical digest.
+(3) The dev interpreter probe ran inside a main-actor session init; it is now
+detached and the supervisor is built on first acquire.
+
+Receipts: real-engine smoke 1 passed (3.805 s); real import suite 1 passed
+(0.332 s) covering fresh import, `reused:true`, `books_list`, and degraded
+refusal; latency run `probe 51.5 ms, cold 95.2 ms, warm median/p95 0.1 ms,
+import 2.4 ms, reuse 0.5 ms`; focused suites 25 tests passed; unit census exit
+0 with 563 tests / 553 passed / 10 skipped / 0 failed. The explicit build
+embeds the runtime (48 MB), and `bundle_smoke.py` boots the bundled copy with
+its own interpreter (banner ready, version + books_list ok, manifest hashes
+match). The app was not launched; no large-book analysis was timed.
+
 ## Bug hunt + full suite — 2026-11-07 (Buffy)
 
 No model was used: this was Buffy-run inspection and testing. Scope: annotation

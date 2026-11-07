@@ -139,6 +139,33 @@ nonisolated enum MirageStatusCopy {
 /// moment the sheet opens. Engine verification stays behind the explicit
 /// "Check with Mirage" gesture (one analyze-equivalent = one clean lifecycle).
 nonisolated enum MirageStatusSurface {
+    /// Map-only status: reads RT's identity stratum and NEVER opens the book
+    /// file. This is the only variant safe to compute synchronously while a
+    /// sheet is being built — the hash-backed `localStatus` reads the whole
+    /// EPUB and belongs off the main actor.
+    static func mapOnlyStatus(
+        store: MirageIdentityMapStore,
+        source: MirageImportSource
+    ) -> MirageAnalysisStatus {
+        switch store.load() {
+        case .loaded(let map):
+            if let entry = map.activeEntry(for: source.rtBookID) {
+                return MirageAnalysisStatus(
+                    linkState: .linked(entry: entry, counts: nil), channel: .localMap)
+            }
+            if let orphan = map.entries.last(where: {
+                $0.rtBookID == source.rtBookID && $0.status == .orphaned
+            }) {
+                return MirageAnalysisStatus(
+                    linkState: .orphaned(reason: orphan.orphanedReason?.rawValue ?? "orphaned"),
+                    channel: .localMap)
+            }
+            return MirageAnalysisStatus(linkState: .notImported, channel: .localMap)
+        case .unreadable(let reason):
+            return MirageAnalysisStatus(linkState: .mapUnreadable(reason: reason), channel: .localMap)
+        }
+    }
+
     static func localStatus(
         store: MirageIdentityMapStore,
         source: MirageImportSource
@@ -169,6 +196,8 @@ final class MirageStatusController: ObservableObject {
     @Published private(set) var engineStatus: MirageAnalysisStatus?
     @Published private(set) var checking = false
 
+    private let source: MirageImportSource
+    private let localStore: MirageIdentityMapStore
     private var cancelledRequested = false
 
     /// Production runner: one clean sidecar lifecycle carrying the read-only
@@ -182,12 +211,14 @@ final class MirageStatusController: ObservableObject {
 
     init(book: Book) {
         self.book = book
-        // Local status is computed synchronously — the map file read is cheap
-        // and side-effect-free (absent file ⇒ empty map ⇒ notImported).
+        // Map-only on purpose: opening the sheet must never read (let alone
+        // hash) the book file. The hash-backed view arrives via
+        // `refreshLocalStatus()` from the sheet's `.task`.
         let source = MirageAppImportMount.importSource(for: book)
-        localStatus = MirageStatusSurface.localStatus(
-            store: MirageStatusController.inertStore(),
-            source: source)
+        let store = MirageStatusController.inertStore()
+        self.source = source
+        self.localStore = store
+        localStatus = MirageStatusSurface.mapOnlyStatus(store: store, source: source)
         runner = { source, checkCancelled in
             await MirageStatusController.productionRunner(source, checkCancelled: checkCancelled)
         }
@@ -196,13 +227,28 @@ final class MirageStatusController: ObservableObject {
     init(
         book: Book,
         localStatus: MirageAnalysisStatus,
+        store: MirageIdentityMapStore? = nil,
         runner: @escaping @MainActor (
             MirageImportSource, @escaping () async -> Bool
         ) async -> MirageAnalysisStatus
     ) {
         self.book = book
+        self.source = MirageAppImportMount.importSource(for: book)
+        self.localStore = store ?? MirageStatusController.inertStore()
         self.localStatus = localStatus
         self.runner = runner
+    }
+
+    /// Hash-backed local refresh, computed OFF the main actor. It still never
+    /// touches the engine: this only upgrades map-only state into the honest
+    /// linked / orphaned verdict by comparing the file's digest.
+    func refreshLocalStatus() async {
+        let source = self.source
+        let store = self.localStore
+        let refreshed = await Task.detached(priority: .userInitiated) {
+            MirageStatusSurface.localStatus(store: store, source: source)
+        }.value
+        localStatus = refreshed
     }
 
     private static func inertStore() -> MirageIdentityMapStore {
