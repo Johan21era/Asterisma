@@ -69,7 +69,7 @@ the coming weeks, in owner-gated order.
 | Canonical engine checkout | `/Users/johanrembeci/Desktop/MirageV1.0` — HEAD `8142261` (single initial-import commit), bundle SHA `81422613610701d81956394d9601bcb61e2938e9` |
 | Staged runtime pin | `.mirage-runtime/mirage-runtime` — `RUNTIME-MANIFEST.json`, bundled CPython 3.12.7, `PYTHONDONTWRITEBYTECODE=1` |
 | Live data root | `~/Library/Containers/johan.Reading-Tracker/Data/Library/Application Support/Asterisma/` |
-| Uncommitted working tree | Modified `AsterismaV2.0/Core/DataStore3.swift`, `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` (fail-closed SQLite load); untracked `AsterismaV2.0Tests/Core/SQLiteLoadIntegrityTests.swift`, `docs/plans/sentinel/` |
+| Uncommitted working tree | Modified `AsterismaV2.5/Core/DataStore3.swift`, `AsterismaV2.5/Core/Storage/LibraryDatabase.swift` (fail-closed SQLite load); untracked `AsterismaV2.5Tests/Core/SQLiteLoadIntegrityTests.swift`, `docs/plans/sentinel/` |
 
 ### 2.2 Verification reality (owner-test authority still governs)
 
@@ -268,19 +268,19 @@ Per `docs/12-owner-test-authority.md` and `docs/method/07-testing-strategy.md`:
 This addendum records the post-deep-dive architecture change; it does not rewrite the
 2026-10-28 evidence above.
 
-- **Warm session.** `AsterismaV2.0/Features/Mirage/MirageEngineService.swift` owns one
+- **Warm session.** `AsterismaV2.5/Features/Mirage/MirageEngineService.swift` owns one
   `MirageAnalyzeSession` for the app process and serializes requests through a FIFO gate.
   The sheet, the status check, and the batch runner all lease that one session; none of them
   spawn or tear down a process. Idle warm-down is 10 minutes, and the app's `.background`
   scene phase requests a stop. Disable still deletes nothing.
-- **Library index.** `AsterismaV2.0/Features/Mirage/MirageLibraryIndex.swift` refreshes the
+- **Library index.** `AsterismaV2.5/Features/Mirage/MirageLibraryIndex.swift` refreshes the
   whole inventory with one read-only `books_list`, writes `mirage/library-index.json`
   (`mirage-library-index@1`) atomically, and orphans active links whose edition vanished.
-- **Batch queue.** `AsterismaV2.0/Features/Mirage/MirageBatchAnalyzer.swift` sequences EPUB
+- **Batch queue.** `AsterismaV2.5/Features/Mirage/MirageBatchAnalyzer.swift` sequences EPUB
   jobs through the same one-book analyze path. Cancel is cooperative; retry re-queues only
   failed rows. The queue is session-scoped, not persisted across launches.
 - **UI.** Settings ▸ Mirage is now a control center for warm/asleep engine state, coverage,
-  scan freshness, and batch progress (`AsterismaV2.0/Features/Goals/SettingsRootView.swift`).
+  scan freshness, and batch progress (`AsterismaV2.5/Features/Goals/SettingsRootView.swift`).
 - **Decision record.** `docs/integration/adr/ADR-13-mirage-warm-engine-and-library-scale.md`
   supersedes ADR-6 decision 5 only. The wire, runtime ladder, ledger ownership, identity
   mapping, and spoiler-cursor contracts are unchanged.

@@ -179,7 +179,7 @@ Deliverables:
 2. Baseline build/test in the worktree; record exact census and `.xcresult` path.
 3. Snapshot the real store outside the repo:
    - `library.json`, `library-state.json`, backups, covers, `weather_snapshots.sqlite3`, `audio-profiles.json`, Sentinel journal.
-   - `ditto` copy to `~/Desktop/AsterismaV2.0-Backups/2026-10-24-pre-bedrock/`; SHA-256 manifest.
+   - `ditto` copy to `~/Desktop/AsterismaV2.5-Backups/2026-10-24-pre-bedrock/`; SHA-256 manifest.
 4. Test-isolation harness:
    - Temp-dir injection for `DataStore`, `CoverStore`, `SentinelEngine`, `AudioProfileStore`.
    - Fix tests that write the real Sentinel journal/covers.

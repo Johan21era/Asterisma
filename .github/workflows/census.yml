@@ -49,12 +49,12 @@ jobs:
           # without it, so that one assertion skips; the synthetic runtime
           # contract tests still run.
           xcodebuild test \
-            -project "AsterismaV2.0.xcodeproj" \
-            -scheme "AsterismaV2.0" \
+            -project "AsterismaV2.5.xcodeproj" \
+            -scheme "AsterismaV2.5" \
             -configuration Debug \
             -destination 'platform=macOS' \
             -parallel-testing-enabled NO \
-            -only-testing:AsterismaV2.0Tests \
+            -only-testing:AsterismaV2.5Tests \
             2>&1 | tee census.log | grep -E "Test run with|TEST (SUCCEEDED|FAILED)|error:"
 
           grep -q "TEST SUCCEEDED" census.log

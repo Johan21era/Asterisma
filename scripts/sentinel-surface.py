@@ -45,7 +45,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_ROOT = ROOT / "AsterismaV2.0"
+SOURCE_ROOT = ROOT / "AsterismaV2.5"
 OUTPUT = SOURCE_ROOT / "Core" / "Sentinel" / "Generated" / "SentinelSurface.generated.swift"
 
 SCHEMA_VERSION = 1
@@ -123,7 +123,7 @@ def render(surfaces: dict[str, list[str]]) -> str:
     total = len(tables) + len(defaults) + len(notifications)
 
     return f'''//  SentinelSurface.generated.swift
-//  AsterismaV2.0
+//  AsterismaV2.5
 //
 //  GENERATED FILE — do not edit by hand.
 //  Regenerate: ./scripts/sentinel-surface.py --write

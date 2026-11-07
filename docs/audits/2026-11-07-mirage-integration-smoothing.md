@@ -69,9 +69,9 @@ is not the bottleneck, not a claim about large-book analysis time.
 
 | Check | Command (focused) | Result |
 |---|---|---|
-| Real engine handshake + health | `xcodebuild test … -only-testing:AsterismaV2.0Tests/MirageRealEngineSmokeTests` | exit 0, 1 test passed, 3.805 s (`rt-mirage-smoke`) |
-| Real engine import / reuse / books_list / degraded | `xcodebuild test … -only-testing:AsterismaV2.0Tests/MirageIdentityRealEngineImportTests` | exit 0, 1 test passed, 0.332 s (`rt-mirage-import`) |
-| Warm latency + import timings | `xcodebuild test … -only-testing:AsterismaV2.0Tests/MirageWarmLatencyTests` | exit 0, 1 test passed (`rt-mirage-latency`); numbers above |
+| Real engine handshake + health | `xcodebuild test … -only-testing:AsterismaV2.5Tests/MirageRealEngineSmokeTests` | exit 0, 1 test passed, 3.805 s (`rt-mirage-smoke`) |
+| Real engine import / reuse / books_list / degraded | `xcodebuild test … -only-testing:AsterismaV2.5Tests/MirageIdentityRealEngineImportTests` | exit 0, 1 test passed, 0.332 s (`rt-mirage-import`) |
+| Warm latency + import timings | `xcodebuild test … -only-testing:AsterismaV2.5Tests/MirageWarmLatencyTests` | exit 0, 1 test passed (`rt-mirage-latency`); numbers above |
 | Focused unit suites (fingerprint, status, page-turn, engine service, mount) | `xcodebuild test … -only-testing:` five suites | exit 0, 25 tests in 5 suites passed (`rt-mirage-focused`) |
 | Unit census | `./scripts/census.sh --unit-only` | exit 0; 563 tests, 553 passed, 10 skipped, 0 failed |
 | Runtime embedded in the built app | `xcodebuild build …` then inspect `Contents/Resources` | exit 0; log line `Embedded Mirage runtime at …`; 48 MB present |
@@ -100,17 +100,17 @@ is not the bottleneck, not a claim about large-book analysis time.
 
 ## Files changed
 
-- `AsterismaV2.0/Features/Mirage/MirageStatusSurface.swift` — map-only status,
+- `AsterismaV2.5/Features/Mirage/MirageStatusSurface.swift` — map-only status,
   async local refresh, injectable store for tests.
-- `AsterismaV2.0/Features/Mirage/MirageAnalysisSheetView.swift` — `.task`
+- `AsterismaV2.5/Features/Mirage/MirageAnalysisSheetView.swift` — `.task`
   refresh on the status section.
-- `AsterismaV2.0/Features/Mirage/MirageImportFlow.swift` — streaming digest.
-- `AsterismaV2.0/Features/Mirage/MirageChildProcess.swift` — off-main
+- `AsterismaV2.5/Features/Mirage/MirageImportFlow.swift` — streaming digest.
+- `AsterismaV2.5/Features/Mirage/MirageChildProcess.swift` — off-main
   interpreter resolution.
-- `AsterismaV2.0/Features/Mirage/MirageAppImportMount.swift` — lazy supervisor,
+- `AsterismaV2.5/Features/Mirage/MirageAppImportMount.swift` — lazy supervisor,
   no work in session init.
-- `AsterismaV2.0Tests/Mirage/MirageStatusSurfaceTests.swift` — two new pins.
-- `AsterismaV2.0Tests/Mirage/MirageFingerprintTests.swift` — streaming digest
+- `AsterismaV2.5Tests/Mirage/MirageStatusSurfaceTests.swift` — two new pins.
+- `AsterismaV2.5Tests/Mirage/MirageFingerprintTests.swift` — streaming digest
   pins.
-- `AsterismaV2.0Tests/Mirage/MirageWarmLatencyTests.swift` — opt-in latency
+- `AsterismaV2.5Tests/Mirage/MirageWarmLatencyTests.swift` — opt-in latency
   receipt.

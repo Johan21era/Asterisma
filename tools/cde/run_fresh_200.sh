@@ -35,9 +35,9 @@ for ((first=1; first<=ROUNDS; first+=BATCH)); do
     python3 tools/cde/fresh_100.py prepare --first "$first" --last "$last" \
       > "$OUT/$stem-prepare.log" 2>&1
   fi
-  xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 \
+  xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 \
     -configuration Debug -destination 'platform=macOS' -parallel-testing-enabled NO \
-    "-only-testing:AsterismaV2.0Tests/FreshStressBundleTests/testBundledBatch" \
+    "-only-testing:AsterismaV2.5Tests/FreshStressBundleTests/testBundledBatch" \
     -resultBundlePath "$OUT/$stem.xcresult" > "$OUT/$stem-xcode.log" 2>&1
   xcrun xcresulttool export attachments --path "$OUT/$stem.xcresult" \
     --output-path "$OUT/$stem-attachments" > "$OUT/$stem-export.log" 2>&1
@@ -63,7 +63,7 @@ done
 
 # Demo profiles: every catalog persona, 200 freshly seeded rounds.
 if [[ ! -f "$OUT/demo-200-predictions.json" ]]; then
-python3 - "AsterismaV2.0Tests/Engines/FreshDemoRounds.json" <<'PY'
+python3 - "AsterismaV2.5Tests/Engines/FreshDemoRounds.json" <<'PY'
 import json, sys
 path = sys.argv[1]
 with open(path, 'w') as handle:
@@ -71,9 +71,9 @@ with open(path, 'w') as handle:
     handle.write('\n')
 PY
 echo "START demo-200 $(date -u +%FT%TZ)"
-xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 \
+xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 \
   -configuration Debug -destination 'platform=macOS' -parallel-testing-enabled NO \
-  "-only-testing:AsterismaV2.0Tests/FreshStressBundleTests/testFreshDemoRounds" \
+  "-only-testing:AsterismaV2.5Tests/FreshStressBundleTests/testFreshDemoRounds" \
   -resultBundlePath "$OUT/demo-200.xcresult" > "$OUT/demo-200-xcode.log" 2>&1
 xcrun xcresulttool export attachments --path "$OUT/demo-200.xcresult" \
   --output-path "$OUT/demo-200-attachments" > "$OUT/demo-200-export.log" 2>&1

@@ -29,10 +29,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 PATH_ROOTS = (
-    "AsterismaV2.0/",
-    "AsterismaV2.0Tests/",
-    "AsterismaV2.0UITests/",
-    "AsterismaV2.0.xcodeproj/",
+    "AsterismaV2.5/",
+    "AsterismaV2.5Tests/",
+    "AsterismaV2.5UITests/",
+    "AsterismaV2.5.xcodeproj/",
     "docs/",
     "scripts/",
     "graphify-out/",
@@ -43,8 +43,8 @@ ROOT_FILES = {
     "AGENTS.md",
     "DBappends.md",
     "merge-log.md",
-    "AsterismaV2.0-Info.plist",
-    "AsterismaV2.0.entitlements",
+    "AsterismaV2.5-Info.plist",
+    "AsterismaV2.5.entitlements",
     ".gitignore",
 }
 

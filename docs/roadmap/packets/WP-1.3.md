@@ -15,15 +15,15 @@ owns the UI.
 
 ## Inputs (read, do not change)
 
-- `AsterismaV2.0/Features/Reader/PDFReaderView2.swift` — `ReaderPDFView`,
+- `AsterismaV2.5/Features/Reader/PDFReaderView2.swift` — `ReaderPDFView`,
   `PDFReaderView`, its `Coordinator`, and `PDFReaderScreen`.
-- `AsterismaV2.0/Core/Book2.swift` — the frozen
+- `AsterismaV2.5/Core/Book2.swift` — the frozen
   `BookNoteAnchor.pdf(pageIndex:rect:)` shape and `NormalizedRect`.
 
 ## Allowed paths
 
-- `AsterismaV2.0/Features/Reader/PDFReaderView2.swift`
-- `AsterismaV2.0Tests/Reader/PDFSelectionTests.swift` (new file)
+- `AsterismaV2.5/Features/Reader/PDFReaderView2.swift`
+- `AsterismaV2.5Tests/Reader/PDFSelectionTests.swift` (new file)
 - `.agent-handoff/WP-1.3.md` in the worktree only
 
 ## Forbidden
@@ -57,7 +57,7 @@ any `git commit` or `git push`.
 
 ## Required tests
 
-Create `AsterismaV2.0Tests/Reader/PDFSelectionTests.swift`:
+Create `AsterismaV2.5Tests/Reader/PDFSelectionTests.swift`:
 
 1. A rect at the page origin with half width/height normalizes to
    `(0, 0, 0.5, 0.5)`.
@@ -71,7 +71,7 @@ Use `CGRect` fixtures; do not instantiate a `PDFView`.
 
 ## Acceptance
 
-- `xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` exits 0.
+- `xcodebuild -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` exits 0.
 - `PDFSelectionTests` and the existing `ReaderAppearanceTests` pass.
 - `git diff --check` exits 0.
 - No file outside the allowed paths changes.
@@ -107,7 +107,7 @@ sixth test that posts the notification and requires a usable anchor. That test
 would have failed against the model's version. The registration itself is
 verified by review of the single call site, not by the test.
 
-A first verification attempt used `-only-testing:AsterismaV2.0Tests/PDFSelectionTests`,
+A first verification attempt used `-only-testing:AsterismaV2.5Tests/PDFSelectionTests`,
 which matched no type (the suite type is `PDFSelectionGeometryTests`); only the
 nine appearance tests ran. Buffy caught the false pass and reran with the real
 identifier.

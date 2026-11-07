@@ -28,11 +28,11 @@ The Phase Zero investigation is recorded with byte-level evidence in the report 
 
 | Step | Change | Evidence |
 |---|---|---|
-| E1 | Demo generator never writes phantom one-page sessions into finished books; a finished book starts a re-read pass at page 0; completion comes from the furthest page | 3 new pins in `AsterismaV2.0Tests/DeveloperConsole/DemoProfileServiceTests.swift`; genre/mean ratio fell from 21.6× to 1.01–1.57× |
-| E2 | One page-duration policy (`PageDurationPolicy`): 0.5 s floor, 3× median relative ceiling, no absolute 60 s cap; used by `readingSpeed`, `crossBookReadingSpeed`, and the annual report | 8 pins in `AsterismaV2.0Tests/Engines/PageDurationPolicyTests.swift`; slow persona measured 339.64 s/page against a 331.75 s median |
+| E1 | Demo generator never writes phantom one-page sessions into finished books; a finished book starts a re-read pass at page 0; completion comes from the furthest page | 3 new pins in `AsterismaV2.5Tests/DeveloperConsole/DemoProfileServiceTests.swift`; genre/mean ratio fell from 21.6× to 1.01–1.57× |
+| E2 | One page-duration policy (`PageDurationPolicy`): 0.5 s floor, 3× median relative ceiling, no absolute 60 s cap; used by `readingSpeed`, `crossBookReadingSpeed`, and the annual report | 8 pins in `AsterismaV2.5Tests/Engines/PageDurationPolicyTests.swift`; slow persona measured 339.64 s/page against a 331.75 s median |
 | E3 | Ablation rejected the 40/25/20/15 blend; the estimate is the reader's own robust speed, cross-book only as cold start; genre formula corrected to a relative diagnostic | 8 personas: base MAE 2.0%, genre 12.5%, old blend 4.8%; shipped estimate now 0.99–1.04× observed |
-| E6 | Estimates carry status, fallback reason, model version, and prediction target; the estimate screen discloses baseline/default use | 5 pins in `AsterismaV2.0Tests/Engines/EstimationProvenanceTests.swift` |
-| E7 | One canonical page conversion used by EPUB and PDF; PDFs now get a sampled word count and difficulty profile; `PageEstimationModel` is no longer dead | 5 pins in `AsterismaV2.0Tests/Library/PageEstimationModelTests.swift` |
+| E6 | Estimates carry status, fallback reason, model version, and prediction target; the estimate screen discloses baseline/default use | 5 pins in `AsterismaV2.5Tests/Engines/EstimationProvenanceTests.swift` |
+| E7 | One canonical page conversion used by EPUB and PDF; PDFs now get a sampled word count and difficulty profile; `PageEstimationModel` is no longer dead | 5 pins in `AsterismaV2.5Tests/Library/PageEstimationModelTests.swift` |
 | E4 | **Not done.** No visibility/focus events, no monotonic clock, no per-event validity flags | — |
 | E5 | **Not done.** The 73% layout claim still has no session record in the repository | — |
 
@@ -135,10 +135,10 @@ A disagreement is not a failure of either pass. It is the reason the second pass
 
 ```bash
 swiftc -O -parse-as-library -swift-version 5 -default-isolation MainActor \
-  -o /tmp/real-book-audit AsterismaV2.0/Core/Book2.swift \
-  AsterismaV2.0/Core/AnalyticsCache.swift AsterismaV2.0/Core/SharedTextUtilities.swift \
-  AsterismaV2.0/Engines/AnalyticsEngine.swift AsterismaV2.0/Engines/EstimationEngine.swift \
-  AsterismaV2.0/Features/Library/ContentAnalysis.swift \
+  -o /tmp/real-book-audit AsterismaV2.5/Core/Book2.swift \
+  AsterismaV2.5/Core/AnalyticsCache.swift AsterismaV2.5/Core/SharedTextUtilities.swift \
+  AsterismaV2.5/Engines/AnalyticsEngine.swift AsterismaV2.5/Engines/EstimationEngine.swift \
+  AsterismaV2.5/Features/Library/ContentAnalysis.swift \
   tools/real-book-audit/Stubs.swift tools/real-book-audit/main.swift
 # exit 0
 ```
@@ -189,7 +189,7 @@ repository. It must be replaced by E4/E5 session data before any accuracy claim.
 `✔ Test run with 493 tests in 99 suites passed`; metadata
 `failedTests: 0`, `skippedTests: 9`, `passedTests: 485`.
 
-New pin: `AsterismaV2.0Tests/Core/ReadingDifficultyCalibrationTests.swift`
+New pin: `AsterismaV2.5Tests/Core/ReadingDifficultyCalibrationTests.swift`
 (4 tests) fixes the baseline at 1.0, requires college prose to exceed it, and
 bounds the multiplier.
 
@@ -1504,7 +1504,7 @@ rewritten.
 | 149 packages, 14 byte-identical duplicates, 135 distinct works | **stands** | §11.2 duplicate table |
 | The engine's own output for all 149 packages (multiplier, page number, time, label) | **stands as engine behaviour**, not as an accuracy finding | §8.1 driver, exit 0 |
 | The pagination table above | **stands** | `scripts/real-book-pagination.py`, exit 0 |
-| `difficultyMultiplier` is a bounded function of four prose features and nothing else | **stands as a reading of source** | `AsterismaV2.0/Core/Book2.swift`, `ReadingDifficultyProfile` |
+| `difficultyMultiplier` is a bounded function of four prose features and nothing else | **stands as a reading of source** | `AsterismaV2.5/Core/Book2.swift`, `ReadingDifficultyProfile` |
 | Every verdict, every tally, every accuracy percentage, F1–F6, §27 | **VOID** | this section |
 
 The verdict file `docs/audits/new-era-grades.tsv` is retained unchanged: it was

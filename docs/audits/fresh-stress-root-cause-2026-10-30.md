@@ -62,9 +62,9 @@ Without interruptions, the candidate is better at every reported statistic, incl
 
 The `sparse` recipe appends exactly two target-book pages: `2 if regime == 'sparse' else 12` in [synthetic_eval.py:107](../../tools/cde/synthetic_eval.py#L107). All 240,400 sparse cases have exactly two target-book samples, confirmed by the audit script.
 
-`PageDurationPolicy.robustMeanSeconds` ([AnalyticsEngine.swift:399](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L399)) keeps values up to `median * 3` ([line 396](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L396)). Its median is `sorted[count / 2]`, not the average of the middle pair. With two values the median is the larger one, so both values survive unless the larger exceeds three times the smaller. A pair of 694.7 and 718.4 survives trivially.
+`PageDurationPolicy.robustMeanSeconds` ([AnalyticsEngine.swift:399](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L399)) keeps values up to `median * 3` ([line 396](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L396)). Its median is `sorted[count / 2]`, not the average of the middle pair. With two values the median is the larger one, so both values survive unless the larger exceeds three times the smaller. A pair of 694.7 and 718.4 survives trivially.
 
-The candidate's `recent` path is the robust mean of the last eight usable target timings ([AdversarialEvaluationTests.swift:81](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L81)), and `recent` receives 0.998814921031034 of the blend ([fresh_100.py:95](../../tools/cde/fresh_100.py#L95)). With two samples, that is simply the mean of two page durations multiplied by 40.
+The candidate's `recent` path is the robust mean of the last eight usable target timings ([AdversarialEvaluationTests.swift:81](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L81)), and `recent` receives 0.998814921031034 of the blend ([fresh_100.py:95](../../tools/cde/fresh_100.py#L95)). With two samples, that is simply the mean of two page durations multiplied by 40.
 
 Round 29, case `7610b1d828f009e9c071`:
 
@@ -78,7 +78,7 @@ The log reproduces the same candidate identity for rounds 18, 82, 85, 5, 32, 3, 
 
 Two design details make this worse than a tuning problem:
 
-- **The guard is one-sided.** It fires only when the target's pace is much faster than the prior books: `all < prior * 0.35` ([line 88](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L88)). A target contaminated by idle time is much slower, so it cannot trigger the fallback.
+- **The guard is one-sided.** It fires only when the target's pace is much faster than the prior books: `all < prior * 0.35` ([line 88](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L88)). A target contaminated by idle time is much slower, so it cannot trigger the fallback.
 - **The guard is almost weightless.** Even when it fires, it contributes 0.001185 to the blend, or 0.12%. The candidate is effectively `recent` alone.
 
 The distribution shows the trade-off. On all 240,400 sparse cases:
@@ -109,7 +109,7 @@ This one is not specific to the candidate. It is a limitation of a median-relati
 
 ## Finding 4 — cross-book pooling lets one book dominate
 
-`AnalyticsEngine.crossBookReadingSpeed` ([AnalyticsEngine.swift:75](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L75)) pools every duration from every book, then applies one median and one 3× bound to the pooled list. There is no per-book normalization before pooling.
+`AnalyticsEngine.crossBookReadingSpeed` ([AnalyticsEngine.swift:75](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L75)) pools every duration from every book, then applies one median and one 3× bound to the pooled list. There is no per-book normalization before pooling.
 
 Round 59, case `4fd1468cbf1c0237dd41`:
 
@@ -125,7 +125,7 @@ All ten largest shared errors have this shape.
 
 ## Finding 5 — cold start is the largest source of spikes, and weights cannot fix it
 
-The `none` regime has no history at all: 240,800 cases, 24.3% of the run. Both models return the fallback `defaultSecondsPerPage` of 120 ([AnalyticsEngine.swift:425](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L425)) times 40 pages, or 4,800 seconds. The audit confirms 100.0% identical output.
+The `none` regime has no history at all: 240,800 cases, 24.3% of the run. Both models return the fallback `defaultSecondsPerPage` of 120 ([AnalyticsEngine.swift:425](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L425)) times 40 pages, or 4,800 seconds. The audit confirms 100.0% identical output.
 
 | Model | Median | Mean | 90th percentile | Worst |
 |---|---:|---:|---:|---:|
@@ -175,7 +175,7 @@ At the time of this audit, nothing in this list had been implemented, measured, 
 
 ## Implementation status — 2026-10-31
 
-The owner asked for the audited defects to be fixed before a 200-round rerun. The production changes are in [`AnalyticsEngine.swift`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift): per-book normalization and consensus in [`crossBookReadingSpeed`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L83) and [`consensusSeconds`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L459); the `max(median, lowerQuartile × 3)` ceiling in [`robustMeanSeconds`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L424) and [`upperBound`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L444). The candidate-only rules are in the evaluation adapter: [`minimumRecentTimings = 3`](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L71) and the two-sided `0.35/3.0` guard at [lines 73–74](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L73). They are not production wiring.
+The owner asked for the audited defects to be fixed before a 200-round rerun. The production changes are in [`AnalyticsEngine.swift`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift): per-book normalization and consensus in [`crossBookReadingSpeed`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L83) and [`consensusSeconds`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L459); the `max(median, lowerQuartile × 3)` ceiling in [`robustMeanSeconds`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L424) and [`upperBound`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L444). The candidate-only rules are in the evaluation adapter: [`minimumRecentTimings = 3`](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L71) and the two-sided `0.35/3.0` guard at [lines 73–74](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L73). They are not production wiring.
 
 The results are in [the 200-round report](fresh-reading-stress-200-2026-10-30.md). The fixed baseline improved overall against the saved legacy comparator (median 18.98% against 21.42%; 170,404 spikes against 185,341), with a `corpus-evaluation` median exception. That comparator is a hybrid: it equals the baseline on `same_book` and uses the current per-book policy there, so it isolates the pooling change on no-personal-speed cases, not the ceiling change on personal-speed books. The candidate lost to the fixed baseline at the fitted 0.979 weight and at the pre-registered 0.5 weight; the report records the mechanisms. The weight was fitted only on rounds 1–100 and frozen for 101–200. The stop-on-spike protocol (item 5) was not run. No production weight was changed.
 

@@ -11,7 +11,7 @@ cd "$ROOT"
 
 ONLY=()
 if [[ "${1:-}" == "--unit-only" ]]; then
-  ONLY=(-only-testing:"AsterismaV2.0Tests")
+  ONLY=(-only-testing:"AsterismaV2.5Tests")
 fi
 
 STAMP="$(date +%Y%m%d-%H%M%S)"
@@ -20,8 +20,8 @@ LOG="${TMPDIR:-/tmp}/rt-census-$STAMP.log"
 
 set +e
 xcodebuild test \
-  -project "AsterismaV2.0.xcodeproj" \
-  -scheme "AsterismaV2.0" \
+  -project "AsterismaV2.5.xcodeproj" \
+  -scheme "AsterismaV2.5" \
   -configuration Debug \
   -destination 'platform=macOS' \
   -parallel-testing-enabled NO \

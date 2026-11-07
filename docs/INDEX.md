@@ -17,19 +17,19 @@
 
 | If you need… | Read first | Then |
 |---|---|---|
-| Bundle identifier, product name, deployment target | `AsterismaV2.0.xcodeproj/project.pbxproj#L465` | `AsterismaV2.0-Info.plist` |
-| App shell: declares the root content view (SwiftUI) | `AsterismaV2.0/App/NewContentView.swift#L1` | `AsterismaV2.0/App/AsterismaApp.swift` |
-| Quick Open: pure ranking index, result targets, and the ⌘K overlay | `AsterismaV2.0/App/CommandPalette.swift#L1` | `AsterismaV2.0Tests/App/CommandPaletteTests.swift` |
-| Four durable destinations and keyboard shortcuts | `AsterismaV2.0/App/AppSection.swift#L1` | `AsterismaV2.0/App/NewContentView.swift` |
-| Home: resume-first launch surface, stats, shelves | `AsterismaV2.0/Features/Home/ReadingDeskView.swift#L1` | `docs/design/UI-UX-OVERHAUL-2026-10-29.md` |
-| Library: unified grid/list, filters, selected-book dock | `AsterismaV2.0/Features/Library/LibraryBrowserView.swift#L1` | `docs/design/UI-UX-OVERHAUL-2026-10-29.md` |
+| Bundle identifier, product name, deployment target | `AsterismaV2.5.xcodeproj/project.pbxproj#L465` | `AsterismaV2.5-Info.plist` |
+| App shell: declares the root content view (SwiftUI) | `AsterismaV2.5/App/NewContentView.swift#L1` | `AsterismaV2.5/App/AsterismaApp.swift` |
+| Quick Open: pure ranking index, result targets, and the ⌘K overlay | `AsterismaV2.5/App/CommandPalette.swift#L1` | `AsterismaV2.5Tests/App/CommandPaletteTests.swift` |
+| Four durable destinations and keyboard shortcuts | `AsterismaV2.5/App/AppSection.swift#L1` | `AsterismaV2.5/App/NewContentView.swift` |
+| Home: resume-first launch surface, stats, shelves | `AsterismaV2.5/Features/Home/ReadingDeskView.swift#L1` | `docs/design/UI-UX-OVERHAUL-2026-10-29.md` |
+| Library: unified grid/list, filters, selected-book dock | `AsterismaV2.5/Features/Library/LibraryBrowserView.swift#L1` | `docs/design/UI-UX-OVERHAUL-2026-10-29.md` |
 | UI/UX models, weighted scores, and two-tranche record | `docs/design/UI-UX-OVERHAUL-2026-10-29.md` | `docs/design/UX-BETA-AUDIT-2026-10-25.md` |
-| Reader customization: EPUB themes/fonts/size/brightness/mode, PDF layout/fit/RTL/gap | `docs/design/READER-POLISH-2026-10-25.md` | `AsterismaV2.0/Features/Reader/ReaderAppearance.swift`, `AsterismaV2.0/Features/Reader/PDFReaderSettings.swift` |
-| Comics (2.5–2.6): CBZ/image-folder import, LTR/RTL/vertical modes, native paging, prefetch, zoom, page notes, ComicInfo.xml metadata, Mirage OCR analysis, comic analytics | `docs/audits/2026-11-07-comic-expansion.md` | `AsterismaV2.0/Features/Reader/ComicArchive.swift`, `AsterismaV2.0/Features/Reader/ComicMetadata.swift`, `AsterismaV2.0/Features/Reader/ComicReaderScreen.swift`, `AsterismaV2.0/Features/Reader/ComicReaderExperience.swift`, `AsterismaV2.0/Features/Mirage/ComicMirageBridge.swift` |
-| Environment: 10 s palette engine, drifting atmosphere, stars, live weather layer, readability scrim | `AsterismaV2.0/Features/Environment/Engine/EnvironmentEngine2.swift#L1` | `AsterismaV2.0/Features/Environment/Weather/WeatherEffectView.swift`, `docs/design/UI-UX-OVERHAUL-2026-10-29.md` |
-| Force any hour or weather kind and inspect the computed environment state | `AsterismaV2.0/Features/DeveloperConsole/EnvironmentStudioView.swift#L1` | `AsterismaV2.0/Features/Environment/Weather/WeatherVisual.swift` |
-| App identity: data root directory name, bundle identifier constants | `AsterismaV2.0/Core/AppIdentity.swift#L12` | `AsterismaV2.0/Core/RuntimeEnvironment.swift` |
-| Feature folders and the full file map | `docs/01-project-tree.md` | `AsterismaV2.0/Features/` |
+| Reader customization: EPUB themes/fonts/size/brightness/mode, PDF layout/fit/RTL/gap | `docs/design/READER-POLISH-2026-10-25.md` | `AsterismaV2.5/Features/Reader/ReaderAppearance.swift`, `AsterismaV2.5/Features/Reader/PDFReaderSettings.swift` |
+| Comics (2.5–2.6): CBZ/image-folder import, LTR/RTL/vertical modes, native paging, prefetch, zoom, page notes, ComicInfo.xml metadata, Mirage OCR analysis, comic analytics | `docs/audits/2026-11-07-comic-expansion.md` | `AsterismaV2.5/Features/Reader/ComicArchive.swift`, `AsterismaV2.5/Features/Reader/ComicMetadata.swift`, `AsterismaV2.5/Features/Reader/ComicReaderScreen.swift`, `AsterismaV2.5/Features/Reader/ComicReaderExperience.swift`, `AsterismaV2.5/Features/Mirage/ComicMirageBridge.swift` |
+| Environment: 10 s palette engine, drifting atmosphere, stars, live weather layer, readability scrim | `AsterismaV2.5/Features/Environment/Engine/EnvironmentEngine2.swift#L1` | `AsterismaV2.5/Features/Environment/Weather/WeatherEffectView.swift`, `docs/design/UI-UX-OVERHAUL-2026-10-29.md` |
+| Force any hour or weather kind and inspect the computed environment state | `AsterismaV2.5/Features/DeveloperConsole/EnvironmentStudioView.swift#L1` | `AsterismaV2.5/Features/Environment/Weather/WeatherVisual.swift` |
+| App identity: data root directory name, bundle identifier constants | `AsterismaV2.5/Core/AppIdentity.swift#L12` | `AsterismaV2.5/Core/RuntimeEnvironment.swift` |
+| Feature folders and the full file map | `docs/01-project-tree.md` | `AsterismaV2.5/Features/` |
 
 ## Progression and delegation
 
@@ -42,31 +42,31 @@
 
 | If you need… | Read first | Then |
 |---|---|---|
-| Mirage toggle: switches the feature off, defaults key | `AsterismaV2.0/Features/Mirage/MirageSettings.swift#L21` | `docs/integration/adr/ADR-6-mirage-feature-lifecycle.md` |
-| Mirage warm engine, cached library index, and batch queue (ADR-13) | `AsterismaV2.0/Features/Mirage/MirageEngineService.swift#L1` | `docs/integration/adr/ADR-13-mirage-warm-engine-and-library-scale.md` |
-| Mirage analysis report: coverage, unit/claim density, paused and unindexed links, measured analysis time | `AsterismaV2.0/Features/Mirage/MirageAnalysisReport.swift#L1` | `AsterismaV2.0Tests/Mirage/MirageAnalysisReportTests.swift`, `AsterismaV2.0/Features/Goals/SettingsRootView.swift` |
-| Mirage reader graph: verified chapter-boundary cursor, cache-first sheet, engine action contract and failure states | `docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md#L1` | `AsterismaV2.0/Features/Mirage/MirageGraphController.swift#L1`, `AsterismaV2.0Tests/Mirage/MirageGraphTests.swift#L1` |
-| Sentinel defaults keys: kill switch, repairs, interval minutes | `AsterismaV2.0/Core/SentinelEngine.swift#L140-L143` | `AsterismaV2.0/Core/Sentinel/SentinelConfiguration.swift` |
-| Sentinel notifications: request defaults key, launch card | `AsterismaV2.0/Core/Sentinel/SentinelNotification.swift#L75` | `docs/plans/sentinel/gates/SG7.md` |
+| Mirage toggle: switches the feature off, defaults key | `AsterismaV2.5/Features/Mirage/MirageSettings.swift#L21` | `docs/integration/adr/ADR-6-mirage-feature-lifecycle.md` |
+| Mirage warm engine, cached library index, and batch queue (ADR-13) | `AsterismaV2.5/Features/Mirage/MirageEngineService.swift#L1` | `docs/integration/adr/ADR-13-mirage-warm-engine-and-library-scale.md` |
+| Mirage analysis report: coverage, unit/claim density, paused and unindexed links, measured analysis time | `AsterismaV2.5/Features/Mirage/MirageAnalysisReport.swift#L1` | `AsterismaV2.5Tests/Mirage/MirageAnalysisReportTests.swift`, `AsterismaV2.5/Features/Goals/SettingsRootView.swift` |
+| Mirage reader graph: verified chapter-boundary cursor, cache-first sheet, engine action contract and failure states | `docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md#L1` | `AsterismaV2.5/Features/Mirage/MirageGraphController.swift#L1`, `AsterismaV2.5Tests/Mirage/MirageGraphTests.swift#L1` |
+| Sentinel defaults keys: kill switch, repairs, interval minutes | `AsterismaV2.5/Core/SentinelEngine.swift#L140-L143` | `AsterismaV2.5/Core/Sentinel/SentinelConfiguration.swift` |
+| Sentinel notifications: request defaults key, launch card | `AsterismaV2.5/Core/Sentinel/SentinelNotification.swift#L75` | `docs/plans/sentinel/gates/SG7.md` |
 
 ## Health: Sentinel and recovery
 
 | If you need… | Read first | Then |
 |---|---|---|
-| Sentinel probe IDs and contracts: manifest tables, required surfaces need a registered owner, catalog | `AsterismaV2.0/Core/Sentinel/SentinelProbesSurface.swift#L45` | `AsterismaV2.0/Core/Sentinel/SentinelProbeCatalog.swift`, `docs/plans/sentinel/gates/README.md` |
+| Sentinel probe IDs and contracts: manifest tables, required surfaces need a registered owner, catalog | `AsterismaV2.5/Core/Sentinel/SentinelProbesSurface.swift#L45` | `AsterismaV2.5/Core/Sentinel/SentinelProbeCatalog.swift`, `docs/plans/sentinel/gates/README.md` |
 | Surface manifest freshness: the script that fails CI when the manifest is stale | `scripts/verify-sentinel-surface.sh` | `AGENTS.md#L117`, `scripts/sentinel-surface.py` |
 | Sentinel catalog size and the probe receipt | `docs/registers/04-handoff.md#L25` | `docs/plans/sentinel/gates/README.md` |
-| Library recovery: Phase 5 rebuild result, carries skipped rows | `AsterismaV2.0/Core/LibraryRecovery/LibraryLogicalRebuilder.swift#L11` | `docs/plans/library-recovery/G6.md` |
-| Recovery gate: enum defines the operational mode that suspends writes | `AsterismaV2.0/Core/LibraryRecovery/LibraryRecoveryGate.swift#L13` | `docs/plans/library-recovery/G6.md` |
-| Sentinel Health Center: sidebar destinations, issue search/filter, Next issue, Check now | `AsterismaV2.0/Features/Sentinel/SentinelHealthCenterView.swift#L1` | `AsterismaV2.0/Features/Sentinel/SentinelViewModel.swift` |
-| Developer Console: LIVE/PLANNED sidebar search, Environment Studio, Subsystem Explorer | `AsterismaV2.0/Features/DeveloperConsole/DeveloperConsoleRootView.swift#L1` | `AsterismaV2.0/Features/DeveloperConsole/SubsystemExplorerView.swift`, `AsterismaV2.0/Features/DeveloperConsole/EnvironmentStudioView.swift` |
+| Library recovery: Phase 5 rebuild result, carries skipped rows | `AsterismaV2.5/Core/LibraryRecovery/LibraryLogicalRebuilder.swift#L11` | `docs/plans/library-recovery/G6.md` |
+| Recovery gate: enum defines the operational mode that suspends writes | `AsterismaV2.5/Core/LibraryRecovery/LibraryRecoveryGate.swift#L13` | `docs/plans/library-recovery/G6.md` |
+| Sentinel Health Center: sidebar destinations, issue search/filter, Next issue, Check now | `AsterismaV2.5/Features/Sentinel/SentinelHealthCenterView.swift#L1` | `AsterismaV2.5/Features/Sentinel/SentinelViewModel.swift` |
+| Developer Console: LIVE/PLANNED sidebar search, Environment Studio, Subsystem Explorer | `AsterismaV2.5/Features/DeveloperConsole/DeveloperConsoleRootView.swift#L1` | `AsterismaV2.5/Features/DeveloperConsole/SubsystemExplorerView.swift`, `AsterismaV2.5/Features/DeveloperConsole/EnvironmentStudioView.swift` |
 
 ## Data
 
 | If you need… | Read first | Then |
 |---|---|---|
-| SQLite store: journal mode, GRDB connection that backs the live library, schema, migrations | `AsterismaV2.0/Core/Storage/LibraryDatabase.swift#L34-L45` | `AsterismaV2.0/Core/Storage/LibrarySnapshot.swift` |
-| Library snapshot: table counts struct, key paths | `AsterismaV2.0/Core/Storage/LibrarySnapshot.swift#L48` | `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` |
+| SQLite store: journal mode, GRDB connection that backs the live library, schema, migrations | `AsterismaV2.5/Core/Storage/LibraryDatabase.swift#L34-L45` | `AsterismaV2.5/Core/Storage/LibrarySnapshot.swift` |
+| Library snapshot: table counts struct, key paths | `AsterismaV2.5/Core/Storage/LibrarySnapshot.swift#L48` | `AsterismaV2.5/Core/Storage/LibraryDatabase.swift` |
 | Reading analytics: Phase Zero baseline, confirmed profile-sensitivity defects, next experiments | `docs/audits/13-reading-analytics-phase-zero-2026-10-29.md` | `docs/audits/evidence/reading-analytics-phase-zero-2026-10-29.json` |
 | Synthetic reading-time evaluation: shared books, scenario tests, and limitations | `docs/audits/synthetic-reading-evaluation.md` | `tools/cde/synthetic_eval.py` |
 | Fresh stress-run error root causes: reproduced arithmetic for the candidate tail, cold start, and unlearnable scenarios | `docs/audits/fresh-stress-root-cause-2026-10-30.md` | `docs/audits/fresh-reading-stress-100-2026-10-30.md`, `tools/cde/audit_fresh_tail.py` |
@@ -102,11 +102,11 @@
 
 | If you need… | Read first | Then |
 |---|---|---|
-| Reader appearance tests: nine pins for themes, settings injection, brightness, PDF mapping, gap, and RTL | `AsterismaV2.0Tests/Reader/ReaderAppearanceTests.swift#L1` | `docs/design/READER-POLISH-2026-10-25.md` |
-| Comic pins: natural page order, CBZ extraction, folder/CBZ import, ComicInfo metadata, mode inference, RTL visual order, page-image store, comic anchors, OCR EPUB determinism/cache, comic Mirage identity, folder fingerprints | `AsterismaV2.0Tests/Reader/ComicArchiveTests.swift#L1` | `AsterismaV2.0Tests/Reader/ComicImportTests.swift`, `AsterismaV2.0Tests/Reader/ComicReaderModelTests.swift`, `AsterismaV2.0Tests/Reader/ComicMetadataTests.swift`, `AsterismaV2.0Tests/Mirage/ComicMirageBridgeTests.swift`, `AsterismaV2.0Tests/Mirage/MirageComicImportTests.swift` |
-| Offline contract: bounded discovery/weather sessions, cancellation, and network-free pins | `docs/registers/03-fix-log.md` (Stage AB) | `AsterismaV2.0Tests/Discovery/DiscoveryOfflineTests.swift#L1` |
-| Mirage ADR-13 pins: warm-session serialization, idle teardown, index reconciliation, batch cancel/retry, analysis-report coverage math | `AsterismaV2.0Tests/Mirage/MirageEngineServiceTests.swift#L1` | `AsterismaV2.0Tests/Mirage/MirageLibraryIndexTests.swift`, `AsterismaV2.0Tests/Mirage/MirageBatchAnalyzerTests.swift`, `AsterismaV2.0Tests/Mirage/MirageAnalysisReportTests.swift` |
-| Environment pins: condition→visual mapping, override store, forced clock/weather, scrim ordering | `AsterismaV2.0Tests/Environment/EnvironmentWeatherVisualTests.swift#L1` | `AsterismaV2.0/Features/Environment/Weather/WeatherVisual.swift` |
+| Reader appearance tests: nine pins for themes, settings injection, brightness, PDF mapping, gap, and RTL | `AsterismaV2.5Tests/Reader/ReaderAppearanceTests.swift#L1` | `docs/design/READER-POLISH-2026-10-25.md` |
+| Comic pins: natural page order, CBZ extraction, folder/CBZ import, ComicInfo metadata, mode inference, RTL visual order, page-image store, comic anchors, OCR EPUB determinism/cache, comic Mirage identity, folder fingerprints | `AsterismaV2.5Tests/Reader/ComicArchiveTests.swift#L1` | `AsterismaV2.5Tests/Reader/ComicImportTests.swift`, `AsterismaV2.5Tests/Reader/ComicReaderModelTests.swift`, `AsterismaV2.5Tests/Reader/ComicMetadataTests.swift`, `AsterismaV2.5Tests/Mirage/ComicMirageBridgeTests.swift`, `AsterismaV2.5Tests/Mirage/MirageComicImportTests.swift` |
+| Offline contract: bounded discovery/weather sessions, cancellation, and network-free pins | `docs/registers/03-fix-log.md` (Stage AB) | `AsterismaV2.5Tests/Discovery/DiscoveryOfflineTests.swift#L1` |
+| Mirage ADR-13 pins: warm-session serialization, idle teardown, index reconciliation, batch cancel/retry, analysis-report coverage math | `AsterismaV2.5Tests/Mirage/MirageEngineServiceTests.swift#L1` | `AsterismaV2.5Tests/Mirage/MirageLibraryIndexTests.swift`, `AsterismaV2.5Tests/Mirage/MirageBatchAnalyzerTests.swift`, `AsterismaV2.5Tests/Mirage/MirageAnalysisReportTests.swift` |
+| Environment pins: condition→visual mapping, override store, forced clock/weather, scrim ordering | `AsterismaV2.5Tests/Environment/EnvironmentWeatherVisualTests.swift#L1` | `AsterismaV2.5/Features/Environment/Weather/WeatherVisual.swift` |
 
 ## Difficulty engine (CDE)
 

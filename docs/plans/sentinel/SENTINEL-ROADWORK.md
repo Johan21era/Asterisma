@@ -62,7 +62,7 @@ Sentinel 1000 is done when all of the following are true:
 
 ### 1.1 The data layer changed underneath Sentinel
 
-P6 was designed in the JSON era. It reads `dataStore.books`, which used to contain every session and every page timing in memory. After the G3C cutover, the live library is SQLite (`Application Support/Asterisma/library.grdb.sqlite3`), and the in-memory `Book` values are summaries: sessions are present, but **per-page timings are lazy** ([Book2.swift](../../../AsterismaV2.0/Core/Book2.swift) documents the cached-speed contract; `DataStore.loadFromDatabase` loads summaries only).
+P6 was designed in the JSON era. It reads `dataStore.books`, which used to contain every session and every page timing in memory. After the G3C cutover, the live library is SQLite (`Application Support/Asterisma/library.grdb.sqlite3`), and the in-memory `Book` values are summaries: sessions are present, but **per-page timings are lazy** ([Book2.swift](../../../AsterismaV2.5/Core/Book2.swift) documents the cached-speed contract; `DataStore.loadFromDatabase` loads summaries only).
 
 That single change invalidates a core Sentinel assumption:
 
@@ -96,8 +96,8 @@ The 2026-10-26 hardening makes a corrupt SQLite book or library-state row abort 
 
 | Component | File | Current role |
 |---|---|---|
-| Engine | `AsterismaV2.0/Core/SentinelEngine.swift` (625 lines) | Singleton, lifecycle, cycle, repairs, journal, report card data |
-| Read bridge | `AsterismaV2.0/Core/SentinelDataBridge.swift` (38 lines) | Weak `DataStore` reference + mutation-in-flight flag |
+| Engine | `AsterismaV2.5/Core/SentinelEngine.swift` (625 lines) | Singleton, lifecycle, cycle, repairs, journal, report card data |
+| Read bridge | `AsterismaV2.5/Core/SentinelDataBridge.swift` (38 lines) | Weak `DataStore` reference + mutation-in-flight flag |
 | Probes | Same file, bottom | 8 structs: integrity, persistence, writability, orphan sessions, bookmarks, disk, deadlines, achievements |
 | Repairs | Engine methods | 4 repairable rules; dispatch is a single multi-book pass |
 | Journal | `Application Support/Asterisma/sentinel-journal.jsonl` | Append-only JSONL, 500-line cap, cycle summary line |
@@ -105,7 +105,7 @@ The 2026-10-26 hardening makes a corrupt SQLite book or library-state row abort 
 | Release UI | `Features/DeveloperConsole/SentinelReportCardView.swift` | Launch card with fixed/stalled counts and a headline; dismiss only |
 | Settings | `Features/Goals/SettingsRootView.swift` (`SentinelSettingsPane`) | Enable, interval, allow automatic fixes (Release only), privacy line |
 | Launch wiring | `App/NewContentView.swift` | `sentinel.start()`, immediate `runCycle()`, `overnightReport()` on appear |
-| Tests | `AsterismaV2.0Tests/Core/SentinelPinsTests.swift` | 6 behavior/security pins + 2 demo-swap safety pins |
+| Tests | `AsterismaV2.5Tests/Core/SentinelPinsTests.swift` | 6 behavior/security pins + 2 demo-swap safety pins |
 
 ### 2.2 Runtime flow today
 
@@ -3714,7 +3714,7 @@ As of 2026-10-26 (line numbers will drift; symbols are canonical):
 | SQLite schema | `Core/Storage/LibraryDatabase.swift` | GRDB schema |
 | Backups | `Core/LibraryArchiveManager.swift:153` | JSON rotation |
 | Cover store | `Core/CoverStore.swift` | Files + NSCache |
-| Pins | `AsterismaV2.0Tests/Core/SentinelPinsTests.swift` | 6 + 2 |
+| Pins | `AsterismaV2.5Tests/Core/SentinelPinsTests.swift` | 6 + 2 |
 
 ### B. Traceability to existing documents
 

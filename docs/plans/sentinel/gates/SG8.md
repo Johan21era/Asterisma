@@ -19,7 +19,7 @@ Three planes:
 
 | Plane | Implementation | Contract |
 |---|---|---|
-| Inventory | `scripts/sentinel-surface.py` → `AsterismaV2.0/Core/Sentinel/Generated/SentinelSurface.generated.swift` | Scans app sources for `sql.table`, `defaults.key`, `notification.name`; sorted output, SHA-256 digest prefix, no timestamps |
+| Inventory | `scripts/sentinel-surface.py` → `AsterismaV2.5/Core/Sentinel/Generated/SentinelSurface.generated.swift` | Scans app sources for `sql.table`, `defaults.key`, `notification.name`; sorted output, SHA-256 digest prefix, no timestamps |
 | Policy | `SentinelSurfaceCoverage.swift` | Only `sql.table` is *required* (a generic probe really enumerates it). Defaults and notifications are advisory: counted, never raised as user issues. Waivers carry reasons. |
 | Execution | `SentinelProbesSurface.swift` — `SQL-016`, `SELF-011` | SQL-016 checks every manifest table exists, is readable, and has a primary key. SELF-011 raises one finding per required family when ownership is lost. |
 
@@ -40,10 +40,10 @@ Three planes:
 
 - `scripts/sentinel-surface.py` — scanner (`--write`, `--check`, `--stdout`, `--report`)
 - `scripts/verify-sentinel-surface.sh` — CI freshness gate
-- `AsterismaV2.0/Core/Sentinel/Generated/SentinelSurface.generated.swift`
-- `AsterismaV2.0/Core/Sentinel/SentinelSurfaceCoverage.swift`
-- `AsterismaV2.0/Core/Sentinel/SentinelProbesSurface.swift`
-- `AsterismaV2.0Tests/Core/SentinelSurfaceTests.swift`
+- `AsterismaV2.5/Core/Sentinel/Generated/SentinelSurface.generated.swift`
+- `AsterismaV2.5/Core/Sentinel/SentinelSurfaceCoverage.swift`
+- `AsterismaV2.5/Core/Sentinel/SentinelProbesSurface.swift`
+- `AsterismaV2.5Tests/Core/SentinelSurfaceTests.swift`
 
 Modified: `SentinelSnapshot` (carries the catalog), `SentinelProbeCatalog`
 (one extension point), `SentinelCatalogTests` (140 pin), CI workflow (freshness

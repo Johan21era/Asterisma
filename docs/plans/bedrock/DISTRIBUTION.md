@@ -1,9 +1,9 @@
-# Local Distribution — AsterismaV2.0
+# Local Distribution — AsterismaV2.5
 
 ## What the packaging script produces
 
-- `dist/AsterismaV2.0-2.0-arm64.zip`
-- Ad-hoc signed `AsterismaV2.0.app`
+- `dist/AsterismaV2.5-2.0-arm64.zip`
+- Ad-hoc signed `AsterismaV2.5.app`
 - SHA-256 checksum alongside the zip
 
 This is a **local/friend build**, not a notarized App Store build.
@@ -15,12 +15,12 @@ This is a **local/friend build**, not a notarized App Store build.
 
 ## Friend install (one-time Gatekeeper step)
 
-1. Download and unzip `AsterismaV2.0-2.0-arm64.zip`.
-2. Drag `AsterismaV2.0.app` to `/Applications` (or run it from Downloads).
+1. Download and unzip `AsterismaV2.5-2.0-arm64.zip`.
+2. Drag `AsterismaV2.5.app` to `/Applications` (or run it from Downloads).
 3. First launch: **right-click the app → Open → Open**.
    - Or run once:
      ```bash
-     xattr -d com.apple.quarantine "/Applications/AsterismaV2.0.app"
+     xattr -d com.apple.quarantine "/Applications/AsterismaV2.5.app"
      ```
 4. Subsequent launches are normal double-click.
 
@@ -38,10 +38,10 @@ requires a dedicated container-migration release.
 
 ```bash
 cd dist
-shasum -a 256 -c AsterismaV2.0-2.0-arm64.zip.sha256
+shasum -a 256 -c AsterismaV2.5-2.0-arm64.zip.sha256
 
 # after unzipping / installing:
-codesign --verify --deep --strict --verbose=2 "/Applications/AsterismaV2.0.app"
+codesign --verify --deep --strict --verbose=2 "/Applications/AsterismaV2.5.app"
 ```
 
 ## Clean-account rehearsal

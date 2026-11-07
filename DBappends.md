@@ -1118,7 +1118,7 @@ Every cross-actor call is explicit `await`. No `Task.detached` inside Recovery w
 
 | File | Responsibility |
 |---|---|
-| `AsterismaV2.0/Core/Storage/LibraryRecoveryContracts.swift` | protocols, enums, safe types shared with Sentinel |
+| `AsterismaV2.5/Core/Storage/LibraryRecoveryContracts.swift` | protocols, enums, safe types shared with Sentinel |
 | `.../LibraryIncident.swift` | `LibraryIncident`, triggers, evidence, state |
 | `.../LibraryIncidentStore.swift` | atomic incident JSON read/write, scan, index |
 | `.../LibraryStoreFingerprint.swift` | hashing, table counts, metadata |
@@ -1135,8 +1135,8 @@ Every cross-actor call is explicit `await`. No `Task.detached` inside Recovery w
 | `.../LibraryRowRepairService.swift` | orphan inventory, export, delete, undo |
 | `.../LibraryRecoverySettings.swift` | retention, backup count, policy |
 | `.../LibraryRecoveryDiagnostics.swift` | safe recovery report for support |
-| `AsterismaV2.0/App/LibraryHealthCoordinator.swift` | app-level state machine |
-| `AsterismaV2.0/Features/LibraryRecovery/LibraryRecoveryView.swift` | incident detail + options |
+| `AsterismaV2.5/App/LibraryHealthCoordinator.swift` | app-level state machine |
+| `AsterismaV2.5/Features/LibraryRecovery/LibraryRecoveryView.swift` | incident detail + options |
 | `.../LibraryIncidentBanner.swift` | launch banner / card |
 | `.../LibraryRecoveryProgressView.swift` | phase progress |
 | `.../LibraryBackupListView.swift` | backup catalog + verify/drill |
@@ -1145,19 +1145,19 @@ Every cross-actor call is explicit `await`. No `Task.detached` inside Recovery w
 
 | File | Change |
 |---|---|
-| `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` | add `makeConsistentSnapshot(to:)`, `readOnlyCopyInfo`, `tableCounts`, `schemaVersion`, `openReadOnly`; replace `backup(to:)` |
-| `AsterismaV2.0/Core/DataStore3.swift` | add `StorageCondition`, `freezeForRecovery`, `drainAndCloseForRecovery`, `reopenAfterRecovery`, `performCheckpoint`, `exportMemorySnapshot`; make `sqliteLoadFailure` visible safely |
-| `AsterismaV2.0/Core/Sentinel/SentinelDataBridgeV2.swift` | remove second `DatabaseQueue`; call `DataStore.performCheckpoint`; attach recovery gate |
-| `AsterismaV2.0/Core/Sentinel/SentinelRuntime.swift` | operational mode, suspension, verification cycle, published recovery summary |
-| `AsterismaV2.0/Core/Sentinel/SentinelDomain.swift` | no structural change; add `SentinelRecoverySummary` only |
-| `AsterismaV2.0/Core/Sentinel/SentinelJournal.swift` | add incident/recovery events + `unknown` forward-compatible decode |
-| `AsterismaV2.0/Core/Sentinel/SentinelDiagnostics.swift` | schema v2, recovery rows, safe redaction tests |
-| `AsterismaV2.0/Core/Sentinel/SentinelConfiguration.swift` | no change to autonomy; recovery has separate settings |
-| `AsterismaV2.0/App/AsterismaApp.swift` | own coordinator, inject environment object, window/menu entry |
-| `AsterismaV2.0/App/NewContentView.swift` | start coordinator, incident banner, read-only state |
-| `AsterismaV2.0/Features/Sentinel/SentinelHealthCenterView.swift` | header rename, Recovery tab, incident detail |
-| `AsterismaV2.0/Features/Sentinel/SentinelViewModel.swift` | recovery projection + actions |
-| `AsterismaV2.0/Features/Goals/SettingsRootView.swift` | Backups & Recovery pane |
+| `AsterismaV2.5/Core/Storage/LibraryDatabase.swift` | add `makeConsistentSnapshot(to:)`, `readOnlyCopyInfo`, `tableCounts`, `schemaVersion`, `openReadOnly`; replace `backup(to:)` |
+| `AsterismaV2.5/Core/DataStore3.swift` | add `StorageCondition`, `freezeForRecovery`, `drainAndCloseForRecovery`, `reopenAfterRecovery`, `performCheckpoint`, `exportMemorySnapshot`; make `sqliteLoadFailure` visible safely |
+| `AsterismaV2.5/Core/Sentinel/SentinelDataBridgeV2.swift` | remove second `DatabaseQueue`; call `DataStore.performCheckpoint`; attach recovery gate |
+| `AsterismaV2.5/Core/Sentinel/SentinelRuntime.swift` | operational mode, suspension, verification cycle, published recovery summary |
+| `AsterismaV2.5/Core/Sentinel/SentinelDomain.swift` | no structural change; add `SentinelRecoverySummary` only |
+| `AsterismaV2.5/Core/Sentinel/SentinelJournal.swift` | add incident/recovery events + `unknown` forward-compatible decode |
+| `AsterismaV2.5/Core/Sentinel/SentinelDiagnostics.swift` | schema v2, recovery rows, safe redaction tests |
+| `AsterismaV2.5/Core/Sentinel/SentinelConfiguration.swift` | no change to autonomy; recovery has separate settings |
+| `AsterismaV2.5/App/AsterismaApp.swift` | own coordinator, inject environment object, window/menu entry |
+| `AsterismaV2.5/App/NewContentView.swift` | start coordinator, incident banner, read-only state |
+| `AsterismaV2.5/Features/Sentinel/SentinelHealthCenterView.swift` | header rename, Recovery tab, incident detail |
+| `AsterismaV2.5/Features/Sentinel/SentinelViewModel.swift` | recovery projection + actions |
+| `AsterismaV2.5/Features/Goals/SettingsRootView.swift` | Backups & Recovery pane |
 | `.github/workflows/census.yml` | no structural change; new tests run automatically |
 
 No `project.pbxproj` edit is needed: the project uses `PBXFileSystemSynchronizedRootGroup`, so new files under the existing folders are included automatically. Verify this after adding the first file; if the group is ever changed, add explicit references.
@@ -1166,7 +1166,7 @@ No `project.pbxproj` edit is needed: the project uses `PBXFileSystemSynchronized
 
 | File | Focus |
 |---|---|
-| `AsterismaV2.0Tests/Core/LibraryRecoveryGateTests.swift`, `AsterismaV2.0Tests/Core/LibraryRecoveryFlowTests.swift` | transitions, guards, terminal states |
+| `AsterismaV2.5Tests/Core/LibraryRecoveryGateTests.swift`, `AsterismaV2.5Tests/Core/LibraryRecoveryFlowTests.swift` | transitions, guards, terminal states |
 | `.../LibraryIncidentStoreTests.swift` | atomic write, tolerant decode, interrupted scan |
 | `.../LibraryStorePreserverTests.swift` | clone/copy, hash, sidecars, failure |
 | `.../LibraryDatabaseDoctorTests.swift` | corrupt fixtures, read-only, diagnosis |
@@ -3209,7 +3209,7 @@ Ten scenarios in Appendix G. They require a human, a copied real library, and pe
 
 - `./scripts/census.sh --unit-only` runs the full unit suite, including new Recovery tests.
 - Add `./scripts/verify-recovery-fixtures.sh` to generate corrupt fixtures and run only the Recovery suites; it is faster than the full census and catches fixture drift.
-- The GitHub `census` workflow already runs `AsterismaV2.0Tests`; no new job is required, but the test count and duration will grow. Keep the 45-minute timeout under review.
+- The GitHub `census` workflow already runs `AsterismaV2.5Tests`; no new job is required, but the test count and duration will grow. Keep the 45-minute timeout under review.
 - Do not add UI automation for recovery in the first tranche; the state machine and views are testable without a window, and the owner acceptance covers the human path.
 
 ### 20.10 Existing suites to extend
@@ -3705,7 +3705,7 @@ sqlite3 'file:/tmp/drill.sqlite3?mode=ro' 'PRAGMA quick_check;'
 Crash injection (Debug only):
 
 ```bash
-ASTERISMA_RECOVERY_CRASH_AT=afterRename open -a AsterismaV2.0
+ASTERISMA_RECOVERY_CRASH_AT=afterRename open -a AsterismaV2.5
 # relaunch; Recovery must reconcile, never show a half-swapped success
 ```
 
@@ -3730,14 +3730,14 @@ Run on a copy of the real library. Record the date, build, and result.
 
 | Reference | Why |
 |---|---|
-| `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` | Schema, WAL, foreign keys, current backup |
-| `AsterismaV2.0/Core/DataStore3.swift` | Load fail-closed, save queue, safety snapshot, backup schedule |
-| `AsterismaV2.0/Core/Sentinel/SentinelRepair.swift` | Row-level contract and executor boundary |
-| `AsterismaV2.0/Core/Sentinel/SentinelDataBridgeV2.swift` | Current bridge + second connection hazard |
-| `AsterismaV2.0/Core/Sentinel/SentinelRuntime.swift` | Cycle, published state, repair entry points |
-| `AsterismaV2.0/Core/Sentinel/SentinelJournal.swift` | Journal schema and checksum model |
-| `AsterismaV2.0/Core/Sentinel/SentinelProbesStorage.swift` | SQL/backup probes and their limits |
-| `AsterismaV2.0/Features/Sentinel/SentinelHealthCenterView.swift` | Current tab surface |
+| `AsterismaV2.5/Core/Storage/LibraryDatabase.swift` | Schema, WAL, foreign keys, current backup |
+| `AsterismaV2.5/Core/DataStore3.swift` | Load fail-closed, save queue, safety snapshot, backup schedule |
+| `AsterismaV2.5/Core/Sentinel/SentinelRepair.swift` | Row-level contract and executor boundary |
+| `AsterismaV2.5/Core/Sentinel/SentinelDataBridgeV2.swift` | Current bridge + second connection hazard |
+| `AsterismaV2.5/Core/Sentinel/SentinelRuntime.swift` | Cycle, published state, repair entry points |
+| `AsterismaV2.5/Core/Sentinel/SentinelJournal.swift` | Journal schema and checksum model |
+| `AsterismaV2.5/Core/Sentinel/SentinelProbesStorage.swift` | SQL/backup probes and their limits |
+| `AsterismaV2.5/Features/Sentinel/SentinelHealthCenterView.swift` | Current tab surface |
 | `docs/plans/sentinel/gates/SG7.md` | Open holds; do not claim them closed |
 | `docs/plans/sentinel/SENTINEL-ROADWORK.md` | Program targets and phase vocabulary |
 

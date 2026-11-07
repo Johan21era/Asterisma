@@ -6,43 +6,43 @@
       "id": "bundle-id",
       "question": "What bundle identifier does the main app target use?",
       "answer": "johan\\.Reading-Tracker",
-      "path": "AsterismaV2.0.xcodeproj/project.pbxproj"
+      "path": "AsterismaV2.5.xcodeproj/project.pbxproj"
     },
     {
       "id": "mirage-key",
       "question": "Which user-defaults key switches the Mirage feature off?",
       "answer": "\"mirage\\.enabled\"",
-      "path": "AsterismaV2.0/Features/Mirage/MirageSettings.swift"
+      "path": "AsterismaV2.5/Features/Mirage/MirageSettings.swift"
     },
     {
       "id": "sentinel-key",
       "question": "Which defaults key gates the Sentinel engine?",
       "answer": "\"sentinel\\.enabled\"",
-      "path": "AsterismaV2.0/Core/SentinelEngine.swift"
+      "path": "AsterismaV2.5/Core/SentinelEngine.swift"
     },
     {
       "id": "repair-key",
       "question": "Which defaults key allows Sentinel repairs?",
       "answer": "\"sentinel\\.allowRepair\"",
-      "path": "AsterismaV2.0/Core/SentinelEngine.swift"
+      "path": "AsterismaV2.5/Core/SentinelEngine.swift"
     },
     {
       "id": "interval-key",
       "question": "Which defaults key sets the Sentinel interval in minutes?",
       "answer": "\"sentinel\\.intervalMinutes\"",
-      "path": "AsterismaV2.0/Core/SentinelEngine.swift"
+      "path": "AsterismaV2.5/Core/SentinelEngine.swift"
     },
     {
       "id": "surface-probe",
       "question": "Which probe ID contract-checks every table in the surface manifest?",
       "answer": "SQL-016",
-      "path": "AsterismaV2.0/Core/Sentinel/SentinelProbesSurface.swift"
+      "path": "AsterismaV2.5/Core/Sentinel/SentinelProbesSurface.swift"
     },
     {
       "id": "owner-probe",
       "question": "Which probe ID requires every required surface to have a registered owner?",
       "answer": "SELF-011",
-      "path": "AsterismaV2.0/Core/Sentinel/SentinelProbesSurface.swift"
+      "path": "AsterismaV2.5/Core/Sentinel/SentinelProbesSurface.swift"
     },
     {
       "id": "surface-gate",
@@ -83,44 +83,44 @@
     {
       "id": "graph-nodes",
       "question": "How many nodes are in the full 3D graph view?",
-      "answer": "9,232",
+      "answer": "10,201",
       "path": "README.md"
     },
     {
       "id": "graph-edges",
       "question": "How many edges are in the full 3D graph view?",
-      "answer": "21,963",
+      "answer": "24,082",
       "path": "README.md"
     },
     {
       "id": "journal-mode",
       "question": "Which SQLite journal mode does the live library store use?",
       "answer": "journal_mode = WAL",
-      "path": "AsterismaV2.0/Core/Storage/LibraryDatabase.swift"
+      "path": "AsterismaV2.5/Core/Storage/LibraryDatabase.swift"
     },
     {
       "id": "pool-type",
       "question": "Which GRDB connection type backs the live library store?",
       "answer": "let pool: DatabasePool",
-      "path": "AsterismaV2.0/Core/Storage/LibraryDatabase.swift"
+      "path": "AsterismaV2.5/Core/Storage/LibraryDatabase.swift"
     },
     {
       "id": "rebuild-type",
       "question": "Which type carries the Phase 5 library rebuild result?",
       "answer": "LibraryRebuildResult",
-      "path": "AsterismaV2.0/Core/LibraryRecovery/LibraryLogicalRebuilder.swift"
+      "path": "AsterismaV2.5/Core/LibraryRecovery/LibraryLogicalRebuilder.swift"
     },
     {
       "id": "recovery-gate",
       "question": "Which enum defines the recovery gate's operational mode?",
       "answer": "LibraryOperationalMode",
-      "path": "AsterismaV2.0/Core/LibraryRecovery/LibraryRecoveryGate.swift"
+      "path": "AsterismaV2.5/Core/LibraryRecovery/LibraryRecoveryGate.swift"
     },
     {
       "id": "root-view",
       "question": "Which SwiftUI file declares the app's root content view?",
       "answer": "NewContentView",
-      "path": "AsterismaV2.0/App/NewContentView.swift"
+      "path": "AsterismaV2.5/App/NewContentView.swift"
     },
     {
       "id": "census-command",
@@ -144,13 +144,13 @@
       "id": "appearance-test",
       "question": "Which test file covers reader appearance settings?",
       "answer": "ReaderAppearanceTests",
-      "path": "AsterismaV2.0Tests/Reader/ReaderAppearanceTests.swift"
+      "path": "AsterismaV2.5Tests/Reader/ReaderAppearanceTests.swift"
     },
     {
       "id": "notification-key",
       "question": "Which defaults key records that Sentinel notification permission was requested?",
       "answer": "sentinel\\.notification\\.requested",
-      "path": "AsterismaV2.0/Core/Sentinel/SentinelNotification.swift"
+      "path": "AsterismaV2.5/Core/Sentinel/SentinelNotification.swift"
     },
     {
       "id": "ci-run-id",
@@ -168,7 +168,7 @@
       "id": "snapshot-counts",
       "question": "Which struct lists the library tables and their count key paths?",
       "answer": "LibraryTableCounts",
-      "path": "AsterismaV2.0/Core/Storage/LibrarySnapshot.swift"
+      "path": "AsterismaV2.5/Core/Storage/LibrarySnapshot.swift"
     },
     {
       "id": "graph-check-flag",
@@ -180,7 +180,7 @@
       "id": "data-root",
       "question": "Which file defines the app's data root directory name?",
       "answer": "dataDirectoryName = \"Asterisma\"",
-      "path": "AsterismaV2.0/Core/AppIdentity.swift"
+      "path": "AsterismaV2.5/Core/AppIdentity.swift"
     }
   ],
   "overview": [
@@ -194,7 +194,7 @@
       "id": "storage",
       "label": "SQLite via GRDB",
       "answer": "GRDB",
-      "canonical": ["README.md", "AsterismaV2.0/Core/Storage/LibraryDatabase.swift"]
+      "canonical": ["README.md", "AsterismaV2.5/Core/Storage/LibraryDatabase.swift"]
     },
     {
       "id": "sentinel",
@@ -224,7 +224,7 @@
       "id": "mirage",
       "label": "Mirage toggle",
       "answer": "mirage\\.enabled",
-      "canonical": ["README.md", "AsterismaV2.0/Features/Mirage/MirageSettings.swift"]
+      "canonical": ["README.md", "AsterismaV2.5/Features/Mirage/MirageSettings.swift"]
     },
     {
       "id": "recovery",
@@ -235,7 +235,7 @@
     {
       "id": "graph",
       "label": "Full 3D graph counts",
-      "answer": "9,232",
+      "answer": "10,201",
       "canonical": ["README.md"]
     },
     {

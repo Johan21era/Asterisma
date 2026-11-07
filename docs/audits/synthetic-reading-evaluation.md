@@ -13,7 +13,7 @@ Developer Console personas; those profiles remain a separate source of demo
 scenarios and were not evaluated in this batch.
 
 The Swift adapter in
-`AsterismaV2.0Tests/Engines/SyntheticEvaluationTests.swift` calls the actual
+`AsterismaV2.5Tests/Engines/SyntheticEvaluationTests.swift` calls the actual
 `EstimationEngine`. The Python harness calls `tools/cde/cde_personal.py` for
 its separate experimental CDE prediction. The CDE model is not integrated
 into the app. Prior history only is supplied; synthetic future active seconds
@@ -99,7 +99,7 @@ not the behavior from the developer: the generator and recipe-to-ID mapping
 are accessible. This is not a blinded independent assessment.
 
 The Swift adapter in
-`AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift` obtains the
+`AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift` obtains the
 production estimate and also computes experimental candidates. Predictions
 are produced in a batch; the stop rule applies to the subsequent ordered
 review, not to the calculation of predictions. The grading tool calculates

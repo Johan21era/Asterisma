@@ -27,9 +27,9 @@ fields are optional and absent keys decode as `nil`.
 
 ## Allowed paths
 
-- `AsterismaV2.0/Core/Book2.swift`
-- `AsterismaV2.0/Core/Storage/LibraryDatabase.swift`
-- `AsterismaV2.0Tests/Library/AnnotationSchemaTests.swift` (new file)
+- `AsterismaV2.5/Core/Book2.swift`
+- `AsterismaV2.5/Core/Storage/LibraryDatabase.swift`
+- `AsterismaV2.5Tests/Library/AnnotationSchemaTests.swift` (new file)
 - `.agent-handoff/WP-1.1.md` in the worktree only
 
 Do not touch `BookDetailsView.swift`, the readers, `DataStore3.swift`,
@@ -48,7 +48,7 @@ worktree handoff.
 
 ## Required tests
 
-Create `AsterismaV2.0Tests/Library/AnnotationSchemaTests.swift` with:
+Create `AsterismaV2.5Tests/Library/AnnotationSchemaTests.swift` with:
 
 1. A legacy `BookNote` JSON payload (only old keys) decodes with all new fields
    `nil`.
@@ -63,7 +63,7 @@ Use temporary directories and delete them after each test. Keep the suite
 
 ## Acceptance
 
-- `xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` exits 0.
+- `xcodebuild -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` exits 0.
 - The focused annotation tests pass.
 - `git diff --check` exits 0.
 - No file outside the allowed paths changes.
@@ -85,14 +85,14 @@ worktree diff directly and reran every check in the main tree after applying it.
 
 | Check | Command | Result |
 |---|---|---|
-| Build | `xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` | exit 0, `** BUILD SUCCEEDED **` |
+| Build | `xcodebuild -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` | exit 0, `** BUILD SUCCEEDED **` |
 | Focused suites | `xcodebuild test` limited to `AnnotationSchemaTests`, `SQLiteFoundationTests`, `SQLiteDataStoreTests`, `SQLiteLoadIntegrityTests`, `SchemaEvolutionTests`, `LibraryRebuildAndRowRepairTests` | exit 0, **26 tests in 6 suites passed** |
 | Whitespace | `git diff --check` | exit 0 |
 | Migration DDL | `sqlite3` on a populated v1 `notes` table followed by the three `ALTER TABLE notes ADD COLUMN` statements | exit 0; the existing row survived with `selected_text`, `color`, and `anchor_json` `NULL` |
 
 Three files changed, all inside the allowed paths. `project.pbxproj` was not
 touched: the test target uses Xcode file-system-synchronized groups, so a new
-file under `AsterismaV2.0Tests/Library/` joins the target automatically.
+file under `AsterismaV2.5Tests/Library/` joins the target automatically.
 
 Deletion stays hard for P1.1 as specified. The repair path is safe: 
 `LibraryRowRepairService` exports and re-inserts `SELECT rowid, *` rows

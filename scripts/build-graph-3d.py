@@ -171,7 +171,7 @@ def full_view(
 
     payload = {
         "mode": "full",
-        "title": "Graphify 3D — AsterismaV2.0 full view",
+        "title": "Graphify 3D — AsterismaV2.5 full view",
         "subtitle": (
             f"{len(view_nodes):,} nodes · {len(view_links):,} edges · "
             f"{len(communities):,} communities · hover a node to inspect"

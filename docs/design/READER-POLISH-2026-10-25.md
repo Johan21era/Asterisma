@@ -176,7 +176,7 @@ Sources:
 
 - Debug build: `** BUILD SUCCEEDED **`, exit 0.
 - Focused `ReaderAppearanceTests`: **9 tests in 1 suite passed**, exit 0;
-  xcresult `Test-AsterismaV2.0-2026.10.29_01-29-24--0400.xcresult`. The suite
+  xcresult `Test-AsterismaV2.5-2026.10.29_01-29-24--0400.xcresult`. The suite
   now covers PDF fit/layout mapping, page-gap margins, RTL presentation, and
   brightness clamping in addition to the Phase 1 pins.
 - Full unit census at the Stage AA boundary: **441 tests / 671 runs / 432

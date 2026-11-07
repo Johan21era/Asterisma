@@ -197,14 +197,14 @@ RT feature is **wired, cached, tested, and blocked** — not live.
 Focused run on 2026-11-07:
 
 ```text
-xcodebuild test -project AsterismaV2.0.xcodeproj \
-  -scheme AsterismaV2.0 -destination 'platform=macOS' \
+xcodebuild test -project AsterismaV2.5.xcodeproj \
+  -scheme AsterismaV2.5 -destination 'platform=macOS' \
   CODE_SIGNING_ALLOWED=NO \
-  -only-testing:AsterismaV2.0Tests/MirageGraphTests \
-  -only-testing:AsterismaV2.0Tests/MirageCursorContractTests \
-  -only-testing:AsterismaV2.0Tests/MirageSpoilerProbeTests \
-  -only-testing:AsterismaV2.0Tests/MirageProtocolConformanceTests \
-  -only-testing:AsterismaV2.0Tests/MiragePageTurnNonTriggerTests
+  -only-testing:AsterismaV2.5Tests/MirageGraphTests \
+  -only-testing:AsterismaV2.5Tests/MirageCursorContractTests \
+  -only-testing:AsterismaV2.5Tests/MirageSpoilerProbeTests \
+  -only-testing:AsterismaV2.5Tests/MirageProtocolConformanceTests \
+  -only-testing:AsterismaV2.5Tests/MiragePageTurnNonTriggerTests
 ```
 
 Result: **41 tests in 5 suites passed, exit 0**. Full census: **610 tests in 115 suites passed**
@@ -261,9 +261,9 @@ not called. No ledger data is changed by rollback.
 - Base contract: `docs/integration/adr/ADR-7-spoiler-cursor-contract.md`.
 - Engine deep dive and performance baseline:
   `docs/integration/MIRAGE-DEEP-DIVE-2026-10-28.md`.
-- RT controller: `AsterismaV2.0/Features/Mirage/MirageGraphController.swift`.
-- Boundary model: `AsterismaV2.0/Features/Mirage/MirageChapterBoundaries.swift`.
-- Snapshot: `AsterismaV2.0/Features/Mirage/MirageGraphSnapshot.swift`.
-- Cache: `AsterismaV2.0/Features/Mirage/MirageGraphCache.swift`.
-- Sheet and renderer: `AsterismaV2.0/Features/Mirage/MirageGraphView.swift`.
-- Tests: `AsterismaV2.0Tests/Mirage/MirageGraphTests.swift`.
+- RT controller: `AsterismaV2.5/Features/Mirage/MirageGraphController.swift`.
+- Boundary model: `AsterismaV2.5/Features/Mirage/MirageChapterBoundaries.swift`.
+- Snapshot: `AsterismaV2.5/Features/Mirage/MirageGraphSnapshot.swift`.
+- Cache: `AsterismaV2.5/Features/Mirage/MirageGraphCache.swift`.
+- Sheet and renderer: `AsterismaV2.5/Features/Mirage/MirageGraphView.swift`.
+- Tests: `AsterismaV2.5Tests/Mirage/MirageGraphTests.swift`.

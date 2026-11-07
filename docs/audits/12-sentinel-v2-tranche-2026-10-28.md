@@ -69,8 +69,8 @@ These are recorded with rollback steps in the [gate index](../plans/sentinel/gat
 
 - Gate receipts: [docs/plans/sentinel/gates/](../plans/sentinel/gates/README.md)
 - Program plan: [SENTINEL-ROADWORK.md](../plans/sentinel/SENTINEL-ROADWORK.md)
-- Runtime: [SentinelRuntime.swift](../../AsterismaV2.0/Core/Sentinel/SentinelRuntime.swift)
-- Registry: [SentinelProbeCatalog.swift](../../AsterismaV2.0/Core/Sentinel/SentinelProbeCatalog.swift)
-- Repairs: [SentinelRepairCatalog.swift](../../AsterismaV2.0/Core/Sentinel/SentinelRepairCatalog.swift)
-- Product surface: [SentinelHealthCenterView.swift](../../AsterismaV2.0/Features/Sentinel/SentinelHealthCenterView.swift)
-- Tests: [SentinelCatalogTests.swift](../../AsterismaV2.0Tests/Core/SentinelCatalogTests.swift), [SentinelLaunchAndRepairTests.swift](../../AsterismaV2.0Tests/Core/SentinelLaunchAndRepairTests.swift)
+- Runtime: [SentinelRuntime.swift](../../AsterismaV2.5/Core/Sentinel/SentinelRuntime.swift)
+- Registry: [SentinelProbeCatalog.swift](../../AsterismaV2.5/Core/Sentinel/SentinelProbeCatalog.swift)
+- Repairs: [SentinelRepairCatalog.swift](../../AsterismaV2.5/Core/Sentinel/SentinelRepairCatalog.swift)
+- Product surface: [SentinelHealthCenterView.swift](../../AsterismaV2.5/Features/Sentinel/SentinelHealthCenterView.swift)
+- Tests: [SentinelCatalogTests.swift](../../AsterismaV2.5Tests/Core/SentinelCatalogTests.swift), [SentinelLaunchAndRepairTests.swift](../../AsterismaV2.5Tests/Core/SentinelLaunchAndRepairTests.swift)

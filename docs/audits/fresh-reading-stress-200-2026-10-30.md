@@ -8,10 +8,10 @@ This report supplements the [100-round report](fresh-reading-stress-100-2026-10-
 
 The owner asked for every audited defect to be fixed, then for 200 fresh rounds to show what remained. Four audited changes were already present when this run began and were unchanged during it; the first two are production code, the last two are the candidate adapter’s own rules:
 
-1. **Per-book normalization before pooling.** [`crossBookReadingSpeed`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L83) computes each book’s robust mean first, then combines the book paces with [`consensusSeconds`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L459). Two books that disagree by more than 3× use the faster one; three or more use the median.
-2. **Contamination-resistant ceiling.** [`robustMeanSeconds`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L424) retains values up to [`max(median, lowerQuartile × 3)`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L444), instead of anchoring the ceiling to a median that moves with the contamination.
-3. **Three-sample minimum for the candidate’s recent pace.** [`minimumRecentTimings`](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L71) is 3; two timings are no longer treated as a pace. The production estimator’s own five-timing threshold is unchanged.
-4. **Two-sided plausibility guard.** The candidate falls back when the recent/prior ratio is outside [0.35–3.0](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L73), not only when the target is implausibly fast.
+1. **Per-book normalization before pooling.** [`crossBookReadingSpeed`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L83) computes each book’s robust mean first, then combines the book paces with [`consensusSeconds`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L459). Two books that disagree by more than 3× use the faster one; three or more use the median.
+2. **Contamination-resistant ceiling.** [`robustMeanSeconds`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L424) retains values up to [`max(median, lowerQuartile × 3)`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L444), instead of anchoring the ceiling to a median that moves with the contamination.
+3. **Three-sample minimum for the candidate’s recent pace.** [`minimumRecentTimings`](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L71) is 3; two timings are no longer treated as a pace. The production estimator’s own five-timing threshold is unchanged.
+4. **Two-sided plausibility guard.** The candidate falls back when the recent/prior ratio is outside [0.35–3.0](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L73), not only when the target is implausibly fast.
 
 The run contains 40 batches of five rounds, 9,914 main cases per round, plus 200 demo rounds of 16 personas: **1,982,800 main predictions and 3,200 demo predictions**, 1,986,000 in total. These are case predictions, not independent people or independent readers. Inputs, truth, Swift predictions, grades, result bundles and logs were recorded in [the evidence archive](evidence/fresh-stress-evidence-archive-2026-10-31.md) before the raw tree was deleted on 2026-10-31.
 
@@ -344,8 +344,8 @@ Each row contains the 9,914 main cases; demo cases are summarized separately abo
 - [fresh_100.py](../../tools/cde/fresh_100.py) — SHA-256 `ebe1754ab8a9803386bf570b2ff5477dcf491465e5e9e4a1025b31c6516ec4cf`.
 - [analyze_fresh_200.py](../../tools/cde/analyze_fresh_200.py) — SHA-256 `cdf8ebc6220a172c7b02f1eab2adc47fcb30a228b6cea4918448e2a3a4888fc4`.
 - [write_fresh_200_report.py](../../tools/cde/write_fresh_200_report.py) — SHA-256 `3e2c7b79d433bed6b6837ad05f93746cd5d17b5417fa9d9952ed18c20d869798`.
-- [AnalyticsEngine.swift](../../AsterismaV2.0/Engines/AnalyticsEngine.swift) — SHA-256 `446659895099d8ca658eb7a92124d0d7551b669e41cb46b6f4708d8597d47c50`.
-- [AdversarialEvaluationTests.swift](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift) — SHA-256 `7406459468318c73c7b9bd138076541d8145d190c020bf807deda3fa79ad423f`.
+- [AnalyticsEngine.swift](../../AsterismaV2.5/Engines/AnalyticsEngine.swift) — SHA-256 `446659895099d8ca658eb7a92124d0d7551b669e41cb46b6f4708d8597d47c50`.
+- [AdversarialEvaluationTests.swift](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift) — SHA-256 `7406459468318c73c7b9bd138076541d8145d190c020bf807deda3fa79ad423f`.
 
 The archive records the SHA-256 of all 40 graded batch files and of the six source files; the 422,522,088-byte demo attachment and the rest of the tree were deleted on 2026-10-31.
 

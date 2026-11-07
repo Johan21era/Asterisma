@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the interim AsterismaV2.0 app icon.
+"""Generate the interim AsterismaV2.5 app icon.
 
 A quiet night-sky field, an open book, a gold bookmark, and a small
 constellation. Drawn at 4x and downsampled for clean macOS icon edges.
@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageFilter
 MASTER = 1024
 SS = 4  # supersample
 S = MASTER * SS
-OUT = os.path.join(os.path.dirname(__file__), "..", "AsterismaV2.0",
+OUT = os.path.join(os.path.dirname(__file__), "..", "AsterismaV2.5",
                    "Assets.xcassets", "AppIcon.appiconset")
 
 

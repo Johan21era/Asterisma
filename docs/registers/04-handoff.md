@@ -4,7 +4,7 @@
 
 This document answers the seven questions every close-out should answer, in plain language. It is written so that anyone — whether or not they have ever written code — can pick up the project and know exactly where things stand.
 
-**Refreshed 2026-11-07: the V1.0 release is merged, reorganized, and CI-green, and it carries the Sentinel v2 first tranche; `AsterismaV2.0` is the current working identity, not a shipped release.** The V2.0 tree now also carries the Home/Library shell overhaul, the reader customization pass, the offline contract pass, the ADR-13 Mirage warm-engine/library-scale overhaul, the environment/Sentinel/console navigation overhaul, the E8 estimate-facade + behavior-SQLite tranche, and the 2.5 comic-container / 2.5.1 reader-experience / 2.6 comic-metadata-and-Mirage passes, and the 2.7 Mirage-analysis-report pass. The earlier tranches are committed and pushed; owner visual acceptance remains pending. The current unit census is **610 tests in 115 suites passed** (console) / **611 passed / 10 skipped / 0 failed / 719 runs** (`./scripts/census.sh --unit-only`, exit 0; 2026-11-07), after the reading-analytics recalibration, the 200-round stress evaluation, the E8 estimate-facade + behavior-SQLite tranche, the 2.5–2.7 passes, and the ADR-7 amendment-1 graph. The hand-graded real-library pass that followed was **declared void on 2026-10-29** — see the session close at the end of this file and `docs/audits/new-era-testing.md` §31. The app is usable now. The remaining work is owner acceptance of the shell/reader/offline/Mirage changes, distribution hardening, and the Sentinel holds recorded in SG7 (manual acceptance, v1 removal, localization, menu bar, accessibility, 10× benchmark).
+**Refreshed 2026-11-07: the V1.0 release is merged, reorganized, and CI-green, and it carries the Sentinel v2 first tranche; `AsterismaV2.5` is the current working identity, not a shipped release.** The V2.5 tree now also carries the Home/Library shell overhaul, the reader customization pass, the offline contract pass, the ADR-13 Mirage warm-engine/library-scale overhaul, the environment/Sentinel/console navigation overhaul, the E8 estimate-facade + behavior-SQLite tranche, and the 2.5 comic-container / 2.5.1 reader-experience / 2.6 comic-metadata-and-Mirage passes, and the 2.7 Mirage-analysis-report pass. The earlier tranches are committed and pushed; owner visual acceptance remains pending. The current unit census is **610 tests in 115 suites passed** (console) / **611 passed / 10 skipped / 0 failed / 719 runs** (`./scripts/census.sh --unit-only`, exit 0; 2026-11-07), after the reading-analytics recalibration, the 200-round stress evaluation, the E8 estimate-facade + behavior-SQLite tranche, the 2.5–2.7 passes, and the ADR-7 amendment-1 graph. The hand-graded real-library pass that followed was **declared void on 2026-10-29** — see the session close at the end of this file and `docs/audits/new-era-testing.md` §31. The app is usable now. The remaining work is owner acceptance of the shell/reader/offline/Mirage changes, distribution hardening, and the Sentinel holds recorded in SG7 (manual acceptance, v1 removal, localization, menu bar, accessibility, 10× benchmark).
 
 ---
 
@@ -61,7 +61,7 @@ Then, the **Library Recovery program** (2026-10-28): preservation-first incident
 
 ## Overarching goal
 
-An app that can be trusted with years of reading history, with a change process that is receipt-driven end to end. AsterismaV2.0 adds a clean product identity and a faster SQLite-backed store without trading away the user’s existing library.
+An app that can be trusted with years of reading history, with a change process that is receipt-driven end to end. AsterismaV2.5 adds a clean product identity and a faster SQLite-backed store without trading away the user’s existing library.
 
 ---
 
@@ -277,12 +277,12 @@ index anchors current; refresh the graph again after the next batch of doc edits
 if the node counts matter for a receipt. A new full sweep belongs with the next
 release, not an ordinary edit.
 
-## Session close — 2026-10-29 (AsterismaV2.0 rename)
+## Session close — 2026-10-29 (AsterismaV2.5 rename)
 
 **Delivered:** the product, Xcode project, app target, scheme, test targets,
 Swift module, source/test/UI folders, Info.plist, entitlements, release script,
-CI workflow, and current documentation now use **AsterismaV2.0** /
-**AsterismaV2_0**. `MARKETING_VERSION` is **2.0** and
+CI workflow, and current documentation now use **AsterismaV2.5** /
+**AsterismaV2_5**. `MARKETING_VERSION` is **2.0** and
 `CURRENT_PROJECT_VERSION` is **2**. The bundle identifier
 `johan.Reading-Tracker` and the `Application Support/Asterisma/` data root were
 deliberately left unchanged so the existing sandbox container and library
@@ -290,9 +290,9 @@ survive the rename. The V1.0 package names, tags, and SHAs in dated receipts
 were preserved as history.
 
 **Verified locally:** `xcodebuild build` succeeded for both Debug and Release
-under `AsterismaV2.0.xcodeproj` / scheme `AsterismaV2.0`; the unit census is
+under `AsterismaV2.5.xcodeproj` / scheme `AsterismaV2.5`; the unit census is
 **432 tests / 671 runs / 423 passed / 9 skipped / 0 failed** with
-`environmentDescription` `AsterismaV2.0 · Built with macOS 26.6.1`; surface
+`environmentDescription` `AsterismaV2.5 · Built with macOS 26.6.1`; surface
 manifest OK; `comprehension-bench.py --validate-only` OK (30 facts, 12 overview
 facts); `audit-markdown.py` OK on all 83 Markdown files; `verify-test-isolation.sh`
 reports the real app-support data byte-identical.
@@ -330,7 +330,7 @@ kept those three in the top three in 100% of 20,000 draws. The spatial explorer
 scored high on leverage only because deleting it is cheap; its low consistency
 score is why it was retired rather than extended.
 
-**Verified locally:** `xcodebuild build` (Debug, scheme `AsterismaV2.0`) →
+**Verified locally:** `xcodebuild build` (Debug, scheme `AsterismaV2.5`) →
 **BUILD SUCCEEDED**, exit 0. `./scripts/census.sh --unit-only` → **432 tests /
 671 runs / 423 passed / 9 skipped / 0 failed**, exit 0. App source is **169
 Swift files / 63,448 raw lines / 56,051 non-blank**; the test folder remains 66
@@ -362,7 +362,7 @@ shelf closes the loop after a book is completed; the Library dock clamps to
 236–292 pt and stacks its actions when compact; ⌘F focuses Library search.
 Full record: `docs/design/UI-UX-OVERHAUL-2026-10-29.md` §7.
 
-**Verified locally:** `xcodebuild build` (Debug, scheme `AsterismaV2.0`) →
+**Verified locally:** `xcodebuild build` (Debug, scheme `AsterismaV2.5`) →
 **BUILD SUCCEEDED**, exit 0. `./scripts/census.sh --unit-only` → **437 tests /
 671 runs / 428 passed / 9 skipped / 0 failed**, exit 0, xcresult
 `rt-census-20261029-005620.xcresult`. App source is **170 Swift files / 64,084
@@ -401,7 +401,7 @@ gap, system/paper/slate mat colors, and the same dimmer. Full record:
 
 **Verified locally:** Debug build `** BUILD SUCCEEDED **`, exit 0. Focused
 `ReaderAppearanceTests` → **9 tests in 1 suite passed**, exit 0, xcresult
-`Test-AsterismaV2.0-2026.10.29_01-29-24--0400.xcresult`. Full unit census →
+`Test-AsterismaV2.5-2026.10.29_01-29-24--0400.xcresult`. Full unit census →
 **441 tests / 671 runs / 432 passed / 9 skipped / 0 failed**, exit 0, xcresult
 `rt-census-20261029-012648.xcresult`. A Chromium harness at 1280×720 rendered
 **23 paged pages**, switched to **21 scrolling viewport-pages**, landed at
@@ -439,7 +439,7 @@ and test receipt: `docs/registers/03-fix-log.md` Stage AB.
 **Verified locally:** Debug build `** BUILD SUCCEEDED **`, exit 0. Focused
 `DiscoveryOfflineTests` + `OpenMeteoProviderTests` → **11 tests in 2 suites
 passed**, 0 failed, 0 skipped, exit 0, xcresult
-`Test-AsterismaV2.0-2026.10.29_01-48-57--0400.xcresult`. Unit census → **447
+`Test-AsterismaV2.5-2026.10.29_01-48-57--0400.xcresult`. Unit census → **447
 tests / 671 runs / 438 passed / 9 skipped / 0 failed**, exit 0, xcresult
 `rt-census-20261029-020548.xcresult`. Full UI-inclusive census → **450 tests /
 673 runs / 441 passed / 9 skipped / 0 failed**, exit 0, xcresult
@@ -997,6 +997,40 @@ probe produced **90 distinct errors across 26 app files**
 **3.12.7** (latest 3.12 patch 3.12.16), pinned by the engine manifest; Rust
 1.98.1 is not an Asterisma build input; there is no Node dependency.
 
-**Limits.** The CI runner change has not been exercised on GitHub — no workflow
-run exists for it. The graph page was not opened in a browser. Nothing is
-committed or pushed.
+**Limits.** The CI runner change is exercised by run `42358111465`, which
+concluded **success** on the `xcode-27` image. Stage AZ was committed and pushed
+as `244eea3`. The graph page was not opened in a browser.
+
+
+---
+
+## Session close — 2026-11-07 — AsterismaV2.5 rename and closeout
+
+**Landed.** The identity is now **AsterismaV2.5**: project, app target and
+scheme `AsterismaV2.5`, test targets `AsterismaV2.5Tests` /
+`AsterismaV2.5UITests`, Swift module `AsterismaV2_5`, source folders, plist and
+entitlements renamed, marketing version **2.5**. Bundle identifier
+`johan.Reading-Tracker` and data root `Application Support/Asterisma/` are
+unchanged so existing libraries survive. The frozen evidence archive keeps its
+`AsterismaV2.0` name.
+
+**Verified.** `./scripts/census.sh --unit-only` exited **0** under the renamed
+scheme — **610 tests in 115 suites passed**, **611 passed / 10 skipped / 0
+failed / 621 total**. Surface-freshness, comprehension-link, Markdown-audit, and
+whitespace gates all exited 0. The pushed pre-rename commit's CI run
+`42358111465` concluded **success** on the `xcode-27` image, so the runner move
+is a real receipt, not a config claim.
+
+**Graph.** `graphify update . --force` exited **0** and rebuilt **10,201 nodes /
+24,082 edges / 499 communities**; the full-node 3D page is **10,084,631 B
+(9.62 MiB)** and `--check` exited 0. `graph.html` was **not** regenerated:
+10,201 nodes exceed graphify's 5,000-node viz limit, so the tracked aggregated
+2D export is stale.
+
+**Junk.** Removed **10** `.DS_Store` files (100 KB total). No build output or
+`.xcresult` was present inside the repository. The 112 MB evidence archive
+remains untracked, and `.mirage-runtime/` was not touched.
+
+**Limits.** No app launch and no visual acceptance for the rename. The 3D page
+was not opened in a browser. The rename is not committed; commit and push need
+the owner's separate approvals.

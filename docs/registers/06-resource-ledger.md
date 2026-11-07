@@ -99,7 +99,7 @@ model's own 5 tests passed against the dead code, which is why the packet's
 test list was insufficient.
 
 **False pass caught.** A first verification run used
-`-only-testing:AsterismaV2.0Tests/PDFSelectionTests`; no such type exists, so
+`-only-testing:AsterismaV2.5Tests/PDFSelectionTests`; no such type exists, so
 only the nine appearance tests ran and `TEST SUCCEEDED` was reported. Buffy
 reran with `PDFSelectionGeometryTests` and got the five PDF tests.
 
@@ -187,6 +187,6 @@ run and no annotation UI automation exist.
 | Check | Result |
 |---|---|
 | `xcodebuild ... CODE_SIGNING_ALLOWED=NO build` | exit 0; `** BUILD SUCCEEDED **` |
-| App bundle privacy manifest | `AsterismaV2.0.app/Contents/Resources/PrivacyInfo.xcprivacy` present and readable |
+| App bundle privacy manifest | `AsterismaV2.5.app/Contents/Resources/PrivacyInfo.xcprivacy` present and readable |
 | Built usage strings | `NSAppleEventsUsageDescription` and `NSLocationWhenInUseUsageDescription` present |
 | Unit census | exit 0; 518 tests / 509 passed / 9 skipped / 0 failed / 719 runs |

@@ -113,7 +113,7 @@ def main():
                     'candidate_spikes':ds,'attachment':str((attach/names[0]).relative_to(ROOT)),
                     'attachment_sha256':sha(attach/names[0])},
             'weight':WEIGHT,
-            'source_sha256':{str(p.relative_to(ROOT)):sha(p) for p in [ROOT/'tools/cde/fresh_100.py',ROOT/'tools/cde/review_fresh_100.py',ROOT/'AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift',ROOT/'AsterismaV2.0Tests/Engines/FreshStressBundleTests.swift']}}
+            'source_sha256':{str(p.relative_to(ROOT)):sha(p) for p in [ROOT/'tools/cde/fresh_100.py',ROOT/'tools/cde/review_fresh_100.py',ROOT/'AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift',ROOT/'AsterismaV2.5Tests/Engines/FreshStressBundleTests.swift']}}
     output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
     print('verified 100 rounds, 991400 synthetic predictions and grades, and 1600 demo predictions')
     print('overall',result['overall'])

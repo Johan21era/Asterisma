@@ -166,10 +166,10 @@ def analyze():
                'selected_by_group': {g: stats([(r['selected_prediction'],r['actual_seconds']) for r in details if r['group']==g])
                                      for g in sorted({r['group'] for r in details})},
                'source_hashes': {name: digest(ROOT/name) for name in [
-                   'AsterismaV2.0/Engines/EstimationEngine.swift',
-                   'AsterismaV2.0/Engines/AnalyticsEngine.swift',
-                   'AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift',
-                   'AsterismaV2.0Tests/Engines/FinalStressDemoSnapshotTests.swift',
+                   'AsterismaV2.5/Engines/EstimationEngine.swift',
+                   'AsterismaV2.5/Engines/AnalyticsEngine.swift',
+                   'AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift',
+                   'AsterismaV2.5Tests/Engines/FinalStressDemoSnapshotTests.swift',
                    'tools/cde/final_stress.py']},
                'input_sha256': digest(OUT / 'app-input.json'),
                'truth_sha256': digest(OUT / 'truth.json'),

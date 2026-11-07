@@ -22,11 +22,11 @@ green. No live reader run exists; that limit is unchanged by this work.
 
 ## Fixes in this commit
 
-- `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` — `INSERT OR REPLACE` for
+- `AsterismaV2.5/Core/Storage/LibraryDatabase.swift` — `INSERT OR REPLACE` for
   notes in both paths, plus per-book note dedupe before the payload is encoded.
-- `AsterismaV2.0/Features/Library/BookDetailsView.swift` — the editorial page
+- `AsterismaV2.5/Features/Library/BookDetailsView.swift` — the editorial page
   field no longer overwrites an anchored note's `pageNumber`.
-- `AsterismaV2.0Tests/Library/AnnotationSchemaTests.swift` — one new test,
+- `AsterismaV2.5Tests/Library/AnnotationSchemaTests.swift` — one new test,
   `duplicateNoteIDDoesNotAbortSave`.
 
 ## Tests run
@@ -35,8 +35,8 @@ green. No live reader run exists; that limit is unchanged by this work.
 |---|---|---|
 | Full scheme, unit + UI | `./scripts/census.sh` | exit 0, **Passed**; 561 tests, 552 passed, 9 skipped, 0 failed, 721 runs; `rt-census-20261107-005854.xcresult` |
 | Unit-only census (pre-fix boundary) | `./scripts/census.sh --unit-only` | exit 0; 557 tests, 548 passed, 9 skipped, 0 failed; `rt-census-20261107-002415.xcresult` |
-| Stress bundle alone | "xcodebuild test -only-testing:AsterismaV2.0Tests/FreshStressBundleTests" | exit 0; 2 passed; `testFreshDemoRounds` 137.749 s |
-| Annotation schema | "xcodebuild test -only-testing:AsterismaV2.0Tests/AnnotationSchemaTests" | exit 0; **6 tests** passed |
+| Stress bundle alone | "xcodebuild test -only-testing:AsterismaV2.5Tests/FreshStressBundleTests" | exit 0; 2 passed; `testFreshDemoRounds` 137.749 s |
+| Annotation schema | "xcodebuild test -only-testing:AsterismaV2.5Tests/AnnotationSchemaTests" | exit 0; **6 tests** passed |
 | Analyzer | `xcodebuild analyze` | exit 0; 0 errors; 1 tooling warning |
 | Test isolation | `./scripts/verify-test-isolation.sh` | exit 0; real store byte-identical |
 | Whitespace | `git diff --check` | exit 0 |

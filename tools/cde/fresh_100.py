@@ -14,7 +14,7 @@ import synthetic_eval
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(os.environ.get('FRESH_OUT', ROOT / 'tools/cde/fresh-100-20261030'))
-RESOURCE = ROOT / 'AsterismaV2.0Tests/Engines/FreshStressInput.json'
+RESOURCE = ROOT / 'AsterismaV2.5Tests/Engines/FreshStressInput.json'
 
 
 def save(path, obj):

@@ -8,7 +8,7 @@
 - **Date:** 2026-10-29
 - **Status:** Phase Zero complete — investigation and baseline only; no production estimator was rewritten.
 - **Baseline commit:** `cb92f08` (`main`), plus the uncommitted reader-recovery changes already present in the working tree. `AnalyticsEngine`, `EstimationEngine`, `DemoDataService`, and `LibraryDatabase` are unchanged from `HEAD`.
-- **Scope:** `AsterismaV2.0` reader profiling, synthetic demo profiles, page-timing analytics, and `EstimationEngine` output.
+- **Scope:** `AsterismaV2.5` reader profiling, synthetic demo profiles, page-timing analytics, and `EstimationEngine` output.
 - **Roles:** this pass filled every workstream in the supplied plan (audit, synthetic-profile QA, content analysis, measurement, research design, baseline evaluation, production readiness). The owner remains the acceptance authority.
 
 ---
@@ -42,7 +42,7 @@ No Class B (data-delivery) failure was observed in the demo path. The engine rea
 
 ### 2.1 Probe
 
-`AsterismaV2.0Tests/Engines/ReadingAnalyticsPhaseZeroTests.swift` generates one library per representative persona with a fixed reference date (`2026-10-29T12:00:00Z`), selects a book, and records:
+`AsterismaV2.5Tests/Engines/ReadingAnalyticsPhaseZeroTests.swift` generates one library per representative persona with a fixed reference date (`2026-10-29T12:00:00Z`), selects a book, and records:
 
 - raw page-timing count, min, median, max, and how many survive the legacy window;
 - `AnalyticsEngine.readingSpeed`, `adjustedReadingSpeed`, `effectiveReadingSpeed`, `crossBookReadingSpeed`, `genreAdjustedReadingSpeed`;
@@ -56,9 +56,9 @@ The test makes **no assertion that the current values are correct**. It attaches
 ### 2.2 Command and result
 
 ```bash
-xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 \
+xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 \
   -destination 'platform=macOS' \
-  -only-testing:AsterismaV2.0Tests/ReadingAnalyticsPhaseZeroProbeTests \
+  -only-testing:AsterismaV2.5Tests/ReadingAnalyticsPhaseZeroProbeTests \
   -resultBundlePath /tmp/phase-zero.xcresult
 ```
 
@@ -111,15 +111,15 @@ Book.sessions[].pageTimes[].duration
 
 | Stage | Source | What it actually uses |
 |---|---|---|
-| Raw timing | `AsterismaV2.0/Core/DataStore3.swift#L789-L807` | Wall-clock `Date()` between page turns; previous timing closed at the new turn. |
-| Session close | `AsterismaV2.0/Core/DataStore3.swift#L850-L872` | `endTime = Date()` on normal close; crash recovery clamps to last activity + 300 s. |
-| Per-book speed | `AsterismaV2.0/Engines/AnalyticsEngine.swift#L33-L54` | Page timings only; `0.5 < duration < 60`; median, then `median/2`–`2×median` and `≥ 5 s`; arithmetic mean. |
-| Difficulty | `AsterismaV2.0/Engines/AnalyticsEngine.swift#L56-L60` | Multiplies the per-book speed by `ReadingDifficultyProfile.difficultyMultiplier`; missing profile = 1.0. |
-| Genre profile | `AsterismaV2.0/Engines/AnalyticsEngine.swift#L823-L844` | Session `duration / pagesRead`, not page timings. |
-| Genre adjustment | `AsterismaV2.0/Engines/AnalyticsEngine.swift#L847-L855` | `base × (genreAverageSecondsPerPage / 120)`. |
-| Cross-book speed | `AsterismaV2.0/Engines/AnalyticsEngine.swift#L81-L98` | Same 60-second window over every book. |
-| Integrated model | `AsterismaV2.0/Engines/EstimationEngine.swift#L89-L155`, `#L171-L214` | 40% base, 25% genre, 20% trend, 15% cross; remaining pages = `totalPages - 1 - currentPage`. |
-| Output | `AsterismaV2.0/Engines/EstimationEngine.swift#L65-L82` | No status, no fallback reason, no model version, no uncertainty. |
+| Raw timing | `AsterismaV2.5/Core/DataStore3.swift#L789-L807` | Wall-clock `Date()` between page turns; previous timing closed at the new turn. |
+| Session close | `AsterismaV2.5/Core/DataStore3.swift#L850-L872` | `endTime = Date()` on normal close; crash recovery clamps to last activity + 300 s. |
+| Per-book speed | `AsterismaV2.5/Engines/AnalyticsEngine.swift#L33-L54` | Page timings only; `0.5 < duration < 60`; median, then `median/2`–`2×median` and `≥ 5 s`; arithmetic mean. |
+| Difficulty | `AsterismaV2.5/Engines/AnalyticsEngine.swift#L56-L60` | Multiplies the per-book speed by `ReadingDifficultyProfile.difficultyMultiplier`; missing profile = 1.0. |
+| Genre profile | `AsterismaV2.5/Engines/AnalyticsEngine.swift#L823-L844` | Session `duration / pagesRead`, not page timings. |
+| Genre adjustment | `AsterismaV2.5/Engines/AnalyticsEngine.swift#L847-L855` | `base × (genreAverageSecondsPerPage / 120)`. |
+| Cross-book speed | `AsterismaV2.5/Engines/AnalyticsEngine.swift#L81-L98` | Same 60-second window over every book. |
+| Integrated model | `AsterismaV2.5/Engines/EstimationEngine.swift#L89-L155`, `#L171-L214` | 40% base, 25% genre, 20% trend, 15% cross; remaining pages = `totalPages - 1 - currentPage`. |
+| Output | `AsterismaV2.5/Engines/EstimationEngine.swift#L65-L82` | No status, no fallback reason, no model version, no uncertainty. |
 
 There is no separate reader-profile entity in this path. A "profile" is the set of
 sessions attached to the library's books. That is why changing the demo persona
@@ -131,14 +131,14 @@ changes the estimates: it changes the page timings.
 
 ### P0-1 — The 60-second ceiling deletes slow readers (Class C: feature construction)
 
-**Code:** `AsterismaV2.0/Engines/AnalyticsEngine.swift#L33-L45` and
+**Code:** `AsterismaV2.5/Engines/AnalyticsEngine.swift#L33-L45` and
 `#L81-L89`.
 
 The first filter is `0.5 < duration < 60`. Any page that took longer than a
 minute is discarded before the median is computed. If every page in a book is
 slow, the timing list is empty and the function returns
 `AnalyticsConstants.defaultSecondsPerPage` (**120 s/page**,
-`AsterismaV2.0/Engines/AnalyticsEngine.swift#L391-L396`).
+`AsterismaV2.5/Engines/AnalyticsEngine.swift#L391-L396`).
 
 **Evidence (Slow Savorer):**
 
@@ -164,7 +164,7 @@ rejects the reader instead.
 
 ### P0-2 — The synthetic generator writes sessions into finished books (Class A: data generation)
 
-**Code:** `AsterismaV2.0/Features/Discovery/DemoDataService.swift#L404-L431` and
+**Code:** `AsterismaV2.5/Features/Discovery/DemoDataService.swift#L404-L431` and
 `#L463-L469`.
 
 Three related faults:
@@ -198,7 +198,7 @@ personalization is invalid until the generator is corrected.
 
 ### P0-3 — Genre adjustment double-counts the reader (Class C/D: feature construction and estimation)
 
-**Code:** `AsterismaV2.0/Engines/AnalyticsEngine.swift#L847-L855`.
+**Code:** `AsterismaV2.5/Engines/AnalyticsEngine.swift#L847-L855`.
 
 ```swift
 let base = adjustedReadingSpeed(for: book)          // already this reader's pace
@@ -219,14 +219,14 @@ multiplicative distortions.
 - Slow Savorer: 120.00 × (636.44 / 120) = **636.44** s/page.
 
 `EstimationEngine` gives this component a 25% weight
-(`AsterismaV2.0/Engines/EstimationEngine.swift#L188-L202`), so the error cannot
+(`AsterismaV2.5/Engines/EstimationEngine.swift#L188-L202`), so the error cannot
 stay local. The integrated estimate is 2.39–3.46× the observed median for the
 fast personas and 0.74× for the slow persona. That is the compression in one
 table.
 
 The same builder also records `trendAdjustedSpeed: base * trendMultiplier` but
 uses `cross * trendMultiplier` in the effective calculation
-(`AsterismaV2.0/Engines/EstimationEngine.swift#L178-L209`). The displayed
+(`AsterismaV2.5/Engines/EstimationEngine.swift#L178-L209`). The displayed
 component and the used component are not the same number. This is a secondary
 consistency defect, not the primary cause.
 
@@ -234,13 +234,13 @@ consistency defect, not the primary cause.
 
 **Evidence from the test tree:**
 
-- `AsterismaV2.0Tests/DeveloperConsole/DemoProfileServiceTests.swift` verifies
+- `AsterismaV2.5Tests/DeveloperConsole/DemoProfileServiceTests.swift` verifies
   catalog shape, validator cleanliness, persona signatures, and determinism.
   It does not assert an estimate.
-- `AsterismaV2.0Tests/Core/SQLiteDataStoreTests.swift#L128-L133` and
+- `AsterismaV2.5Tests/Core/SQLiteDataStoreTests.swift#L128-L133` and
   `#L272-L290` assert that JSON and SQLite produce the same reading speed. That
   is storage equivalence, not accuracy.
-- `AsterismaV2.0Tests/App/BedrockBaselineTests.swift#L57-L60` calls
+- `AsterismaV2.5Tests/App/BedrockBaselineTests.swift#L57-L60` calls
   `EstimationEngine.validate(estimate(...))` only to measure elapsed
   milliseconds.
 - `DemoProfileServiceTests` pins persona behavior, not reader-time error.
@@ -252,17 +252,17 @@ separation the plan requires.
 
 ### P0-5 — Reading time is wall-clock page delta, with no attention policy (Class D/E: measurement)
 
-**Code:** `AsterismaV2.0/Core/DataStore3.swift#L789-L807` and `#L850-L872`.
+**Code:** `AsterismaV2.5/Core/DataStore3.swift#L789-L807` and `#L850-L872`.
 
 - `recordPageTurn` closes the previous timing at `Date()` and opens the next.
 - A page left open for ten minutes is recorded as ten minutes of reading.
 - The only automatic close outside the reader is `scenePhase == .background`
-  (`AsterismaV2.0/App/AsterismaApp.swift#L161-L164`); the readers also close on
-  `.onDisappear` (`AsterismaV2.0/Features/Reader/EPUBReaderScreen.swift#L103-L112`,
-  `AsterismaV2.0/Features/Reader/PDFReaderView2.swift#L473-L477`).
+  (`AsterismaV2.5/App/AsterismaApp.swift#L161-L164`); the readers also close on
+  `.onDisappear` (`AsterismaV2.5/Features/Reader/EPUBReaderScreen.swift#L103-L112`,
+  `AsterismaV2.5/Features/Reader/PDFReaderView2.swift#L473-L477`).
 - No `.inactive`/focus-loss handler, visibility event, monotonic clock, or
   per-event validity flag is present. `PageTiming` carries only page number,
-  start, and end (`AsterismaV2.0/Core/Book2.swift#L489-L500`).
+  start, and end (`AsterismaV2.5/Core/Book2.swift#L489-L500`).
 
 This is why the 60-second ceiling exists: it is a crude proxy for "the page was
 idle". It cannot distinguish a slow reader from an idle reader, so it fails both
@@ -275,14 +275,14 @@ reading.
 **Code:**
 
 - EPUB: `totalPages = max(1, wordCount / 250)`
-  (`AsterismaV2.0/Features/Library/BookImporter.swift#L274-L275`);
+  (`AsterismaV2.5/Features/Library/BookImporter.swift#L274-L275`);
   `wordCountEstimate: wordCount` is stored (`#L307-L318`).
 - PDF: `totalPages = doc.pageCount`
-  (`AsterismaV2.0/Features/Library/BookImporter.swift#L140`);
+  (`AsterismaV2.5/Features/Library/BookImporter.swift#L140`);
   the `Book` initializer receives no `wordCountEstimate`,
   `difficultyProfile`, or `genre` (`#L182-L190`).
 - `PageEstimationModel.estimatePages` exists at
-  `AsterismaV2.0/Features/Library/BookImporter.swift#L774-L786` but has no
+  `AsterismaV2.5/Features/Library/BookImporter.swift#L774-L786` but has no
   caller: the repo-wide reference search found only its definition. The live
   EPUB path uses the simpler `wordCount / 250` and ignores the difficulty
   profile it just computed.
@@ -297,15 +297,15 @@ evaluated separately.
 ### P0-7 — Estimates have no status, provenance, or fallback disclosure (Class D/observability)
 
 **Code:** `BookEstimationResult` at
-`AsterismaV2.0/Engines/EstimationEngine.swift#L65-L82` contains only numbers and
+`AsterismaV2.5/Engines/EstimationEngine.swift#L65-L82` contains only numbers and
 the speed model. It has no `status`, `fallbackReason`, `modelVersion`,
 `featureVersion`, or `predictionTarget`. `estimate(for:allBooks:)` never calls
 `validate(result:)`; the only caller of `validate` found in the repository is
-`AsterismaV2.0Tests/App/BedrockBaselineTests.swift#L57-L60`.
+`AsterismaV2.5Tests/App/BedrockBaselineTests.swift#L57-L60`.
 
 `LibraryDatabase.summary(of:)` caches
 `AnalyticsEngine.readingSpeed(for: book)` before replacing `sessions` with
-summary copies (`AsterismaV2.0/Core/Storage/LibraryDatabase.swift#L328-L333`). The probe
+summary copies (`AsterismaV2.5/Core/Storage/LibraryDatabase.swift#L328-L333`). The probe
 simulates that path and gets **120.0 s/page** for the Slow Savorer. The default
 is therefore not a transient fallback; it is persisted and indistinguishable
 from a measured value.
@@ -320,7 +320,7 @@ A repository-wide case-insensitive search for `73%`, `continuous scroll`,
 `page-by-page`, and `manga` found:
 
 - reader layout documentation and settings (`docs/design/READER-POLISH-2026-10-25.md`,
-  `AsterismaV2.0/Features/Reader/PDFReaderSettings.swift`);
+  `AsterismaV2.5/Features/Reader/PDFReaderSettings.swift`);
 - no session record, log, measurement note, or experiment file containing a 73%
   comparison;
 - no code that computes a layout-specific speed effect.
@@ -510,7 +510,7 @@ changed in this pass. E1–E3 must run before a model replacement is proposed.
 
 | Artifact | Path | SHA-256 | Size |
 |---|---|---|---:|
-| Phase Zero probe test | `AsterismaV2.0Tests/Engines/ReadingAnalyticsPhaseZeroTests.swift` | `c5cf83292792f089c1be1d54cbcb899af73293fd1e6b25483cea745fbb536349` | 252 lines |
+| Phase Zero probe test | `AsterismaV2.5Tests/Engines/ReadingAnalyticsPhaseZeroTests.swift` | `c5cf83292792f089c1be1d54cbcb899af73293fd1e6b25483cea745fbb536349` | 252 lines |
 | Phase Zero JSON trace | `docs/audits/evidence/reading-analytics-phase-zero-2026-10-29.json` | `6f34b3dbb86bd49d65606556142b138572daf4e3cb11ad8a41f9026af7e80793` | 459 lines, 17,599 B |
 
 **Commands run:**
@@ -519,9 +519,9 @@ changed in this pass. E1–E3 must run before a model replacement is proposed.
 git rev-parse HEAD
 # exit 0; cb92f08...
 
-xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 \
+xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 \
   -destination 'platform=macOS' \
-  -only-testing:AsterismaV2.0Tests/ReadingAnalyticsPhaseZeroProbeTests \
+  -only-testing:AsterismaV2.5Tests/ReadingAnalyticsPhaseZeroProbeTests \
   -resultBundlePath /tmp/phase-zero.xcresult
 # exit 0; ** TEST SUCCEEDED ** — 1 test, 0 failures, 1.38 s
 
@@ -605,11 +605,11 @@ fabricate a fallback session for a book with no generated history. The declared
 catalog hours sized the simulated history but did not guarantee actual hours
 per book. The abandoner, comeback, and seasonal descriptions were not all
 implemented as behaviors. Profile descriptions also disagreed with some pace
-ranges. See `AsterismaV2.0/Features/Discovery/DemoDataService.swift`.
+ranges. See `AsterismaV2.5/Features/Discovery/DemoDataService.swift`.
 
 The revised generator stops timing a session at the simulated ending page;
 page numbers and session endpoints match the app's recorded page-position
-convention in `AsterismaV2.0/Core/DataStore3.swift`. It varies time per page,
+convention in `AsterismaV2.5/Core/DataStore3.swift`. It varies time per page,
 occasionally stops early, revisits a page, or jumps forward between sessions;
 skipped pages have no invented timings. It includes a quiet period for the
 comeback profile, limits abandoned-book progress, and chooses seasonal genres
@@ -628,5 +628,5 @@ behaviors.
 
 The Swift profile checks cover page and time consistency, chronological
 sessions, interruptions, revisits, jumps, abandonment, and the comeback break:
-`AsterismaV2.0Tests/DeveloperConsole/DemoProfileServiceTests.swift`. These are
+`AsterismaV2.5Tests/DeveloperConsole/DemoProfileServiceTests.swift`. These are
 synthetic behavior checks, not tests against human reading sessions.

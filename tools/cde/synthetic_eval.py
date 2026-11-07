@@ -232,7 +232,7 @@ def score(prepared, swift):
             'scorer_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             'adf_scores_sha256': hashlib.sha256(SCORES_PATH.read_bytes()).hexdigest(),
             'cde_predictor_sha256': hashlib.sha256(Path(cde_personal.__file__).read_bytes()).hexdigest(),
-            'swift_estimator_sha256': hashlib.sha256((SCORES_PATH.parents[3] / 'AsterismaV2.0/Engines/EstimationEngine.swift').read_bytes()).hexdigest(),
+            'swift_estimator_sha256': hashlib.sha256((SCORES_PATH.parents[3] / 'AsterismaV2.5/Engines/EstimationEngine.swift').read_bytes()).hexdigest(),
             'inputs_sha256': digest(prepared['app_inputs']), 'truth_sha256': digest(prepared['truth']),
             'swift_predictions_sha256': digest(swift), 'cde_predictions_sha256': digest(prepared['cde_predictions']),
             'overall': summarize(rows), 'strata': strata, 'matched_pairs_app': comparisons,

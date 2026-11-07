@@ -14,15 +14,15 @@ no persistence, no note editor, no highlight rendering. WP-1.4 owns the UI.
 
 ## Inputs (read, do not change)
 
-- `AsterismaV2.0/Features/Reader/EPUBReaderScreen.swift` — `EPUBChapterWebView`,
+- `AsterismaV2.5/Features/Reader/EPUBReaderScreen.swift` — `EPUBChapterWebView`,
   its `Coordinator`, the `epubPage` message handler, and `paginationScript`.
-- `AsterismaV2.0/Core/Book2.swift` — the frozen `BookNoteAnchor.epub` shape the
+- `AsterismaV2.5/Core/Book2.swift` — the frozen `BookNoteAnchor.epub` shape the
   locator must eventually feed.
 
 ## Allowed paths
 
-- `AsterismaV2.0/Features/Reader/EPUBReaderScreen.swift`
-- `AsterismaV2.0Tests/Reader/EPUBSelectionTests.swift` (new file)
+- `AsterismaV2.5/Features/Reader/EPUBReaderScreen.swift`
+- `AsterismaV2.5Tests/Reader/EPUBSelectionTests.swift` (new file)
 - `.agent-handoff/WP-1.2.md` in the worktree only
 
 ## Forbidden
@@ -59,7 +59,7 @@ any `git commit` or `git push`.
 
 ## Required tests
 
-Create `AsterismaV2.0Tests/Reader/EPUBSelectionTests.swift`:
+Create `AsterismaV2.5Tests/Reader/EPUBSelectionTests.swift`:
 
 1. Locator round-trips through `EPUBTextSelection` and its parser.
 2. Negative and out-of-range offsets clamp to `0...textLength`.
@@ -71,7 +71,7 @@ Use pure values; do not instantiate a `WKWebView` in tests.
 
 ## Acceptance
 
-- `xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` exits 0.
+- `xcodebuild -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` exits 0.
 - `EPUBSelectionTests` and the existing `ReaderAppearanceTests` pass.
 - `git diff --check` exits 0.
 - No file outside the allowed paths changes.

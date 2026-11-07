@@ -21,11 +21,11 @@ No engine source was edited. No new wire action was invented.
 
 | Area | File | Behavior |
 |---|---|---|
-| Report model | `AsterismaV2.0/Features/Mirage/MirageAnalysisReport.swift` | Derives coverage, indexed-edition count, unit/claim totals and density, zero-claim editions, paused books, unindexed active links, and scan freshness. |
+| Report model | `AsterismaV2.5/Features/Mirage/MirageAnalysisReport.swift` | Derives coverage, indexed-edition count, unit/claim totals and density, zero-claim editions, paused books, unindexed active links, and scan freshness. |
 | Coverage source | same | Coverage counts **active identity-map entries only**, intersected with the analyzable book set. A caller cannot inflate it with a stale or orphaned link. |
-| Settings surface | `AsterismaV2.0/Features/Goals/SettingsRootView.swift` | "Analysis report" replaces the bare coverage rows: coverage percent, indexed editions, ledger totals, per-edition density, paused links, unindexed-link warning, zero-claim note, last measured analysis time, scan freshness, and an explicit ADR-7 provenance note. |
-| Measured duration | `AsterismaV2.0/Features/Mirage/MirageEngineService.swift` | Records `lastAnalysisSeconds` and `lastAnalysisAt` for the last successful analysis, including a comic's on-device OCR preparation. |
-| Tests | `AsterismaV2.0Tests/Mirage/MirageAnalysisReportTests.swift` | Four pins: empty library, analyzable-only coverage/density, scanned-index unindexed/paused accounting, and never-scanned-index semantics. |
+| Settings surface | `AsterismaV2.5/Features/Goals/SettingsRootView.swift` | "Analysis report" replaces the bare coverage rows: coverage percent, indexed editions, ledger totals, per-edition density, paused links, unindexed-link warning, zero-claim note, last measured analysis time, scan freshness, and an explicit ADR-7 provenance note. |
+| Measured duration | `AsterismaV2.5/Features/Mirage/MirageEngineService.swift` | Records `lastAnalysisSeconds` and `lastAnalysisAt` for the last successful analysis, including a comic's on-device OCR preparation. |
+| Tests | `AsterismaV2.5Tests/Mirage/MirageAnalysisReportTests.swift` | Four pins: empty library, analyzable-only coverage/density, scanned-index unindexed/paused accounting, and never-scanned-index semantics. |
 
 ## Report semantics
 
@@ -46,7 +46,7 @@ No engine source was edited. No new wire action was invented.
 ## Verification
 
 ```bash
-xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO -only-testing:AsterismaV2.0Tests/MirageAnalysisReportTests -only-testing:AsterismaV2.0Tests/MirageEngineServiceTests -only-testing:AsterismaV2.0Tests/MirageStatusSurfaceTests -only-testing:AsterismaV2.0Tests/MirageBatchAnalyzerTests
+xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO -only-testing:AsterismaV2.5Tests/MirageAnalysisReportTests -only-testing:AsterismaV2.5Tests/MirageEngineServiceTests -only-testing:AsterismaV2.5Tests/MirageStatusSurfaceTests -only-testing:AsterismaV2.5Tests/MirageBatchAnalyzerTests
 ```
 
 Result: **24 tests in 4 suites passed**, exit **0**.
@@ -90,10 +90,10 @@ Markdown audit exit **0**; whitespace check exit **0**.
 
 ## Evidence map
 
-- `AsterismaV2.0/Features/Mirage/MirageAnalysisReport.swift`.
-- `AsterismaV2.0/Features/Mirage/MirageEngineService.swift`.
-- `AsterismaV2.0/Features/Goals/SettingsRootView.swift`.
-- `AsterismaV2.0Tests/Mirage/MirageAnalysisReportTests.swift`.
+- `AsterismaV2.5/Features/Mirage/MirageAnalysisReport.swift`.
+- `AsterismaV2.5/Features/Mirage/MirageEngineService.swift`.
+- `AsterismaV2.5/Features/Goals/SettingsRootView.swift`.
+- `AsterismaV2.5Tests/Mirage/MirageAnalysisReportTests.swift`.
 - `docs/integration/adr/ADR-7-spoiler-cursor-contract.md` (the boundary this
   pass respects).
 - Session close: `docs/registers/04-handoff.md`; fix entry:

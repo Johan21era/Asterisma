@@ -89,8 +89,8 @@ Everything else hangs from them.
 | Local unit census | **518 tests / 100 suites / 719 runs / 509 passed / 9 skipped / 0 failed** | `./scripts/census.sh --unit-only`, exit 0, 2026-11-07 |
 | Remote rename CI | run `42332377245`, **success** | `gh run view 42332377245` |
 | Docs commit CI | run `42333251100`, **in progress at revision time** | `gh run view 42333251100` |
-| Product identity | `AsterismaV2.0`, SwiftUI + AppKit, Swift 5 mode | `README.md` §2 |
-| Persistence | SQLite summary store plus JSON compatibility surfaces | `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` |
+| Product identity | `AsterismaV2.5`, SwiftUI + AppKit, Swift 5 mode | `README.md` §2 |
+| Persistence | SQLite summary store plus JSON compatibility surfaces | `AsterismaV2.5/Core/Storage/LibraryDatabase.swift` |
 | Dependency policy | Two Swift packages: GRDB 7.12.0 and ZIPFoundation 0.9.20; Mirage is a bundled runtime | `README.md` §2, `Package.resolved` |
 | Test policy | Swift Testing; census is the merge gate | `AGENTS.md`, `scripts/census.sh` |
 | Known skips | 4 Mirage real-engine, 1 benchmark, 2 real-library SQLite parity, 2 live Open-Meteo | `README.md` §4 |

@@ -11,10 +11,10 @@ usability-tested.
 
 | Check | Command | Result |
 |---|---|---|
-| Debug build | `xcodebuild build -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO` | `** BUILD SUCCEEDED **`, exit 0 |
+| Debug build | `xcodebuild build -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO` | `** BUILD SUCCEEDED **`, exit 0 |
 | Unit census | `./scripts/census.sh --unit-only` | 437 tests / 671 runs / 428 passed / 9 skipped / 0 failed, exit 0 |
-| App source size | `find AsterismaV2.0 -name '*.swift' \| wc -l`; concatenated line count; non-blank count | 170 files / 64,084 raw lines / 56,626 non-blank |
-| Test folder | `find AsterismaV2.0Tests -name '*.swift' \| wc -l` | 67 files |
+| App source size | `find AsterismaV2.5 -name '*.swift' \| wc -l`; concatenated line count; non-blank count | 170 files / 64,084 raw lines / 56,626 non-blank |
+| Test folder | `find AsterismaV2.5Tests -name '*.swift' \| wc -l` | 67 files |
 
 > **Superseded 2026-10-31:** the figures below are the 2026-10-29 boundary, not current totals. The current receipt is **515 tests / 99 suites / 719 runs / 506 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; see `README.md`).
 >
@@ -141,7 +141,7 @@ shelf/grid/resume layout still being a product decision. See
    list and, when nothing was selected, a prompt to select a book. The user had
    to construct the reading task from a management surface.
 2. **The library existed twice.** The spatial explorer in
-   `AsterismaV2.0/Features/Library/LibraryExplorerView2.swift` is a second
+   `AsterismaV2.5/Features/Library/LibraryExplorerView2.swift` is a second
    `NavigationSplitView` with a different presentation and its own filter
    sidebar. Two libraries for one collection is a conceptual cost, not a feature.
 3. **Primary destinations were not visible.** Insights and Goals were historically
@@ -173,7 +173,7 @@ live in the sidebar's **More** menu rather than competing for top-level space.
 
 ### Home
 
-`AsterismaV2.0/Features/Home/ReadingDeskView.swift` is the launch surface.
+`AsterismaV2.5/Features/Home/ReadingDeskView.swift` is the launch surface.
 
 - One **resume-first hero** for the most recently read in-progress book, or the
   newest unread book. The primary button is **Resume** or **Start reading**.
@@ -186,7 +186,7 @@ live in the sidebar's **More** menu rather than competing for top-level space.
 
 ### Library
 
-`AsterismaV2.0/Features/Library/LibraryBrowserView.swift` replaces the split
+`AsterismaV2.5/Features/Library/LibraryBrowserView.swift` replaces the split
 between the old sidebar list and the modal spatial explorer.
 
 - Adaptive grid as the default; a list toggle for scanning title/author/progress.
@@ -200,7 +200,7 @@ between the old sidebar list and the modal spatial explorer.
 
 ### Shell
 
-`AsterismaV2.0/App/NewContentView.swift` owns the custom two-column surface
+`AsterismaV2.5/App/NewContentView.swift` owns the custom two-column surface
 (the repository deliberately avoids `NavigationSplitView`'s macOS 26 glass
 shell; see [fullscreen-surface-audit.md](fullscreen-surface-audit.md)).
 
@@ -216,17 +216,17 @@ shell; see [fullscreen-surface-audit.md](fullscreen-surface-audit.md)).
 
 | File | Change |
 |---|---|
-| `AsterismaV2.0/App/AppSection.swift` | Four durable destinations, icons, shortcuts, purpose text |
-| `AsterismaV2.0/Features/Home/ReadingDeskView.swift` | Resume hero, live stats, shelves, empty/caught-up states |
-| `AsterismaV2.0/Features/Library/LibraryBrowserView.swift` | Unified grid/list, filters, search, selected-book dock, empty states |
-| `AsterismaV2.0/App/NewContentView.swift` | New sidebar shell; embedded Insights/Goals; removed the Explore entry point; responsive header work |
-| `AsterismaV2.0/Features/Insights/ReadingInsightsDashboard.swift` | `embedded` flag hides the standalone Done button and minimum size |
-| `AsterismaV2.0/Features/Goals/GoalsDashboard.swift` | `embedded` flag hides the standalone Done button and minimum size |
-| `AsterismaV2.0/Core/DesignGrid.swift` | Shared workspace, nav, shelf, dock, and grid tokens; adaptive dock floor |
-| `AsterismaV2.0/App/CommandPalette.swift` | Quick Open index (pure ranking) and the ⌘K overlay |
-| `AsterismaV2.0Tests/App/CommandPaletteTests.swift` | Five tests pin empty-query scope, exact-title rank, all-token matching, subtitle matches, and the result cap |
-| `AsterismaV2.0/Features/Home/ReadingDeskView.swift` | Adaptive wide/narrow hero, goal-aware Today card, recently finished shelf |
-| `AsterismaV2.0/Features/Library/LibraryBrowserView.swift` | Dock clamped to 236–292 pt, stacked dock actions when compact, ⌘F search focus, filter accessibility values |
+| `AsterismaV2.5/App/AppSection.swift` | Four durable destinations, icons, shortcuts, purpose text |
+| `AsterismaV2.5/Features/Home/ReadingDeskView.swift` | Resume hero, live stats, shelves, empty/caught-up states |
+| `AsterismaV2.5/Features/Library/LibraryBrowserView.swift` | Unified grid/list, filters, search, selected-book dock, empty states |
+| `AsterismaV2.5/App/NewContentView.swift` | New sidebar shell; embedded Insights/Goals; removed the Explore entry point; responsive header work |
+| `AsterismaV2.5/Features/Insights/ReadingInsightsDashboard.swift` | `embedded` flag hides the standalone Done button and minimum size |
+| `AsterismaV2.5/Features/Goals/GoalsDashboard.swift` | `embedded` flag hides the standalone Done button and minimum size |
+| `AsterismaV2.5/Core/DesignGrid.swift` | Shared workspace, nav, shelf, dock, and grid tokens; adaptive dock floor |
+| `AsterismaV2.5/App/CommandPalette.swift` | Quick Open index (pure ranking) and the ⌘K overlay |
+| `AsterismaV2.5Tests/App/CommandPaletteTests.swift` | Five tests pin empty-query scope, exact-title rank, all-token matching, subtitle matches, and the result cap |
+| `AsterismaV2.5/Features/Home/ReadingDeskView.swift` | Adaptive wide/narrow hero, goal-aware Today card, recently finished shelf |
+| `AsterismaV2.5/Features/Library/LibraryBrowserView.swift` | Dock clamped to 236–292 pt, stacked dock actions when compact, ⌘F search focus, filter accessibility values |
 
 Deliberately **not** changed in this tranche: the EPUB/PDF readers, the
 appearance system, the data model, persistence, and the Sentinel/recovery
@@ -378,11 +378,11 @@ what was actually built; owner visual acceptance is still the gate.
 
 | Change | Where | Behavior |
 |---|---|---|
-| Faster palette cadence | `AsterismaV2.0/Features/Environment/Engine/EnvironmentEngine2.swift` | The default recompute interval is 10 s (was 45 s). The palette is still eased on every tick; the shorter tick removes the visible jump between palette keyframes. |
-| Continuous atmosphere | `AsterismaV2.0/Features/Environment/Weather/WeatherEffectView.swift` (`LiveAtmosphereView`) | Two large radial glows drift on a 20 fps `TimelineView`, independent of the palette tick; reduced motion freezes them. |
-| Real weather layer | `AsterismaV2.0/Features/Environment/Weather/WeatherVisual.swift`, `WeatherEffectView.swift` | A snapshot is classified into clear, cloudy, fog, rain, heavy rain, snow, heavy snow, storm, or wind. Rain/heavy rain/storm draw slanted streaks, snow draws drifting flakes, fog draws banks, wind draws streaks, cloud cover draws a drifting shadow field, and storm adds a deterministic flash. `.clear` draws nothing. |
-| Full snapshot carried to the view | `AsterismaV2.0/Features/Environment/Weather/WeatherEnvironmentModifier.swift` | The read-only modifier now carries condition, precipitation, snowfall, visibility, wind, storm index, and capture time from the same recent SQLite snapshot that already drove the cloud-cover nudge. `visual` is derived from those values; a missing condition stays `.clear`. |
-| Deepened daytime palettes + veil | `AsterismaV2.0/Features/Environment/Engine/EnvironmentPalette.swift`, `EnvironmentState.swift`, `EnvironmentBackgroundView2.swift` | Morning, midday, and afternoon snapshots use the same reference hues in their shadow range. The engine computes a black readability scrim from gradient luminance, clamped to 0.04…0.42, and the background draws it above the gradient and below content. |
+| Faster palette cadence | `AsterismaV2.5/Features/Environment/Engine/EnvironmentEngine2.swift` | The default recompute interval is 10 s (was 45 s). The palette is still eased on every tick; the shorter tick removes the visible jump between palette keyframes. |
+| Continuous atmosphere | `AsterismaV2.5/Features/Environment/Weather/WeatherEffectView.swift` (`LiveAtmosphereView`) | Two large radial glows drift on a 20 fps `TimelineView`, independent of the palette tick; reduced motion freezes them. |
+| Real weather layer | `AsterismaV2.5/Features/Environment/Weather/WeatherVisual.swift`, `WeatherEffectView.swift` | A snapshot is classified into clear, cloudy, fog, rain, heavy rain, snow, heavy snow, storm, or wind. Rain/heavy rain/storm draw slanted streaks, snow draws drifting flakes, fog draws banks, wind draws streaks, cloud cover draws a drifting shadow field, and storm adds a deterministic flash. `.clear` draws nothing. |
+| Full snapshot carried to the view | `AsterismaV2.5/Features/Environment/Weather/WeatherEnvironmentModifier.swift` | The read-only modifier now carries condition, precipitation, snowfall, visibility, wind, storm index, and capture time from the same recent SQLite snapshot that already drove the cloud-cover nudge. `visual` is derived from those values; a missing condition stays `.clear`. |
+| Deepened daytime palettes + veil | `AsterismaV2.5/Features/Environment/Engine/EnvironmentPalette.swift`, `EnvironmentState.swift`, `EnvironmentBackgroundView2.swift` | Morning, midday, and afternoon snapshots use the same reference hues in their shadow range. The engine computes a black readability scrim from gradient luminance, clamped to 0.04…0.42, and the background draws it above the gradient and below content. |
 | Studio overrides are Debug-only | `EnvironmentEngine2.swift` (`#if DEBUG`) | A stale studio key cannot repaint a Release launch; in Release the real clock and captured weather are always used. |
 
 The effect layer is deterministic: every streak/flake position is a pure
@@ -408,7 +408,7 @@ the same frame and reduced motion can freeze it rather than disabling it.
 
 ### 9.3 Sentinel navigation
 
-`AsterismaV2.0/Features/Sentinel/SentinelHealthCenterView.swift` is now a
+`AsterismaV2.5/Features/Sentinel/SentinelHealthCenterView.swift` is now a
 `NavigationSplitView`:
 
 - the sidebar always shows the current band, headline, and coverage line, then
@@ -426,7 +426,7 @@ the same frame and reduced motion can freeze it rather than disabling it.
 
 | Check | Command | Result |
 |---|---|---|
-| Focused environment tests | `xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' -parallel-testing-enabled NO -only-testing:AsterismaV2.0Tests/EnvironmentWeatherVisualTests` | 5 tests passed, exit 0 |
+| Focused environment tests | `xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' -parallel-testing-enabled NO -only-testing:AsterismaV2.5Tests/EnvironmentWeatherVisualTests` | 5 tests passed, exit 0 |
 | Full unit census | `./scripts/census.sh --unit-only` | 464 tests / 94 suites / 671 runs / 455 passed / 9 skipped / 0 failed, exit 0; xcresult `rt-census-20261029-033957.xcresult` |
 | Surface manifest | `./scripts/verify-sentinel-surface.sh` | `sentinel-surface: OK — 15 tables, 8 defaults keys, 5 notification names`, exit 0 |
 | Index bank | `python3 scripts/comprehension-bench.py --validate-only` | `bank ok: 30 facts, 12 overview facts`, exit 0 |

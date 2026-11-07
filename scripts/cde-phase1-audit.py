@@ -21,7 +21,7 @@ The queue defaults to the preserved engine-output snapshot committed with this
 script. `--wc` is a counter built from the app's own SharedTextUtilities.swift:
 
     swiftc -O -parse-as-library -swift-version 5 -default-isolation MainActor \
-      -o /tmp/wc AsterismaV2.0/Core/SharedTextUtilities.swift <counter-main>.swift
+      -o /tmp/wc AsterismaV2.5/Core/SharedTextUtilities.swift <counter-main>.swift
 """
 
 from __future__ import annotations

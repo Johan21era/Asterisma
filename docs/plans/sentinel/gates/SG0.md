@@ -37,9 +37,9 @@
 | Gate criterion | Command | Result |
 |---|---|---|
 | Unit census green, target 236+ | `./scripts/census.sh --unit-only` | **242 tests, 233 passed, 9 skipped, 0 failed**; `TEST SUCCEEDED` |
-| SG0 pins | `xcodebuild test … -only-testing:AsterismaV2.0Tests/SentinelSG0Tests` | **6/6 passed** |
-| Existing Sentinel pins | `xcodebuild test … -only-testing:AsterismaV2.0Tests/SentinelPinsTests` | **6/6 passed** |
-| No write-probe path in source | `rg 'sentinel-write-test' AsterismaV2.0 AsterismaV2.0Tests` | no matches |
+| SG0 pins | `xcodebuild test … -only-testing:AsterismaV2.5Tests/SentinelSG0Tests` | **6/6 passed** |
+| Existing Sentinel pins | `xcodebuild test … -only-testing:AsterismaV2.5Tests/SentinelPinsTests` | **6/6 passed** |
+| No write-probe path in source | `rg 'sentinel-write-test' AsterismaV2.5 AsterismaV2.5Tests` | no matches |
 | Test isolation | `./scripts/verify-test-isolation.sh` | `TEST ISOLATION OK — real app-support data is byte-identical.` |
 | Probe count matches registry | `probeCount` test + pane grep | engine reports 8; pane has no literal |
 | README claims match code | manual table audit | 8 probes, 4 rules, Debug-only pane, 500-line rotation, retained counters |
@@ -51,7 +51,7 @@ Census receipt: [census-2026-10-28.md](census-2026-10-28.md). The historical `.x
 
 ## New pins
 
-`AsterismaV2.0Tests/Core/SentinelSG0Tests.swift`
+`AsterismaV2.5Tests/Core/SentinelSG0Tests.swift`
 
 1. Probe count is `probes.count`, not `8`.
 2. `start()` runs exactly one launch cycle, and no second cycle arrives.
@@ -77,9 +77,9 @@ Census receipt: [census-2026-10-28.md](census-2026-10-28.md). The historical `.x
 
 Source-only; no data migration, schema change, or journal rewrite was performed.
 
-- Revert `AsterismaV2.0/Core/SentinelEngine.swift`, `NewContentView.swift`, `SentinelPaneView.swift`, `SentinelReportCardView.swift`.
+- Revert `AsterismaV2.5/Core/SentinelEngine.swift`, `NewContentView.swift`, `SentinelPaneView.swift`, `SentinelReportCardView.swift`.
 - Revert `README.md` and `docs/roadmap/05-remediation-roadmap.md`.
-- Delete `AsterismaV2.0Tests/Core/SentinelSG0Tests.swift` and this gate directory.
+- Delete `AsterismaV2.5Tests/Core/SentinelSG0Tests.swift` and this gate directory.
 - The pre-SG0 journal remains readable: old lines still decode with `JSONSerialization`; new lines simply omit `debugDetail`.
 
 ---

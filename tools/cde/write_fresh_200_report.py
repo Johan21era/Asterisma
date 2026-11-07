@@ -139,22 +139,22 @@ def main():
         'adapter’s own rules:')
     add()
     add('1. **Per-book normalization before pooling.** '
-        '[`crossBookReadingSpeed`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L83) computes '
+        '[`crossBookReadingSpeed`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L83) computes '
         'each book’s robust mean first, then combines the book paces with '
-        '[`consensusSeconds`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L459). Two books '
+        '[`consensusSeconds`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L459). Two books '
         'that disagree by more than 3× use the faster one; three or more use the median.')
     add('2. **Contamination-resistant ceiling.** '
-        '[`robustMeanSeconds`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L424) retains '
+        '[`robustMeanSeconds`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L424) retains '
         'values up to '
-        '[`max(median, lowerQuartile × 3)`](../../AsterismaV2.0/Engines/AnalyticsEngine.swift#L444), '
+        '[`max(median, lowerQuartile × 3)`](../../AsterismaV2.5/Engines/AnalyticsEngine.swift#L444), '
         'instead of anchoring the ceiling to a median that moves with the contamination.')
     add('3. **Three-sample minimum for the candidate’s recent pace.** '
-        '[`minimumRecentTimings`](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L71) '
+        '[`minimumRecentTimings`](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L71) '
         'is 3; two timings are no longer treated as a pace. The production estimator’s own '
         'five-timing threshold is unchanged.')
     add('4. **Two-sided plausibility guard.** The candidate falls back when the recent/prior ratio '
         'is outside '
-        '[0.35–3.0](../../AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L73), not only '
+        '[0.35–3.0](../../AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L73), not only '
         'when the target is implausibly fast.')
     add()
     add('The run contains 40 batches of five rounds, 9,914 main cases per round, plus 200 demo '
@@ -429,8 +429,8 @@ def main():
                  OUT / 'demo-200-predictions.json', ROOT / 'tools/cde/run_fresh_200.sh',
                  ROOT / 'tools/cde/fresh_100.py', ROOT / 'tools/cde/analyze_fresh_200.py',
                  ROOT / 'tools/cde/write_fresh_200_report.py',
-                 ROOT / 'AsterismaV2.0/Engines/AnalyticsEngine.swift',
-                 ROOT / 'AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift']:
+                 ROOT / 'AsterismaV2.5/Engines/AnalyticsEngine.swift',
+                 ROOT / 'AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift']:
         add(f'- [{path.name}](../../{path.relative_to(ROOT)}) — SHA-256 `{sha(path)}`.')
     add()
     demo_bytes = (OUT / 'demo-200-predictions.json').stat().st_size

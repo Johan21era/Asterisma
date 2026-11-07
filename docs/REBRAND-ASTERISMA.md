@@ -1,11 +1,47 @@
-# Asterisma Rebrands — V1.0 and V2.0
+# Asterisma Rebrands — V1.0, V2.0, and V2.5
 
-This file records two product-name changes. The V1.0 table below is a
-historical receipt; the V2.0 section is the current identity.
+This file records the product-name changes. The V2.5 section is the current
+identity; the V1.0 and V2.0 sections are historical receipts.
 
 ---
 
-## V2.0 rename (2026-10-29)
+## V2.5 rename (2026-11-07) — current
+
+| Layer | V2.5 value |
+|---|---|
+| Product / app bundle | `AsterismaV2.5.app` |
+| Display name | `AsterismaV2.5` |
+| Xcode project | `AsterismaV2.5.xcodeproj` |
+| App target / scheme | `AsterismaV2.5` |
+| Test targets | `AsterismaV2.5Tests`, `AsterismaV2.5UITests` |
+| Swift module | `AsterismaV2_5` |
+| App entry point | `AsterismaApp.swift` / `AsterismaApp` (unchanged type) |
+| Source folder | `AsterismaV2.5/` |
+| Entitlements | `AsterismaV2.5.entitlements` |
+| Info.plist | `AsterismaV2.5-Info.plist` |
+| Release package | `dist/AsterismaV2.5-<version>-arm64.zip` |
+| Data root | `Application Support/Asterisma/` (unchanged) |
+| Bundle identifier | `johan.Reading-Tracker` (unchanged, not user-visible) |
+| Marketing version | 2.5 (build 2) |
+
+The bundle identifier and data-directory name were deliberately **not**
+renamed. The sandbox container is keyed by bundle identifier, and the library
+lives under `Application Support/Asterisma/`; changing either would orphan the
+existing library. Only the product, project, module, folder, and marketing
+version moved.
+
+**Verification.** `./scripts/census.sh --unit-only` ran under
+`AsterismaV2.5.xcodeproj` / scheme `AsterismaV2.5` and exited **0** with
+**610 tests in 115 suites passed** (console) and **611 passed / 10 skipped /
+0 failed / 621 total** (result bundle). The surface, comprehension, Markdown,
+and whitespace gates all exited 0. No app launch or visual acceptance was
+performed for this rename. The evidence archive
+`AsterismaV2.0-Evidence-Archive-2026-11-07/` keeps its old name because it is a
+frozen historical capture.
+
+---
+
+## V2.0 rename (2026-10-29) — historical
 
 | Layer | V2.0 value |
 |---|---|
@@ -24,16 +60,12 @@ historical receipt; the V2.0 section is the current identity.
 | Bundle identifier | `johan.Reading-Tracker` (unchanged, not user-visible) |
 | Marketing version | 2.0 (build 2) |
 
-The bundle identifier and data-directory name were deliberately **not**
-renamed. The sandbox container is keyed by bundle identifier, and the library
-lives under `Application Support/Asterisma/`; changing either would orphan the
-existing library. Only the product, project, module, and folder names moved.
-
-The rename is a working-tree change. Debug and Release builds succeeded under
-`AsterismaV2.0.xcodeproj` / scheme `AsterismaV2.0`; the unit census is **432
-tests / 671 runs / 423 passed / 9 skipped / 0 failed**; the surface and
-comprehension gates pass. Remote CI has **not** yet run for this rename, so the
-V1.0 receipts below remain the last shipped evidence until it does.
+The rename was a working-tree change on 2026-10-29. Debug and Release builds
+succeeded under `AsterismaV2.0.xcodeproj` / scheme `AsterismaV2.0`; the unit
+census at that boundary was **432 tests / 671 runs / 423 passed / 9 skipped /
+0 failed**; the surface and comprehension gates passed. Those figures are the
+2026-10-29 receipt, not the current census. The V2.5 rename above superseded
+this identity on 2026-11-07.
 
 ---
 

@@ -1,6 +1,6 @@
-# 00 · AsterismaV2.0 — Project Report
+# 00 · AsterismaV2.5 — Project Report
 
-> **TL;DR** — AsterismaV2.0 is a macOS reading-tracker app written entirely in Swift/SwiftUI. You import your PDF, EPUB, CBZ, and image-folder comic books (manga, manhua, manhwa, webcomics), read them inside the app, and it quietly records everything: per-page reading speed, time of day, live weather, and the app you were using just before opening the book. As of the October 2026 merge campaign, it also carries **Mirage** — a separately-owned companion engine for EPUB analysis, integrated behind a typed one-way boundary. A new in-reader graph summons the spoiler-safe projection at a verified chapter boundary; the pinned engine still needs the read-only `edition_chapters` action before that graph can render a real ledger.
+> **TL;DR** — AsterismaV2.5 is a macOS reading-tracker app written entirely in Swift/SwiftUI. You import your PDF, EPUB, CBZ, and image-folder comic books (manga, manhua, manhwa, webcomics), read them inside the app, and it quietly records everything: per-page reading speed, time of day, live weather, and the app you were using just before opening the book. As of the October 2026 merge campaign, it also carries **Mirage** — a separately-owned companion engine for EPUB analysis, integrated behind a typed one-way boundary. A new in-reader graph summons the spoiler-safe projection at a verified chapter boundary; the pinned engine still needs the read-only `edition_chapters` action before that graph can render a real ledger.
 
 > **Bedrock update (2026-10-24):** the app now runs on a **GRDB/SQLite summary store** (JSON migrated to `.migrated`, load **5.06 ms** vs 493.7 ms), weather uses **Open-Meteo** with no WeatherKit entitlement, Mirage is **embedded and signed**, Behavior Context V3 is wired with an Advanced Context window, and real EPUB imports populate genre/series/word count. The full gate record lives in `docs/plans/bedrock/`. Current local census (2026-11-07, after the E8 estimate-facade, page/difficulty separation, behavior-evidence SQLite tranche, the 2.5 comic-container, 2.5.1 reader-experience, 2.6 comic-metadata/Mirage, 2.7 Mirage-analysis-report, and ADR-7 amendment-1 graph passes): **610 tests in 115 suites passed (console); 611 passed / 10 skipped / 0 failed / 719 runs (result bundle)** on macOS 27.2 / Xcode 27.2 (`./scripts/census.sh --unit-only`, exit 0); CI also runs the surface-manifest freshness gate before the census.
 
@@ -27,7 +27,7 @@
 
 ## §1 · What the app does
 
-**AsterismaV2.0** imports PDF, EPUB, CBZ, and image-folder comic books — including iBooks-style unzipped `.epub` package folders — and lets you read them in-app, including a three-mode comic reader (left-to-right, right-to-left manga, vertical webtoon) with native paging, adjacent-page prefetch, auto-hiding chrome, page/chapter navigation, close-inspection zoom, and page-anchored notes, ComicInfo.xml metadata, and Mirage analysis of comics through an on-device OCR text edition, plus an RSVP (Rapid Serial Visual Presentation) speed-reading mode that streams a chapter or a whole PDF one word at a time. While you read, the app records:
+**AsterismaV2.5** imports PDF, EPUB, CBZ, and image-folder comic books — including iBooks-style unzipped `.epub` package folders — and lets you read them in-app, including a three-mode comic reader (left-to-right, right-to-left manga, vertical webtoon) with native paging, adjacent-page prefetch, auto-hiding chrome, page/chapter navigation, close-inspection zoom, and page-anchored notes, ComicInfo.xml metadata, and Mirage analysis of comics through an on-device OCR text edition, plus an RSVP (Rapid Serial Visual Presentation) speed-reading mode that streams a chapter or a whole PDF one word at a time. While you read, the app records:
 
 - **Per-page timing** — turn speed captured for every single page, feeding analytics and estimates
 - **Temporal habits** — hour-of-day and day-of-week engagement patterns
@@ -141,7 +141,7 @@ Checked directly against the working tree on 2026-10-29 (V2.0 rename pass), with
 - ✅ Local unit census (2026-11-07, after the V2.0 rename, the UI/reader/offline/Mirage/Sentinel tranches, the reading-analytics recalibration, the E8 estimate-facade + behavior-SQLite tranche, the 2.5–2.6 comic expansion, the 2.7 Mirage analysis report, and the ADR-7 amendment-1 graph): **610 tests in 115 suites passed; 611 passed / 10 skipped / 0 failed / 719 runs**, Debug build exit 0 (`./scripts/census.sh --unit-only`, exit 0). Evidence: [Stage AH](docs/registers/03-fix-log.md) for the 464-test environment/Sentinel/console tranche, [Stage AE](docs/registers/03-fix-log.md) for the 459-test Mirage tranche, [Stage AB](docs/registers/03-fix-log.md) for the 447-test offline tranche, [Stage AA](docs/registers/03-fix-log.md) for the 441-test reader tranche, [Stage Z](docs/registers/03-fix-log.md) for the earlier 437-test tranche, and [SG8 gate](docs/plans/sentinel/gates/SG8.md) for the older 432-test baseline. The nine `ReaderAppearanceTests`, five `CommandPaletteTests`, six offline/network pins, twelve ADR-13 Mirage pins, and five environment/weather pins are part of the 610, as are the four Book File Relink tests, the 38 comic container/metadata/import/reader/experience/Mirage pins, the four analysis-report pins, the eleven graph pins, the six cursor-contract pins, the five spoiler-probe pins, the four page-turn pins, the one Phase Zero probe, 24 reading-analytics tests (page-duration policy, estimation provenance, page-estimation model, difficulty calibration), the two E8 estimate-facade pins, and the G6 SQLite persistence pin. The 10 skips are the existing opt-in, benchmark, and live-network pins; none is a comic test. CI runs `scripts/verify-sentinel-surface.sh` before the census, so a stale surface manifest fails the run. UI tests remain placeholder launch stubs and are excluded from the deterministic unit receipt.
 - ✅ Mirage reader graph, ADR-7 amendment 1 (2026-11-07): the EPUB reader now has an explicit graph button that opens a cached projection through the end of the previous chapter. The boundary map is read from the engine, the cursor is never a page estimate, and the cache key is edition + chapter; claim/evidence detail remains closed. The pinned engine does **not** yet implement `edition_chapters`, so the shipped state is the typed capability gap, not a rendered real-ledger graph. Focused tests cover the boundary anchor, strict decoding, cache hit, engine-unsupported mapping, transport tripwires, and no auto-prewarm. Receipt: `docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md`.
 - ✅ E8 estimate facade and behavior SQLite (2026-11-07): every estimate surface uses one canonical pace, difficulty no longer changes page count, and behavior evidence writes through the existing SQLite tables with the JSON archive retained as a seed/mirror. Pinned by 16 focused tests (2 E8, 5 page-model, 7 provenance, 2 G6) and the full census above.
-- ✅ V2.0 rename verified: app/product/display name **AsterismaV2.0**, Swift module `AsterismaV2_0`, project/targets/scheme **AsterismaV2.0**, and source folders `AsterismaV2.0/` / `AsterismaV2.0Tests/` / `AsterismaV2.0UITests/`. Debug builds and the current 571-test census ran under the new scheme. The bundle ID `johan.Reading-Tracker` and the `Application Support/Asterisma/` data root are unchanged so existing libraries survive.
+- ✅ V2.5 identity rename (2026-11-07): app/product/display name **AsterismaV2.5**, Swift module `AsterismaV2_5`, project/targets/scheme **AsterismaV2.5**, marketing version **2.5**, and source folders `AsterismaV2.5/` / `AsterismaV2.5Tests/` / `AsterismaV2.5UITests/`. Debug build and the current **610-test** census ran under the new scheme (`./scripts/census.sh --unit-only`, exit 0). The bundle ID `johan.Reading-Tracker` and the `Application Support/Asterisma/` data root are unchanged so existing libraries survive. The earlier V2.0 rename (2026-10-29) remains a historical receipt; its `V2.0` label is not the current identity.
 - ✅ UI shell tranches (2026-10-29): a resume-first Home, a four-destination sidebar (⌘1–⌘4), a unified grid/list Library with a selected-book dock, embedded Insights/Goals, and a ⌘K Quick Open palette. The second tranche makes the Home hero and Library dock adaptive, makes Today goal-aware, and adds a Recently finished shelf. Debug build **BUILD SUCCEEDED**; the local unit census at that boundary was **441 / 671 / 432 passed / 9 skipped / 0 failed**. Owner visual acceptance is pending; the macOS screen-capture permission was denied, so no screenshot receipt exists. Design record: [UI-UX-OVERHAUL-2026-10-29.md](docs/design/UI-UX-OVERHAUL-2026-10-29.md).
 - ✅ Environment, Sentinel, and console navigation (2026-10-29): the environment engine now recomputes every 10 s instead of 45 s; a 20 fps atmosphere layer drifts two ambient glows continuously; a new deterministic weather layer draws rain, heavy rain, snow, heavy snow, fog, cloud shadow, wind streaks, and a storm flash from the engine's own weather snapshot; morning/midday/afternoon palettes were deepened and the engine adds a luminance-derived readability scrim (0.04 at night, at least 0.15 in the bright-morning pin). The Sentinel Health Center is now a persistent sidebar with an always-visible band/coverage header, issue search, severity filters, a ⌘] Next issue control, and a per-pane detail header. The Developer Console sidebar groups LIVE and PLANNED panes and has its own search; the new Environment Studio renders the real background, forces any minute or weather kind, and shows provenance; the new Subsystem Explorer searches id, purpose, activity, warnings, and metrics with a full detail pane. Five environment tests pin the mapping, override store, forced state, and scrim ordering; the full unit census at that boundary was **469 / 671 / 460 passed / 9 skipped / 0 failed**. Owner visual acceptance is pending, and no screenshot was captured. Design record: [UI-UX-OVERHAUL-2026-10-29.md](docs/design/UI-UX-OVERHAUL-2026-10-29.md) §9.
 - ✅ Reader customization (2026-10-29): the EPUB Appearance panel now has Paged/Scrolling mode, page turn animation, Both Margins Advance, and a 35–100% brightness dimmer; the PDF panel adds single/continuous/facing/facing+scroll layouts, fit page/width/height/actual, cover-alone, LTR/RTL page order, a 0–80 pt page gap, three mat colors, and the same brightness dimmer. Debug build **BUILD SUCCEEDED**; the reader-boundary census was green; a Chromium harness exercised 23 paged pages, 21 scrolling viewport-pages, `goToPage(3)` → `scrollY = 2160`, and the switch back to page 3 at `scrollLeft = 3840`. Owner visual acceptance and a real-book pass remain pending.
@@ -245,9 +245,9 @@ Requires a Mac with Xcode installed.
 ./scripts/run-latest.sh
 ```
 
-The runner picks the newest `AsterismaV*.xcodeproj` (V2.0 today), builds the current working tree with Xcode's default DerivedData, quits a running instance gracefully, and launches the exact bundle it just built. `--build-only` builds without launching; the log is at `~/Library/Logs/AsterismaV2.0/run-latest.log`. Use this instead of remembering a changing `xcodebuild` command or double-clicking the project and pressing Run when you need the terminal to be the source of truth.
+The runner picks the newest `AsterismaV*.xcodeproj` (V2.5 today), builds the current working tree with Xcode's default DerivedData, quits a running instance gracefully, and launches the exact bundle it just built. `--build-only` builds without launching; the log is at `~/Library/Logs/AsterismaV2.5/run-latest.log`. Use this instead of remembering a changing `xcodebuild` command or double-clicking the project and pressing Run when you need the terminal to be the source of truth.
 
-1. **Open the project:** double-click `AsterismaV2.0.xcodeproj`
+1. **Open the project:** double-click `AsterismaV2.5.xcodeproj`
 2. **Run:** ⌘R (or the Play button)
 3. **Developer Console:** ⌘⇧D (Debug builds only)
 4. **Settings:** ⌘, — includes the **Mirage pane** (feature switch, engine availability)
@@ -255,13 +255,13 @@ The runner picks the newest `AsterismaV*.xcodeproj` (V2.0 today), builds the cur
 To verify from the command line:
 
 ```bash
-xcodebuild build -project "AsterismaV2.0.xcodeproj" \
-  -scheme "AsterismaV2.0" \
+xcodebuild build -project "AsterismaV2.5.xcodeproj" \
+  -scheme "AsterismaV2.5" \
   -configuration Debug \
   -destination 'platform=macOS'
 
-xcodebuild test -project "AsterismaV2.0.xcodeproj" \
-  -scheme "AsterismaV2.0" \
+xcodebuild test -project "AsterismaV2.5.xcodeproj" \
+  -scheme "AsterismaV2.5" \
   -configuration Debug \
   -destination 'platform=macOS'
 ```
@@ -272,10 +272,10 @@ Mirage real-engine development (opt-in only, never part of the default suite):
 
 ```bash
 TEST_RUNNER_MIRAGE_REAL_ENGINE_DIR=/path/to/MirageV1.0 \
-  xcodebuild test -project "AsterismaV2.0.xcodeproj" \
-  -scheme "AsterismaV2.0" -configuration Debug \
+  xcodebuild test -project "AsterismaV2.5.xcodeproj" \
+  -scheme "AsterismaV2.5" -configuration Debug \
   -destination 'platform=macOS' \
-  -only-testing:"AsterismaV2.0Tests/MirageIdentityRealEngineImportTests"
+  -only-testing:"AsterismaV2.5Tests/MirageIdentityRealEngineImportTests"
 ```
 
 Mirage runtime staging (required for a fresh clone; the packaged release already contains it):
@@ -290,7 +290,7 @@ Release package:
 
 ```bash
 ./scripts/package-release.sh
-# → dist/AsterismaV2.0-2.0-arm64.zip + .sha256
+# → dist/AsterismaV2.5-2.0-arm64.zip + .sha256
 ```
 
 The package is ad-hoc signed, not notarized. First launch on another Mac requires right-click → Open. See `docs/plans/bedrock/DISTRIBUTION.md`.
@@ -310,7 +310,7 @@ python3 scripts/build-graph-3d.py                 # full node-level view
 python3 scripts/build-graph-3d.py --check         # fail if the output is stale
 ```
 
-`graph-3d-full.html` is the only 3D view; it is generated locally and gitignored. The last code refresh (2026-11-06) has **9,232 nodes / 21,963 edges / 451 communities**; it predates the 2.5–2.6 comic files and is stale for them. The full-node 3D page is 9,309,801 B (8.88 MiB). Graph hashes and the documentation-refresh limitation are recorded in `docs/registers/03-fix-log.md`. `graph.html` remains the 2D community export (aggregated because the full graph exceeds the 5,000-node 2D limit). The 3D page embeds `3d-force-graph` 1.80.2 with its MIT notice; the renderer is vendored under `scripts/vendor/`, and the page template is `scripts/graph3d-template.html`. A root `.graphifyignore` keeps that minified bundle (3,371 AST nodes) out of the graph, so the counts describe project code and docs. `--check` is deterministic because the generator embeds the source and renderer hashes, not a build timestamp. The aggregated community view (`graph-3d.html`) was retired on 2026-10-29.
+`graph-3d-full.html` is the only 3D view; it is generated locally and gitignored. The 2026-11-07 refresh has **10,201 nodes / 24,082 edges / 499 communities** and includes the 2.5–2.7 comic and Mirage files. The full-node 3D page is 10,084,631 B (9.62 MiB). Graph hashes and the refresh limitation are recorded in `docs/registers/03-fix-log.md`. `graph.html` is the last aggregated 2D community export; the 2026-11-07 graph exceeded graphify's 5,000-node viz limit, so that page was **not** regenerated and is stale. The 3D page embeds `3d-force-graph` 1.80.2 with its MIT notice; the renderer is vendored under `scripts/vendor/`, and the page template is `scripts/graph3d-template.html`. A root `.graphifyignore` keeps that minified bundle (3,371 AST nodes) out of the graph, so the counts describe project code and docs. `--check` is deterministic because the generator embeds the source and renderer hashes, not a build timestamp. The aggregated community view (`graph-3d.html`) was retired on 2026-10-29.
 
 The 3D view orbits a full 360° in pitch and yaw (the camera flips its up vector at the poles), the arrow keys drive the same rotation, and the settled layout is cached locally, so a reopen is interactive in a few hundred milliseconds instead of replaying the force simulation.
 
@@ -347,4 +347,4 @@ House rules:
 
 ## Status
 
-**AsterismaV2.0 is renamed, has a new reading-desk shell, and is honest about what remains.** The V1.0 release line above keeps its own receipts. The V2.0 tree has re-earned its build and census receipts; a launch receipt and a green remote run are still required before it can claim a release. The UI tranche is compiled and unit-tested, not visually accepted. The next session starts at `docs/registers/04-handoff.md` — owner visual acceptance first, then distribution hardening, reader highlights, Swift 6, or the Mirage standing cadence — baseline green first, commit at every boundary, exactly as every session before it did.
+**AsterismaV2.5 is renamed, has a new reading-desk shell, and is honest about what remains.** The V1.0 release line above keeps its own receipts. The V2.5 tree has re-earned its build and census receipts; a launch receipt and a green remote run are still required before it can claim a release. The UI tranche is compiled and unit-tested, not visually accepted. The next session starts at `docs/registers/04-handoff.md` — owner visual acceptance first, then distribution hardening, reader highlights, Swift 6, or the Mirage standing cadence — baseline green first, commit at every boundary, exactly as every session before it did.

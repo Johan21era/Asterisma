@@ -20,30 +20,30 @@ message rather than opening a file it cannot read.
 
 | Area | File | Behavior |
 |---|---|---|
-| Model | `AsterismaV2.0/Core/Book2.swift` | `BookFileType` adds `.cbz` and `.comic`; `Book.comicReadingMode` decodes tolerantly; `resolvedComicReadingMode` supplies the format default; `BookNoteAnchor` adds `.comic(pageIndex:)`. |
-| Container engine | `AsterismaV2.0/Features/Reader/ComicArchive.swift` | Natural page order, hidden/`__MACOSX` filtering, chapter grouping by folder, serialized CBZ extraction, explicit empty/unsupported errors. |
-| Reader rules | `AsterismaV2.0/Features/Reader/ComicReaderModel.swift` | Direction-aware arrow mapping (LTR, RTL, vertical), clamped pagination, progress labels. |
-| Reader UI | `AsterismaV2.0/Features/Reader/ComicReaderScreen.swift` | Native horizontal paging in correct LTR/RTL visual order, continuous vertical webtoon, direct-manipulation scrubber, chapter jumps, page-note sheet, auto-hiding floating chrome, session lifecycle through `SessionCoordinator`. |
-| Reader experience | `AsterismaV2.0/Features/Reader/ComicReaderExperience.swift` | Paper palettes, shared brightness, appearance panel, page scrubber, pan/zoom inspection, and the local keyboard monitor. |
-| Import | `AsterismaV2.0/Features/Library/BookImporter.swift` | `.cbz` and image-folder imports, first-page cover, chapter ranges, directory-selectable open panel, explicit CBR/CB7/CBT refusal. |
-| Dispatch | `AsterismaV2.0/App/NewContentView.swift` | `.cbz`/`.comic` route to `ComicReaderScreen`; EPUB/PDF keep their readers. |
-| Library | `AsterismaV2.0/Features/Library/LibraryFilterState.swift`, `LibraryFilterSidebarView.swift` | Format filter with only the formats present in the library. |
-| Reports | `AsterismaV2.0/Features/Reports/AnnualReportData2.swift`, `AnnualReportView.swift` | Format breakdown now includes comic counts. |
-| Notes | `AsterismaV2.0/Features/Reader/AnnotationCreation.swift` | `makePageNote`; comic captions read `— Page N`. |
-| Recovery | `AsterismaV2.0/Core/DataStore3.swift` | Relinking treats an image folder as `.comic` and an unzipped EPUB package as `.epub`. |
-| Sentinel | `AsterismaV2.0/Core/Sentinel/SentinelProbesFiles.swift` | FILE-009 skips image-folder comics, whose type is not extension-based. |
-| Copy | `AsterismaV2.0/App/CommandPalette.swift`, `ReadingDeskView.swift`, `LibraryBrowserView.swift`, `OnboardingView.swift` | Import and empty-state copy names comics. |
-| Tests | `AsterismaV2.0Tests/Reader/ComicArchiveTests.swift`, `ComicImportTests.swift`, `ComicReaderModelTests.swift` | 19 pins for ordering, extraction, import, mode inference, RTL visual order, page-image decode/cache, anchors, legacy decode, filters, and panel selection. |
-| 2.6 metadata | `AsterismaV2.0/Features/Reader/ComicMetadata.swift` | ComicInfo.xml parser: title, series, number, volume, writer, penciller, publisher, summary, genre, language, manga direction, declared page count, and the zero-based front-cover page. Malformed or absent files are metadata misses, never import failures. |
-| 2.6 import wiring | `AsterismaV2.0/Features/Library/BookImporter.swift` | Comic title/author/series/genre/direction/cover come from ComicInfo.xml when present; a declared cover page is honored, otherwise page one. |
-| 2.6 model | `AsterismaV2.0/Core/Book2.swift` | `Book.comicInfo` stores the parsed record with a tolerant decode, so every pre-2.6 library payload still loads. |
-| 2.6 inspector | `AsterismaV2.0/Features/Library/BookDetailsView.swift` | Read-only Comic Metadata section: series/issue, publisher, language, reading direction, and summary. |
-| 2.6 Mirage bridge | `AsterismaV2.0/Features/Mirage/ComicMirageBridge.swift` | On-device Vision OCR → deterministic EPUB 3 text edition, cached by source digest and derivation version; tall webtoon strips are OCR'd in overlapping native-resolution tiles; RTL modes order same-line balloons right-to-left. |
-| 2.6 Mirage flow | `AsterismaV2.0/Features/Mirage/MirageImportFlow.swift`, `MirageEngineService.swift` | `MirageSourceKind` (`.epub`/`.comic`/`.unsupported`), folder-capable source fingerprints, derived-EPUB digest for the receipt check, original container digest for the identity anchor, and the typed `.analysisPreparationFailed` outcome. |
+| Model | `AsterismaV2.5/Core/Book2.swift` | `BookFileType` adds `.cbz` and `.comic`; `Book.comicReadingMode` decodes tolerantly; `resolvedComicReadingMode` supplies the format default; `BookNoteAnchor` adds `.comic(pageIndex:)`. |
+| Container engine | `AsterismaV2.5/Features/Reader/ComicArchive.swift` | Natural page order, hidden/`__MACOSX` filtering, chapter grouping by folder, serialized CBZ extraction, explicit empty/unsupported errors. |
+| Reader rules | `AsterismaV2.5/Features/Reader/ComicReaderModel.swift` | Direction-aware arrow mapping (LTR, RTL, vertical), clamped pagination, progress labels. |
+| Reader UI | `AsterismaV2.5/Features/Reader/ComicReaderScreen.swift` | Native horizontal paging in correct LTR/RTL visual order, continuous vertical webtoon, direct-manipulation scrubber, chapter jumps, page-note sheet, auto-hiding floating chrome, session lifecycle through `SessionCoordinator`. |
+| Reader experience | `AsterismaV2.5/Features/Reader/ComicReaderExperience.swift` | Paper palettes, shared brightness, appearance panel, page scrubber, pan/zoom inspection, and the local keyboard monitor. |
+| Import | `AsterismaV2.5/Features/Library/BookImporter.swift` | `.cbz` and image-folder imports, first-page cover, chapter ranges, directory-selectable open panel, explicit CBR/CB7/CBT refusal. |
+| Dispatch | `AsterismaV2.5/App/NewContentView.swift` | `.cbz`/`.comic` route to `ComicReaderScreen`; EPUB/PDF keep their readers. |
+| Library | `AsterismaV2.5/Features/Library/LibraryFilterState.swift`, `LibraryFilterSidebarView.swift` | Format filter with only the formats present in the library. |
+| Reports | `AsterismaV2.5/Features/Reports/AnnualReportData2.swift`, `AnnualReportView.swift` | Format breakdown now includes comic counts. |
+| Notes | `AsterismaV2.5/Features/Reader/AnnotationCreation.swift` | `makePageNote`; comic captions read `— Page N`. |
+| Recovery | `AsterismaV2.5/Core/DataStore3.swift` | Relinking treats an image folder as `.comic` and an unzipped EPUB package as `.epub`. |
+| Sentinel | `AsterismaV2.5/Core/Sentinel/SentinelProbesFiles.swift` | FILE-009 skips image-folder comics, whose type is not extension-based. |
+| Copy | `AsterismaV2.5/App/CommandPalette.swift`, `ReadingDeskView.swift`, `LibraryBrowserView.swift`, `OnboardingView.swift` | Import and empty-state copy names comics. |
+| Tests | `AsterismaV2.5Tests/Reader/ComicArchiveTests.swift`, `ComicImportTests.swift`, `ComicReaderModelTests.swift` | 19 pins for ordering, extraction, import, mode inference, RTL visual order, page-image decode/cache, anchors, legacy decode, filters, and panel selection. |
+| 2.6 metadata | `AsterismaV2.5/Features/Reader/ComicMetadata.swift` | ComicInfo.xml parser: title, series, number, volume, writer, penciller, publisher, summary, genre, language, manga direction, declared page count, and the zero-based front-cover page. Malformed or absent files are metadata misses, never import failures. |
+| 2.6 import wiring | `AsterismaV2.5/Features/Library/BookImporter.swift` | Comic title/author/series/genre/direction/cover come from ComicInfo.xml when present; a declared cover page is honored, otherwise page one. |
+| 2.6 model | `AsterismaV2.5/Core/Book2.swift` | `Book.comicInfo` stores the parsed record with a tolerant decode, so every pre-2.6 library payload still loads. |
+| 2.6 inspector | `AsterismaV2.5/Features/Library/BookDetailsView.swift` | Read-only Comic Metadata section: series/issue, publisher, language, reading direction, and summary. |
+| 2.6 Mirage bridge | `AsterismaV2.5/Features/Mirage/ComicMirageBridge.swift` | On-device Vision OCR → deterministic EPUB 3 text edition, cached by source digest and derivation version; tall webtoon strips are OCR'd in overlapping native-resolution tiles; RTL modes order same-line balloons right-to-left. |
+| 2.6 Mirage flow | `AsterismaV2.5/Features/Mirage/MirageImportFlow.swift`, `MirageEngineService.swift` | `MirageSourceKind` (`.epub`/`.comic`/`.unsupported`), folder-capable source fingerprints, derived-EPUB digest for the receipt check, original container digest for the identity anchor, and the typed `.analysisPreparationFailed` outcome. |
 | 2.6 Mirage gates | `MirageAnalysisSheetView.swift`, `MirageBatchAnalyzer.swift`, `MirageAppImportMount.swift`, `SettingsRootView.swift`, `ComicReaderScreen.swift` | Comics are eligible in the sheet, the batch queue, and Settings coverage counts; the comic reader's chrome carries the same Analyze with Mirage entry as the EPUB reader. |
-| 2.6 scope | `AsterismaV2.0/Features/Mirage/MirageImportFlow.swift`, `MirageEngineService.swift` | The source fingerprint and the whole comic preparation path start/stop the bookmark's security scope, so hashing and OCR survive an app restart. |
-| 2.6 paragraph guard | `AsterismaV2.0/Features/Mirage/ComicMirageBridge.swift` | OCR lines longer than 2,000 characters are split deterministically at word boundaries, below the engine's per-paragraph limit. |
-| 2.6 tests | `AsterismaV2.0Tests/Reader/ComicMetadataTests.swift`, `AsterismaV2.0Tests/Mirage/ComicMirageBridgeTests.swift`, `AsterismaV2.0Tests/Mirage/MirageComicImportTests.swift` | 19 new pins: parser/import metadata (7), bridge structure/determinism/cache/failure (6), and comic identity/gates/folder fingerprint (6); the normalization pin also checks long-line splitting. |
+| 2.6 scope | `AsterismaV2.5/Features/Mirage/MirageImportFlow.swift`, `MirageEngineService.swift` | The source fingerprint and the whole comic preparation path start/stop the bookmark's security scope, so hashing and OCR survive an app restart. |
+| 2.6 paragraph guard | `AsterismaV2.5/Features/Mirage/ComicMirageBridge.swift` | OCR lines longer than 2,000 characters are split deterministically at word boundaries, below the engine's per-paragraph limit. |
+| 2.6 tests | `AsterismaV2.5Tests/Reader/ComicMetadataTests.swift`, `AsterismaV2.5Tests/Mirage/ComicMirageBridgeTests.swift`, `AsterismaV2.5Tests/Mirage/MirageComicImportTests.swift` | 19 new pins: parser/import metadata (7), bridge structure/determinism/cache/failure (6), and comic identity/gates/folder fingerprint (6); the normalization pin also checks long-line splitting. |
 
 ## 2.5.1 — the reader feels like a surface
 
@@ -130,7 +130,7 @@ action was invented, and `.mirage-runtime/` remains the pinned staged copy.
 The Debug app build succeeded:
 
 ```bash
-xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build
 ```
 
 Result: `** BUILD SUCCEEDED **`, exit **0**.
@@ -141,7 +141,7 @@ focused run adds the metadata, bridge, comic-identity, batch, and fingerprint
 suites:
 
 ```bash
-xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO -only-testing:AsterismaV2.0Tests/ComicMetadataTests -only-testing:AsterismaV2.0Tests/ComicMirageBridgeTests -only-testing:AsterismaV2.0Tests/MirageComicImportTests -only-testing:AsterismaV2.0Tests/MirageBatchAnalyzerTests -only-testing:AsterismaV2.0Tests/MirageFingerprintTests
+xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO -only-testing:AsterismaV2.5Tests/ComicMetadataTests -only-testing:AsterismaV2.5Tests/ComicMirageBridgeTests -only-testing:AsterismaV2.5Tests/MirageComicImportTests -only-testing:AsterismaV2.5Tests/MirageBatchAnalyzerTests -only-testing:AsterismaV2.5Tests/MirageFingerprintTests
 ```
 
 Result: **25 tests in 5 suites passed**, exit **0**.
@@ -207,22 +207,22 @@ Result: exit **0**.
 
 ## Evidence map
 
-- Model and anchor: `AsterismaV2.0/Core/Book2.swift`.
-- Container and chapter rules: `AsterismaV2.0/Features/Reader/ComicArchive.swift`.
-- Reader: `AsterismaV2.0/Features/Reader/ComicReaderScreen.swift`,
-  `AsterismaV2.0/Features/Reader/ComicReaderModel.swift`,
-  `AsterismaV2.0/Features/Reader/ComicReaderExperience.swift`.
-- Import: `AsterismaV2.0/Features/Library/BookImporter.swift`.
-- Metadata: `AsterismaV2.0/Features/Reader/ComicMetadata.swift`;
-  `AsterismaV2.0/Features/Library/BookDetailsView.swift`.
-- Mirage bridge: `AsterismaV2.0/Features/Mirage/ComicMirageBridge.swift`.
+- Model and anchor: `AsterismaV2.5/Core/Book2.swift`.
+- Container and chapter rules: `AsterismaV2.5/Features/Reader/ComicArchive.swift`.
+- Reader: `AsterismaV2.5/Features/Reader/ComicReaderScreen.swift`,
+  `AsterismaV2.5/Features/Reader/ComicReaderModel.swift`,
+  `AsterismaV2.5/Features/Reader/ComicReaderExperience.swift`.
+- Import: `AsterismaV2.5/Features/Library/BookImporter.swift`.
+- Metadata: `AsterismaV2.5/Features/Reader/ComicMetadata.swift`;
+  `AsterismaV2.5/Features/Library/BookDetailsView.swift`.
+- Mirage bridge: `AsterismaV2.5/Features/Mirage/ComicMirageBridge.swift`.
 - Mirage identity and gates: `MirageImportFlow.swift`,
   `MirageEngineService.swift`, `MirageAnalysisSheetView.swift`,
   `MirageBatchAnalyzer.swift`, `MirageAppImportMount.swift`,
-  `AsterismaV2.0/Features/Goals/SettingsRootView.swift`.
-- Tests: `AsterismaV2.0Tests/Reader/ComicArchiveTests.swift`,
+  `AsterismaV2.5/Features/Goals/SettingsRootView.swift`.
+- Tests: `AsterismaV2.5Tests/Reader/ComicArchiveTests.swift`,
   `ComicImportTests.swift`, `ComicReaderModelTests.swift`,
-  `ComicMetadataTests.swift`; `AsterismaV2.0Tests/Mirage/ComicMirageBridgeTests.swift`,
+  `ComicMetadataTests.swift`; `AsterismaV2.5Tests/Mirage/ComicMirageBridgeTests.swift`,
   `MirageComicImportTests.swift`.
 - Session close: `docs/registers/04-handoff.md`; fix entries:
   `docs/registers/03-fix-log.md` Stage AU (2.5), Stage AV (2.5.1), and Stage AW (2.6).

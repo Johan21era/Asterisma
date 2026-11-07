@@ -320,10 +320,10 @@ def main():
         'source_sha256': {str(path.relative_to(ROOT)): digest(path) for path in [
             ROOT / 'tools/cde/fresh_100.py',
             ROOT / 'tools/cde/analyze_fresh_200.py',
-            ROOT / 'AsterismaV2.0/Engines/AnalyticsEngine.swift',
-            ROOT / 'AsterismaV2.0/Engines/EstimationEngine.swift',
-            ROOT / 'AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift',
-            ROOT / 'AsterismaV2.0Tests/Engines/FreshStressBundleTests.swift',
+            ROOT / 'AsterismaV2.5/Engines/AnalyticsEngine.swift',
+            ROOT / 'AsterismaV2.5/Engines/EstimationEngine.swift',
+            ROOT / 'AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift',
+            ROOT / 'AsterismaV2.5Tests/Engines/FreshStressBundleTests.swift',
         ]},
         'batch_sha256': {path.name: digest(path)
                          for path in sorted(directory.glob('rounds-*-graded.json'))},

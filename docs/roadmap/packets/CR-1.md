@@ -15,13 +15,13 @@ but "what will break, corrupt, leak, or silently no-op".
 
 ## Scope
 
-- `AsterismaV2.0/Core/Book2.swift` — `BookNote`, `AnnotationColor`,
+- `AsterismaV2.5/Core/Book2.swift` — `BookNote`, `AnnotationColor`,
   `BookNoteAnchor`, `NormalizedRect`, `NoteTag.quote`.
-- `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` — the `v2` migration, both
+- `AsterismaV2.5/Core/Storage/LibraryDatabase.swift` — the `v2` migration, both
   note INSERT paths, `anchorJSON`, `decodeAnchor`.
-- `AsterismaV2.0/Features/Reader/EPUBReaderScreen.swift` — the injected selection
+- `AsterismaV2.5/Features/Reader/EPUBReaderScreen.swift` — the injected selection
   script, `EPUBTextSelection`, `EPUBSelectionState`, handler teardown.
-- `AsterismaV2.0/Features/Reader/PDFReaderView2.swift` — `PDFTextSelection`,
+- `AsterismaV2.5/Features/Reader/PDFReaderView2.swift` — `PDFTextSelection`,
   `PDFSelectionGeometry`, the `.PDFViewSelectionChanged` observer.
 - The three test files that pin them.
 

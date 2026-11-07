@@ -8,7 +8,7 @@
 ---
 
 > **Historical baseline.** The numbers below are the starting point. The final
-> AsterismaV2.0 census is **213 passed / 0 failed / 9 skipped**; see `GATE-G8.md`.
+> AsterismaV2.5 census is **213 passed / 0 failed / 9 skipped**; see `GATE-G8.md`.
 
 ## Build and census
 
@@ -18,7 +18,7 @@
 | Full test run | **TEST SUCCEEDED**, 46.4 s wall |
 | Unit census | **191 passed / 0 failed / 4 skipped** (195 cases) |
 | UI tests | 4 executed template cases, all pass |
-| Baseline `.xcresult` | `Test-AsterismaV2.0-2026.10.24_01-23-44--0400.xcresult` |
+| Baseline `.xcresult` | `Test-AsterismaV2.5-2026.10.24_01-23-44--0400.xcresult` |
 
 ## Source
 

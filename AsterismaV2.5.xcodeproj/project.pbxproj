@@ -1,0 +1,672 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CA272B662FE05F8D0031387F /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CA272B652FE05F8D0031387F /* ZIPFoundation */; };
+		CA272B912FE066670031387F /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = CA272B922FE066670031387F /* GRDB */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CA272B372FE04E920031387F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA272B1F2FE04E910031387F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA272B262FE04E910031387F;
+			remoteInfo = "AsterismaV2.5";
+		};
+		CA272B412FE04E920031387F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA272B1F2FE04E910031387F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA272B262FE04E910031387F;
+			remoteInfo = "AsterismaV2.5";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CA272B272FE04E910031387F /* AsterismaV2.5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AsterismaV2.5.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA272B362FE04E920031387F /* AsterismaV2.5Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AsterismaV2.5Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA272B402FE04E920031387F /* AsterismaV2.5UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AsterismaV2.5UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA272B762FE068150031387F /* AsterismaV2.5-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AsterismaV2.5-Info.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CA272B292FE04E910031387F /* AsterismaV2.5 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "AsterismaV2.5";
+			sourceTree = "<group>";
+		};
+		CA272B392FE04E920031387F /* AsterismaV2.5Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "AsterismaV2.5Tests";
+			sourceTree = "<group>";
+		};
+		CA272B432FE04E920031387F /* AsterismaV2.5UITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "AsterismaV2.5UITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CA272B242FE04E910031387F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA272B662FE05F8D0031387F /* ZIPFoundation in Frameworks */,
+				CA272B912FE066670031387F /* GRDB in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA272B332FE04E920031387F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA272B3D2FE04E920031387F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CA272B1E2FE04E910031387F = {
+			isa = PBXGroup;
+			children = (
+				CA272B762FE068150031387F /* AsterismaV2.5-Info.plist */,
+				CA272B292FE04E910031387F /* AsterismaV2.5 */,
+				CA272B392FE04E920031387F /* AsterismaV2.5Tests */,
+				CA272B432FE04E920031387F /* AsterismaV2.5UITests */,
+				CA272B752FE066670031387F /* Frameworks */,
+				CA272B282FE04E910031387F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CA272B282FE04E910031387F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CA272B272FE04E910031387F /* AsterismaV2.5.app */,
+				CA272B362FE04E920031387F /* AsterismaV2.5Tests.xctest */,
+				CA272B402FE04E920031387F /* AsterismaV2.5UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CA272B752FE066670031387F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CA272B262FE04E910031387F /* AsterismaV2.5 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA272B4A2FE04E920031387F /* Build configuration list for PBXNativeTarget "AsterismaV2.5" */;
+			buildPhases = (
+				CA272B232FE04E910031387F /* Sources */,
+				CA272B242FE04E910031387F /* Frameworks */,
+				CA272B252FE04E910031387F /* Resources */,
+				CA272B902FE066670031387F /* Embed Mirage Runtime */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CA272B292FE04E910031387F /* AsterismaV2.5 */,
+			);
+			name = "AsterismaV2.5";
+			packageProductDependencies = (
+				CA272B652FE05F8D0031387F /* ZIPFoundation */,
+				CA272B922FE066670031387F /* GRDB */,
+			);
+			productName = "AsterismaV2.5";
+			productReference = CA272B272FE04E910031387F /* AsterismaV2.5.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CA272B352FE04E920031387F /* AsterismaV2.5Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA272B4D2FE04E920031387F /* Build configuration list for PBXNativeTarget "AsterismaV2.5Tests" */;
+			buildPhases = (
+				CA272B322FE04E920031387F /* Sources */,
+				CA272B332FE04E920031387F /* Frameworks */,
+				CA272B342FE04E920031387F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA272B382FE04E920031387F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CA272B392FE04E920031387F /* AsterismaV2.5Tests */,
+			);
+			name = "AsterismaV2.5Tests";
+			packageProductDependencies = (
+			);
+			productName = "AsterismaV2.5Tests";
+			productReference = CA272B362FE04E920031387F /* AsterismaV2.5Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CA272B3F2FE04E920031387F /* AsterismaV2.5UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA272B502FE04E920031387F /* Build configuration list for PBXNativeTarget "AsterismaV2.5UITests" */;
+			buildPhases = (
+				CA272B3C2FE04E920031387F /* Sources */,
+				CA272B3D2FE04E920031387F /* Frameworks */,
+				CA272B3E2FE04E920031387F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA272B422FE04E920031387F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CA272B432FE04E920031387F /* AsterismaV2.5UITests */,
+			);
+			name = "AsterismaV2.5UITests";
+			packageProductDependencies = (
+			);
+			productName = "AsterismaV2.5UITests";
+			productReference = CA272B402FE04E920031387F /* AsterismaV2.5UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CA272B1F2FE04E910031387F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2650;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					CA272B262FE04E910031387F = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					CA272B352FE04E920031387F = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = CA272B262FE04E910031387F;
+					};
+					CA272B3F2FE04E920031387F = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = CA272B262FE04E910031387F;
+					};
+				};
+			};
+			buildConfigurationList = CA272B222FE04E910031387F /* Build configuration list for PBXProject "AsterismaV2.5" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CA272B1E2FE04E910031387F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CA272B642FE05F8D0031387F /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				CA272B932FE066670031387F /* XCRemoteSwiftPackageReference "GRDB" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CA272B282FE04E910031387F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CA272B262FE04E910031387F /* AsterismaV2.5 */,
+				CA272B352FE04E920031387F /* AsterismaV2.5Tests */,
+				CA272B3F2FE04E920031387F /* AsterismaV2.5UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CA272B252FE04E910031387F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA272B342FE04E920031387F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA272B3E2FE04E920031387F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CA272B902FE066670031387F /* Embed Mirage Runtime */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Mirage Runtime";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -euo pipefail\nSTAGE=\"${MIRAGE_RUNTIME_STAGE:-$SRCROOT/.mirage-runtime/mirage-runtime}\"\nDEST=\"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/mirage-runtime\"\nif [ ! -d \"$STAGE\" ]; then\n  echo \"warning: Mirage runtime stage missing at $STAGE — building without Mirage\"\n  exit 0\nfi\nrm -rf \"$DEST\"\n/usr/bin/ditto \"$STAGE\" \"$DEST\"\n# Verify the two manifest-pinned file hashes before declaring the bundle usable.\nMANIFEST=\"$DEST/RUNTIME-MANIFEST.json\"\nif [ -f \"$MANIFEST\" ]; then\n  PY_SHA=$(/usr/bin/shasum -a 256 \"$DEST/bin/python3.12\" | awk '{print $1}')\n  SIDECAR_SHA=$(/usr/bin/shasum -a 256 \"$DEST/examples/mirage_sidecar.py\" | awk '{print $1}')\n  grep -q \"$PY_SHA\" \"$MANIFEST\"\n  grep -q \"$SIDECAR_SHA\" \"$MANIFEST\"\nfi\necho \"Embedded Mirage runtime at $DEST\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CA272B232FE04E910031387F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA272B322FE04E920031387F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA272B3C2FE04E920031387F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CA272B382FE04E920031387F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA272B262FE04E910031387F /* AsterismaV2.5 */;
+			targetProxy = CA272B372FE04E920031387F /* PBXContainerItemProxy */;
+		};
+		CA272B422FE04E920031387F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA272B262FE04E910031387F /* AsterismaV2.5 */;
+			targetProxy = CA272B412FE04E920031387F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CA272B482FE04E920031387F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CA272B492FE04E920031387F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		CA272B4B2FE04E920031387F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "AsterismaV2.5.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AsterismaV2.5-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 2.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "johan.Reading-Tracker";
+				PRODUCT_MODULE_NAME = AsterismaV2_5;
+				INFOPLIST_KEY_CFBundleDisplayName = "AsterismaV2.5";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CA272B4C2FE04E920031387F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "AsterismaV2.5.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AsterismaV2.5-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 2.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "johan.Reading-Tracker";
+				PRODUCT_MODULE_NAME = AsterismaV2_5;
+				INFOPLIST_KEY_CFBundleDisplayName = "AsterismaV2.5";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CA272B4E2FE04E920031387F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 2.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "johan.AsterismaTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsterismaV2.5.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AsterismaV2.5";
+			};
+			name = Debug;
+		};
+		CA272B4F2FE04E920031387F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 2.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "johan.AsterismaTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AsterismaV2.5.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AsterismaV2.5";
+			};
+			name = Release;
+		};
+		CA272B512FE04E920031387F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 2.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "johan.AsterismaUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "AsterismaV2.5";
+			};
+			name = Debug;
+		};
+		CA272B522FE04E920031387F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 2.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "johan.AsterismaUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "AsterismaV2.5";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CA272B222FE04E910031387F /* Build configuration list for PBXProject "AsterismaV2.5" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA272B482FE04E920031387F /* Debug */,
+				CA272B492FE04E920031387F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA272B4A2FE04E920031387F /* Build configuration list for PBXNativeTarget "AsterismaV2.5" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA272B4B2FE04E920031387F /* Debug */,
+				CA272B4C2FE04E920031387F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA272B4D2FE04E920031387F /* Build configuration list for PBXNativeTarget "AsterismaV2.5Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA272B4E2FE04E920031387F /* Debug */,
+				CA272B4F2FE04E920031387F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA272B502FE04E920031387F /* Build configuration list for PBXNativeTarget "AsterismaV2.5UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA272B512FE04E920031387F /* Debug */,
+				CA272B522FE04E920031387F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CA272B642FE05F8D0031387F /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.20;
+			};
+		};
+		CA272B932FE066670031387F /* XCRemoteSwiftPackageReference "GRDB" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CA272B652FE05F8D0031387F /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA272B642FE05F8D0031387F /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		CA272B922FE066670031387F /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA272B932FE066670031387F /* XCRemoteSwiftPackageReference "GRDB" */;
+			productName = GRDB;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = CA272B1F2FE04E910031387F /* Project object */;
+}

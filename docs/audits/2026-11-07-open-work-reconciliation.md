@@ -10,15 +10,15 @@ rows were not copied into this file as facts.
 
 | Item | Source | Verified receipt | Disposition |
 |---|---|---|---|
-| NA-3 report-generation race | `docs/roadmap/05-remediation-roadmap.md:46` | `AsterismaV2.0/Features/Reports/AnnualReportArchiveView2.swift:35` and `:151` — `generationToken` is incremented and a stale result is discarded; no focused test found | **VERIFY_AND_CLOSE** — add or relocate a rapid-switch pin in P0.5/G3 |
-| NA-4 apple-events entitlement and usage string | `docs/roadmap/05-remediation-roadmap.md:47` | `AsterismaV2.0.entitlements:28`; `AsterismaV2.0-Info.plist:14`; built `Info.plist` contains `NSAppleEventsUsageDescription` and `NSLocationWhenInUseUsageDescription` | **CLOSED** |
-| NA-5 privacy manifest | `docs/roadmap/05-remediation-roadmap.md:48` | `AsterismaV2.0/PrivacyInfo.xcprivacy`; the synchronized app group includes it; built `AsterismaV2.0.app/Contents/Resources/PrivacyInfo.xcprivacy` reads back with `plutil` | **CLOSED** |
-| F-12 re-bind accumulation | `docs/roadmap/05-remediation-roadmap.md:147` | `AsterismaV2.0/Features/Sessions/SessionEventRouter2.swift:65-67`; `AsterismaV2.0/Features/Goals/ReadingGoalManager2.swift:349-354`; pin at `AsterismaV2.0Tests/App/RemediationPinsTests.swift:229` | **CLOSED**; P0.4 census passed 518 tests / 509 passed / 9 skipped / 0 failed |
+| NA-3 report-generation race | `docs/roadmap/05-remediation-roadmap.md:46` | `AsterismaV2.5/Features/Reports/AnnualReportArchiveView2.swift:35` and `:151` — `generationToken` is incremented and a stale result is discarded; no focused test found | **VERIFY_AND_CLOSE** — add or relocate a rapid-switch pin in P0.5/G3 |
+| NA-4 apple-events entitlement and usage string | `docs/roadmap/05-remediation-roadmap.md:47` | `AsterismaV2.5.entitlements:28`; `AsterismaV2.5-Info.plist:14`; built `Info.plist` contains `NSAppleEventsUsageDescription` and `NSLocationWhenInUseUsageDescription` | **CLOSED** |
+| NA-5 privacy manifest | `docs/roadmap/05-remediation-roadmap.md:48` | `AsterismaV2.5/PrivacyInfo.xcprivacy`; the synchronized app group includes it; built `AsterismaV2.5.app/Contents/Resources/PrivacyInfo.xcprivacy` reads back with `plutil` | **CLOSED** |
+| F-12 re-bind accumulation | `docs/roadmap/05-remediation-roadmap.md:147` | `AsterismaV2.5/Features/Sessions/SessionEventRouter2.swift:65-67`; `AsterismaV2.5/Features/Goals/ReadingGoalManager2.swift:349-354`; pin at `AsterismaV2.5Tests/App/RemediationPinsTests.swift:229` | **CLOSED**; P0.4 census passed 518 tests / 509 passed / 9 skipped / 0 failed |
 
 The P0.4 baseline build used:
 
 ```bash
-xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 \
+xcodebuild -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 \
   -configuration Debug -derivedDataPath /tmp/asterisma-dd-wp01 \
   CODE_SIGNING_ALLOWED=NO build
 ```

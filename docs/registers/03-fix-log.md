@@ -328,7 +328,7 @@ UI-inclusive gate remains unclaimed.
 
 | Item | What changed | Verification |
 |---|---|---|
-| R-001 | App shell moved from the flat app root to `AsterismaV2.0/App/` | 2 `git mv` operations; before/after SHA-256 equal |
+| R-001 | App shell moved from the flat app root to `AsterismaV2.5/App/` | 2 `git mv` operations; before/after SHA-256 equal |
 | R-002 | 48 flat test files grouped into `App`, `Behavior`, `Core`, `DeveloperConsole`, `Environment`, `Library`, `Mirage`, and `Reader` | 48 `git mv` operations; 100% renames, 0 content edits |
 | R-003 | 280-file baseline reconciled; path-dependent, signing, user-data, release, and historical files left in place | 0 missing, 0 mismatched, 0 unapproved changes; report in `docs/reorganization/` |
 | R-004 | GitHub `census` moved from `macos-14` / Xcode 15.4 to `macos-26` / Xcode 26.6 | Xcode 15.4 cannot open project format 77; Xcode 26.6 opens and builds it |
@@ -516,12 +516,12 @@ configured; doc changes were re-extracted structurally by the update. The
 tracked Markdown files outside this audit remain scheduled for the full sweep
 recorded in `docs/registers/05-doc-audit.md`.
 
-## Stage X — AsterismaV2.0 rename (2026-10-29)
+## Stage X — AsterismaV2.5 rename (2026-10-29)
 
 | Item | What changed | Verification |
 |---|---|---|
-| R-002 | Product, project, app target, scheme, test targets, Swift module, source/test/UI folders, Info.plist, entitlements, release script, CI, and current docs renamed to `AsterismaV2.0` / `AsterismaV2_0`. Bundle ID and data root deliberately unchanged. | Debug and Release builds both `** BUILD SUCCEEDED **`; unit census 432 / 671 / 423 / 9 / 0; surface manifest OK; comprehension bank OK; 83 Markdown files audit OK; `verify-test-isolation.sh` byte-identical. |
-| R-003 | `MARKETING_VERSION` raised to 2.0 and `CURRENT_PROJECT_VERSION` to 2; generated Sentinel surface catalog regenerated after the module rename. | `xcodebuild -list` shows targets `AsterismaV2.0`, `AsterismaV2.0Tests`, `AsterismaV2.0UITests`; surface report 15 tables / 8 defaults keys / 5 notification names. |
+| R-002 | Product, project, app target, scheme, test targets, Swift module, source/test/UI folders, Info.plist, entitlements, release script, CI, and current docs renamed to `AsterismaV2.5` / `AsterismaV2_5`. Bundle ID and data root deliberately unchanged. | Debug and Release builds both `** BUILD SUCCEEDED **`; unit census 432 / 671 / 423 / 9 / 0; surface manifest OK; comprehension bank OK; 83 Markdown files audit OK; `verify-test-isolation.sh` byte-identical. |
+| R-003 | `MARKETING_VERSION` raised to 2.0 and `CURRENT_PROJECT_VERSION` to 2; generated Sentinel surface catalog regenerated after the module rename. | `xcodebuild -list` shows targets `AsterismaV2.5`, `AsterismaV2.5Tests`, `AsterismaV2.5UITests`; surface report 15 tables / 8 defaults keys / 5 notification names. |
 | X-001 | Graph refreshed after 256 path moves and the doc rewrite. | `graphify update . --force` on the working tree (base commit `fced076`) → **7,621 nodes / 19,186 edges / 355 communities**; aggregated `graph.html` 355 community nodes / 1,339 cross-community edges (432,802 B); `build-graph-3d.py` 8,146,098 B (7.77 MiB), `--check` → `ok`. |
 
 **Historical preservation:** V1.0 package filenames, tags, SHAs, milestone
@@ -549,10 +549,10 @@ remove the duplicate library mental model, and keep the reader untouched.
 | Item | What changed | Verification |
 |---|---|---|
 | Y-001 | Added a weighted multi-criteria model and the design record for the shell, including the 20,000-draw ±15% weight sensitivity run. | `docs/design/UI-UX-OVERHAUL-2026-10-29.md`; shell/Home/Library were top three in 100% of draws. |
-| Y-002 | New Home reading desk: resume-first hero, today/streak/in-progress/finished stats, in-progress and next-up shelves, empty and caught-up states. | `AsterismaV2.0/Features/Home/ReadingDeskView.swift`; Debug build succeeded. |
-| Y-003 | New unified Library browser: adaptive grid, list toggle, search, five shelf filters, selected-book dock, empty/no-match states. | `AsterismaV2.0/Features/Library/LibraryBrowserView.swift`; Debug build succeeded. |
-| Y-004 | Replaced the book-list sidebar with four destinations (Home, Library, Insights, Goals, ⌘1–⌘4); embedded Insights/Goals; retained secondary actions in More; kept Add Book one click away. | `AsterismaV2.0/App/AppSection.swift`, `AsterismaV2.0/App/NewContentView.swift`; Debug build succeeded. |
-| Y-005 | Removed the spatial-explorer entry point from the main window. The unreferenced spatial files remain in the tree for a separate cleanup decision. | `rg -n "LibraryExplorerView" AsterismaV2.0` returns only the definition/comments; no app call site. |
+| Y-002 | New Home reading desk: resume-first hero, today/streak/in-progress/finished stats, in-progress and next-up shelves, empty and caught-up states. | `AsterismaV2.5/Features/Home/ReadingDeskView.swift`; Debug build succeeded. |
+| Y-003 | New unified Library browser: adaptive grid, list toggle, search, five shelf filters, selected-book dock, empty/no-match states. | `AsterismaV2.5/Features/Library/LibraryBrowserView.swift`; Debug build succeeded. |
+| Y-004 | Replaced the book-list sidebar with four destinations (Home, Library, Insights, Goals, ⌘1–⌘4); embedded Insights/Goals; retained secondary actions in More; kept Add Book one click away. | `AsterismaV2.5/App/AppSection.swift`, `AsterismaV2.5/App/NewContentView.swift`; Debug build succeeded. |
+| Y-005 | Removed the spatial-explorer entry point from the main window. The unreferenced spatial files remain in the tree for a separate cleanup decision. | `rg -n "LibraryExplorerView" AsterismaV2.5` returns only the definition/comments; no app call site. |
 | Y-006 | Refreshed graphify and the full 3D page after the new Swift files and design record. | `graphify update . --force` → **7,677 nodes / 19,284 edges / 359 communities**; `graphify export html` → 359 community nodes / 1,362 cross-community edges, 439,168 B; `python3 scripts/build-graph-3d.py` → 8,182,614 B (7.80 MiB), `--check` → `ok`. |
 
 **Graph artifact hashes (2026-10-29, Stage Y):** `graph.json`
@@ -598,7 +598,7 @@ secondary action without hunting.
 | Z-004 | Today's stat card is goal-aware: daily pages first, daily time second, otherwise today's pages with “Set a daily goal.” The card opens Goals. Added a **Recently finished** shelf. | Build succeeded; uses existing `GoalProgressViewModel.statuses` and `Book` fields only. |
 | Z-005 | Added ⌘F to focus Library search, Escape to clear/leave the field, and accessibility labels/values on shelf filters. | Build succeeded. |
 | Z-006 | Added `CommandPaletteTests` covering empty-query scope, exact-title rank, author/all-token matching, subtitle matches, and the result cap. | `./scripts/census.sh --unit-only` → **437 tests / 671 runs / 428 passed / 9 skipped / 0 failed**, exit 0, xcresult `rt-census-20261029-005620.xcresult`. |
-| Z-007 | Re-ran the source-size count after the new files. | `find AsterismaV2.0 -name '*.swift' \| wc -l` → **170**; concatenated raw lines **64,084**; non-blank **56,626**; test folder **67** Swift files. |
+| Z-007 | Re-ran the source-size count after the new files. | `find AsterismaV2.5 -name '*.swift' \| wc -l` → **170**; concatenated raw lines **64,084**; non-blank **56,626**; test folder **67** Swift files. |
 | Z-008 | Refreshed graphify and the full 3D page after the new Swift files and docs. | `graphify update . --force` → **7,734 nodes / 19,424 edges / 369 communities**; `graphify export html` → 369 community nodes / 1,363 cross-community edges, 443,890 B; `python3 scripts/build-graph-3d.py` → 8,226,681 B (7.84 MiB), `--check` → `ok`. |
 
 **Graph artifact hashes (2026-10-29, Stage Z):** `graph.json`
@@ -635,13 +635,13 @@ reader's position while the page is re-framed.
 | AA-002 | EPUB Appearance panel gained Mode, Both Margins Advance, and Brightness. The chapter's WKWebView applies changes through `window.__epubApplySettings`; Scrolling switches the same DOM to vertical flow and back without reloading. | Browser harness: 23 paged pages, 21 scrolling viewport-pages, page 3 at `scrollY = 2160`, switch-back at `scrollLeft = 3840`. |
 | AA-003 | New `PDFReaderSettings.swift`: `PDFPageLayout` (single/continuous/facing/facing+scroll), `PDFFitMode` (page/width/height/actual), `PDFReadingDirection`, background, page gap 0–80 pt, cover-alone. | `ReaderAppearanceTests.pdfSettingsMap`, `pdfPageGap`, `pdfReadingDirection`; Debug build exit 0. |
 | AA-004 | `ReaderPDFView` now applies `displaysRTL`, `displaysAsBook`, `pageBreakMargins`, background, fit height, and layout in `updateNSView`; the current page is not reopened. Arrow keys and chevrons follow RTL. | Debug build exit 0; model pins above; no live PDF UI automation. |
-| AA-005 | Extended `ReaderAppearanceTests` from six to nine tests: theme contrast/migration/defaults, full settings injection, brightness clamping, PDF mapping, page-gap margins, RTL presentation, Original-font preservation. | Focused suite: **9 tests in 1 suite passed**, exit 0, xcresult `Test-AsterismaV2.0-2026.10.29_01-29-24--0400.xcresult`. |
+| AA-005 | Extended `ReaderAppearanceTests` from six to nine tests: theme contrast/migration/defaults, full settings injection, brightness clamping, PDF mapping, page-gap margins, RTL presentation, Original-font preservation. | Focused suite: **9 tests in 1 suite passed**, exit 0, xcresult `Test-AsterismaV2.5-2026.10.29_01-29-24--0400.xcresult`. |
 | AA-006 | Updated README, project tree, index, testing strategy, reader design record, UI postscript, handoff, and this log. | `python3 scripts/audit-markdown.py` clean; audit rows appended. |
 | AA-007 | Refreshed graphify and the full 3D view after the new Swift file and docs. | `graphify update . --force` → **7,792 nodes / 19,534 edges / 373 communities**; `graphify export html` → 373 community nodes / 1,419 cross-community edges, 456,587 B; `python3 scripts/build-graph-3d.py` → 8,265,095 B (7.88 MiB), `--check` → `ok`. |
 
-**Focused reader-suite receipt:** `xcodebuild test -project AsterismaV2.0.xcodeproj
--scheme AsterismaV2.0 -destination 'platform=macOS'
--only-testing:AsterismaV2.0Tests/ReaderAppearanceTests CODE_SIGNING_ALLOWED=NO` →
+**Focused reader-suite receipt:** `xcodebuild test -project AsterismaV2.5.xcodeproj
+-scheme AsterismaV2.5 -destination 'platform=macOS'
+-only-testing:AsterismaV2.5Tests/ReaderAppearanceTests CODE_SIGNING_ALLOWED=NO` →
 `✔ Test run with 9 tests in 1 suite passed`, exit 0.
 
 **Full census receipt:** `./scripts/census.sh --unit-only` → **441 tests / 671
@@ -655,7 +655,7 @@ paragraphs. Paged mode: `scrollWidth = 14920`, `pages = 23`. Scrolling mode:
 switching back → page 3 at `scrollLeft = 3840`, `scrollY = 0`. The harness is not
 a committed CI test; it was a one-off check and was deleted after the run.
 
-**Source-size receipt:** `find AsterismaV2.0 -name '*.swift' | wc -l` → **171**;
+**Source-size receipt:** `find AsterismaV2.5 -name '*.swift' | wc -l` → **171**;
 concatenated raw lines **64,758**; non-blank **57,220**; test folder **67** Swift
 files. Previous Stage Z was 170 / 64,084 / 56,626.
 
@@ -677,9 +677,9 @@ was 1400×1000, WebGL true, `performance.getEntriesByType('resource')` returned
 `[]`, and the only console line was `[graphify 3d] full view ready: 7792 nodes,
 19534 links`; no errors. The 2D page was exported but not re-opened.
 
-**Changed files:** `AsterismaV2.0/Features/Reader/ReaderAppearance.swift`,
+**Changed files:** `AsterismaV2.5/Features/Reader/ReaderAppearance.swift`,
 `EPUBReaderScreen.swift`, `PDFReaderSettings.swift` (new), `PDFReaderView2.swift`,
-`AsterismaV2.0Tests/Reader/ReaderAppearanceTests.swift`, `README.md`,
+`AsterismaV2.5Tests/Reader/ReaderAppearanceTests.swift`, `README.md`,
 `docs/01-project-tree.md`, `docs/INDEX.md`, `docs/design/READER-POLISH-2026-10-25.md`,
 `docs/design/UI-UX-OVERHAUL-2026-10-29.md`, `docs/method/07-testing-strategy.md`,
 `docs/registers/03-fix-log.md`, `docs/registers/04-handoff.md`,
@@ -701,17 +701,17 @@ smoke test.
 
 | Item | What changed | Verification |
 |---|---|---|
-| AB-001 | Added `DiscoveryNetworking.swift`: an ephemeral `URLSession` with a 10 s request cap, 15 s resource cap, `waitsForConnectivity = false`, and no request cache. Both discovery providers accept an injected session; every request also carries the 10 s timeout. | `AsterismaV2.0/Features/Discovery/DiscoveryNetworking.swift`; Debug build `** BUILD SUCCEEDED **`, exit 0. |
+| AB-001 | Added `DiscoveryNetworking.swift`: an ephemeral `URLSession` with a 10 s request cap, 15 s resource cap, `waitsForConnectivity = false`, and no request cache. Both discovery providers accept an injected session; every request also carries the 10 s timeout. | `AsterismaV2.5/Features/Discovery/DiscoveryNetworking.swift`; Debug build `** BUILD SUCCEEDED **`, exit 0. |
 | AB-002 | `BookDiscoveryService` now queries Open Library and Gutendex concurrently, checks cancellation before/after both waits, and keeps the existing ISBN/title-author dedupe and ranking. `BookProvider` and `OnlineBook` are `Sendable`; both providers are `nonisolated`. | `OnlineBookDiscoveryService.swift`, `OnlineBookProvider.swift`, `OnlineBook.swift`, provider files; offline tests below. |
 | AB-003 | `BookDiscoveryViewModel` cancels the in-flight search as soon as `NWPathMonitor` reports no route, clears the duplicate offline/error banner, and renders one explicit offline state that says the local library, goals, insights, and readers still work. | `OnlineBookDiscoveryViewModel.swift`, `BookDiscoveryView.swift`; Debug build exit 0. |
 | AB-004 | Open-Meteo requests are capped at 10 s (`OpenMeteoProvider.requestTimeout`), and the post-session weather capture runs in its own task instead of ahead of notification evaluation and behavioral analysis. Offline weather failure is swallowed and cannot delay local work. | `OpenMeteoProvider.swift`, `SessionEventRouter2.swift`; Debug build exit 0. |
-| AB-005 | Added six network-free pins: five in `DiscoveryOfflineTests` (bounded session, Open Library offline, Gutendex offline, cross-provider dedupe, cancellation of both providers) and one Open-Meteo offline case, plus a timeout assertion in the existing mapping test. | Focused run: **11 tests in 2 suites passed**, 0 failed, 0 skipped, exit 0, xcresult `Test-AsterismaV2.0-2026.10.29_01-48-57--0400.xcresult`. |
-| AB-006 | Re-derived the offline surface and source counts. The only live network code is Open-Meteo, Open Library, Gutendex, the discovery cover `AsyncImage`, and the discovery path monitor; the reader, library, goals, insights, engines, and core groups emit no `URLSession`/`Network`/`NWPathMonitor` matches. | `rg -n "https://|URLSession|NWPathMonitor|AsyncImage" AsterismaV2.0 --glob '*.swift'`; app **172 Swift files / 64,868 raw lines / 57,315 non-blank**; test folder **68 Swift files**. |
+| AB-005 | Added six network-free pins: five in `DiscoveryOfflineTests` (bounded session, Open Library offline, Gutendex offline, cross-provider dedupe, cancellation of both providers) and one Open-Meteo offline case, plus a timeout assertion in the existing mapping test. | Focused run: **11 tests in 2 suites passed**, 0 failed, 0 skipped, exit 0, xcresult `Test-AsterismaV2.5-2026.10.29_01-48-57--0400.xcresult`. |
+| AB-006 | Re-derived the offline surface and source counts. The only live network code is Open-Meteo, Open Library, Gutendex, the discovery cover `AsyncImage`, and the discovery path monitor; the reader, library, goals, insights, engines, and core groups emit no `URLSession`/`Network`/`NWPathMonitor` matches. | `rg -n "https://|URLSession|NWPathMonitor|AsyncImage" AsterismaV2.5 --glob '*.swift'`; app **172 Swift files / 64,868 raw lines / 57,315 non-blank**; test folder **68 Swift files**. |
 
-**Focused offline receipt:** `xcodebuild test -project AsterismaV2.0.xcodeproj
--scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS'
--parallel-testing-enabled NO -only-testing:AsterismaV2.0Tests/DiscoveryOfflineTests
--only-testing:AsterismaV2.0Tests/OpenMeteoProviderTests` → **11 tests in 2
+**Focused offline receipt:** `xcodebuild test -project AsterismaV2.5.xcodeproj
+-scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS'
+-parallel-testing-enabled NO -only-testing:AsterismaV2.5Tests/DiscoveryOfflineTests
+-only-testing:AsterismaV2.5Tests/OpenMeteoProviderTests` → **11 tests in 2
 suites passed**, 0 failures, exit 0. The discovery tests inject an
 `OfflineURLProtocol` that fails with `URLError(.notConnectedToInternet)`; both
 providers return `[]` in under a second. The cancellation test starts two
@@ -733,14 +733,14 @@ fails under `sandbox-exec` (`sandbox_apply: Operation not permitted`). The
 targeted offline tests and the source audit above are the available evidence;
 this is not a whole-suite deny-network pass.
 
-**Changed files:** `AsterismaV2.0/Features/Discovery/DiscoveryNetworking.swift`
+**Changed files:** `AsterismaV2.5/Features/Discovery/DiscoveryNetworking.swift`
 (new), `OnlineBookDiscoveryService.swift`, `OnlineBookDiscoveryViewModel.swift`,
 `OnlineBookProvider.swift`, `OnlineBook.swift`,
 `Providers/OpenLibraryProvider.swift`, `Providers/GutenbergProvider.swift`,
-`BookDiscoveryView.swift`, `AsterismaV2.0/Features/Environment/Weather/OpenMeteoProvider.swift`,
-`AsterismaV2.0/Features/Sessions/SessionEventRouter2.swift`,
-`AsterismaV2.0Tests/Discovery/DiscoveryOfflineTests.swift` (new),
-`AsterismaV2.0Tests/Environment/OpenMeteoProviderTests.swift`, `README.md`,
+`BookDiscoveryView.swift`, `AsterismaV2.5/Features/Environment/Weather/OpenMeteoProvider.swift`,
+`AsterismaV2.5/Features/Sessions/SessionEventRouter2.swift`,
+`AsterismaV2.5Tests/Discovery/DiscoveryOfflineTests.swift` (new),
+`AsterismaV2.5Tests/Environment/OpenMeteoProviderTests.swift`, `README.md`,
 `docs/01-project-tree.md`, `docs/INDEX.md`,
 `docs/method/07-testing-strategy.md`, `docs/registers/03-fix-log.md`,
 `docs/registers/04-handoff.md`, and `docs/registers/05-doc-audit.md`.
@@ -797,9 +797,9 @@ exact bundle it just built.
 
 | Item | What changed | Verification |
 |---|---|---|
-| AD-001 | Added `scripts/run-latest.sh`: finds the newest `AsterismaV*.xcodeproj` by version, derives its scheme, builds the current tree, resolves the product path from `xcodebuild -showBuildSettings`, and opens that app bundle. | `bash -n` exit 0; `--help` exit 0; real run built `/Users/johanrembeci/Library/Developer/Xcode/DerivedData/AsterismaV2.0-dvllmxwmwdknajegockzapvjsuxs/Build/Products/Debug/AsterismaV2.0.app` and launched pid 2286, exit 0. |
+| AD-001 | Added `scripts/run-latest.sh`: finds the newest `AsterismaV*.xcodeproj` by version, derives its scheme, builds the current tree, resolves the product path from `xcodebuild -showBuildSettings`, and opens that app bundle. | `bash -n` exit 0; `--help` exit 0; real run built `/Users/johanrembeci/Library/Developer/Xcode/DerivedData/AsterismaV2.5-dvllmxwmwdknajegockzapvjsuxs/Build/Products/Debug/AsterismaV2.5.app` and launched pid 2286, exit 0. |
 | AD-002 | The runner uses Xcode's **default DerivedData** and documents why: a custom `-derivedDataPath` on this Desktop/iCloud checkout breaks code signing (BUG-003). | Source comment in `scripts/run-latest.sh`; README §7. |
-| AD-003 | The runner quits a running instance through the app's bundle identifier, waits for termination, and refuses to force-kill it because that could lose reading data. A second real run quit pid 2286 and launched pid 2396, exit 0. | `./scripts/run-latest.sh` output; `pgrep -fl AsterismaV2.0` showed the replacement process. |
+| AD-003 | The runner quits a running instance through the app's bundle identifier, waits for termination, and refuses to force-kill it because that could lose reading data. A second real run quit pid 2286 and launched pid 2396, exit 0. | `./scripts/run-latest.sh` output; `pgrep -fl AsterismaV2.5` showed the replacement process. |
 | AD-004 | After `open`, the runner waits for a live process and rechecks after one second, so a bundle that dies during startup fails the command instead of reporting a false launch. | Third real run quit pid 2396, launched pid 2496, and exited 0 after the settle check. |
 | AD-005 | Documented the command in README §7 and the scripts row of the project tree. | `python3 scripts/audit-markdown.py` clean; `comprehension-bench.py --validate-only` exit 0. |
 
@@ -812,7 +812,7 @@ is three real build-and-launch runs from the current tree. The runner builds the
 local working tree only — it does not `git pull`, change branches, or install
 dependencies. It requires Xcode and a working local signing setup; a build or
 launch failure is printed with the last 80 log lines from
-`~/Library/Logs/AsterismaV2.0/run-latest.log`.
+`~/Library/Logs/AsterismaV2.5/run-latest.log`.
 
 ## Stage AE — Mirage warm engine + library scale (2026-10-29)
 
@@ -831,18 +831,18 @@ wire contract, the identity stratum, the never-auto-run rule, or the
 | AE-005 | Added 12 focused pins in three suites. | `./scripts/census.sh --unit-only` exit 0: **459 tests / 671 runs / 450 passed / 9 skipped / 0 failed**, xcresult `/var/folders/27/v3xbp1813kb2vj7k2gycvp8w0000gn/T//rt-census-20261029-024948.xcresult`. The three new suites pass 12/12 in 3.229 s in a focused run. |
 | AE-006 | Documented the decision and refreshed the lookup surface: ADR-13, ADR-6 decision-5 supersession note, the deep-dive §2.3/§3.2/§10 revision, the index rows, the project-tree file/test counts, and this log. | `python3 scripts/audit-markdown.py` and `python3 scripts/comprehension-bench.py --validate-only` receipts are recorded in the Stage AE close-out and the audit ledger. |
 
-**Changed files (code):** `AsterismaV2.0/Features/Mirage/MirageEngineService.swift` (new),
-`AsterismaV2.0/Features/Mirage/MirageLibraryIndex.swift` (new),
-`AsterismaV2.0/Features/Mirage/MirageBatchAnalyzer.swift` (new),
-`AsterismaV2.0/Features/Mirage/MirageAppImportMount.swift`,
-`AsterismaV2.0/Features/Mirage/MirageStatusSurface.swift`,
-`AsterismaV2.0/Features/Mirage/MirageAnalysisSheetView.swift`,
-`AsterismaV2.0/Features/Goals/SettingsRootView.swift`,
-`AsterismaV2.0/App/AsterismaApp.swift`.
+**Changed files (code):** `AsterismaV2.5/Features/Mirage/MirageEngineService.swift` (new),
+`AsterismaV2.5/Features/Mirage/MirageLibraryIndex.swift` (new),
+`AsterismaV2.5/Features/Mirage/MirageBatchAnalyzer.swift` (new),
+`AsterismaV2.5/Features/Mirage/MirageAppImportMount.swift`,
+`AsterismaV2.5/Features/Mirage/MirageStatusSurface.swift`,
+`AsterismaV2.5/Features/Mirage/MirageAnalysisSheetView.swift`,
+`AsterismaV2.5/Features/Goals/SettingsRootView.swift`,
+`AsterismaV2.5/App/AsterismaApp.swift`.
 
-**Changed files (tests):** `AsterismaV2.0Tests/Mirage/MirageEngineServiceTests.swift` (new),
-`AsterismaV2.0Tests/Mirage/MirageLibraryIndexTests.swift` (new),
-`AsterismaV2.0Tests/Mirage/MirageBatchAnalyzerTests.swift` (new).
+**Changed files (tests):** `AsterismaV2.5Tests/Mirage/MirageEngineServiceTests.swift` (new),
+`AsterismaV2.5Tests/Mirage/MirageLibraryIndexTests.swift` (new),
+`AsterismaV2.5Tests/Mirage/MirageBatchAnalyzerTests.swift` (new).
 
 **Limits:** no owner acceptance run; no real-engine opt-in smoke of the warm
 session (the opt-in real-engine suites remain environment-gated and were among
@@ -923,24 +923,24 @@ Developer Console navigation that scales.
 
 | Item | What changed | Verification |
 |---|---|---|
-| AH-001 | The environment engine's default recompute cadence is **10 s** (was 45 s). Every palette blend is still eased, so the shorter tick removes the visible jump between keyframes instead of snapping. A new `LiveAtmosphereView` draws two large ambient glows on a 20 fps `TimelineView`, independent of the palette tick. Studio overrides now sit behind `#if DEBUG` in `EnvironmentEngine.recompute()`, so a stale debug key cannot repaint a Release launch. | Read-back of `AsterismaV2.0/Features/Environment/Engine/EnvironmentEngine2.swift` and `AsterismaV2.0/Features/Environment/EnvironmentBackgroundView2.swift`; Debug build succeeded inside the census run below. |
+| AH-001 | The environment engine's default recompute cadence is **10 s** (was 45 s). Every palette blend is still eased, so the shorter tick removes the visible jump between keyframes instead of snapping. A new `LiveAtmosphereView` draws two large ambient glows on a 20 fps `TimelineView`, independent of the palette tick. Studio overrides now sit behind `#if DEBUG` in `EnvironmentEngine.recompute()`, so a stale debug key cannot repaint a Release launch. | Read-back of `AsterismaV2.5/Features/Environment/Engine/EnvironmentEngine2.swift` and `AsterismaV2.5/Features/Environment/EnvironmentBackgroundView2.swift`; Debug build succeeded inside the census run below. |
 | AH-002 | Added `WeatherVisual` (snapshot → clear/cloudy/fog/rain/heavyRain/snow/heavySnow/storm/wind, with intensity, wind, cloud, and live/forced provenance) and `WeatherEffectView` (deterministic rain streaks, snow, fog banks, cloud shadow, wind streaks, storm flash). `WeatherEnvironmentModifier` now carries the whole captured snapshot and exposes `visual`; a missing condition stays `.clear`. `.clear` draws nothing and reduced motion freezes the layer. | `WeatherVisual.from(...)` pins in `EnvironmentWeatherVisualTests`; read-back of both new files. |
 | AH-003 | Deepened the morning, midday, and afternoon reference snapshots into their shadow range and added a luminance-derived readability scrim (clamped 0.04…0.42) drawn above the gradient and below content. Morning/midday/afternoon no longer depend on pale wallpaper for contrast. | `brightPalettesCarryMoreScrimThanNight` asserts night ≤ 0.06, morning > 0.15, afternoon > night, and morning luminance > night luminance. |
-| AH-004 | Rebuilt the Sentinel Health Center as a `NavigationSplitView`: persistent band/headline/coverage header, grouped sidebar (Health, Library, Records, Configure) with issue/check badges, pinned **Check now** (⌘R), per-pane title/subtitle, **Review N issues** and **Full check** actions, issue search, severity filter, and **Next issue** (⌘]). | Debug build; read-back of `AsterismaV2.0/Features/Sentinel/SentinelHealthCenterView.swift`. No UI automation. |
+| AH-004 | Rebuilt the Sentinel Health Center as a `NavigationSplitView`: persistent band/headline/coverage header, grouped sidebar (Health, Library, Records, Configure) with issue/check badges, pinned **Check now** (⌘R), per-pane title/subtitle, **Review N issues** and **Full check** actions, issue search, severity filter, and **Next issue** (⌘]). | Debug build; read-back of `AsterismaV2.5/Features/Sentinel/SentinelHealthCenterView.swift`. No UI automation. |
 | AH-005 | Developer Console sidebar now groups LIVE and PLANNED panes and filters by name or phase. Added **Environment Studio** (real background + real engine; force any minute or weather kind, intensity, provenance, computed readout, reset, clear on disappear) and **Subsystem Explorer** (search over id/name/category/purpose/activity/status/warnings/errors/metrics, category filter, detail pane). | Debug build; read-back of `DeveloperConsoleRootView.swift`, `EnvironmentStudioView.swift`, and `SubsystemExplorerView.swift`. |
-| AH-006 | Added five deterministic environment tests covering the condition→visual mapping, the override store round-trip, forced time/weather reaching `EnvironmentState`, scrim ordering, and modifier provenance. | `xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' -parallel-testing-enabled NO -only-testing:AsterismaV2.0Tests/EnvironmentWeatherVisualTests` → 5 tests in 1 suite passed, exit 0. |
+| AH-006 | Added five deterministic environment tests covering the condition→visual mapping, the override store round-trip, forced time/weather reaching `EnvironmentState`, scrim ordering, and modifier provenance. | `xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' -parallel-testing-enabled NO -only-testing:AsterismaV2.5Tests/EnvironmentWeatherVisualTests` → 5 tests in 1 suite passed, exit 0. |
 | AH-007 | Ran the local CI mirror after the changes. | `./scripts/verify-sentinel-surface.sh` → `sentinel-surface: OK — 15 tables, 8 defaults keys, 5 notification names`, exit 0. `python3 scripts/comprehension-bench.py --validate-only` → `bank ok: 30 facts, 12 overview facts`, exit 0. `./scripts/census.sh --unit-only` → **464 tests / 94 suites / 671 runs / 455 passed / 9 skipped / 0 failed**, exit 0 (`rt-census-20261029-033957.xcresult`). |
 
-**Changed files:** `AsterismaV2.0/Features/Environment/Engine/EnvironmentEngine2.swift`,
+**Changed files:** `AsterismaV2.5/Features/Environment/Engine/EnvironmentEngine2.swift`,
 `EnvironmentState.swift`, `EnvironmentPalette.swift`, `EnvironmentAnchorPeriod.swift`,
-`AsterismaV2.0/Features/Environment/EnvironmentBackgroundView2.swift`,
-`AsterismaV2.0/Features/Environment/Weather/WeatherEnvironmentModifier.swift`,
+`AsterismaV2.5/Features/Environment/EnvironmentBackgroundView2.swift`,
+`AsterismaV2.5/Features/Environment/Weather/WeatherEnvironmentModifier.swift`,
 new `Weather/WeatherVisual.swift`, new `Weather/WeatherEffectView.swift`,
-`AsterismaV2.0/Features/Sentinel/SentinelHealthCenterView.swift`,
-`AsterismaV2.0/Features/DeveloperConsole/DeveloperConsoleRootView.swift`,
+`AsterismaV2.5/Features/Sentinel/SentinelHealthCenterView.swift`,
+`AsterismaV2.5/Features/DeveloperConsole/DeveloperConsoleRootView.swift`,
 new `DeveloperConsole/EnvironmentStudioView.swift`, new
 `DeveloperConsole/SubsystemExplorerView.swift`, new
-`AsterismaV2.0Tests/Environment/EnvironmentWeatherVisualTests.swift`, plus
+`AsterismaV2.5Tests/Environment/EnvironmentWeatherVisualTests.swift`, plus
 `README.md`, `docs/01-project-tree.md`, `docs/INDEX.md`,
 `docs/design/UI-UX-OVERHAUL-2026-10-29.md`, `docs/registers/04-handoff.md`, and
 this log.
@@ -1351,7 +1351,7 @@ are *not* the formula is written out in `docs/plans/cde/FORMULA.md#L20`:
 
 The bare word "difficultyformula" was considered and not adopted: it collides
 with the 130 existing `difficulty` hits in the Swift sources
-(`grep -rio difficulty --include=*.swift AsterismaV1.0 AsterismaV2.0 | wc -l`
+(`grep -rio difficulty --include=*.swift AsterismaV1.0 AsterismaV2.5 | wc -l`
 → `130`), and it carries no version, while v0.2 and v0.3 must both stay
 nameable for reproducibility.
 
@@ -1541,11 +1541,11 @@ Current SHA-256 from `shasum -a 256`: `graphify-out/graph.json`
 
 **Changes before the run.** Two production changes: per-book normalization and
 consensus in `AnalyticsEngine.crossBookReadingSpeed`
-(`AsterismaV2.0/Engines/AnalyticsEngine.swift#L83`) with
+(`AsterismaV2.5/Engines/AnalyticsEngine.swift#L83`) with
 `PageDurationPolicy.consensusSeconds` (`#L459`), and the
 `max(median, lowerQuartile × 3)` ceiling in `robustMeanSeconds` (`#L424`)
 and `upperBound` (`#L444`). Two candidate-adapter rules: the three-timing
-minimum (`AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L71`)
+minimum (`AsterismaV2.5Tests/Engines/AdversarialEvaluationTests.swift#L71`)
 and the two-sided `0.35/3.0` guard (`#L73`). The first two are production
 code; the last two are evaluation-adapter rules and are not wired into the app.
 
@@ -1649,7 +1649,7 @@ and all source, tests and docs. A follow-up scan found no remaining `.DS_Store`,
 out of the repository to
 `/Users/johanrembeci/Desktop/AsterismaV2.0-Evidence-Archive-2026-11-07`:
 
-- `AsterismaV2.0Tests/Engines/FreshStressInput.json` — 38,660,433 B / 49,570
+- `AsterismaV2.5Tests/Engines/FreshStressInput.json` — 38,660,433 B / 49,570
   cases, SHA-256 `8d08822b9c6bee1eed2923d0a1c186a5c59e2ca5858dfb2c7fcced2bd801e110`.
   It is replaced in-tree by a 200-case representative sample (157,597 B) so the
   bundled-batch decode, unique-ID, and prediction assertions still run.
@@ -1682,15 +1682,15 @@ behavior evidence still wrote only JSON.
 
 | Path | Change |
 |---|---|
-| `AsterismaV2.0/Engines/EstimationEngine.swift` | Added `effectiveSecondsPerPage(for:allBooks:)`; `estimate` and the chapter/page helpers resolve that one pace. |
-| `AsterismaV2.0/Engines/AnalyticsEngine.swift` | `effectiveReadingSpeed`, `predictions`, `bookForecast`, and `chapterPredictions` delegate to the canonical pace; removed `normalizedPages`, the difficulty-as-pages helper. |
-| `AsterismaV2.0/Features/Library/ContentAnalysis.swift` | `PageEstimationModel` no longer accepts a difficulty multiplier; words convert to pages at 250 wpp. |
-| `AsterismaV2.0/Features/Library/BookImporter.swift`, `tools/real-book-audit/main.swift` | Call sites updated; difficulty remains metadata. |
-| `AsterismaV2.0/Features/BehaviorContext/BehavioralCategory.swift` | `BehaviorContextAccessKit` reads/writes the existing `behavior_events`, `application_sessions`, `inactivity_records`, and `device_state_events` tables; JSON is the import seed and compatibility mirror. |
-| `AsterismaV2.0/Core/DataStore3.swift`, `AsterismaV2.0/App/AsterismaApp.swift` | The app injects its canonical `LibraryDatabase` into the behavior kit. |
-| `AsterismaV2.0Tests/Engines/EstimateFacadeTests.swift` | New E8 pins: measured and cross-book pace parity. |
-| `AsterismaV2.0Tests/Library/PageEstimationModelTests.swift` | Difficulty-is-not-pages pin replaces the old difficulty-increases-pages pin. |
-| `AsterismaV2.0Tests/Behavior/G6EvidencePersistenceTests.swift` | New SQLite-wins-over-JSON pin. |
+| `AsterismaV2.5/Engines/EstimationEngine.swift` | Added `effectiveSecondsPerPage(for:allBooks:)`; `estimate` and the chapter/page helpers resolve that one pace. |
+| `AsterismaV2.5/Engines/AnalyticsEngine.swift` | `effectiveReadingSpeed`, `predictions`, `bookForecast`, and `chapterPredictions` delegate to the canonical pace; removed `normalizedPages`, the difficulty-as-pages helper. |
+| `AsterismaV2.5/Features/Library/ContentAnalysis.swift` | `PageEstimationModel` no longer accepts a difficulty multiplier; words convert to pages at 250 wpp. |
+| `AsterismaV2.5/Features/Library/BookImporter.swift`, `tools/real-book-audit/main.swift` | Call sites updated; difficulty remains metadata. |
+| `AsterismaV2.5/Features/BehaviorContext/BehavioralCategory.swift` | `BehaviorContextAccessKit` reads/writes the existing `behavior_events`, `application_sessions`, `inactivity_records`, and `device_state_events` tables; JSON is the import seed and compatibility mirror. |
+| `AsterismaV2.5/Core/DataStore3.swift`, `AsterismaV2.5/App/AsterismaApp.swift` | The app injects its canonical `LibraryDatabase` into the behavior kit. |
+| `AsterismaV2.5Tests/Engines/EstimateFacadeTests.swift` | New E8 pins: measured and cross-book pace parity. |
+| `AsterismaV2.5Tests/Library/PageEstimationModelTests.swift` | Difficulty-is-not-pages pin replaces the old difficulty-increases-pages pin. |
+| `AsterismaV2.5Tests/Behavior/G6EvidencePersistenceTests.swift` | New SQLite-wins-over-JSON pin. |
 
 **Checks.**
 
@@ -1752,8 +1752,8 @@ persistence path. Rename and delete also carry explicit accessibility labels.
 
 | Command | Result |
 |---|---|
-| `xcodebuild build -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS'` | **BUILD SUCCEEDED**, exit **0** |
-| Focused `xcodebuild test` (`LibraryCollectionTests`, `LibraryMetadataPinsTests`) | **6 tests in 2 suites passed**, exit **0**, `Test-AsterismaV2.0-2026.11.06_22-01-28--0500.xcresult` |
+| `xcodebuild build -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS'` | **BUILD SUCCEEDED**, exit **0** |
+| Focused `xcodebuild test` (`LibraryCollectionTests`, `LibraryMetadataPinsTests`) | **6 tests in 2 suites passed**, exit **0**, `Test-AsterismaV2.5-2026.11.06_22-01-28--0500.xcresult` |
 
 **Limits.** No UI automation or screenshot; the alert is build-verified, not
 clicked in this session. The rename API itself was already pinned. No new test
@@ -1788,7 +1788,7 @@ store. CBR/CB7/CBT are rejected on purpose: the project has no RAR/7z decoder.
 
 | Command | Result |
 |---|---|
-| `xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` | **BUILD SUCCEEDED**, exit **0** |
+| `xcodebuild -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` | **BUILD SUCCEEDED**, exit **0** |
 | Focused `xcodebuild test` (`ComicArchiveTests`, `ComicImportTests`, `ComicReaderModelTests`) | **16 tests in 3 suites passed**, exit **0** |
 | `./scripts/census.sh --unit-only` | **568 tests in 110 suites**, 0 failures, 10 skips, exit **0** |
 | `./scripts/verify-sentinel-surface.sh` | exit **0** — 15 tables, 8 defaults keys, 5 notification names |
@@ -1801,9 +1801,9 @@ text-region highlights. The knowledge graph was not refreshed, so its counts do
 not include the new files.
 
 **Evidence.** `docs/audits/2026-11-07-comic-expansion.md`; test files
-`AsterismaV2.0Tests/Reader/ComicArchiveTests.swift`,
-`AsterismaV2.0Tests/Reader/ComicImportTests.swift`, and
-`AsterismaV2.0Tests/Reader/ComicReaderModelTests.swift`.
+`AsterismaV2.5Tests/Reader/ComicArchiveTests.swift`,
+`AsterismaV2.5Tests/Reader/ComicImportTests.swift`, and
+`AsterismaV2.5Tests/Reader/ComicReaderModelTests.swift`.
 
 ## Stage AV — 2.5.1 comic reader experience (2026-11-07)
 
@@ -1841,7 +1841,7 @@ Stage AV replaces that with:
 
 | Command | Result |
 |---|---|
-| `xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` | **BUILD SUCCEEDED**, exit **0** |
+| `xcodebuild -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` | **BUILD SUCCEEDED**, exit **0** |
 | Focused `xcodebuild test` (`ComicArchiveTests`, `ComicImportTests`, `ComicReaderModelTests`) | **19 tests in 3 suites passed**, exit **0** |
 | `./scripts/census.sh --unit-only` | **571 tests in 110 suites / 582 runs**, 572 passed, 10 skips, 0 failures, exit **0** |
 | `./scripts/verify-sentinel-surface.sh` | exit **0** — 15 tables, 8 defaults keys, 5 notification names |
@@ -1855,8 +1855,8 @@ compile/logic-verified and census-verified, not visually accepted. CBR/CB7/CBT
 remain unsupported. The graph was not refreshed, so its counts are pre-2.5.1.
 
 **Evidence.** `docs/audits/2026-11-07-comic-expansion.md`; new file
-`AsterismaV2.0/Features/Reader/ComicReaderExperience.swift`; the three comic
-test files under `AsterismaV2.0Tests/Reader/`.
+`AsterismaV2.5/Features/Reader/ComicReaderExperience.swift`; the three comic
+test files under `AsterismaV2.5Tests/Reader/`.
 
 ## Stage AW — 2.6 comic metadata and Mirage comic analysis (2026-11-07)
 
@@ -1923,11 +1923,11 @@ sandboxed relaunch was performed. CBR/CB7/CBT remain unsupported. The graph was
 not refreshed and is stale for the 2.6 files. Nothing is committed or pushed.
 
 **Evidence.** `docs/audits/2026-11-07-comic-expansion.md`; new files
-`AsterismaV2.0/Features/Reader/ComicMetadata.swift` and
-`AsterismaV2.0/Features/Mirage/ComicMirageBridge.swift`; new tests
-`AsterismaV2.0Tests/Reader/ComicMetadataTests.swift`,
-`AsterismaV2.0Tests/Mirage/ComicMirageBridgeTests.swift`, and
-`AsterismaV2.0Tests/Mirage/MirageComicImportTests.swift`.
+`AsterismaV2.5/Features/Reader/ComicMetadata.swift` and
+`AsterismaV2.5/Features/Mirage/ComicMirageBridge.swift`; new tests
+`AsterismaV2.5Tests/Reader/ComicMetadataTests.swift`,
+`AsterismaV2.5Tests/Mirage/ComicMirageBridgeTests.swift`, and
+`AsterismaV2.5Tests/Mirage/MirageComicImportTests.swift`.
 
 ## Stage AX — 2.7 Mirage analysis report and measured strength (2026-11-07)
 
@@ -1972,8 +1972,8 @@ sample, not a benchmark. The graph was not refreshed and is stale for 2.7.
 Nothing is committed or pushed.
 
 **Evidence.** `docs/audits/2026-11-07-mirage-analysis-report.md`; new files
-`AsterismaV2.0/Features/Mirage/MirageAnalysisReport.swift` and
-`AsterismaV2.0Tests/Mirage/MirageAnalysisReportTests.swift`; the timer in
+`AsterismaV2.5/Features/Mirage/MirageAnalysisReport.swift` and
+`AsterismaV2.5Tests/Mirage/MirageAnalysisReportTests.swift`; the timer in
 `MirageEngineService.swift`; the report surface in `SettingsRootView.swift`.
 
 ## Stage AY — ADR-7 amendment 1: reader graph at a verified chapter boundary (2026-11-07)
@@ -2037,10 +2037,10 @@ measurement, not a UI frame-time receipt. The knowledge graph was not refreshed
 and is stale for the amendment files. Nothing is committed or pushed.
 
 **Evidence.** New files
-`AsterismaV2.0/Features/Mirage/MirageChapterBoundaries.swift`,
+`AsterismaV2.5/Features/Mirage/MirageChapterBoundaries.swift`,
 `MirageGraphSnapshot.swift`, `MirageGraphCache.swift`,
 `MirageGraphController.swift`, `MirageGraphView.swift`, and
-`AsterismaV2.0Tests/Mirage/MirageGraphTests.swift`; edits to
+`AsterismaV2.5Tests/Mirage/MirageGraphTests.swift`; edits to
 `MirageCursor.swift`, `MirageWireTypes.swift`, `MirageEngineService.swift`,
 `MirageStatusSurface.swift`, and `EPUBReaderScreen.swift`; the amendment at
 `docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md`.
@@ -2108,6 +2108,86 @@ other work on the machine.
   Its only use here was fetching the renderer, now vendored at 1.80.2. The
   current LTS is 26.13.0.
 
-**Limits.** The CI workflow change has **not** run on GitHub; no run exists for
-it. The 3D page was regenerated and `--check`-verified, but was not opened in a
-browser this session. Nothing is committed or pushed.
+**Limits.** The CI workflow change is exercised by run `42358111465`; the
+result is recorded in the handoff. The 3D page was regenerated and
+`--check`-verified, but was not opened in a browser this session. Stage AZ was
+committed and pushed as `244eea3`.
+
+---
+
+## Stage BA — 2026-11-07 — AsterismaV2.5 identity rename
+
+**What changed.** The whole identity moved from `AsterismaV2.0` to
+`AsterismaV2.5`, with no behavioural code change.
+
+| Layer | Before | After |
+|---|---|---|
+| Xcode project | `AsterismaV2.0.xcodeproj` | `AsterismaV2.5.xcodeproj` |
+| App target / scheme | `AsterismaV2.0` | `AsterismaV2.5` |
+| Test targets | `AsterismaV2.0Tests` / `AsterismaV2.0UITests` | `AsterismaV2.5Tests` / `AsterismaV2.5UITests` |
+| Swift module | `AsterismaV2_0` | `AsterismaV2_5` |
+| Source folders | `AsterismaV2.0/` and its two test siblings | `AsterismaV2.5/` and its two test siblings |
+| Entitlements / Info.plist | `AsterismaV2.0.entitlements` / `AsterismaV2.0-Info.plist` | `AsterismaV2.5.entitlements` / `AsterismaV2.5-Info.plist` |
+| Marketing version | 2.0 | **2.5** |
+| Bundle identifier | `johan.Reading-Tracker` | **unchanged** |
+| Data root | `Application Support/Asterisma/` | **unchanged** |
+
+The bundle identifier and data root stayed put on purpose: the sandbox
+container is keyed by bundle identifier and the library lives under the data
+root, so renaming either would orphan the existing library. The frozen
+`AsterismaV2.0-Evidence-Archive-2026-11-07/` also keeps its old name because it
+is a historical capture, not live code.
+
+**Verification**
+
+| Command | Result |
+|---|---|
+| `git mv` of the project, three source folders, plist, entitlements, and scheme | staged as renames; 288 tracked text files rewritten |
+| `xcodebuild -list -project AsterismaV2.5.xcodeproj` | exit **0** — targets resolve; GRDB 7.12.0 / ZIPFoundation 0.9.20 resolved |
+| `./scripts/census.sh --unit-only` | exit **0** — **610 tests in 115 suites passed**; bundle **611 passed / 10 skipped / 0 failed / 621 total** |
+| `./scripts/verify-sentinel-surface.sh` | exit **0** |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit **0** — 30 facts, 12 overview facts, every renamed path resolves |
+| `python3 scripts/audit-markdown.py` | exit **0** |
+| `git diff --check` | exit **0** |
+
+**Limits.** No app launch and no visual acceptance for the rename. The rename
+commit had not run on GitHub when this entry was written; the pushed
+pre-rename commit's run is `42358111465`. The knowledge graph was refreshed
+separately in this closeout and its counts live in the README and handoff.
+
+---
+
+## Stage BB — 2026-11-07 — knowledge-graph refresh (closeout)
+
+`graphify update . --force` exited **0** after re-extracting 476 uncached files
+and rebuilt the graph to **10,201 nodes / 24,082 edges / 499 communities**
+(previous: 9,232 / 21,963 / 451). It wrote `graphify-out/graph.json`
+(14,470,623 B, SHA-256 `ac3cfd7d33ce47814576241c51bba9c68a8d88951f5e2898827b7df6961d3282`)
+and `graphify-out/GRAPH_REPORT.md` (131,356 B, SHA-256
+`e40acaf15390b2c6155e60a0b3183c16b1e1a907c5d9769421c9c1897ab94bec`).
+`python3 scripts/build-graph-3d.py` then wrote the full-node 3D page at
+**10,084,631 B (9.62 MiB)**, SHA-256
+`3711aa60f2dd607e2d1f4c5de39673a29d45a3b06d0dbc1b7b8b1ac414851324`, and
+`--check` exited **0**.
+
+**2D view is stale, not refreshed.** graphify skipped `graph.html` because
+10,201 nodes exceed its 5,000-node visualization limit. The tracked aggregated
+export was restored unchanged from `HEAD` (516,668 B) and is **stale** for this
+graph. The closeout does not claim a 2D refresh.
+
+**Tool warning, reported not silenced.** graphify reported 92 source files that
+produced zero nodes (asset manifests, JSON fixtures such as `app-input.json`
+and `manifest.json`). Those files are data, not code; the warning is recorded
+here rather than treated as a graph defect.
+
+**Junk audit.** Removed **10** `.DS_Store` files (100 KB total) from the
+repository root, `AsterismaV2.5/`, its `Features/` folder, `AsterismaV2.5Tests/`,
+`docs/`, `docs/audits/`, `graphify-out/`, `scripts/`, `tools/`, and the evidence
+archive. No `.xcresult`, `DerivedData`, or build output was present inside the
+repository. Required and unknown artifacts were preserved, including the
+112 MB untracked evidence archive, `.mirage-runtime/`, `graphify-out/graph.json`,
+`graph.html`, `GRAPH_REPORT.md`, and the signed release records.
+
+**Limits.** The 3D page was `--check`-verified but not opened in a browser this
+session. Graph counts include documentation, so the closeout's own doc edits
+shift them; the counts above are the refresh's exact output, not a forecast.

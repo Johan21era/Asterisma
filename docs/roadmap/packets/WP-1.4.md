@@ -38,20 +38,20 @@ code; WP-1.4 ships an in-reader action bar instead).
 
 Existing files that may change:
 
-- `AsterismaV2.0/Features/Reader/EPUBReaderScreen.swift`
-- `AsterismaV2.0/Features/Reader/PDFReaderView2.swift`
-- `AsterismaV2.0/Features/Library/BookDetailsView.swift`
-- `AsterismaV2.0/Core/DataStore3.swift` (only to add the single note mutation
+- `AsterismaV2.5/Features/Reader/EPUBReaderScreen.swift`
+- `AsterismaV2.5/Features/Reader/PDFReaderView2.swift`
+- `AsterismaV2.5/Features/Library/BookDetailsView.swift`
+- `AsterismaV2.5/Core/DataStore3.swift` (only to add the single note mutation
   helper; do not restructure saving)
 
 Files to create in the worktree. None of these exists yet, so they are written
 without code spans and must not be read as current paths:
 
-- AsterismaV2.0/Features/Reader/AnnotationCreation.swift
-- AsterismaV2.0/Features/Reader/HighlightRestore.swift
-- AsterismaV2.0/Features/Reader/HighlightViews.swift
-- AsterismaV2.0Tests/Reader/AnnotationCreationTests.swift
-- AsterismaV2.0Tests/Reader/HighlightRestoreTests.swift
+- AsterismaV2.5/Features/Reader/AnnotationCreation.swift
+- AsterismaV2.5/Features/Reader/HighlightRestore.swift
+- AsterismaV2.5/Features/Reader/HighlightViews.swift
+- AsterismaV2.5Tests/Reader/AnnotationCreationTests.swift
+- AsterismaV2.5Tests/Reader/HighlightRestoreTests.swift
 - .agent-handoff/WP-1.4.md (worktree only, gitignored)
 
 ## Forbidden

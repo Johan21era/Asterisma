@@ -14,12 +14,12 @@ OUT="${RT_BENCH_OUT:-$WORK/baseline.json}"
 echo "benchmark copy: $WORK"
 TEST_RUNNER_RT_BENCH_LIBRARY="$WORK/library.json" \
 xcodebuild test \
-  -project "AsterismaV2.0.xcodeproj" \
-  -scheme "AsterismaV2.0" \
+  -project "AsterismaV2.5.xcodeproj" \
+  -scheme "AsterismaV2.5" \
   -configuration Debug \
   -destination 'platform=macOS' \
   -parallel-testing-enabled NO \
-  -only-testing:"AsterismaV2.0Tests/BedrockBaselineTests" 2>&1 | tee "$WORK/bench.log" | tail -20
+  -only-testing:"AsterismaV2.5Tests/BedrockBaselineTests" 2>&1 | tee "$WORK/bench.log" | tail -20
 
 LINE="$(grep -E 'BEDROCK_BASELINE_JSON ' "$WORK/bench.log" | tail -1 | sed 's/^.*BEDROCK_BASELINE_JSON //')"
 if [[ -n "$LINE" ]]; then

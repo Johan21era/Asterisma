@@ -56,12 +56,12 @@ The Mirage surface is tested as bands, mirroring the boundary's enforcement rule
 ```bash
 # Real engine, one lifecycle, the proven dev channel:
 TEST_RUNNER_MIRAGE_REAL_ENGINE_DIR=/path/to/MirageV1.0 \
-xcodebuild test … -only-testing:"AsterismaV2.0Tests/MirageIdentityRealEngineImportTests"
+xcodebuild test … -only-testing:"AsterismaV2.5Tests/MirageIdentityRealEngineImportTests"
 
 # The standing M-027 boundary probe (only when deliberately hunting the machinery boundary):
 TEST_RUNNER_MIRAGE_REAL_ENGINE_DIR=/path/to/MirageV1.0 \
 TEST_RUNNER_MIRAGE_BOOT_DIAGNOSTIC=1 \
-xcodebuild test … -only-testing:"AsterismaV2.0Tests/MirageZBootDiagnosticTests"
+xcodebuild test … -only-testing:"AsterismaV2.5Tests/MirageZBootDiagnosticTests"
 ```
 
 `-only-testing` matches Swift Testing type identifiers. The boot diagnostic uses the **disposable-data** path plus `MIRAGE_BOOT_DIAGNOSTIC=1`; the single-lifecycle doctrine holds even under it.

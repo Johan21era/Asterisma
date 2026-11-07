@@ -148,7 +148,7 @@ fi
 
 is_any_running() {
     local name
-    for name in "$EXECUTABLE_NAME" "AsterismaV2.0" "AsterismaV1.0"; do
+    for name in "$EXECUTABLE_NAME" "AsterismaV2.5" "AsterismaV1.0"; do
         if pgrep -x "$name" >/dev/null 2>&1; then
             return 0
         fi

@@ -205,7 +205,7 @@ of the panel and book plate is still pending.
 
 1. The repository was reorganized without changing file contents, ownership,
    history, or behavior:
-   - app shell moved to `AsterismaV2.0/App/`;
+   - app shell moved to `AsterismaV2.5/App/`;
    - 48 flat test files grouped into `App`, `Behavior`, `Core`,
      `DeveloperConsole`, `Environment`, `Library`, `Mirage`, and `Reader`;
    - 50 `git mv` operations, 100% renames, 0 insertions/deletions;
@@ -259,7 +259,7 @@ milestone 004.
 **Date and time:** 2026-10-28 15:27 EDT (−0400)
 **Recorded by:** the engineering session, after the first tranche census
 **Build:** working tree at base `6099e4e` (uncommitted at recording time)
-**Code:** Sentinel v2 under `AsterismaV2.0/Core/Sentinel/` and `AsterismaV2.0/Features/Sentinel/`
+**Code:** Sentinel v2 under `AsterismaV2.5/Core/Sentinel/` and `AsterismaV2.5/Features/Sentinel/`
 
 ### What happened
 
@@ -353,7 +353,7 @@ instead of a repeated cold start.
 
 - `docs/registers/03-fix-log.md` Stage AE (implementation + focused pins) and
   Stage AF (graph refresh).
-- `AsterismaV2.0Tests/Mirage/MirageEngineServiceTests.swift`,
+- `AsterismaV2.5Tests/Mirage/MirageEngineServiceTests.swift`,
   `MirageLibraryIndexTests.swift`, `MirageBatchAnalyzerTests.swift` — 12 pins.
 
 ### Next
@@ -408,7 +408,7 @@ console can reproduce any environment state on demand.
 
 - `docs/registers/03-fix-log.md` Stage AH.
 - `docs/design/UI-UX-OVERHAUL-2026-10-29.md` §9.
-- `AsterismaV2.0Tests/Environment/EnvironmentWeatherVisualTests.swift` — 5 pins.
+- `AsterismaV2.5Tests/Environment/EnvironmentWeatherVisualTests.swift` — 5 pins.
 
 ### Next
 
@@ -447,7 +447,7 @@ requested categories.
 ### Evidence
 
 - `docs/audits/2026-11-07-comic-expansion.md`.
-- `AsterismaV2.0Tests/Reader/ComicArchiveTests.swift`, `ComicImportTests.swift`,
+- `AsterismaV2.5Tests/Reader/ComicArchiveTests.swift`, `ComicImportTests.swift`,
   and `ComicReaderModelTests.swift` — 16 tests in 3 suites.
 - Unit census: 568 tests in 110 suites, 0 failures, 10 skips, exit 0.
 
@@ -488,7 +488,7 @@ surface. The reading data path is unchanged: comic page turns still flow through
 ### Evidence
 
 - `docs/audits/2026-11-07-comic-expansion.md`.
-- `AsterismaV2.0/Features/Reader/ComicReaderExperience.swift`.
+- `AsterismaV2.5/Features/Reader/ComicReaderExperience.swift`.
 - Comic suites: **19 tests in 3 suites passed**, exit 0.
 - Unit census: **571 tests in 110 suites / 582 runs**, 572 passed, 10 skips,
   0 failures, exit 0.
@@ -549,8 +549,8 @@ product's comic coverage to the analysis surface, not just the reader.
 ### Evidence
 
 - `docs/audits/2026-11-07-comic-expansion.md`.
-- `AsterismaV2.0/Features/Reader/ComicMetadata.swift`,
-  `AsterismaV2.0/Features/Mirage/ComicMirageBridge.swift`.
+- `AsterismaV2.5/Features/Reader/ComicMetadata.swift`,
+  `AsterismaV2.5/Features/Mirage/ComicMirageBridge.swift`.
 - Focused suites: **25 tests in 5 suites passed**, exit 0.
 - Unit census: **590 tests in 113 suites passed** (console); **591 passed /
   10 skipped / 0 failed**, 719 runs, exit 0.
@@ -605,7 +605,7 @@ read-only surface while keeping the spoiler contract intact.
 ### Evidence
 
 - `docs/audits/2026-11-07-mirage-analysis-report.md`.
-- `AsterismaV2.0/Features/Mirage/MirageAnalysisReport.swift`.
+- `AsterismaV2.5/Features/Mirage/MirageAnalysisReport.swift`.
 - Focused suites: **24 tests in 4 suites passed**, exit 0.
 - Unit census: **594 tests in 114 suites passed** (console); **595 passed /
   10 skipped / 0 failed**, 719 runs, exit 0.
@@ -658,10 +658,10 @@ graph because there is no earlier boundary.
 ### Evidence
 
 - `docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md`.
-- `AsterismaV2.0/Features/Mirage/MirageChapterBoundaries.swift`,
+- `AsterismaV2.5/Features/Mirage/MirageChapterBoundaries.swift`,
   `MirageGraphSnapshot.swift`, `MirageGraphCache.swift`,
   `MirageGraphController.swift`, `MirageGraphView.swift`;
-  `AsterismaV2.0/Features/Reader/EPUBReaderScreen.swift`.
+  `AsterismaV2.5/Features/Reader/EPUBReaderScreen.swift`.
 - Focused suites: **41 tests in 5 suites passed**, exit 0.
 - Unit census: **610 tests in 115 suites passed** (console); **611 passed / 10 skipped / 0 failed / 719 runs**, exit 0.
 

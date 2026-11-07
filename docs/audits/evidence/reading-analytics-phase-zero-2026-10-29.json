@@ -453,7 +453,7 @@
       "totalSessionDurationSeconds": 1548839.5079997778
     }
   ],
-  "sourceCommand": "xcodebuild test -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -destination 'platform=macOS' -only-testing:AsterismaV2.0Tests/ReadingAnalyticsPhaseZeroProbeTests -resultBundlePath /tmp/phase-zero.xcresult",
-  "sourceTest": "AsterismaV2.0Tests/Engines/ReadingAnalyticsPhaseZeroTests.swift",
+  "sourceCommand": "xcodebuild test -project AsterismaV2.5.xcodeproj -scheme AsterismaV2.5 -destination 'platform=macOS' -only-testing:AsterismaV2.5Tests/ReadingAnalyticsPhaseZeroProbeTests -resultBundlePath /tmp/phase-zero.xcresult",
+  "sourceTest": "AsterismaV2.5Tests/Engines/ReadingAnalyticsPhaseZeroTests.swift",
   "workingTreeNote": "Probe ran on cb92f08 plus the uncommitted reader-recovery changes; AnalyticsEngine, EstimationEngine, and DemoDataService are unmodified from HEAD."
 }
