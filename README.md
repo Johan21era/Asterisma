@@ -166,7 +166,7 @@ The audit-era **NEW-DE-1 … NEW-DE-8 punch list was fixed and pinned** during B
 | 5 | **Remaining dead code** | Some zero-caller fragments remain after G7's −1,157-line sweep. | 3–5 h |
 | 6 | **Mirage era — standing items** | TB-M0 observation cadence; a perf-budget report; the engine-side backup-surface gap. The packaged app-embed exercise is now done (runtime embedded and signed). | Process, not code |
 
-**Closed 2026-11-07 — Collection rename UI:** Book Details now has a pencil action on every collection row; it opens a prefilled rename alert and saves through the existing `DataStore.renameCollection`. The rename API is already pinned by `LibraryCollectionTests`.
+**Closed 2026-11-07 — Collection rename UI:** Book Details now has a pencil action on every collection row; it opens a prefilled rename alert and saves through the existing `DataStore.renameCollection`. The rename API is already pinned by `LibraryCollectionTests`. The owner-directed multi-LLM execution plan is [docs/roadmap/07-master-progression.md](docs/roadmap/07-master-progression.md); it is a plan, not a shipped-state claim.
 
 **Closed 2026-11-07 — Behavior evidence to SQLite:** the four existing behavior tables (`behavior_events`, `application_sessions`, `inactivity_records`, `device_state_events`) are now the live store. The JSON archive is retained only as an import seed and compatibility mirror; see Stage AR in `docs/registers/03-fix-log.md`.
 
@@ -195,7 +195,7 @@ docs/
 │   └── 04-handoff.md                        What to do next, in order
 ├── roadmap/
 │   ├── 05-remediation-roadmap.md            The long-term plan, phase by phase
-│   └── 06-rsvp-feature-plan.md              Historical design record — RSVP SHIPPED (P5-B2)
+│   └── 06-rsvp-feature-plan.md; 07-master-progression.md  RSVP design record; multi-LLM master plan (P0–P14, G0–G14)
 ├── method/
 │   └── 07-testing-strategy.md               How tests are written and why
 ├── audits/

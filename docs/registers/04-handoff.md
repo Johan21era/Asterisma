@@ -81,7 +81,7 @@ An app that can be trusted with years of reading history, with a change process 
 | 8 | **Mirage standing items** | Process, not code | TB-M0 observation cadence, a perf-budget report, and the engine-side backup-surface gap. The packaged app-embed exercise is done. |
 | 9 | **Mirage ADR-13 owner acceptance** | One focused session | Exercise the warm engine (start, two analyses without a cold restart, idle stop), a library scan, a batch cancel, and a retry-failed run from Settings ▸ Mirage. Record results in `docs/owner-test-results/`; the stage is not accepted until then. |
 
-**Closed 2026-11-07 — Collection rename UI:** Book Details has a pencil action on every collection row, a prefilled rename alert, and the existing `DataStore.renameCollection` path; build and the collection/metadata pins are green.
+**Closed 2026-11-07 — Collection rename UI:** Book Details has a pencil action on every collection row, a prefilled rename alert, and the existing `DataStore.renameCollection` path; build and the collection/metadata pins are green. The execution sequence for the remaining items is `docs/roadmap/07-master-progression.md`.
 
 **Closed 2026-11-07 — Behavior evidence to SQLite:** the four existing behavior tables are now the live store; the JSON archive is an import seed and compatibility mirror. Stage AR in `docs/registers/03-fix-log.md`.
 
@@ -615,5 +615,6 @@ the owner's live library; the JSON mirror is deliberately retained for older
 builds and Sentinel's file probe. No owner visual or real-device acceptance was
 run, and the estimate changes carry no independent real-reader accuracy claim.
 
-**Next.** Collection rename UI remains the next small Phase 3 item; Swift 6 and
-distribution remain separate programs.
+**Next.** Collection rename UI shipped in `e69677a`; the owner-directed multi-LLM
+master progression plan is `docs/roadmap/07-master-progression.md` (P0–P14,
+gates G0–G14). Swift 6 and distribution remain separate programs.

@@ -47,6 +47,7 @@ Every documentation file begins with a number so you can read them in order:
 | `docs/registers/05-doc-audit.md` | 05 | Markdown truth-audit ledger: per-file scores, digests, evidence, and skips | Anyone editing documentation |
 | `docs/roadmap/05-remediation-roadmap.md` | 05 | The long-term plan, phase by phase | Anyone planning future work |
 | `docs/roadmap/06-rsvp-feature-plan.md` | 06 | Plan for the speed-reading feature | Anyone working on that feature |
+| `docs/roadmap/07-master-progression.md` | 07 | Owner-directed multi-LLM progression plan: P0–P14 phases, G0–G14 gates, work packages, model allocation | Anyone executing or reviewing the progression plan |
 | `docs/method/07-testing-strategy.md` | 07 | How tests are written and why | Anyone writing tests |
 | `docs/audits/08-deep-audit.md` | 08 | The full independent audit from Oct 2026 | Anyone who wants the complete picture |
 | `docs/audits/11-completion-and-health-report-2026-10-24.md` | 11 | Bedrock-era completion and health snapshot | Anyone reviewing the release |

@@ -30,6 +30,13 @@
 | App identity: data root directory name, bundle identifier constants | `AsterismaV2.0/Core/AppIdentity.swift#L12` | `AsterismaV2.0/Core/RuntimeEnvironment.swift` |
 | Feature folders and the full file map | `docs/01-project-tree.md` | `AsterismaV2.0/Features/` |
 
+## Progression and delegation
+
+| If you need… | Read first | Then |
+|---|---|---|
+| Master multi-LLM progression plan: phases P0–P14, gates G0–G14, work packages, model allocation | `docs/roadmap/07-master-progression.md#L1` | `AGENTS.md` (2026-11-07 session directive) |
+| Remediation defect sequence (older, still authoritative for F/NA items) | `docs/roadmap/05-remediation-roadmap.md` | `docs/registers/02-defect-register.md` |
+
 ## Defaults and feature switches
 
 | If you need… | Read first | Then |

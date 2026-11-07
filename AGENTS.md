@@ -298,3 +298,91 @@ A Closeout Initiative is complete only when:
 
 For a small task, skip the Closeout Initiative, but still follow the fix
 protocol and the no-attribution rule.
+
+## Session directive — 2026-11-07 (literal, owner-authored)
+
+This section is a literal transcript of the owner's directive for this session.
+It is not a summary. It expires at session close; later sessions must not treat
+it as standing policy unless the owner re-issues it.
+
+````text
+ASTERIMSA — PROGRESSION STRATEGY & MASTER ROADMAP DIRECTIVE
+
+Alright, amazing work. Now, let's move into the progression phase.
+
+I want you to develop an extremely comprehensive, deeply detailed progression plan and master roadmap for Asterimsa. This should be an extensive, multi-phase execution blueprint, incorporating a substantial number of phases, milestones, progression gates, validation checkpoints, and measurable objectives.
+
+The objective is to establish a structured, technically rigorous roadmap that accounts for the project's overall scope, development complexity, dependencies, and long-term progression.
+
+1. Roadmap Architecture & Scope Calibration
+
+The roadmap must be designed with one critical consideration in mind: you will have multiple other LLMs assisting you throughout execution.
+
+This fundamentally changes how the scope, workload, and task decomposition should be approached.
+
+Consequently:
+
+Recalibrate the entire execution scope around a multi-LLM development environment.
+Account for parallel task execution, delegated workloads, inter-agent collaboration, and independent workstreams.
+Avoid treating small, mundane, highly granular, or niche subtasks as standalone roadmap concepts.
+Consolidate minor tasks into larger, meaningful technical objectives, work packages, and execution milestones.
+Ensure that individual phases represent substantial progression in Asterimsa rather than an unnecessarily fragmented collection of trivial activities.
+Identify dependencies, sequencing requirements, integration points, and potential bottlenecks between parallel workstreams.
+
+The roadmap should be granular enough to provide comprehensive execution guidance, but its organizational structure must remain centered around meaningful development objectives.
+
+2. LLM Resource Allocation & Execution Infrastructure
+
+ONE CRITICAL NOTE: The entire execution strategy must account for the following LLM resource allocation model.
+
+I want you to make aggressive use of OpenCode ZEN's GLM-5.3 Flash (free) at its maximum available configuration.
+
+The reasoning behind this is the distinction between OpenCode's message limitations and OpenRouter's request allocation:
+
+OpenCode ZEN — GLM-5.3 Flash (Free): Use this as the primary execution resource, operating at its maximum available setting.
+OpenCode message limitation: OpenCode will likely cap out at approximately 100–200 messages.
+OpenRouter request allocation: OpenRouter provides me, and its users generally, with a guaranteed allocation of 1,000 requests (prompts) every single day, regardless of the model being used.
+Primary execution strategy: Exploit the available GLM-5.3 Flash capacity as extensively as possible, prioritizing it for delegated workloads, parallel execution, research, implementation, analysis, and other suitable development activities.
+
+The intended execution sequence is as follows:
+
+Maximize utilization of OpenCode ZEN's GLM-5.3 Flash (Free) at its highest available configuration.
+Continue leveraging this resource until the applicable OpenCode message cap is reached (approximately 100–200 messages).
+Once that limit is exhausted, transition to the remaining available execution resources.
+At that point, the workload will be handled by you and Crouton Alpha.
+
+This resource allocation strategy is a foundational constraint, not an incidental implementation detail. The roadmap must be built around it from the outset.
+
+Do not design an execution plan that assumes unlimited access to premium or alternative LLM resources. Workload distribution, task prioritization, delegation, and execution sequencing must reflect the actual resource availability described above.
+
+3. Execution Planning Requirements
+
+The resulting roadmap should be exceptionally detailed and should incorporate:
+
+A large number of distinct development phases.
+Clearly defined progression gates between phases.
+Technical milestones and measurable completion criteria.
+Validation and verification checkpoints.
+Interdependent and parallel execution workstreams.
+LLM task delegation and workload allocation.
+Integration and consolidation stages.
+Risk identification and mitigation checkpoints.
+Resource-aware prioritization and execution sequencing.
+Explicit criteria for determining when Asterimsa is ready to advance to its next stage.
+
+Every phase should establish what needs to be accomplished, why it matters, what constitutes completion, and what conditions must be satisfied before progression.
+
+Importantly, account for the transition from the GLM-5.3 Flash execution window to the subsequent you-and-Crouton-Alpha execution model. The roadmap must remain viable and coherent across that transition.
+
+4. Final Deliverable
+
+I want this to be a massively detailed, technically grounded, end-to-end progression roadmap for Asterimsa.
+
+Think in terms of a comprehensive development and execution blueprint rather than a conventional high-level project plan.
+
+The objective is to maximize meaningful progression, make effective use of all available LLM resources, minimize inefficient task fragmentation, and establish a clear, structured path forward.
+
+Build the entire plan with these constraints and considerations in mind.
+
+I'll review the resulting roadmap in detail and let you know what I think.         {{{{{{{ THE MODELS YOU WILL USE AND ADMINISTRATE OVER ARE : OPENCODE ZEN GLM5.3 FLASH FREE, AND OPENROUTER CROUTON ALPHA}}}}}}}
+````
