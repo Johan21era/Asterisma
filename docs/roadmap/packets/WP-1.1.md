@@ -78,6 +78,8 @@ the allowed paths, touch a secret, or change the save model.
 
 ## Acceptance receipt — 2026-11-07
 
+**Merged in `6e35429`.**
+
 The model's session ended without writing a handoff file, so Buffy reviewed the
 worktree diff directly and reran every check in the main tree after applying it.
 

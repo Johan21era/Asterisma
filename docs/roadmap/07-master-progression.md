@@ -456,8 +456,8 @@ is larger than any single bug. P0 is the cheapest possible insurance.
 `ses_e4bea78ddffetH7olv1j7NqkID`; stale-item dispositions in
 `docs/audits/2026-11-07-open-work-reconciliation.md`; worktree protocol in
 `docs/roadmap/execution-harness.md`; resource ledger in
-`docs/registers/06-resource-ledger.md`. **G0 passed.** P1.1 may start; no feature
-code has been merged yet.
+`docs/registers/06-resource-ledger.md`. **G0 passed.** P1.1 then merged in
+`6e35429`; no other feature code has been merged.
 
 **Exit criteria.** G0 passes; no feature code has been merged yet; the first
 phase packet is ready for P1.
@@ -490,6 +490,19 @@ search, study, and export features depend on.
 | WP-1.4 | Annotation UI: sidebar list, inline highlight, note editor, quote copy/export, filters | GLM | 1.2, 1.3 | no |
 | WP-1.5 | Persistence, backup, and recovery: annotation rows in the store, export/import, orphan handling | GLM | 1.4 | with 1.6 |
 | WP-1.6 | Accessibility and owner acceptance script: keyboard, VoiceOver labels, empty/error states, 10-step script | Crouton/GLM | 1.4 | with 1.5 |
+
+**WP-1.1 receipt (2026-11-07): merged in `6e35429`.** `BookNote` now carries
+nullable `selectedText`, `color`, and `anchor`; `NoteTag.quote` is appended
+after the existing cases so every old raw value still decodes.
+`AnnotationColor` is the five-color palette, and `BookNoteAnchor` is either
+`.epub(chapterIndex:cfi:pageInChapter:)` or `.pdf(pageIndex:rect:)` with a
+normalized rect. `LibraryDatabase` registers the `v2` migration, which adds
+nullable `selected_text`, `color`, and `anchor_json` to `notes`, and both note
+INSERT paths persist all three. The worktree build exited 0, six focused suites
+passed **26 tests**, `git diff --check` exited 0, and the three `ALTER TABLE`
+statements were applied to a populated v1 `notes` table in `sqlite3` with the
+existing row preserved. G1's remaining boxes are the two reader bridges, the
+annotation UI, and the owner script.
 
 **Technical guardrails**
 

@@ -42,6 +42,7 @@ same oversized request; fit the ceiling or use `opencode/crouton-alpha-free`.
 | Crouton | `ses_e4bea78ddffetH7olv1j7NqkID` | P0.2 smoke | 1 | success |
 | GLM | `ses_e4be99068ffeSUBkfahAgpeIy5` | WP-0.1 read-only audit | completed | isolated worktree `quick-planet`; verified subset in `docs/audits/2026-11-07-open-work-reconciliation.md` |
 | GLM | `ses_e4bfda691ffeAwZ3sEM2I02v38` | GLM roadmap review | completed | worktree `swift-eagle` |
+| GLM | `ses_e4bcf9dc0ffeFPW3wHs7GX9LMV` | WP-1.1 annotation schema | ended without a handoff file | worktree `shiny-nebula` at `bd40080`; diff reviewed directly by Buffy, merged in `6e35429` |
 
 The message count is taken from `opencode session export <session-id>`, not from
 memory. The GLM window uses the 80/100/120/160-message checkpoints in the master
@@ -53,6 +54,23 @@ the 30-request packet ceiling, and the 750-request stop.
 Buffy may interrupt, inspect, or terminate any session, deny any agent request,
 revert any change, and discard any unmerged worktree. A builder's request is a
 proposal, not a permission. Every agent outcome remains Buffy's responsibility.
+
+## WP-1.1 — annotation schema, 2026-11-07
+
+| Check | Where | Result |
+|---|---|---|
+| Build | GLM worktree `shiny-nebula` at `bd40080` | exit 0, `** BUILD SUCCEEDED **` |
+| Focused suites | same worktree: `AnnotationSchemaTests`, `SQLiteFoundationTests`, `SQLiteDataStoreTests`, `SQLiteLoadIntegrityTests`, `SchemaEvolutionTests`, `LibraryRebuildAndRowRepairTests` | exit 0, **26 tests in 6 suites passed** |
+| Whitespace | same worktree | `git diff --check` exit 0 |
+| Migration DDL | `sqlite3` on a populated v1 `notes` table | exit 0; the existing row survived with the new columns `NULL` |
+| Merge | `main` | `6e35429`; three files, all inside the packet's allowed paths |
+
+The model session ended without writing `.agent-handoff/WP-1.1.md`, so every
+check above is Buffy's rerun, not the model's report. Crouton's read-only design
+review recommended flat fields and warned that a nested anchor might not survive
+repair paths; the shipped design keeps the nested anchor because
+`LibraryRowRepairService` exports and restores orphan rows with `SELECT rowid, *`
+and no fixed column list, so `anchor_json` round-trips as plain text.
 
 ## Baseline build — 2026-11-07
 

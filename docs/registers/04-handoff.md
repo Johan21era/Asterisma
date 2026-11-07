@@ -618,3 +618,29 @@ run, and the estimate changes carry no independent real-reader accuracy claim.
 **Next.** Collection rename UI shipped in `e69677a`; the owner-directed multi-LLM
 master progression plan is `docs/roadmap/07-master-progression.md` (P0–P14,
 gates G0–G14). Swift 6 and distribution remain separate programs.
+
+---
+
+## Session close — 2026-11-07 (P1.1 annotation schema)
+
+**Delivered.** `BookNote` can now carry a highlight or quote: optional
+`selectedText`, `color`, and a durable `anchor` (EPUB chapter/CFI, or PDF page
+plus a normalized rect), with `NoteTag.quote` appended after the existing cases.
+`LibraryDatabase` registers a `v2` migration that adds nullable `selected_text`,
+`color`, and `anchor_json` to `notes`, and both insert paths persist them.
+Merged in `6e35429`.
+
+**Verified.** Worktree build exit 0; six focused suites (**26 tests**) exit 0;
+`git diff --check` exit 0; the three `ALTER TABLE` statements applied to a
+populated v1 `notes` table in `sqlite3` with the row preserved. G0 CI
+`42336861885` succeeded. The change is additive: pre-1.1 payloads decode with
+the new fields `nil`, and the authoritative load path is still
+`books.payload_json`.
+
+**Limits.** The migration ran on a synthetic populated table and on fresh
+stores, not on a copy of the owner's live library. No reader wires selection to
+the new model yet, so there is no owner visual receipt, and G1 is still open.
+The model session produced no handoff file; Buffy reviewed the diff directly.
+
+**Next.** WP-1.2 and WP-1.3 (EPUB and PDF selection bridges) in parallel, then
+WP-1.4 annotation UI. G1 closes only after the owner 10-step script runs.
