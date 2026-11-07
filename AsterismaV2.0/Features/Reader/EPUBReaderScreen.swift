@@ -34,6 +34,12 @@ struct EPUBReaderScreen: View {
     @State private var showingChapterList = false
     @State private var showingInfo = false
 
+    /// WP-1.2: the one current EPUB selection. Cleared on every page and
+    /// chapter change so a stored selection can never outlive the text it
+    /// was anchored to. WP-1.4's annotation UI reads from here via
+    /// `onSelection`.
+    @State private var selectionState = EPUBSelectionState()
+
     /// Reference to the in-flight open Task so it can be cancelled on
     /// disappear, exactly like the previous implementation's loadTask.
     @State private var openTask: Task<Void, Never>?
@@ -202,6 +208,9 @@ struct EPUBReaderScreen: View {
         currentChapterIndex = clamped
         pageInChapter = 0
         pagesInChapter = 1
+        // WP-1.2: chapter change — the previous selection no longer anchors
+        // to text the reader is showing.
+        selectionState.clear()
         persistPosition()
         coordinator.turnToPage(globalPage)
         updatePositionLabel()
@@ -299,6 +308,8 @@ struct EPUBReaderScreen: View {
             }
         }
 
+        // WP-1.2: page change — clear any selection from the previous page.
+        selectionState.clear()
         persistPosition()
         coordinator.turnToPage(globalPage)
         updatePositionLabel()
@@ -841,6 +852,7 @@ struct EPUBReaderScreen: View {
                 EPUBChapterWebView(
                     fileURL: url,
                     allowedReadRoot: package.allowedReadRoot,
+                    chapterIndex: currentChapterIndex,
                     startPage: pageInChapter,
                     targetPage: pageInChapter,
                     settingsJSON: readerSettingsJSON,
@@ -853,6 +865,9 @@ struct EPUBReaderScreen: View {
                     onPageCount: { pages in
                         pagesInChapter = max(1, pages)
                         if pageInChapter >= pagesInChapter {
+                            // Clamping to the last real page is a page change:
+                            // a selection made on the dropped page is stale.
+                            selectionState.clear()
                             pageInChapter = pagesInChapter - 1
                         }
                         if book.chapters.indices.contains(currentChapterIndex) {
@@ -861,10 +876,21 @@ struct EPUBReaderScreen: View {
                         updatePositionLabel()
                     },
                     onPageChanged: { page in
+                        // WP-1.2: a page change can move a selection onto
+                        // different text; drop it rather than mis-anchoring.
+                        selectionState.clear()
                         pageInChapter = max(0, page)
                         persistPosition()
                         coordinator.turnToPage(globalPage)
                         updatePositionLabel()
+                    },
+                    onSelection: { selection in
+                        selectionState.record(selection)
+                        #if DEBUG
+                        logger.debug(
+                            "EPUB latest selection: \(selectionState.latest?.locator ?? "none", privacy: .public)"
+                        )
+                        #endif
                     }
                 )
             } else {
@@ -1058,6 +1084,108 @@ struct EPUBReaderScreen: View {
     }
 }
 
+// MARK: - EPUBTextSelection (WP-1.2)
+
+/// One settled text selection captured inside the EPUB `WKWebView`.
+///
+/// ### Offset contract (documented here so it cannot drift silently)
+///
+/// `startOffset` and `endOffset` are **0-based UTF-16 code-unit offsets into
+/// the chapter's full `document.body.textContent` at the moment of selection**,
+/// independent of layout, columns, page turns, or font settings. They are
+/// clamped on construction to `0...length` where `length` is the UTF-16 count
+/// of the stored text, so a stale or hostile payload can never produce a
+/// locator pointing past the captured quote. Re-flowing the text does not
+/// change `document.body.textContent`, which is what makes this locator
+/// reflow-invariant.
+///
+/// `text` is the quoted string, truncated to `maxTextLength` characters
+/// (grapheme clusters) so a pathological selection cannot carry an unbounded
+/// payload. If the quote was truncated, offsets inside the truncated range
+/// still clamp to the stored length.
+///
+/// ### Locator
+///
+/// `locator == "ch:<chapterIndex>:<startOffset>:<endOffset>"`. This string is
+/// what WP-1.4 must store in `BookNoteAnchor.epub.cfi`. **It is a dense,
+/// Asterisma-internal locator, NOT a standards-compliant W3C EPUB CFI** — it
+/// only resolves against the same chapter's `document.body.textContent`
+/// produced by this reader. The field name is dictated by the frozen WP-1.1
+/// schema (`BookNoteAnchor.epub(chapterIndex:cfi:pageInChapter:)`).
+struct EPUBTextSelection: Equatable {
+    /// Upper bound on retained quote text, characters (grapheme clusters).
+    static let maxTextLength = 4_000
+
+    let chapterIndex: Int
+    let pageInChapter: Int
+    let text: String
+    let startOffset: Int
+    let endOffset: Int
+
+    /// Dense locator: `ch:<chapterIndex>:<startOffset>:<endOffset>`.
+    /// See the offset-contract comment above. Not a standards-compliant CFI.
+    let locator: String
+
+    /// Builds a validated selection: whitespace-only text is rejected (nil),
+    /// the quote is truncated to `maxTextLength`, and both offsets are clamped
+    /// to `0...<stored text UTF-16 length>`.
+    init?(
+        chapterIndex: Int,
+        pageInChapter: Int,
+        text: String,
+        startOffset: Int,
+        endOffset: Int
+    ) {
+        // Whitespace-only (or empty) selections are not annotations.
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return nil
+        }
+        self.chapterIndex = chapterIndex
+        self.pageInChapter = pageInChapter
+        let clipped = String(text.prefix(Self.maxTextLength))
+        self.text = clipped
+        let length = clipped.utf16.count
+        self.startOffset = max(0, min(startOffset, length))
+        self.endOffset = max(0, min(endOffset, length))
+        self.locator = "ch:\(chapterIndex):\(self.startOffset):\(self.endOffset)"
+    }
+
+    /// Parses a locator produced by `init` back into its three components.
+    /// Returns nil for anything not shaped exactly like
+    /// `"ch:<int>:<int>:<int>"`.
+    static func parse(
+        _ locator: String
+    ) -> (chapterIndex: Int, startOffset: Int, endOffset: Int)? {
+        let parts = locator.split(separator: ":", omittingEmptySubsequences: false)
+        guard parts.count == 4,
+              parts[0] == "ch",
+              let chapterIndex = Int(parts[1]),
+              let startOffset = Int(parts[2]),
+              let endOffset = Int(parts[3])
+        else { return nil }
+        return (chapterIndex, startOffset, endOffset)
+    }
+}
+
+// MARK: - EPUBSelectionState (WP-1.2)
+
+/// Holds the one current EPUB selection for `EPUBReaderScreen`. A plain
+/// struct so the screen can hold it in `@State`; record/clear are both
+/// explicit so page and chapter navigation can drop stale selections.
+struct EPUBSelectionState: Equatable {
+    private(set) var latest: EPUBTextSelection?
+
+    /// Records a selection, replacing any previous one.
+    mutating func record(_ selection: EPUBTextSelection) {
+        latest = selection
+    }
+
+    /// Drops the current selection (page/chapter changed, or the screen left).
+    mutating func clear() {
+        latest = nil
+    }
+}
+
 // MARK: - EPUBChapterWebView
 
 /// Renders one already-unzipped chapter file. Holds no resource lifecycle
@@ -1067,6 +1195,9 @@ struct EPUBReaderScreen: View {
 private struct EPUBChapterWebView: NSViewRepresentable {
     let fileURL: URL
     let allowedReadRoot: URL
+    /// 0-based spine index of the chapter being rendered, embedded in the
+    /// page so the selection bridge can stamp it onto every post.
+    let chapterIndex: Int
     let startPage: Int
     let targetPage: Int
     let settingsJSON: String
@@ -1074,34 +1205,29 @@ private struct EPUBChapterWebView: NSViewRepresentable {
     let onLoadError: (String) -> Void
     let onPageCount: (Int) -> Void
     let onPageChanged: (Int) -> Void
+    /// WP-1.2: called with each settled, validated selection. WP-1.4's
+    /// annotation UI attaches here; this packet deliberately stops short
+    /// of building that UI.
+    let onSelection: (EPUBTextSelection) -> Void
 
     func makeNSView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
-        // Pagination requires a tiny amount of injected JavaScript. Book
-        // content itself still cannot be trusted with app privileges.
+        // Pagination and selection both require a tiny amount of injected
+        // JavaScript. Book content itself still cannot be trusted with
+        // app privileges.
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+        // Both handlers live on the same content controller as the user
+        // scripts; `dismantleNSView` removes both so the controller does not
+        // retain the coordinator after the view goes away.
         configuration.userContentController.add(context.coordinator, name: "epubPage")
-        configuration.userContentController.addUserScript(
-            WKUserScript(
-                source: "window.__epubInitialPage = \(startPage);",
-                injectionTime: .atDocumentStart,
-                forMainFrameOnly: true
-            )
-        )
-        configuration.userContentController.addUserScript(
-            WKUserScript(
-                source: "window.__epubReaderSettings = \(settingsJSON);",
-                injectionTime: .atDocumentStart,
-                forMainFrameOnly: true
-            )
-        )
-        configuration.userContentController.addUserScript(
-            WKUserScript(
-                source: Self.paginationScript,
-                injectionTime: .atDocumentEnd,
-                forMainFrameOnly: true
-            )
-        )
+        configuration.userContentController.add(context.coordinator, name: "epubSelection")
+        for script in Self.makeUserScripts(
+            chapterIndex: chapterIndex,
+            startPage: startPage,
+            settingsJSON: settingsJSON
+        ) {
+            configuration.userContentController.addUserScript(script)
+        }
 
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.navigationDelegate = context.coordinator
@@ -1121,11 +1247,25 @@ private struct EPUBChapterWebView: NSViewRepresentable {
         context.coordinator.onLoadError = onLoadError
         context.coordinator.onPageCount = onPageCount
         context.coordinator.onPageChanged = onPageChanged
+        context.coordinator.onSelection = onSelection
 
         if context.coordinator.currentlyLoadedURL != fileURL {
             context.coordinator.currentlyLoadedURL = fileURL
             context.coordinator.targetPage = startPage
             context.coordinator.ready = false
+            // Chapter changed: user scripts are frozen at their make-time
+            // source, so rebuild them so `__epubSelectionChapter` /
+            // `__epubInitialPage` carry the NEW chapter and page instead of
+            // ones from the chapter the view was first built with.
+            let controller = webView.configuration.userContentController
+            controller.removeAllUserScripts()
+            for script in Self.makeUserScripts(
+                chapterIndex: chapterIndex,
+                startPage: startPage,
+                settingsJSON: settingsJSON
+            ) {
+                controller.addUserScript(script)
+            }
             webView.loadFileURL(fileURL, allowingReadAccessTo: allowedReadRoot)
             return
         }
@@ -1143,8 +1283,13 @@ private struct EPUBChapterWebView: NSViewRepresentable {
     }
 
     static func dismantleNSView(_ nsView: WKWebView, coordinator: Coordinator) {
+        // Remove BOTH script-message handlers so the userContentController
+        // does not retain the coordinator (and its closures) after the view
+        // is dismantled.
         nsView.configuration.userContentController.removeScriptMessageHandler(
             forName: "epubPage")
+        nsView.configuration.userContentController.removeScriptMessageHandler(
+            forName: "epubSelection")
     }
 
     func makeCoordinator() -> Coordinator {
@@ -1154,7 +1299,8 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             onExternalLink: onExternalLink,
             onLoadError: onLoadError,
             onPageCount: onPageCount,
-            onPageChanged: onPageChanged
+            onPageChanged: onPageChanged,
+            onSelection: onSelection
         )
     }
 
@@ -1168,6 +1314,7 @@ private struct EPUBChapterWebView: NSViewRepresentable {
         var onLoadError: (String) -> Void
         var onPageCount: (Int) -> Void
         var onPageChanged: (Int) -> Void
+        var onSelection: (EPUBTextSelection) -> Void
 
         init(
             startPage: Int,
@@ -1175,7 +1322,8 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             onExternalLink: @escaping (URL) -> Void,
             onLoadError: @escaping (String) -> Void,
             onPageCount: @escaping (Int) -> Void,
-            onPageChanged: @escaping (Int) -> Void
+            onPageChanged: @escaping (Int) -> Void,
+            onSelection: @escaping (EPUBTextSelection) -> Void
         ) {
             targetPage = startPage
             self.settingsJSON = settingsJSON
@@ -1183,13 +1331,17 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             self.onLoadError = onLoadError
             self.onPageCount = onPageCount
             self.onPageChanged = onPageChanged
+            self.onSelection = onSelection
         }
 
         func go(to page: Int) {
             targetPage = page
             guard ready, let webView else { return }
-            // The script clamps to the real page count after layout.
+            // The script clamps to the real page count after layout. Keep the
+            // selection bridge's page global in sync so a settled selection
+            // stamps the page the reader is actually on.
             webView.evaluateJavaScript(
+                "window.__epubSelectionPage = \(page); " +
                 "window.__epubGoToPage && window.__epubGoToPage(\(page))"
             )
         }
@@ -1198,6 +1350,30 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
+            if message.name == "epubSelection" {
+                guard let body = message.body as? [String: Any],
+                      let chapterIndex = body["chapterIndex"] as? Int,
+                      let pageInChapter = body["pageInChapter"] as? Int,
+                      let text = body["text"] as? String,
+                      let startOffset = body["startOffset"] as? Int,
+                      let endOffset = body["endOffset"] as? Int,
+                      // The failable init rejects whitespace-only text,
+                      // clamps offsets to the stored length, and truncates
+                      // the quote at EPUBTextSelection.maxTextLength.
+                      let selection = EPUBTextSelection(
+                          chapterIndex: chapterIndex,
+                          pageInChapter: pageInChapter,
+                          text: text,
+                          startOffset: startOffset,
+                          endOffset: endOffset
+                      )
+                else { return }
+                DispatchQueue.main.async {
+                    self.onSelection(selection)
+                }
+                return
+            }
+
             guard message.name == "epubPage",
                   let body = message.body as? [String: Any],
                   let pages = body["pages"] as? Int,
@@ -1242,9 +1418,45 @@ private struct EPUBChapterWebView: NSViewRepresentable {
         }
     }
 
+    /// The full set of user scripts for one chapter load. Rebuilt on every
+    /// chapter change (see updateNSView) so document-start globals reflect
+    /// the chapter and page the view is actually showing.
+    static func makeUserScripts(
+        chapterIndex: Int,
+        startPage: Int,
+        settingsJSON: String
+    ) -> [WKUserScript] {
+        [
+            WKUserScript(
+                source: "window.__epubInitialPage = \(startPage); " +
+                    "window.__epubSelectionChapter = \(chapterIndex);",
+                injectionTime: .atDocumentStart,
+                forMainFrameOnly: true
+            ),
+            WKUserScript(
+                source: "window.__epubReaderSettings = \(settingsJSON);",
+                injectionTime: .atDocumentStart,
+                forMainFrameOnly: true
+            ),
+            WKUserScript(
+                source: paginationScript,
+                injectionTime: .atDocumentEnd,
+                forMainFrameOnly: true
+            ),
+            WKUserScript(
+                source: selectionScript,
+                injectionTime: .atDocumentEnd,
+                forMainFrameOnly: true
+            ),
+        ]
+    }
+
     private static let paginationScript = """
     (function() {
       function post(pages, page) {
+        // Keep the selection bridge's page global in sync; the selection
+        // script stamps `pageInChapter` from it on every post.
+        window.__epubSelectionPage = page;
         if (window.webkit && window.webkit.messageHandlers.epubPage) {
           window.webkit.messageHandlers.epubPage.postMessage({pages: pages, page: page});
         }
@@ -1486,6 +1698,78 @@ private struct EPUBChapterWebView: NSViewRepresentable {
       }
       if (document.readyState === 'complete') build();
       else window.addEventListener('load', build);
+    })();
+    """
+
+    /// WP-1.2 selection bridge. Injected at `.atDocumentEnd` on the same
+    /// content controller as the pagination script. A settled selection
+    /// (debounced 120 ms so a drag posts once) is posted through
+    /// `window.webkit.messageHandlers.epubSelection` as
+    /// `{chapterIndex, pageInChapter, text, startOffset, endOffset}`.
+    ///
+    /// OFFSET CONTRACT (must match EPUBTextSelection's documented contract —
+    /// do not let this drift silently): `startOffset`/`endOffset` are 0-based
+    /// UTF-16 code-unit offsets into the chapter's full
+    /// `document.body.textContent`, independent of layout. They are computed
+    /// by ranging from the body start to the selection boundary and counting
+    /// the range's text in UTF-16 units (`String.length`). Swift clamps the
+    /// received values to the captured quote's length, so this side only
+    /// needs to be best-effort correct.
+    private static let selectionScript = """
+    (function() {
+      if (window.__epubSelectionInstalled) return;
+      window.__epubSelectionInstalled = true;
+
+      var DEBOUNCE_MS = 120;
+      var timer = null;
+
+      // UTF-16 length of the text from the body's start up to a boundary
+      // point. Returns -1 if the point is not measurable (book content is
+      // untrusted, so nothing here is allowed to throw).
+      function offsetOfBoundary(container, offsetInContainer) {
+        try {
+          var range = document.createRange();
+          range.setStart(document.body, 0);
+          range.setEnd(container, offsetInContainer);
+          return range.toString().length;
+        } catch (e) {
+          return -1;
+        }
+      }
+
+      function postSelection() {
+        timer = null;
+        var body = document.body;
+        var selection = window.getSelection ? window.getSelection() : null;
+        if (!body || !selection || selection.rangeCount === 0 || selection.isCollapsed) return;
+
+        var text = selection.toString() || '';
+        // Whitespace-only selections are not annotations; Swift validates
+        // independently, but never post empty payloads at all.
+        if (!text.trim()) return;
+
+        var range = selection.getRangeAt(0);
+        var startOffset = offsetOfBoundary(range.startContainer, range.startOffset);
+        var endOffset = offsetOfBoundary(range.endContainer, range.endOffset);
+        if (startOffset < 0 || endOffset < 0) return;
+
+        var chapter = window.__epubSelectionChapter;
+        var page = window.__epubSelectionPage;
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.epubSelection) {
+          window.webkit.messageHandlers.epubSelection.postMessage({
+            chapterIndex: (typeof chapter === 'number') ? chapter : 0,
+            pageInChapter: (typeof page === 'number') ? page : 0,
+            text: text,
+            startOffset: startOffset,
+            endOffset: endOffset
+          });
+        }
+      }
+
+      document.addEventListener('selectionchange', function() {
+        if (timer !== null) clearTimeout(timer);
+        timer = setTimeout(postSelection, DEBOUNCE_MS);
+      });
     })();
     """
 }
