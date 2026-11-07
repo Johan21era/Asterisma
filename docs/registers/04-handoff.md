@@ -601,14 +601,18 @@ archive retained as a seed and compatibility mirror. Source/test commit
 4 suites, exit 0. The full local census is **518 tests / 100 suites / 719 runs /
 509 passed / 9 skipped / 0 failed**, exit 0,
 `rt-census-20261106-213119.xcresult`. Surface and comprehension-index gates exit
-0. The previous pushed commit's remote census (`42328460289`, `e0f442d`) is
-green.
+0. The pushed source/docs tranche (`f9b8686`, `11c20c5`) passed remote census
+`42329948191`.
+
+**Graph.** `graphify update . --force` rebuilt **9,232 nodes / 21,963 edges /
+451 communities**; the aggregated 2D page is 451 community nodes / 1,527
+cross-community edges (516,668 B), and the full 3D page is 9,233,880 B (8.80
+MiB) with `--check` exit 0.
 
 **Limits.** The behavior migration is tested against a temporary database, not
 the owner's live library; the JSON mirror is deliberately retained for older
 builds and Sentinel's file probe. No owner visual or real-device acceptance was
 run, and the estimate changes carry no independent real-reader accuracy claim.
 
-**Next.** Commit and push this documentation tranche, then watch `census.yml`
-to green. Collection rename UI remains the next small Phase 3 item; Swift 6 and
+**Next.** Collection rename UI remains the next small Phase 3 item; Swift 6 and
 distribution remain separate programs.

@@ -26,7 +26,7 @@ This is a map of every file and folder in the project, organized so you can find
 | `scripts/` | Census, benchmark, test-isolation, runtime staging, icon, release-package, 3D-graph build (`build-graph-3d.py` + vendored renderer), the cold-retrieval harness (`comprehension-bench.py` + its question bank), the Markdown evidence collector (`audit-markdown.py`), and the stable build-and-launch command (`run-latest.sh`) |
 | `dist/` | Generated release packages (gitignored, rebuilt by `scripts/package-release.sh`); the stale local build was removed on 2026-10-28 |
 | `.mirage-runtime/` | Local staged Mirage runtime (gitignored; required for a fresh build) |
-| `graphify-out/` | Generated knowledge graph, 2D community HTML, offline full-node 3D HTML, and report. The code-refreshed graph has **8,956 nodes / 21,465 edges / 433 communities**; counts, hashes, and the documentation-refresh limitation are in `docs/registers/03-fix-log.md`. `graph-3d-full.html` is the only 3D export — `graph-3d.html` was retired 2026-10-29 |
+| `graphify-out/` | Generated knowledge graph, 2D community HTML, offline full-node 3D HTML, and report. The code-refreshed graph has **9,232 nodes / 21,963 edges / 451 communities**; counts, hashes, and the documentation-refresh limitation are in `docs/registers/03-fix-log.md`. `graph-3d-full.html` is the only 3D export — `graph-3d.html` was retired 2026-10-29 |
 | `.gitignore` | Tells Git which files to ignore (build junk, user settings, etc.) |
 | `.graphifyignore` | Tells graphify to skip `scripts/vendor/` — the minified 3D renderer — so graph counts describe project code and docs |
 

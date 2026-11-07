@@ -1707,7 +1707,36 @@ builds and Sentinel's BHV-001 probe. No owner visual or real-device acceptance
 was run. The estimate changes are unit-pinned; no independent reader or real-book
 accuracy claim is made.
 
-**Next.** Push this commit and the documentation commit, then watch `census.yml`
-to green. The remaining Phase 3 work is owner-visible acceptance of the new
-behavior store and the collection rename UI; Swift 6 and distribution remain
-separate programs.
+**Next.** The source and documentation tranches are pushed (`f9b8686`,
+`11c20c5`) and remote census `42329948191` is green. The remaining Phase 3 work
+is owner-visible acceptance of the new behavior store and the collection rename
+UI; Swift 6 and distribution remain separate programs.
+
+## Stage AS — knowledge graph refresh after E8 (2026-11-07)
+
+**What changed.** `graphify update . --force` re-extracted 76/76 uncached code
+files (8 workers) and rebuilt the graph to **9,232 nodes / 21,963 edges / 451
+communities**. It warned that 28 data/asset JSON files produced zero nodes; no
+Swift source failed extraction. `graphify export html` wrote an aggregated
+**451 community nodes / 1,527 cross-community edges** page (516,668 B), and
+`python3 scripts/build-graph-3d.py` wrote **9,233,880 B (8.80 MiB)** with
+`--check` returning `ok`.
+
+**Graph hashes (2026-11-07):** `graph.json`
+`ecc4764ee8fdb3f48e0a4afe5ccc96ce7c5a849275fb2a8912bf97d3fed2d62c`;
+`graph.html`
+`2101db0bb9afda90f1219d939460a608ca82716187c4dbd2b2feed6cde990c54`;
+`GRAPH_REPORT.md`
+`4d29db92c9ecf4b77e4a46eef93f0d6cda6d8855bf2d4adbc33d4851fbebf1ef`;
+`manifest.json`
+`a7f9946123705f0f7bfaa34c48251181f5a1b8edc5e41126332181afc764f156`.
+The gitignored 3D page is
+`b3f154f5bcdfda1ac2339738515be067158d0e67a52ffbc561829f7aed667411`.
+
+**Limits.** This is graphify's incremental code/AST update. Docs are
+re-extracted structurally, not semantically; no Gemini/Google backend is
+configured, so no semantic doc re-extraction was run. The 2D page is aggregated
+because the full graph exceeds the 5,000-node limit. No browser/WebGL re-check
+was run in this stage; the generator and `--check` are the only receipts.
+Graphify left its ignored backup under `graphify-out/2026-11-06/`; no tracked
+source was changed by the refresh.

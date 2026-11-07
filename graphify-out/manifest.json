@@ -1,7 +1,7 @@
 {
   "README.md": {
-    "mtime": 1793330371.7002845,
-    "ast_hash": "f98cbe1891d90c0bc5916061ae0f22f5",
+    "mtime": 1794018652.1885011,
+    "ast_hash": "5872e628b9a0eeadd0e7f9b9789d3bd1",
     "semantic_hash": ""
   },
   "docs/history/LAST_DEFEAT_demo_profiles.txt": {
@@ -45,8 +45,8 @@
     "semantic_hash": ""
   },
   "docs/01-project-tree.md": {
-    "mtime": 1793317455.628432,
-    "ast_hash": "29cf69d5ef93e171c0561646d89d9ddf",
+    "mtime": 1794018652.616787,
+    "ast_hash": "e32154a490c61e30dd71959576d804cb",
     "semantic_hash": ""
   },
   "docs/audits/08-deep-audit.md": {
@@ -190,8 +190,8 @@
     "semantic_hash": "5649bcfa5bdf18d842374e96d6113a76"
   },
   "docs/method/07-testing-strategy.md": {
-    "mtime": 1793317469.3029084,
-    "ast_hash": "db96bd91f4e271eb572ac191e8f09ce4",
+    "mtime": 1794018652.9987218,
+    "ast_hash": "d436c32c3a60a3b01cb3ad05993e640e",
     "semantic_hash": ""
   },
   "docs/registers/02-defect-register.md": {
@@ -200,18 +200,18 @@
     "semantic_hash": ""
   },
   "docs/registers/03-fix-log.md": {
-    "mtime": 1793330392.784946,
-    "ast_hash": "4b8d587efc4ec86e743476f98a6c1f9c",
+    "mtime": 1794018872.3424554,
+    "ast_hash": "7b6184c794577fa79e1cc32d1cfa12cc",
     "semantic_hash": ""
   },
   "docs/registers/04-handoff.md": {
-    "mtime": 1793319215.0974739,
-    "ast_hash": "58ed3cd547a38f6bebf4d441087abede",
+    "mtime": 1794018872.7074232,
+    "ast_hash": "6a2c76b5e3e59c3468867548652fba9d",
     "semantic_hash": ""
   },
   "docs/roadmap/05-remediation-roadmap.md": {
-    "mtime": 1793317507.5421655,
-    "ast_hash": "f8b405564775b039bfbac80d73589971",
+    "mtime": 1794018653.3665977,
+    "ast_hash": "a338ef3f4dcfbd80d52886594c93d401",
     "semantic_hash": ""
   },
   "docs/roadmap/06-rsvp-feature-plan.md": {
@@ -540,8 +540,8 @@
     "semantic_hash": ""
   },
   "scripts/comprehension-questions.json": {
-    "mtime": 1793313316.6788857,
-    "ast_hash": "2e2f664ed2db5228a2a52c68e70a9675",
+    "mtime": 1793334294.1223593,
+    "ast_hash": "6e5a2e6f347f1675db5e8813096e3435",
     "semantic_hash": ""
   },
   "scripts/vendor/3d-force-graph-1.80.0.min.js": {
@@ -550,13 +550,13 @@
     "semantic_hash": ""
   },
   "docs/INDEX.md": {
-    "mtime": 1793329376.0342133,
-    "ast_hash": "9c524939c6fbebf3be33def8f6e84d12",
+    "mtime": 1793425235.9115634,
+    "ast_hash": "4181d5aee064b9a6ff7bd15d866678a0",
     "semantic_hash": ""
   },
   "docs/registers/05-doc-audit.md": {
-    "mtime": 1793333440.6640382,
-    "ast_hash": "6f857119d36e027a7b757b73f54e51c3",
+    "mtime": 1794018879.011834,
+    "ast_hash": "3ac07c05fde0cc1200343fb9b9d38bc3",
     "semantic_hash": ""
   },
   "scripts/graph3d-template.html": {
@@ -565,8 +565,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/App/AsterismaApp.swift": {
-    "mtime": 1793256251.1347418,
-    "ast_hash": "9e1122d8788945a4f5c561695980c4cd",
+    "mtime": 1794018325.3922377,
+    "ast_hash": "ea3ee5b47abc4b39652f987b1251d73d",
     "semantic_hash": ""
   },
   "AsterismaV2.0/App/LibraryHealthCoordinator.swift": {
@@ -630,8 +630,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Core/DataStore3.swift": {
-    "mtime": 1793308488.863936,
-    "ast_hash": "0f5e36522b24263bb18e40361172e4b2",
+    "mtime": 1794018325.072239,
+    "ast_hash": "d4851999bf71146b0387fd008e86a4ea",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Core/DesignGrid.swift": {
@@ -880,8 +880,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Engines/AnalyticsEngine.swift": {
-    "mtime": 1793313785.784157,
-    "ast_hash": "7fe701196a7c03808cc35c6454946d42",
+    "mtime": 1794018293.8237083,
+    "ast_hash": "dd63848c7a668a2ebe5bf8ab3d7aca06",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Engines/DataMaturityEngine.swift": {
@@ -895,8 +895,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Engines/EstimationEngine.swift": {
-    "mtime": 1793330363.8640583,
-    "ast_hash": "28e866067e4540356212aec283035ef9",
+    "mtime": 1794018293.5065427,
+    "ast_hash": "d4b4c28090d7a96c40b1386335a4d418",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Achievements/AchievementEngine2.swift": {
@@ -940,8 +940,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/BehaviorContext/BehavioralCategory.swift": {
-    "mtime": 1792825179.0,
-    "ast_hash": "3f5f1221c26c0b88d6c80a10cfa12da4",
+    "mtime": 1794018355.7687967,
+    "ast_hash": "507483100b9fda941dac6a41f77cfa04",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/BehaviorContext/ContextInsightPanel.swift": {
@@ -1000,8 +1000,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Discovery/DemoDataService.swift": {
-    "mtime": 1793331601.1086762,
-    "ast_hash": "bad60d391727c6d890366b14f06c3b91",
+    "mtime": 1793337615.503502,
+    "ast_hash": "333f2302ef5734fbbc20aa8c60ec8edb",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Discovery/OnlineBook.swift": {
@@ -1165,8 +1165,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Library/BookImporter.swift": {
-    "mtime": 1793314508.3120017,
-    "ast_hash": "2877e3f5ca5cfb0e118fc36f4d17c199",
+    "mtime": 1794018294.5252433,
+    "ast_hash": "6d552e04bc63f561e64bd8ddc7dc0b82",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Library/LibraryExplorerView2.swift": {
@@ -1445,8 +1445,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/Behavior/G6EvidencePersistenceTests.swift": {
-    "mtime": 1793247301.7880552,
-    "ast_hash": "ba8e3fde4cfc30e74cefd8bc88a6d77c",
+    "mtime": 1794018325.9978313,
+    "ast_hash": "02fb95d591a42e9c49411c5cb93fa5cf",
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/Core/AnalyticsCachePinsTests.swift": {
@@ -1590,8 +1590,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/DeveloperConsole/DemoProfileServiceTests.swift": {
-    "mtime": 1793331452.6731522,
-    "ast_hash": "05642a31288c8fd63e7b3485e2016623",
+    "mtime": 1793338802.8120246,
+    "ast_hash": "b057b126476d4d06c3228a13db7bb260",
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/Environment/EnvironmentEngineTests.swift": {
@@ -1820,8 +1820,8 @@
     "semantic_hash": ""
   },
   "docs/design/UI-UX-OVERHAUL-2026-10-29.md": {
-    "mtime": 1793317484.0944302,
-    "ast_hash": "b7c657ffd6de52cc2d0c5da19db200b0",
+    "mtime": 1794017124.1948771,
+    "ast_hash": "907a91f7d4ad66d438302fbab1eafa07",
     "semantic_hash": ""
   },
   "AsterismaV2.0/App/CommandPalette.swift": {
@@ -1915,8 +1915,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Library/ContentAnalysis.swift": {
-    "mtime": 1793314500.7575257,
-    "ast_hash": "1113f5ba2d06ac7c4718fda26753fbbd",
+    "mtime": 1794018294.1306121,
+    "ast_hash": "809be9f9ded5683e6503bd3afaf66bf5",
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/Core/BookFileRelinkTests.swift": {
@@ -1935,8 +1935,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/Engines/PageDurationPolicyTests.swift": {
-    "mtime": 1793313652.3508897,
-    "ast_hash": "5075654b36c155786d1612b7adde5a13",
+    "mtime": 1793342689.8739238,
+    "ast_hash": "4609aa84215c23659e2d21b94750d2d1",
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/Engines/ReadingAnalyticsPhaseZeroTests.swift": {
@@ -1950,8 +1950,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/Library/PageEstimationModelTests.swift": {
-    "mtime": 1793313943.1964707,
-    "ast_hash": "1bb0753af028eaf294de22f20de5a7ff",
+    "mtime": 1794018324.06261,
+    "ast_hash": "6605538a44b33edfd8986c18ed6c928d",
     "semantic_hash": ""
   },
   "docs/audits/evidence/adf-149-features-2026-10-29.json": {
@@ -2144,81 +2144,6 @@
     "ast_hash": "296ca95daeaa24e573a1faeaa085f75a",
     "semantic_hash": ""
   },
-  "tools/cde/synthetic-batch-762943-final/app-input.json": {
-    "mtime": 1793332956.5512192,
-    "ast_hash": "194e70dff739da337f0d1ac7b667f161",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943-final/attachments/A0C02CE2-D062-4ED2-97AB-B63B18F6E3CA.json": {
-    "mtime": 1793333061.5418518,
-    "ast_hash": "77f51f1167af4e93076f724eac949315",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943-final/attachments/manifest.json": {
-    "mtime": 1793333061.5429251,
-    "ast_hash": "d75c8738715baee1664ad263c80e1b66",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943-final/prepared.json": {
-    "mtime": 1793332956.6650167,
-    "ast_hash": "c38483481665c8e60e8296514934d6b1",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943-final/swift-predictions.json": {
-    "mtime": 1793333061.582393,
-    "ast_hash": "77f51f1167af4e93076f724eac949315",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943/app-input.json": {
-    "mtime": 1793332366.5144203,
-    "ast_hash": "194e70dff739da337f0d1ac7b667f161",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943/attachments/6F7AB80C-4249-4394-A45E-DC8A5AFB5C90.json": {
-    "mtime": 1793332677.6820893,
-    "ast_hash": "41920c8a8f56a895925f7c86c1e285b5",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943/attachments/manifest.json": {
-    "mtime": 1793332677.6827435,
-    "ast_hash": "95bc42dcacc5be5e7adafce981a852af",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943/prepared.json": {
-    "mtime": 1793332366.627321,
-    "ast_hash": "ca032d92a4f39dc57167d8b4366f88c6",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762943/swift-predictions.json": {
-    "mtime": 1793332701.582834,
-    "ast_hash": "41920c8a8f56a895925f7c86c1e285b5",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762944/app-input.json": {
-    "mtime": 1793333150.6696322,
-    "ast_hash": "539bf9cf74ef550bea33e0b749cfc249",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762944/attachments/9C4F5611-1CBC-4284-9D02-C8522A76176E.json": {
-    "mtime": 1793333256.5369532,
-    "ast_hash": "fd06c456ef9239c4fc2ea2db8dbf0be8",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762944/attachments/manifest.json": {
-    "mtime": 1793333256.5374918,
-    "ast_hash": "f55ad3f143eaa71ed1bf9d184850513e",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762944/prepared.json": {
-    "mtime": 1793333150.8416042,
-    "ast_hash": "db1c86f878969ae4a8af0243509f9bb7",
-    "semantic_hash": ""
-  },
-  "tools/cde/synthetic-batch-762944/swift-predictions.json": {
-    "mtime": 1793333256.5901275,
-    "ast_hash": "fd06c456ef9239c4fc2ea2db8dbf0be8",
-    "semantic_hash": ""
-  },
   "tools/cde/synthetic_eval.py": {
     "mtime": 1793333095.93835,
     "ast_hash": "ccb430703a2b7361c7f0755836cde7c5",
@@ -2245,8 +2170,8 @@
     "semantic_hash": ""
   },
   "tools/real-book-audit/main.swift": {
-    "mtime": 1793314576.0891616,
-    "ast_hash": "524ed8b68c8b2f86c10a8ef9acd97e69",
+    "mtime": 1794018294.9668026,
+    "ast_hash": "bea4db9dcd2616f89be0e06a10b8c643",
     "semantic_hash": ""
   },
   "docs/audits/13-reading-analytics-phase-zero-2026-10-29.md": {
@@ -2270,8 +2195,8 @@
     "semantic_hash": ""
   },
   "docs/audits/synthetic-reading-evaluation.md": {
-    "mtime": 1793333359.7183328,
-    "ast_hash": "b94074566d417f76f514962388020a7d",
+    "mtime": 1793335492.9467463,
+    "ast_hash": "504588d5193963dc0d59c0c244af9562",
     "semantic_hash": ""
   },
   "docs/plans/cde/FORMULA.md": {
@@ -2302,6 +2227,131 @@
   "docs/plans/cde/REVIEW-RESPONSE.md": {
     "mtime": 1793328008.7386208,
     "ast_hash": "bd9d5598fbdb8e8339b61c25c1e314a9",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift": {
+    "mtime": 1793341866.8755946,
+    "ast_hash": "2f9431b244bccf2d8f6c8be87325a5fa",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/EstimateFacadeTests.swift": {
+    "mtime": 1794018324.3818378,
+    "ast_hash": "6d71584407a456952bc29a9c96f6d4ff",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/FinalStressDemoSnapshotTests.swift": {
+    "mtime": 1793336044.7199974,
+    "ast_hash": "6164706233b9f067667adbeb389f238c",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/FreshDemoRounds.json": {
+    "mtime": 1793412530.4293551,
+    "ast_hash": "5139d80a0f16a8b2c82e300436203431",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/FreshStressBundleTests.swift": {
+    "mtime": 1794017543.1060185,
+    "ast_hash": "82a4eee4ab0c34ab983a6aeeef29a798",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/FreshStressInput.json": {
+    "mtime": 1794017542.538597,
+    "ast_hash": "44d9cac912f95e9dd541ba8a00dbf216",
+    "semantic_hash": ""
+  },
+  "tools/cde/adversarial_eval.py": {
+    "mtime": 1793335355.1749003,
+    "ast_hash": "31934ae9059442d2935e293ada7edb8e",
+    "semantic_hash": ""
+  },
+  "tools/cde/analyze_fresh_200.py": {
+    "mtime": 1793341872.3772826,
+    "ast_hash": "1eb1313e7ceb8e0aef2fc7a6e5f2065b",
+    "semantic_hash": ""
+  },
+  "tools/cde/archive_fresh_evidence.py": {
+    "mtime": 1793425159.4799702,
+    "ast_hash": "2941e3f0bddd5851cf375f11a22ddcee",
+    "semantic_hash": ""
+  },
+  "tools/cde/audit_fresh_tail.py": {
+    "mtime": 1793340427.183344,
+    "ast_hash": "539385602d9c0e1660ccbcc6d5b5fe2a",
+    "semantic_hash": ""
+  },
+  "tools/cde/final_stress.py": {
+    "mtime": 1793336665.1762025,
+    "ast_hash": "4fc6f643ec84734f5dc018c713739b75",
+    "semantic_hash": ""
+  },
+  "tools/cde/final_stress_report.py": {
+    "mtime": 1793336874.2963023,
+    "ast_hash": "f9386543fd3114cd263d487d9776f213",
+    "semantic_hash": ""
+  },
+  "tools/cde/fresh_100.py": {
+    "mtime": 1793341866.8937323,
+    "ast_hash": "97686283c20c508abb1e774d5f11f756",
+    "semantic_hash": ""
+  },
+  "tools/cde/review_fresh_100.py": {
+    "mtime": 1793338605.897843,
+    "ast_hash": "03efd05e41ea3c31f651da23d9a03e03",
+    "semantic_hash": ""
+  },
+  "tools/cde/run_fresh_100.sh": {
+    "mtime": 1793337780.534944,
+    "ast_hash": "f3a192b2dad51ad33af4d4d4cfe2cd38",
+    "semantic_hash": ""
+  },
+  "tools/cde/run_fresh_200.sh": {
+    "mtime": 1793412308.7567117,
+    "ast_hash": "a559fcb4f3210beb1d4322c3a96ebc24",
+    "semantic_hash": ""
+  },
+  "tools/cde/test_adversarial_eval.py": {
+    "mtime": 1793335360.0166786,
+    "ast_hash": "49145d12b04bdee59f4c6b7e0469b416",
+    "semantic_hash": ""
+  },
+  "tools/cde/test_fresh_100.py": {
+    "mtime": 1793337875.3497825,
+    "ast_hash": "d4b2b93043cd4b405c1d67564f565f0b",
+    "semantic_hash": ""
+  },
+  "tools/cde/write_fresh_100_report.py": {
+    "mtime": 1793339078.8808377,
+    "ast_hash": "7a96cf3d9f4f2a1d50683ac6d80766e6",
+    "semantic_hash": ""
+  },
+  "tools/cde/write_fresh_200_report.py": {
+    "mtime": 1793424363.604589,
+    "ast_hash": "27c42793360fe4f0450ec8e3bbf4f1dd",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/fresh-stress-evidence-archive-2026-10-31.md": {
+    "mtime": 1793425171.7296643,
+    "ast_hash": "1f7f35f0b2b47b6dcb4814a7caf619c5",
+    "semantic_hash": ""
+  },
+  "docs/audits/final-reading-stress-2026-10-30.md": {
+    "mtime": 1793336893.3171568,
+    "ast_hash": "bff0b48fa9ba6a2a8295584b0c7ac449",
+    "semantic_hash": ""
+  },
+  "docs/audits/fresh-reading-stress-100-2026-10-30.md": {
+    "mtime": 1793425227.2022233,
+    "ast_hash": "9f6b1f46509443b2c259ae1a5c2df672",
+    "semantic_hash": ""
+  },
+  "docs/audits/fresh-reading-stress-200-2026-10-30.md": {
+    "mtime": 1793425230.2295272,
+    "ast_hash": "82585a438014c86021c6f0b55a077f12",
+    "semantic_hash": ""
+  },
+  "docs/audits/fresh-stress-root-cause-2026-10-30.md": {
+    "mtime": 1793425233.509712,
+    "ast_hash": "f911f5ccba43ab2d45060011c790ac1d",
     "semantic_hash": ""
   }
 }
