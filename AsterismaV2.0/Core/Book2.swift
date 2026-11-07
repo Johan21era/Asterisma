@@ -390,6 +390,15 @@ struct BookNote: Identifiable, Codable, Hashable {
         /// WP-1.1: copy the user lifted from the book. Added last so every
         /// pre-existing raw value keeps decoding; never reorder or reuse.
         case quote = "Quote"
+
+        /// CR-1: an unknown tag written by a newer build must not fail the whole
+        /// book decode. Loading fails closed on any undecodable payload, so a
+        /// single unknown tag would make the library unreadable after a
+        /// downgrade. Unknown values degrade to `.general` instead.
+        init(from decoder: Decoder) throws {
+            let raw = try decoder.singleValueContainer().decode(String.self)
+            self = NoteTag(rawValue: raw) ?? .general
+        }
     }
 
     init(
@@ -427,6 +436,13 @@ enum AnnotationColor: String, Codable, CaseIterable, Hashable, Sendable {
     case blue
     case pink
     case purple
+
+    /// CR-1: same downgrade rule as `NoteTag`. A color added by a newer build
+    /// must not make an older build unable to load the library.
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = AnnotationColor(rawValue: raw) ?? .yellow
+    }
 }
 
 // MARK: - BookNoteAnchor

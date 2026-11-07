@@ -54,14 +54,15 @@ struct EPUBSelectionTests {
         #expect(EPUBTextSelection.parse("ch:3:2:y") == nil)
     }
 
-    // 2. Negative and out-of-range offsets clamp to 0...textLength.
-    @Test("Negative and out-of-range offsets clamp to 0...textLength")
+    // 2. Negative and out-of-range offsets clamp to 0...chapterLength.
+    @Test("Negative and out-of-range offsets clamp to 0...chapterLength")
     func offsetsClamp() throws {
-        // "abc" has 3 UTF-16 units.
+        // "abc" has 3 UTF-16 units, and so does this chapter.
         let clamped = try #require(
             EPUBTextSelection(
                 chapterIndex: 0,
                 pageInChapter: 0,
+                chapterLength: 3,
                 text: "abc",
                 startOffset: -5,
                 endOffset: 99
@@ -82,6 +83,28 @@ struct EPUBSelectionTests {
         )
         #expect(negative.startOffset == 0)
         #expect(negative.endOffset == 0)
+    }
+
+    /// CR-1: offsets are chapter-absolute. A selection that starts far past
+    /// the quote's own length must keep its real position instead of collapsing
+    /// to a zero-width locator pointing at the chapter head.
+    @Test("Chapter-absolute offsets past the quote length are preserved")
+    func chapterAbsoluteOffsetsPreserved() throws {
+        let selection = try #require(
+            EPUBTextSelection(
+                chapterIndex: 4,
+                pageInChapter: 2,
+                chapterLength: 5_000,
+                text: "the measured boundary",
+                startOffset: 4_120,
+                endOffset: 4_141
+            )
+        )
+        #expect(selection.startOffset == 4_120)
+        #expect(selection.endOffset == 4_141)
+        #expect(selection.locator == "ch:4:4120:4141")
+        #expect(EPUBTextSelection.parse(selection.locator)?.startOffset == 4_120)
+        #expect(EPUBTextSelection.parse(selection.locator)?.chapterIndex == 4)
     }
 
     // 3a. Whitespace-only text is rejected.

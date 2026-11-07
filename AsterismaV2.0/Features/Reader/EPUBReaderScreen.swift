@@ -1128,10 +1128,18 @@ struct EPUBTextSelection: Equatable {
 
     /// Builds a validated selection: whitespace-only text is rejected (nil),
     /// the quote is truncated to `maxTextLength`, and both offsets are clamped
-    /// to `0...<stored text UTF-16 length>`.
+    /// to `0...chapterLength`.
+    ///
+    /// CR-1 defect fixed here: the offsets address the **whole chapter**, so
+    /// they must be clamped against the chapter's length, never against the
+    /// captured quote's own length. Clamping to the quote collapsed every
+    /// selection that started past the quote's length to a zero-width locator
+    /// pointing at the wrong text. When the caller does not know the chapter
+    /// length, the offsets are preserved as given rather than collapsed.
     init?(
         chapterIndex: Int,
         pageInChapter: Int,
+        chapterLength: Int? = nil,
         text: String,
         startOffset: Int,
         endOffset: Int
@@ -1144,10 +1152,15 @@ struct EPUBTextSelection: Equatable {
         self.pageInChapter = pageInChapter
         let clipped = String(text.prefix(Self.maxTextLength))
         self.text = clipped
-        let length = clipped.utf16.count
-        self.startOffset = max(0, min(startOffset, length))
-        self.endOffset = max(0, min(endOffset, length))
-        self.locator = "ch:\(chapterIndex):\(self.startOffset):\(self.endOffset)"
+        let limit = max(0, chapterLength ?? max(startOffset, endOffset))
+        let clampedStart = max(0, min(startOffset, limit))
+        // The stored quote is truncated, so the anchor range is capped at the
+        // same length: quote and range must always describe the same text.
+        let quoteLength = clipped.utf16.count
+        let clampedEnd = max(clampedStart, min(endOffset, limit, clampedStart + quoteLength))
+        self.startOffset = clampedStart
+        self.endOffset = clampedEnd
+        self.locator = "ch:\(chapterIndex):\(clampedStart):\(clampedEnd)"
     }
 
     /// Parses a locator produced by `init` back into its three components.
@@ -1357,12 +1370,14 @@ private struct EPUBChapterWebView: NSViewRepresentable {
                       let text = body["text"] as? String,
                       let startOffset = body["startOffset"] as? Int,
                       let endOffset = body["endOffset"] as? Int,
-                      // The failable init rejects whitespace-only text,
-                      // clamps offsets to the stored length, and truncates
-                      // the quote at EPUBTextSelection.maxTextLength.
+                      // CR-1: offsets are chapter-absolute. The script posts the
+                      // chapter length so they clamp to the chapter, not to the
+                      // quote; the init still rejects whitespace-only text and
+                      // truncates the quote at maxTextLength.
                       let selection = EPUBTextSelection(
                           chapterIndex: chapterIndex,
                           pageInChapter: pageInChapter,
+                          chapterLength: body["textLength"] as? Int,
                           text: text,
                           startOffset: startOffset,
                           endOffset: endOffset
@@ -1705,7 +1720,7 @@ private struct EPUBChapterWebView: NSViewRepresentable {
     /// content controller as the pagination script. A settled selection
     /// (debounced 120 ms so a drag posts once) is posted through
     /// `window.webkit.messageHandlers.epubSelection` as
-    /// `{chapterIndex, pageInChapter, text, startOffset, endOffset}`.
+    /// `{chapterIndex, pageInChapter, text, startOffset, endOffset, textLength}`.
     ///
     /// OFFSET CONTRACT (must match EPUBTextSelection's documented contract —
     /// do not let this drift silently): `startOffset`/`endOffset` are 0-based
@@ -1713,8 +1728,8 @@ private struct EPUBChapterWebView: NSViewRepresentable {
     /// `document.body.textContent`, independent of layout. They are computed
     /// by ranging from the body start to the selection boundary and counting
     /// the range's text in UTF-16 units (`String.length`). Swift clamps the
-    /// received values to the captured quote's length, so this side only
-    /// needs to be best-effort correct.
+    /// received values to `textLength`, so this side must report the chapter's
+    /// own length rather than the quote's.
     private static let selectionScript = """
     (function() {
       if (window.__epubSelectionInstalled) return;
@@ -1761,7 +1776,8 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             pageInChapter: (typeof page === 'number') ? page : 0,
             text: text,
             startOffset: startOffset,
-            endOffset: endOffset
+            endOffset: endOffset,
+            textLength: body.textContent ? body.textContent.length : 0
           });
         }
       }

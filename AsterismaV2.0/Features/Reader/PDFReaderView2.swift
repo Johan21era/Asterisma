@@ -188,9 +188,10 @@ struct PDFReaderView: NSViewRepresentable {
     /// LIVE-TEST LT-3b: fired exactly once per successful document open so the
     /// screen can start its reading session on REALITY instead of optimism.
     let onLoadSuccess: (() -> Void)?
-    /// WP-1.3: fired when the user changes the text selection to a usable,
-    /// non-whitespace selection. nil quiets the hook (unused call sites).
-    let onSelection: ((PDFTextSelection) -> Void)?
+    /// WP-1.3: fired when the user changes the text selection. Fires with a
+    /// value for a usable, non-whitespace selection and with `nil` when the
+    /// selection is cleared, so the screen cannot keep showing a stale anchor.
+    let onSelection: ((PDFTextSelection?) -> Void)?
 
     init(book: Book,
          currentPage: Int,
@@ -198,7 +199,7 @@ struct PDFReaderView: NSViewRepresentable {
          onPageChange: @escaping (Int) -> Void,
          onLoadError: ((String) -> Void)? = nil,
          onLoadSuccess: (() -> Void)? = nil,
-         onSelection: ((PDFTextSelection) -> Void)? = nil)
+         onSelection: ((PDFTextSelection?) -> Void)? = nil)
     {
         self.book = book
         self.currentPage = currentPage
@@ -370,6 +371,7 @@ struct PDFReaderView: NSViewRepresentable {
     ///      from makeNSView, allowing PDFKit to finish any in-flight page renders first).
     static func dismantleNSView(_ nsView: ReaderPDFView, coordinator: Coordinator) {
         coordinator.stopPolling() // TASK 6 / TASK 23
+        coordinator.stopSelectionObservation() // WP-1.3 / CR-1
         coordinator.stopSecurityAccess() // TASK 4 / TASK 23
         nsView.document = nil // Release PDFDocument before scope ends
         print("🔍 [PDFReaderView] dismantleNSView: timer stopped, security scope released")
@@ -384,8 +386,8 @@ struct PDFReaderView: NSViewRepresentable {
 
     final class Coordinator: NSObject, PDFViewDelegate {
         let onPageChange: (Int) -> Void
-        /// WP-1.3: published whenever the selection becomes a usable anchor.
-        let onSelection: ((PDFTextSelection) -> Void)?
+        /// WP-1.3: published with the selection, or `nil` when it is cleared.
+        let onSelection: ((PDFTextSelection?) -> Void)?
 
         // B1: polling state
         private var pollingTimer: Timer?
@@ -401,7 +403,7 @@ struct PDFReaderView: NSViewRepresentable {
         private var lastKnownScaleFactor: CGFloat?
 
         init(onPageChange: @escaping (Int) -> Void,
-             onSelection: ((PDFTextSelection) -> Void)? = nil) {
+             onSelection: ((PDFTextSelection?) -> Void)? = nil) {
             self.onPageChange = onPageChange
             self.onSelection = onSelection
         }
@@ -425,6 +427,13 @@ struct PDFReaderView: NSViewRepresentable {
         func stopSecurityAccess() {
             securityScopedURL?.stopAccessingSecurityScopedResource()
             securityScopedURL = nil
+        }
+
+        /// CR-1: the selection observer must come off in `dismantleNSView`,
+        /// which is the deterministic teardown hook, not only in `deinit`.
+        func stopSelectionObservation() {
+            NotificationCenter.default.removeObserver(
+                self, name: .PDFViewSelectionChanged, object: nil)
         }
 
         /// B1 FIX: 1 Hz timer; fires onPageChange only when page actually changes.
@@ -502,26 +511,50 @@ struct PDFReaderView: NSViewRepresentable {
         @objc func selectionDidChange(_ notification: Notification) {
             guard let view = notification.object as? PDFView else { return }
 
+            // A deselected view must clear the cursor; leaving the previous
+            // value standing would present a stale anchor as if still selected.
             guard let selection = view.currentSelection,
                   let doc = view.document,
                   let page = selection.pages.first
-            else { return }
+            else {
+                onSelection?(nil)
+                return
+            }
 
             // Empty / whitespace-only selections are not anchors.
             let rawText = selection.string ?? ""
-            guard !rawText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+            guard !rawText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                onSelection?(nil)
+                return
+            }
 
             let pageBounds = page.bounds(for: .cropBox)
             let selectionRect = selection.bounds(for: page)
             guard PDFSelectionGeometry.isUsable(rect: selectionRect, in: pageBounds) else { return }
 
-            let truncated = String(rawText.prefix(PDFSelectionGeometry.maxSelectedTextLength))
+            // CR-1 defect fixed here: `selection.string` spans every page the
+            // selection touches, but the anchor names only the first page's
+            // rect. Take that page's own text so the quote and the rect always
+            // describe the same text.
+            let firstPageText: String
+            if selection.pages.count > 1 {
+                firstPageText = page.selection(for: selection.bounds(for: page))?.string ?? rawText
+            } else {
+                firstPageText = rawText
+            }
+            let truncated = String(firstPageText.prefix(PDFSelectionGeometry.maxSelectedTextLength))
             let value = PDFTextSelection(
                 pageIndex: doc.index(for: page),
                 text: truncated,
                 rect: PDFSelectionGeometry.normalized(rect: selectionRect, in: pageBounds)
             )
-            onSelection?(value)
+            // PDFKit posts this on the main thread today; hop defensively so a
+            // future off-main post cannot write SwiftUI state off-main.
+            if Thread.isMainThread {
+                onSelection?(value)
+            } else {
+                DispatchQueue.main.async { [onSelection] in onSelection?(value) }
+            }
         }
     }
 }
@@ -608,12 +641,17 @@ struct PDFReaderScreen: View {
                     onLoadSuccess: {
                         coordinator.startReading(bookID: book.id, page: coordinator.currentPage)
                     },
-                    // WP-1.3: hold the latest selection; DEBUG logging only.
+                    // WP-1.3: hold the latest selection; nil clears it. DEBUG
+                    // logging only — no UI consumes the value yet.
                     onSelection: { selection in
                         latestSelection = selection
                         #if DEBUG
-                        let r = selection.rect
-                        print("📝 [PDFReaderScreen] selection captured — page \(selection.pageIndex + 1), \(selection.text.count) chars (cap \(PDFSelectionGeometry.maxSelectedTextLength)), rect (\(r.x), \(r.y), \(r.width), \(r.height))")
+                        if let selection {
+                            let r = selection.rect
+                            print("📝 [PDFReaderScreen] selection captured — page \(selection.pageIndex + 1), \(selection.text.count) chars (cap \(PDFSelectionGeometry.maxSelectedTextLength)), rect (\(r.x), \(r.y), \(r.width), \(r.height))")
+                        } else {
+                            print("📝 [PDFReaderScreen] selection cleared")
+                        }
                         #endif
                     }
                 )
