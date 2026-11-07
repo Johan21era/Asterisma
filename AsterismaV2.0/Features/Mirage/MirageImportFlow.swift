@@ -31,6 +31,10 @@ nonisolated enum MirageImportOutcome: Sendable, Equatable {
     /// S10-ES-1(c) failures: referent didn't resolve, vanished, or moved.
     case sourceUnavailable(reason: String)
     case notApplicableFileType(reason: String)
+    /// 2.6: the source is eligible (a comic), but its analysis artifact could
+    /// not be produced. Distinct from `sourceUnavailable` because the source
+    /// itself was readable — claiming otherwise would be false.
+    case analysisPreparationFailed(reason: String)
     case mapUnreadable(reason: String)
     /// RT-side stratum persistence fault (nothing written; state intact).
     case mapWriteFailed(reason: String)
@@ -68,6 +72,53 @@ nonisolated enum MirageSourceFingerprint {
         SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
 
+    /// Fingerprints a Mirage source, which may be a file (EPUB, CBZ) or a
+    /// directory (an image-folder comic). A directory digest covers its
+    /// relative path set and every file's bytes in canonical path order, so
+    /// adding, removing, renaming, or editing any page drifts the identity.
+    static func sha256Hex(sourceAt url: URL) throws -> String {
+        // A URL resolved from a security-scoped bookmark only grants sandbox
+        // access while its scope is active. Hashing is the one operation every
+        // Mirage status/import path performs, so the scope belongs here.
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+
+        let isDirectory = (try? url.resourceValues(
+            forKeys: [.isDirectoryKey]))?.isDirectory ?? false
+        guard isDirectory else { return try sha256Hex(fileAt: url) }
+
+        guard let enumerator = FileManager.default.enumerator(
+            at: url,
+            includingPropertiesForKeys: [.isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        ) else { return try sha256Hex(fileAt: url) }
+
+        let rootComponents = url.standardizedFileURL.pathComponents
+        var files: [(path: String, url: URL)] = []
+        for case let fileURL as URL in enumerator {
+            let values = try? fileURL.resourceValues(forKeys: [.isRegularFileKey])
+            guard values?.isRegularFile == true else { continue }
+            let fileComponents = fileURL.standardizedFileURL.pathComponents
+            guard fileComponents.count > rootComponents.count,
+                  Array(fileComponents.prefix(rootComponents.count)) == rootComponents
+            else { continue }
+            files.append((
+                fileComponents.dropFirst(rootComponents.count).joined(separator: "/"),
+                fileURL))
+        }
+        files.sort { $0.path < $1.path }
+
+        var hasher = SHA256()
+        for file in files {
+            hasher.update(data: Data(file.path.utf8))
+            hasher.update(data: Data([0]))
+            let digest = try sha256Hex(fileAt: file.url)
+            hasher.update(data: Data(digest.utf8))
+            hasher.update(data: Data([0]))
+        }
+        return hasher.finalize().map { String(format: "%02x", $0) }.joined()
+    }
+
     /// Streams the file through SHA-256. `Data(contentsOf:)` would hold the
     /// whole book in memory for a digest; both the import flow and the status
     /// refresh hash library books, so the streaming form is the smooth one.
@@ -98,18 +149,39 @@ nonisolated struct MirageFileStat: Sendable, Equatable {
     }
 }
 
+/// What kind of source the flow is looking at. EPUBs are analyzed as
+/// themselves; comics are analyzed through a deterministic OCR text edition
+/// prepared before dispatch; everything else is refused without touching the
+/// file.
+nonisolated enum MirageSourceKind: String, Sendable {
+    case epub
+    case comic
+    case unsupported
+}
+
 /// What the flow needs to know about ONE book. Tests inject closures; the app
 /// layer injects Book's own resolveURL()/fileType (borrowed referent logic —
 /// the flow holds no RT persistence reference by construction).
 nonisolated struct MirageImportSource: Sendable {
     let rtBookID: UUID
-    let fileTypeIsEpub: Bool
+    let kind: MirageSourceKind
     let resolveURL: @Sendable () -> URL?
 
-    init(rtBookID: UUID, fileTypeIsEpub: Bool, resolveURL: @escaping @Sendable () -> URL?) {
+    var fileTypeIsEpub: Bool { kind == .epub }
+
+    init(rtBookID: UUID, kind: MirageSourceKind, resolveURL: @escaping @Sendable () -> URL?) {
         self.rtBookID = rtBookID
-        self.fileTypeIsEpub = fileTypeIsEpub
+        self.kind = kind
         self.resolveURL = resolveURL
+    }
+
+    /// Backward-compatible seed used by existing call sites and tests: `true`
+    /// is an EPUB source; `false` is any non-Mirage source (PDF and friends).
+    init(rtBookID: UUID, fileTypeIsEpub: Bool, resolveURL: @escaping @Sendable () -> URL?) {
+        self.init(
+            rtBookID: rtBookID,
+            kind: fileTypeIsEpub ? .epub : .unsupported,
+            resolveURL: resolveURL)
     }
 }
 
@@ -129,8 +201,14 @@ nonisolated struct MirageImportFlow: Sendable {
 
     /// One user-driven import. Returns a typed outcome; the stratum file is
     /// touched only on the final commit path (see S10-ES-1(e) note above).
+    ///
+    /// `preparedComicEdition` is the deterministic OCR EPUB the bridge built
+    /// for a comic source. It is the file the engine reads and the file whose
+    /// digest the receipt must match; the ORIGINAL comic remains the identity
+    /// anchor, so editing the comic still orphans the link.
     func performImport(
         source: MirageImportSource?,
+        preparedComicEdition: URL? = nil,
         checkCancelled: @Sendable () async -> Bool = { false }
     ) async -> MirageImportOutcome {
         guard let source else { return .cancelled(engineCommitted: false) }
@@ -143,9 +221,18 @@ nonisolated struct MirageImportFlow: Sendable {
         }
         if await checkCancelled() { return .cancelled(engineCommitted: false) } // before dispatch
 
-        // 2 · Pre-flight: file-type gate, then referent existence + stat (c).
-        guard source.fileTypeIsEpub else {
-            return .notApplicableFileType(reason: "only EPUB books can be analyzed with Mirage")
+        // 2 · Pre-flight: source-kind gate, then referent existence + stat (c).
+        switch source.kind {
+        case .epub:
+            break
+        case .comic:
+            guard preparedComicEdition != nil else {
+                return .notApplicableFileType(
+                    reason: "this comic has no readable text edition; text recognition produced no analyzable text")
+            }
+        case .unsupported:
+            return .notApplicableFileType(
+                reason: "Mirage analyzes EPUB books and comic archives (CBZ or image folders). PDFs and other file types are not supported.")
         }
         guard let url = source.resolveURL() else {
             return .sourceUnavailable(reason: "the book's source file could not be located")
@@ -154,8 +241,19 @@ nonisolated struct MirageImportFlow: Sendable {
             return .sourceUnavailable(reason: "the book's source file is not readable")
         }
         let fingerprint: String
-        do { fingerprint = try MirageSourceFingerprint.sha256Hex(fileAt: url) }
+        do { fingerprint = try MirageSourceFingerprint.sha256Hex(sourceAt: url) }
         catch { return .sourceUnavailable(reason: "the book's source file could not be read") }
+
+        // The engine reads the EPUB itself for an EPUB source and the derived
+        // text edition for a comic. Its receipt derives the edition id from
+        // THAT file's digest, so the cross-check below hashes the same bytes.
+        let analysisURL = preparedComicEdition ?? url
+        guard let analysisStatBefore = MirageFileStat.of(analysisURL) else {
+            return .sourceUnavailable(reason: "the prepared analysis file could not be read")
+        }
+        let analysisFingerprint: String
+        do { analysisFingerprint = try MirageSourceFingerprint.sha256Hex(fileAt: analysisURL) }
+        catch { return .sourceUnavailable(reason: "the prepared analysis file could not be read") }
         if await checkCancelled() { return .cancelled(engineCommitted: false) } // before dispatch
 
         // 3 · One dispatch; the child reads the file (M-023).
@@ -165,7 +263,7 @@ nonisolated struct MirageImportFlow: Sendable {
         let wireOutcome: MirageClient.Outcome
         do {
             wireOutcome = try await client.perform(
-                .importEpub, payload: MirageJSONValue.payload(["path": .string(url.path)]))
+                .importEpub, payload: MirageJSONValue.payload(["path": .string(analysisURL.path)]))
         } catch {
             return .sidecarUnavailable(reason: String(describing: error))
         }
@@ -197,15 +295,20 @@ nonisolated struct MirageImportFlow: Sendable {
         }
 
         // 5 · Digest cross-check: the engine derives edition IDs from the
-        // source digest; RT hashed the same bytes it handed over — a suffix
-        // mismatch proves the source changed mid-flight (fail closed, no write).
-        guard mirageEditionID.hasSuffix(String(fingerprint.prefix(16))) else {
+        // analysis-file digest; RT hashed the same bytes it handed over — a
+        // suffix mismatch proves the file changed mid-flight (fail closed, no
+        // write). For comics this is the derived EPUB, not the comic itself.
+        guard mirageEditionID.hasSuffix(String(analysisFingerprint.prefix(16))) else {
             return .invalidReceipt(
                 reason: "receipt edition id does not match the source digest — source changed during import")
         }
 
-        // 6 · Post-stat coherence (S10-ES-1(c)).
-        guard MirageFileStat.of(url) == statBefore else {
+        // 6 · Post-stat coherence (S10-ES-1(c)). Both files must be unchanged:
+        // the comic is the identity anchor, the analysis file is what the
+        // engine actually read.
+        guard MirageFileStat.of(url) == statBefore,
+              MirageFileStat.of(analysisURL) == analysisStatBefore
+        else {
             return .sourceUnavailable(reason: "the book's source file changed during import")
         }
 
@@ -243,7 +346,7 @@ nonisolated struct MirageImportFlow: Sendable {
             guard let url = source.resolveURL() else {
                 return .unverifiable(reason: "the book's source file could not be located")
             }
-            guard let fingerprint = try? MirageSourceFingerprint.sha256Hex(fileAt: url) else {
+            guard let fingerprint = try? MirageSourceFingerprint.sha256Hex(sourceAt: url) else {
                 return .unverifiable(reason: "the book's source file could not be read for verification")
             }
             if fingerprint == entry.sourceFingerprint { return .linked(entry: entry) }

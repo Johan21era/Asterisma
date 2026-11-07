@@ -82,7 +82,7 @@ struct FolderEPUBImportTests {
         opened.close()
     }
 
-    @Test("Ordinary folders are rejected with a clear package error")
+    @Test("Ordinary folders are rejected as empty comic folders")
     func ordinaryFolderRejected() async throws {
         let folder = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
@@ -93,16 +93,17 @@ struct FolderEPUBImportTests {
             _ = try await BookImporter.importBook(from: folder)
             Issue.record("An ordinary folder must not import")
         } catch let error as ImportError {
-            #expect(error.errorDescription?.contains("not an EPUB package") == true)
+            #expect(error.errorDescription?.contains("no readable page images") == true)
         }
     }
 
-    @Test("Picker admits books and EPUB packages, not ordinary folders")
+    @Test("Picker admits books, EPUB packages, and comic folders")
     @MainActor
     func pickerDoesNotAdmitOrdinaryFolders() {
         let panel = NSOpenPanel()
         BookImportPanel.configure(panel)
-        #expect(panel.canChooseDirectories == false)
+        // 2.5: folders are selectable because a webcomic can be an image folder.
+        #expect(panel.canChooseDirectories == true)
         #expect(panel.canChooseFiles == true)
         #expect(panel.treatsFilePackagesAsDirectories == false)
         #expect(panel.allowedContentTypes.contains { $0.identifier == "com.apple.ibooks.epub" })

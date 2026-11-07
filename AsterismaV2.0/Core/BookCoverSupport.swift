@@ -58,7 +58,7 @@ struct BookCoverThumbnail: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                    Image(systemName: book.fileType == .pdf ? "doc.richtext" : "book")
+                    Image(systemName: book.fileType.coverSymbolName)
                         .font(.system(size: height * 0.32))
                         .foregroundColor(.accentColor.opacity(0.8))
                 }

@@ -353,15 +353,27 @@ struct MirageSettingsPane: View {
     @State private var indexUnreadable: String?
     @State private var linkedBookIDs: Set<UUID> = []
     @State private var mapUnreadable: String?
+    @State private var identityMap: MirageIdentityMapFile?
     @State private var scanning = false
     @State private var scanNote: String?
 
-    private var epubBooks: [Book] {
-        dataStore.books.filter { $0.fileType == .epub }
+    /// EPUB books and comic containers (CBZ/image folders) are the two
+    /// analyzable source families; PDFs stay out of Mirage entirely.
+    private var analyzableBooks: [Book] {
+        dataStore.books.filter { $0.fileType == .epub || $0.fileType.isComic }
     }
 
     private var unlinkedBooks: [Book] {
-        epubBooks.filter { !linkedBookIDs.contains($0.id) }
+        analyzableBooks.filter { !linkedBookIDs.contains($0.id) }
+    }
+
+    /// 2.7: derived coverage/density from engine-attested inventory counts and
+    /// RT's own link records. No engine call and no analysis content is read.
+    private var analysisReport: MirageAnalysisReport {
+        MirageAnalysisReport(
+            analyzableBookIDs: Set(analyzableBooks.map(\.id)),
+            identityMap: identityMap,
+            index: index)
     }
 
     var body: some View {
@@ -376,7 +388,7 @@ struct MirageSettingsPane: View {
                         }
                     }
             } footer: {
-                Text("Mirage reads an EPUB book's file on this Mac and keeps its own spoiler-safe analysis locally — RT's library, goals, and progress are never touched. Analysis starts only when you ask for it.")
+                Text("Mirage reads an EPUB's text — or recognizes a comic's text on this Mac — and keeps its own spoiler-safe analysis locally. RT's library, goals, and progress are never touched. Analysis starts only when you ask for it.")
             }
 
             Section("Engine") {
@@ -425,15 +437,52 @@ struct MirageSettingsPane: View {
                     .foregroundColor(.secondary)
             }
 
-            Section("Library coverage") {
-                LabeledContent("Linked books") {
-                    Text("\(linkedBookIDs.count) of \(epubBooks.count) EPUB")
+            Section("Analysis report") {
+                let report = analysisReport
+                Text(report.summaryLine)
+                    .font(.callout)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                LabeledContent("Coverage") {
+                    Text("\(report.linkedCount) of \(report.analyzableCount) analyzable (\(report.coveragePercent)%)")
+                }
+                LabeledContent("Indexed editions") {
+                    Text("\(report.indexedEditionCount)")
                 }
                 LabeledContent("Mirage ledger") {
-                    Text("\(index.totalUnits) units · \(index.totalClaims) claims")
+                    Text("\(report.totalUnits) units · \(report.totalClaims) claims")
+                }
+                if let units = report.averageUnitsPerEdition,
+                   let claims = report.averageClaimsPerEdition {
+                    LabeledContent("Per indexed edition") {
+                        Text("\(Self.oneDecimal(units)) units · \(Self.oneDecimal(claims)) claims")
+                    }
+                }
+                if report.pausedBookCount > 0 {
+                    LabeledContent("Paused links") {
+                        Text("\(report.pausedBookCount) book\(report.pausedBookCount == 1 ? "" : "s")")
+                    }
+                }
+                if let seconds = engine.lastAnalysisSeconds {
+                    LabeledContent("Last analysis") {
+                        Text("\(Self.oneDecimal(seconds)) s")
+                    }
                 }
                 LabeledContent("Last scan") {
                     Text(lastScanText)
+                }
+
+                if report.unindexedLinkedCount > 0 {
+                    Text("\(report.unindexedLinkedCount) linked book\(report.unindexedLinkedCount == 1 ? "" : "s") \(report.unindexedLinkedCount == 1 ? "is" : "are") not in the last scan. Scan library to reconcile.")
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                if report.zeroClaimEditionCount > 0 {
+                    Text("\(report.zeroClaimEditionCount) indexed edition\(report.zeroClaimEditionCount == 1 ? " has" : "s have") zero claims. That is an engine count, not a quality judgment.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 if let mapUnreadable {
                     Text(mapUnreadable)
@@ -461,17 +510,21 @@ struct MirageSettingsPane: View {
                         .foregroundColor(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                Text("Counts are engine-attested inventory facts from the read-only scan. RT never promotes them into its library, and no claim text, evidence, entity, or graph appears here — ADR-7 keeps those behind the spoiler gate.")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Section("Batch analysis") {
                 if unlinkedBooks.isEmpty {
                     Text(linkedBookIDs.isEmpty
-                         ? "No EPUB books in this library yet."
-                         : "Every EPUB in this library has a Mirage link.")
+                         ? "No analyzable books in this library yet."
+                         : "Every analyzable book in this library has a Mirage link.")
                         .font(.callout)
                         .foregroundColor(.secondary)
                 } else {
-                    Text("\(unlinkedBooks.count) EPUB book\(unlinkedBooks.count == 1 ? "" : "s") not linked yet.")
+                    Text("\(unlinkedBooks.count) book\(unlinkedBooks.count == 1 ? "" : "s") not linked yet.")
                         .font(.callout)
                     Button("Analyze \(unlinkedBooks.count) book\(unlinkedBooks.count == 1 ? "" : "s")") {
                         batch.prepare(books: unlinkedBooks, linkedBookIDs: linkedBookIDs)
@@ -610,6 +663,10 @@ struct MirageSettingsPane: View {
         return generated.formatted(date: .abbreviated, time: .shortened)
     }
 
+    private static func oneDecimal(_ value: Double) -> String {
+        value.formatted(.number.precision(.fractionLength(1)))
+    }
+
     private var mirageDirectory: URL {
         MirageSupportPaths.mirageDirectory()
     }
@@ -649,9 +706,11 @@ struct MirageSettingsPane: View {
         let identityURL = mirageDirectory.appendingPathComponent("identity-map.json")
         switch MirageIdentityMapStore(fileURL: identityURL).load() {
         case .loaded(let map):
+            identityMap = map
             linkedBookIDs = Set(map.entries.filter { $0.status == .active }.map(\.rtBookID))
             mapUnreadable = nil
         case .unreadable(let reason):
+            identityMap = nil
             linkedBookIDs = []
             mapUnreadable = reason
         }

@@ -423,6 +423,9 @@ private struct LibrarySlide: View {
                     if data.formatBreakdown.pdf > 0 {
                         libraryStat(label: "PDF", value: "\(data.formatBreakdown.pdf)")
                     }
+                    if data.formatBreakdown.comic > 0 {
+                        libraryStat(label: "COMICS", value: "\(data.formatBreakdown.comic)")
+                    }
                 }
                 .padding(.bottom, 12)
             }

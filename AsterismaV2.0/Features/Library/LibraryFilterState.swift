@@ -32,6 +32,8 @@ struct LibraryFilterState: Equatable {
     var selectedAuthor: String?
     var selectedSeries: String?
     var selectedGenre: ReadingGenre?
+    /// 2.5: filter by container format so a comic shelf can exclude prose.
+    var selectedFormat: BookFileType?
     var readingStatus: ReadingStatusFilter = .all
     var favoritesOnly: Bool = false
     var selectedCollectionID: UUID?
@@ -40,6 +42,7 @@ struct LibraryFilterState: Equatable {
 
     var isActive: Bool {
         !searchText.isEmpty || selectedAuthor != nil || selectedSeries != nil || selectedGenre != nil
+            || selectedFormat != nil
             || readingStatus != .all || favoritesOnly || selectedCollectionID != nil
     }
 
@@ -67,6 +70,9 @@ struct LibraryFilterState: Equatable {
         }
         if let selectedGenre {
             result = result.filter { $0.genre == selectedGenre }
+        }
+        if let selectedFormat {
+            result = result.filter { $0.fileType == selectedFormat }
         }
         switch readingStatus {
         case .all:

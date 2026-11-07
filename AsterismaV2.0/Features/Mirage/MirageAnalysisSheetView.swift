@@ -2,7 +2,8 @@ import SwiftUI
 
 // PR-5 minimal UI surface (owner-approved 2026-10-18): the "Analyze with
 // Mirage" entry lives on the book's detail page — RT's info popover on the
-// EPUB reader screen presents this sheet. NEVER auto-runs: the flow starts
+// EPUB reader screen and the comic reader's chrome both present this sheet.
+// 2.6: comics are eligible through the on-device OCR text edition. NEVER auto-runs: the flow starts
 // only from this sheet's explicit user gesture (S10-ES-1(a)). The cancel
 // affordance stays live until the end of the flow's commit path (S10-ES-1(e))
 // and the resulting copy states honestly which world the cancel happened in
@@ -55,15 +56,15 @@ struct MirageAnalysisSheet: View {
                     ContentUnavailableView {
                         Label("Ready to analyze", systemImage: "sparkles.rectangle.stack")
                     } description: {
-                        Text("Mirage will read this book's EPUB file and store its own analysis on this Mac. RT's library and your goals are never touched.")
+                        Text(readyCopy)
                     } actions: {
                         Button("Start analysis") {
                             Task { await begin() }
                         }
                         .buttonStyle(.borderedProminent)
-                        .disabled(book.fileType != .epub)
-                        if book.fileType != .epub {
-                            Text("Only EPUB books can be analyzed with Mirage.")
+                        .disabled(!canAnalyze)
+                        if !canAnalyze {
+                            Text("Only EPUB books and comic archives can be analyzed with Mirage.")
                                 .font(.footnote)
                                 .foregroundColor(.secondary)
                         }
@@ -82,7 +83,9 @@ struct MirageAnalysisSheet: View {
             case .running:
                 HStack(spacing: 12) {
                     ProgressView()
-                    Text("Mirage is reading the book…")
+                    Text(book.fileType.isComic
+                        ? "Mirage is recognizing this comic's text…"
+                        : "Mirage is reading the book…")
                         .foregroundColor(.secondary)
                     Spacer()
                     Button("Cancel") {
@@ -118,6 +121,18 @@ struct MirageAnalysisSheet: View {
         }
     }
 
+    /// 2.6: comics are eligible through the on-device OCR text edition.
+    private var canAnalyze: Bool {
+        book.fileType == .epub || book.fileType.isComic
+    }
+
+    private var readyCopy: String {
+        if book.fileType.isComic {
+            return "Mirage will recognize this comic's text on this Mac, build a temporary text edition, and store its own analysis. RT's library, pages, and your goals are never touched."
+        }
+        return "Mirage will read this book's EPUB file and store its own analysis on this Mac. RT's library and your goals are never touched."
+    }
+
     private func begin() async {
         guard status == .idle else { return }
         // PR-7: the settings toggle gates the flow itself (defense in depth —
@@ -139,8 +154,8 @@ struct MirageAnalysisSheet: View {
         switch outcome {
         case .linked, .cancelled: return "checkmark.circle"
         case .degradedImport, .invalidReceipt, .sourceUnavailable,
-             .notApplicableFileType, .mapUnreadable, .mapWriteFailed,
-             .engineError, .sidecarUnavailable:
+             .notApplicableFileType, .analysisPreparationFailed, .mapUnreadable,
+             .mapWriteFailed, .engineError, .sidecarUnavailable:
             return "exclamationmark.triangle"
         }
     }

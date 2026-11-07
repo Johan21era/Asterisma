@@ -38,13 +38,17 @@ enum ImportError: LocalizedError {
     case epubParseFailure(String)
     case epubUnzipFailure(String)
     case pdfOpenFailure
+    /// 2.5: CBZ/image-folder import failures.
+    case comicArchiveFailure(String)
+    case comicEmpty(URL)
+    case comicUnsupportedContainer(String)
 
     var errorDescription: String? {
         switch self {
         case let .unsupportedFileType(ext):
             return ext.isEmpty
-                ? "That item has no file extension. Choose a .pdf or .epub file."
-                : "Unsupported file type: .\(ext)"
+                ? "That item has no file extension. Choose a .pdf, .epub, or .cbz file, or an image folder."
+                : "Unsupported file type: .\(ext). Choose a .pdf, .epub, or .cbz file, or an image folder."
         case let .fileNotReadable(url): return "Cannot read file at \(url.path)"
         case let .notAnEPUBPackage(url):
             return "“\(url.lastPathComponent)” is a folder, not an EPUB package. Open it and select the .epub file or package inside."
@@ -52,25 +56,42 @@ enum ImportError: LocalizedError {
         case let .epubParseFailure(msg): return "EPUB parse error: \(msg)"
         case let .epubUnzipFailure(msg): return "Failed to unzip EPUB: \(msg)"
         case .pdfOpenFailure: return "Could not open PDF document"
+        case let .comicArchiveFailure(msg): return "Could not read comic archive: \(msg)"
+        case let .comicEmpty(url):
+            return "“\(url.lastPathComponent)” contains no readable page images."
+        case let .comicUnsupportedContainer(ext):
+            return ".\(ext.uppercased()) comics are not supported. Use .cbz or an image folder — CBR, CB7, and CBT need a RAR or 7z decoder this app does not include."
         }
     }
 }
 
 // MARK: - Open panel contract
 
-/// Restrict the file picker to actual books and iBooks-style EPUB packages.
-/// In particular, do not make ordinary folders selectable: choosing
-/// `library tests` used to produce "Unsupported file type" instead of opening
-/// the folder and letting the user pick an EPUB inside it.
+/// Restrict the file picker to actual books, iBooks-style EPUB packages, and
+/// comic containers. Directories are selectable because a webcomic can be an
+/// image folder; the importer distinguishes an unzipped EPUB package from an
+/// image folder by its META-INF/container.xml.
 enum BookImportPanel {
     static let iBooksEPUB = UTType(importedAs: "com.apple.ibooks.epub")
-    static let allowedTypes: [UTType] = [.pdf, .epub, iBooksEPUB]
+
+    static var allowedTypes: [UTType] {
+        var types: [UTType] = [.pdf, .epub, iBooksEPUB]
+        if let cbz = UTType(filenameExtension: "cbz") {
+            types.append(cbz)
+        }
+        return types
+    }
 
     static func configure(_ panel: NSOpenPanel) {
-        panel.canChooseDirectories = false
-        panel.canChooseFiles = true
-        panel.treatsFilePackagesAsDirectories = false
+        // AppKit recomputes directory eligibility when allowedContentTypes is
+        // assigned, so set the type filter first and the directory/file
+        // switches last.
         panel.allowedContentTypes = allowedTypes
+        panel.treatsFilePackagesAsDirectories = false
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = true
+        panel.message = "Choose an EPUB, PDF, CBZ, or an image folder of comic pages."
+        panel.prompt = "Import"
     }
 }
 
@@ -118,16 +139,101 @@ enum BookImporter {
             forKeys: [.isDirectoryKey]))?.isDirectory ?? false
         if isDirectory {
             let container = url.appendingPathComponent("META-INF/container.xml")
-            guard FileManager.default.fileExists(atPath: container.path) else {
-                throw ImportError.notAnEPUBPackage(url)
+            if FileManager.default.fileExists(atPath: container.path) {
+                return try await importEPUB(url: url)
             }
+            // 2.5: any other folder is treated as an image-folder comic.
+            // It must contain at least one readable page image.
+            return try await importComic(url: url)
         }
 
         switch url.pathExtension.lowercased() {
         case "epub": return try await importEPUB(url: url)
         case "pdf": return try await importPDF(url: url)
+        case "cbz": return try await importComic(url: url)
+        case "cbr", "cb7", "cbt", "rar", "7z":
+            throw ImportError.comicUnsupportedContainer(url.pathExtension.lowercased())
         default: throw ImportError.unsupportedFileType(url.pathExtension)
         }
+    }
+
+    // MARK: - Comic Import (2.5)
+
+    /// Imports a CBZ archive or an image folder. Page count is the number of
+    /// readable images after natural sorting; chapters are folder groupings;
+    /// the cover is the first page. Everything is analyzed off-main so a large
+    /// archive does not stall the library.
+    static func importComic(url: URL) async throws -> Book {
+        let archive: ComicArchive
+        do {
+            archive = try ComicArchive.open(url: url)
+        } catch let error as ComicArchiveError {
+            throw ImportError.comicArchiveFailure(error.localizedDescription)
+        } catch {
+            throw ImportError.comicArchiveFailure(error.localizedDescription)
+        }
+
+        guard !archive.pages.isEmpty else { throw ImportError.comicEmpty(url) }
+
+        // 2.6: ComicInfo.xml is the de-facto comic metadata standard. It is a
+        // metadata hint, never a gate — a malformed file leaves the filename
+        // title and Unknown author exactly as they were before 2.6.
+        let metadata = archive.comicMetadata()
+
+        let fallbackTitle = archive.kind == .folder
+            ? url.lastPathComponent
+            : url.deletingPathExtension().lastPathComponent
+        let title = metadata?.displayTitle ?? fallbackTitle
+        let author = metadata?.author ?? "Unknown"
+
+        let coverData: Data? = await Task.detached(priority: .utility) {
+            let coverPage: ComicPage? = {
+                if let index = metadata?.coverPageIndex,
+                   let declared = archive.page(at: index)
+                {
+                    return declared
+                }
+                return archive.pages.first
+            }()
+            guard let coverPage,
+                  let data = try? archive.data(for: coverPage)
+            else { return nil }
+            return BookCoverCapture.from(data: data)
+        }.value
+
+        var bookmarkData: Data?
+        do {
+            bookmarkData = try url.bookmarkData(
+                options: .withSecurityScope,
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
+        } catch {
+            print("[BookImporter] Warning: could not create security-scoped bookmark " +
+                "for comic '\(url.lastPathComponent)': \(error). " +
+                "File will not be accessible after app restart. " +
+                "Check that the app has the com.apple.security.files.bookmarks.app-scope entitlement.")
+        }
+
+        let fileType: BookFileType = archive.kind == .cbz ? .cbz : .comic
+        let newBook = Book(
+            title: title,
+            author: author,
+            fileURL: url,
+            fileType: fileType,
+            totalPages: archive.pages.count,
+            chapters: ComicChapterBuilder.chapters(from: archive.pages),
+            bookmarkData: bookmarkData,
+            genre: metadata.map { ReadingGenre.mapped(from: $0.subjects) } ?? .unknown,
+            series: metadata?.series,
+            comicReadingMode: metadata?.readingMode
+                ?? ComicReadingMode.suggested(for: title, fileType: fileType),
+            comicInfo: metadata
+        )
+        if let coverData {
+            CoverStore.active.store(coverData, forBookID: newBook.id)
+        }
+        return newBook
     }
 
     // MARK: - PDF Import
@@ -534,7 +640,7 @@ enum BookImporter {
 
 // HOTFIX note: NSBitmapImageRep/NSImage draw are thread-safe here; these helpers
 // are intentionally nonisolated so they can run inside detached tasks.
-enum BookCoverCapture {
+nonisolated enum BookCoverCapture {
     /// JPEG budget: sharp at pane sizes, small on disk (a few hundred books ~ few MB).
     private static let maxDimension: CGFloat = 600
 
@@ -549,6 +655,13 @@ enum BookCoverCapture {
 
     static func fromFile(_ fileURL: URL) -> Data? {
         guard let image = NSImage(contentsOf: fileURL) else { return nil }
+        return jpegData(from: image)
+    }
+
+    /// 2.5: comic pages are already encoded images inside a CBZ or folder;
+    /// this decodes the first page and normalizes it to the cover JPEG budget.
+    static func from(data: Data) -> Data? {
+        guard let image = NSImage(data: data) else { return nil }
         return jpegData(from: image)
     }
 

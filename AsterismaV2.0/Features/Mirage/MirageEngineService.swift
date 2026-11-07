@@ -74,6 +74,10 @@ final class MirageEngineService: ObservableObject {
     @Published private(set) var lastError: String?
     @Published private(set) var requestCount = 0
     @Published private(set) var stopPending = false
+    /// 2.7: measured wall-clock duration of the last successful book analysis,
+    /// including a comic's on-device OCR preparation. Nil until one succeeds.
+    @Published private(set) var lastAnalysisSeconds: TimeInterval?
+    @Published private(set) var lastAnalysisAt: Date?
 
     private let runtimeProvider: () -> MirageRuntime?
     private let sessionFactory: @MainActor (MirageRuntime) throws -> any MirageEngineSessionProtocol
@@ -241,15 +245,61 @@ final class MirageEngineService: ObservableObject {
             return .sidecarUnavailable(
                 reason: MirageEngineServiceError.disabled.plainReason)
         }
+        let analysisStarted = now()
         do {
+            // A bookmark-resolved URL needs an active security scope for the
+            // whole operation: the bridge reads page images, and the flow then
+            // re-reads the same source for its identity fingerprint.
+            let sourceURL = source.resolveURL()
+            let scopeHeld = sourceURL?.startAccessingSecurityScopedResource() ?? false
+            defer {
+                if scopeHeld { sourceURL?.stopAccessingSecurityScopedResource() }
+            }
+
+            // 2.6: comics are not text documents. Build (or reuse) the
+            // deterministic OCR text edition BEFORE taking the engine's
+            // request gate — recognition takes minutes on a volume and must
+            // never block the warm session.
+            var preparedComicEdition: URL?
+            if source.kind == .comic {
+                guard let comicURL = sourceURL else {
+                    return .sourceUnavailable(
+                        reason: "the comic's source file could not be located")
+                }
+                do {
+                    let edition = try await ComicMirageBridge.prepareEdition(
+                        comicURL: comicURL,
+                        checkCancelled: checkCancelled)
+                    preparedComicEdition = edition.url
+                } catch let error as ComicMirageBridgeError {
+                    return error.outcome
+                } catch is CancellationError {
+                    return .cancelled(engineCommitted: false)
+                } catch {
+                    return .analysisPreparationFailed(
+                        reason: error.localizedDescription)
+                }
+            }
+
             let outcome = try await withEngine { client, store in
                 let environment = MirageImportEnvironment(
                     store: store, acquireClient: { client })
                 return await MirageImportFlow(environment: environment)
-                    .performImport(source: source, checkCancelled: checkCancelled)
+                    .performImport(
+                        source: source,
+                        preparedComicEdition: preparedComicEdition,
+                        checkCancelled: checkCancelled)
             }
             if case .sidecarUnavailable(let reason) = outcome {
                 noteFailure(reason)
+            }
+            if case .linked(let entry, _) = outcome {
+                // A re-analysis can change the ledger projection at the same
+                // edition id; old graph snapshots must not survive it.
+                MirageGraphCache.shared.clear(editionID: entry.mirageEditionID)
+                let finished = now()
+                lastAnalysisSeconds = finished.timeIntervalSince(analysisStarted)
+                lastAnalysisAt = finished
             }
             return outcome
         } catch {

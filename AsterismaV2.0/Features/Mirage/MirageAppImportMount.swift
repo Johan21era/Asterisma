@@ -179,14 +179,20 @@ nonisolated enum MirageAppImportMount {
         return URL(fileURLWithPath: dir)
     }
 
-    /// The single RT borrow (ADR-6 item 5): a Book's identity + file-type gate
+    /// The single RT borrow (ADR-6 item 5): a Book's identity + source-kind gate
     /// + read-only referent resolver. Nothing else of the book is consumed and
     /// nothing is written back to RT's data layer.
     static func importSource(for book: Book) -> MirageImportSource {
         let snapshot = book
+        let kind: MirageSourceKind
+        switch snapshot.fileType {
+        case .epub: kind = .epub
+        case .cbz, .comic: kind = .comic
+        case .pdf: kind = .unsupported
+        }
         return MirageImportSource(
             rtBookID: snapshot.id,
-            fileTypeIsEpub: snapshot.fileType == .epub,
+            kind: kind,
             resolveURL: { snapshot.resolveURL() })
     }
 }
@@ -214,7 +220,8 @@ nonisolated enum MirageOutcomeCopy {
         case .degradedImport: return "Mirage refused this book's file"
         case .invalidReceipt: return "The analysis answer didn't match what RT expected"
         case .sourceUnavailable: return "The book's file could not be read"
-        case .notApplicableFileType: return "Only EPUB books can be analyzed with Mirage"
+        case .notApplicableFileType: return "This file can't be analyzed with Mirage"
+        case .analysisPreparationFailed: return "Mirage could not prepare this book for analysis"
         case .mapUnreadable: return "RT's Mirage records could not be read safely"
         case .mapWriteFailed: return "RT could not record the link safely"
         case .engineError: return "Mirage's engine refused this request"
@@ -240,6 +247,8 @@ nonisolated enum MirageOutcomeCopy {
             return "\(reason). Nothing was linked."
         case .notApplicableFileType(let reason):
             return reason
+        case .analysisPreparationFailed(let reason):
+            return "\(reason) Nothing was linked."
         case .mapUnreadable(let reason):
             return "To stay safe, Mirage analysis is paused for this book until the records file is repaired. (Detail: \(reason))"
         case .mapWriteFailed(let reason):

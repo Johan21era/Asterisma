@@ -76,8 +76,9 @@ final class MirageBatchAnalyzer: ObservableObject {
 
     // MARK: - Planning
 
-    /// Builds the queue from the live library. Only EPUB books are eligible;
-    /// already-linked books are skipped by default so the button does exactly
+    /// Builds the queue from the live library. EPUB books and comic
+    /// containers (CBZ archives and image folders) are eligible; PDFs are not.
+    /// Already-linked books are skipped by default so the button does exactly
     /// what its label says.
     func prepare(
         books: [Book],
@@ -86,7 +87,7 @@ final class MirageBatchAnalyzer: ObservableObject {
     ) {
         guard !isRunning else { return }
         jobs = books
-            .filter { $0.fileType == .epub }
+            .filter { $0.fileType == .epub || $0.fileType.isComic }
             .filter { !skipLinked || !linkedBookIDs.contains($0.id) }
             .map(Job.init(book:))
         resetRunState()
@@ -187,7 +188,7 @@ final class MirageBatchAnalyzer: ObservableObject {
     }
 
     var summaryLine: String {
-        guard !jobs.isEmpty else { return "No EPUB books are waiting for analysis." }
+        guard !jobs.isEmpty else { return "No books are waiting for analysis." }
         var parts: [String] = []
         if linkedCount > 0 { parts.append("\(linkedCount) analyzed") }
         if failedCount > 0 { parts.append("\(failedCount) failed") }

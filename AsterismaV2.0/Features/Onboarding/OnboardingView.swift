@@ -110,7 +110,7 @@ struct OnboardingView: View {
                     .foregroundStyle(.tint)
                 Text("Add your first book")
                     .font(.headline)
-                Text("EPUB or PDF. Covers are captured automatically, and reading time starts counting only once a book actually opens.")
+                Text("EPUB, PDF, CBZ, or an image-folder comic. Covers are captured automatically, and reading time starts counting only once a book actually opens.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

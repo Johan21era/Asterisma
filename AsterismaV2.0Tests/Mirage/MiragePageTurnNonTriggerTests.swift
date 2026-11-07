@@ -10,9 +10,9 @@ import Testing
 // repeated read of the book snapshot exists that could invoke it.
 //
 // Companion census gate (M-026, machine-readable): the whole
-// Features/Reader directory carries NO Mirage symbol outside
-// EPUBReaderScreen's single sheet mount — page-turn code paths cannot reach
-// Mirage by construction.
+// Features/Reader directory carries NO Mirage symbol outside the two explicit
+// sheet mounts in EPUBReaderScreen (analysis and graph) — page-turn code paths
+// cannot reach Mirage by construction.
 //
 // NOTE: the real production runner spawns processes; unit tests only ever
 // exercise the injected-runner paths (fake-transport doctrine, M-024).

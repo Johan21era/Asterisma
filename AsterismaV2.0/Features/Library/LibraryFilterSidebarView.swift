@@ -43,6 +43,16 @@ struct LibraryFilterSidebarView: View {
                 Toggle("Favorites Only", isOn: $filterState.favoritesOnly)
             }
 
+            if !availableFormats.isEmpty {
+                Section("Format") {
+                    ForEach(availableFormats, id: \.self) { format in
+                        filterRow(format.displayName, isSelected: filterState.selectedFormat == format) {
+                            filterState.selectedFormat = (filterState.selectedFormat == format) ? nil : format
+                        }
+                    }
+                }
+            }
+
             if !availableGenres.isEmpty {
                 Section("Genre") {
                     ForEach(availableGenres, id: \.self) { genre in
@@ -102,6 +112,13 @@ struct LibraryFilterSidebarView: View {
     private var availableGenres: [ReadingGenre] {
         let present = Set(books.map(\.genre))
         return ReadingGenre.allCases.filter { present.contains($0) }
+    }
+
+    /// 2.5: only formats present in the library, in the enum's declared
+    /// order (EPUB, PDF, CBZ, Comic) so the list is stable between launches.
+    private var availableFormats: [BookFileType] {
+        let present = Set(books.map(\.fileType))
+        return BookFileType.allCases.filter { present.contains($0) }
     }
 
     private var availableAuthors: [String] {

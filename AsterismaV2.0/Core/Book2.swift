@@ -89,6 +89,17 @@ struct Book: Identifiable, Codable, Hashable {
     /// any number of collections, a collection can hold any number of books.
     var collectionIDs: [UUID]
 
+    /// 2.5: reading mode for a comic container (CBZ archive or image folder).
+    /// nil on every book imported before 2.5. `resolvedComicReadingMode`
+    /// supplies the format-appropriate default without rewriting old payloads.
+    var comicReadingMode: ComicReadingMode?
+
+    /// 2.6: ComicInfo.xml metadata captured at import. nil for every other
+    /// book type and for comics that carry no ComicInfo.xml. Kept whole so the
+    /// details inspector can show summary, publisher, and language without
+    /// widening Book with a field per ComicInfo tag.
+    var comicInfo: ComicMetadata?
+
     // MARK: - Computed
 
     var progressFraction: Double {
@@ -114,6 +125,13 @@ struct Book: Identifiable, Codable, Hashable {
     /// True if the book has been started (any pages read) but not completed.
     var isInProgress: Bool {
         currentPage > 0 && !isCompleted
+    }
+
+    /// 2.5: the mode a comic reader should open with. An explicit per-book
+    /// choice always wins; otherwise the container type supplies the default
+    /// (image folders are vertical webtoons, CBZ archives open paged LTR).
+    var resolvedComicReadingMode: ComicReadingMode {
+        comicReadingMode ?? ComicReadingMode.defaultMode(for: fileType)
     }
 
     // MARK: - B4: Security-scoped URL resolution
@@ -191,7 +209,9 @@ struct Book: Identifiable, Codable, Hashable {
         cachedSecondsPerPage: Double? = nil,
         series: String? = nil,
         isFavorite: Bool = false,
-        collectionIDs: [UUID] = []
+        collectionIDs: [UUID] = [],
+        comicReadingMode: ComicReadingMode? = nil,
+        comicInfo: ComicMetadata? = nil
     ) {
         self.id = id
         self.title = title
@@ -218,6 +238,8 @@ struct Book: Identifiable, Codable, Hashable {
         self.series = series
         self.isFavorite = isFavorite
         self.collectionIDs = collectionIDs
+        self.comicReadingMode = comicReadingMode
+        self.comicInfo = comicInfo
     }
 
     // MARK: - AUDIT F-04 Gate B (Phase 1): tolerant decoding across schema evolution
@@ -228,6 +250,7 @@ struct Book: Identifiable, Codable, Hashable {
         case chapters, sessions, activeSessionID
         case isCompleted, dateAdded, coverImageData, difficultyProfile, bookmarkData
         case genre, notes, deadlineID, wordCountEstimate, cachedSecondsPerPage, series, isFavorite, collectionIDs
+        case comicReadingMode, comicInfo
     }
 
     /// Synthesized Decodable required every key ever added (genre, notes,
@@ -263,17 +286,110 @@ struct Book: Identifiable, Codable, Hashable {
         series = try c.decodeIfPresent(String.self, forKey: .series)
         isFavorite = try c.decodeIfPresent(Bool.self, forKey: .isFavorite) ?? false
         collectionIDs = try c.decodeIfPresent([UUID].self, forKey: .collectionIDs) ?? []
+        comicReadingMode = try c.decodeIfPresent(ComicReadingMode.self, forKey: .comicReadingMode)
+        comicInfo = try c.decodeIfPresent(ComicMetadata.self, forKey: .comicInfo)
     }
 }
 
 // MARK: - BookFileType
 
-enum BookFileType: String, Codable, CaseIterable {
+enum BookFileType: String, Codable, CaseIterable, Hashable, Sendable {
     case epub
     case pdf
+    /// 2.5: a ZIP archive of page images (Comic Book ZIP).
+    case cbz
+    /// 2.5: a folder of page images streamed as a vertical webtoon.
+    case comic
 
     var displayName: String {
-        rawValue.uppercased()
+        switch self {
+        case .epub: return "EPUB"
+        case .pdf: return "PDF"
+        case .cbz: return "CBZ"
+        case .comic: return "Comic"
+        }
+    }
+
+    /// 2.5: true for every container the comic reader owns. EPUB and PDF
+    /// keep their existing readers; only these two route to ComicReaderScreen.
+    var isComic: Bool {
+        self == .cbz || self == .comic
+    }
+
+    /// SF Symbol used when a book has no cover art yet.
+    var coverSymbolName: String {
+        switch self {
+        case .epub: return "book"
+        case .pdf: return "doc.richtext"
+        case .cbz, .comic: return "rectangle.stack"
+        }
+    }
+}
+
+// MARK: - ComicReadingMode
+
+/// 2.5: how a comic container is presented. Manga, manhua, and manhwa are
+/// reading modes over the same page-image container, not separate formats:
+/// a CBZ can be read left-to-right (western comics), right-to-left (manga),
+/// or as a continuous vertical strip (webtoons). Raw values are persisted, so
+/// existing cases must never be renamed.
+enum ComicReadingMode: String, Codable, CaseIterable, Hashable, Sendable {
+    case leftToRight
+    case rightToLeft
+    case vertical
+
+    var displayName: String {
+        switch self {
+        case .leftToRight: return "Left to Right"
+        case .rightToLeft: return "Right to Left (Manga)"
+        case .vertical: return "Vertical Scroll (Webtoon)"
+        }
+    }
+
+    var shortName: String {
+        switch self {
+        case .leftToRight: return "LTR"
+        case .rightToLeft: return "RTL"
+        case .vertical: return "Scroll"
+        }
+    }
+
+    var symbolName: String {
+        switch self {
+        case .leftToRight: return "text.alignleft"
+        case .rightToLeft: return "text.alignright"
+        case .vertical: return "arrow.up.and.down.text.horizontal"
+        }
+    }
+
+    static func defaultMode(for fileType: BookFileType) -> ComicReadingMode {
+        switch fileType {
+        case .comic: return .vertical
+        case .cbz, .epub, .pdf: return .leftToRight
+        }
+    }
+
+    /// A gentle first guess from the title only. It never overrides a mode
+    /// the reader has explicitly chosen; it just avoids opening a manga in
+    /// the wrong direction or a webtoon as a stack of pages.
+    static func suggested(for title: String, fileType: BookFileType) -> ComicReadingMode {
+        guard fileType.isComic else { return defaultMode(for: fileType) }
+        if fileType == .comic { return .vertical }
+
+        let normalized = title.lowercased()
+        if normalized.contains("webtoon")
+            || normalized.contains("web comic")
+            || normalized.contains("webcomic")
+        {
+            return .vertical
+        }
+        if normalized.contains("manga")
+            || normalized.contains("manhua")
+            || normalized.contains("manhwa")
+        {
+            return .rightToLeft
+        }
+        return defaultMode(for: fileType)
     }
 }
 
@@ -457,6 +573,10 @@ enum BookNoteAnchor: Codable, Hashable, Sendable {
     /// PDF: a 0-based page index plus the selection's rectangle in normalized
     /// page coordinates (0…1), invariant to page render size.
     case pdf(pageIndex: Int, rect: NormalizedRect)
+    /// 2.5: a 0-based page index inside a CBZ archive or image-folder comic.
+    /// Comic pages are bitmap images, so there is no text rectangle or CFI;
+    /// page notes anchor to the page alone.
+    case comic(pageIndex: Int)
 }
 
 // MARK: - NormalizedRect

@@ -1,6 +1,6 @@
 # ADR-7 — Spoiler-cursor contract (with S10-ES-3 formal sub-document as annex)
 
-Status: **ACCEPTED — countersigned by the owner 2026-10-18** (PR-6's spoiler-sensitive gates released; detail surfaces remain disabled under the no-conversion doctrine until a future countersigned amendment)
+Status: **ACCEPTED — countersigned by the owner 2026-10-18; amended 2026-11-07.** PR-6's spoiler-sensitive gates released. Claim, evidence, entity-detail, search, and correction surfaces remain disabled. [Amendment 1](ADR-7-amendment-1-chapter-boundary-graph.md) adds exactly one verified provenance — an engine-read chapter boundary — and one read-only projection for the reader graph; it does not enable any other detail surface.
 
 ## Problem statement
 
@@ -40,6 +40,8 @@ validation, and failure behavior must be written down first.
    renders analysis availability (status) but does not render claim/evidence/graph detail,
    until a future ADR-7 amendment defines and pins a VERIFIED chapter→unit calibration
    (e.g., an engine-side per-chapter unit-boundary read), countersigned separately.
+   **Amendment 1 (2026-11-07)** supplies that boundary read and enables only the
+   previous-chapter graph projection; every other detail surface remains disabled.
 2. **RT's cursor machinery is built and pinned, but gated.** The typed cursor value,
    validation, and fail-closed tripwires exist and are test-pinned now (S9-ES-5 cursor codes:
    `SPOILER-CURSOR-UNVERIFIED`, `SPOILER-PROBE-REJECTED`, `CURSOR-MISSING`); the detail-query
@@ -209,4 +211,7 @@ surface + gated cursor machinery described in the body of this ADR, and nothing 
 
 ## Supersedes / superseded-by
 
-None. Amendment path documented (verified chapter→unit calibration ⇒ detail surface enable).
+None in the body. **Amendment 1** (2026-11-07) is the first countersigned increment:
+[ADR-7 amendment 1 — verified chapter-boundary graph](ADR-7-amendment-1-chapter-boundary-graph.md).
+It enables the previous-chapter graph projection only; claim, evidence, entity detail,
+search, corrections, and every other detail surface remain disabled.

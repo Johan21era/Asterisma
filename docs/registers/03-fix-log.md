@@ -1757,4 +1757,357 @@ persistence path. Rename and delete also carry explicit accessibility labels.
 
 **Limits.** No UI automation or screenshot; the alert is build-verified, not
 clicked in this session. The rename API itself was already pinned. No new test
-count; the canonical census remains 518.
+count at that boundary; the canonical census was 518 then.
+
+## Stage AU — 2.5 comic containers: CBZ, image folders, modes, notes (2026-11-07)
+
+**Finality.** Manga, manhua, manhwa, webcomics, and western comics are
+page-image containers, not new text formats. The implementation therefore adds
+two containers (CBZ and image folder) and three reading modes over them, and
+reuses the existing `Book`, session, progress, note, cover, library, and report
+pipelines. It does not create a parallel progress system or a second note
+store. CBR/CB7/CBT are rejected on purpose: the project has no RAR/7z decoder.
+
+**Delivered.**
+
+1. `BookFileType` gained `.cbz` and `.comic`; `Book` gained a tolerant
+   `comicReadingMode`; `BookNoteAnchor` gained `.comic(pageIndex:)`.
+2. `ComicArchive` opens a CBZ or image folder, filters junk, sorts pages
+   naturally, groups chapters by folder, and extracts page bytes lazily.
+3. `ComicReaderScreen` implements paged LTR, paged RTL, and vertical webtoon
+   layouts, arrow-key direction mapping, a page slider, and page notes.
+4. `BookImporter` accepts `.cbz` files and image folders, captures the first
+   page as the cover, builds chapters, and rejects CBR/CB7/CBT explicitly.
+5. `NewContentView` dispatches comic types to the new reader; library format
+   filters, annual-report comic counts, cover symbols, relinking, and Sentinel
+   file probing were extended; empty-state/onboarding copy now names comics.
+6. Mirage remains EPUB-only: its existing `fileType == .epub` gates are
+   unchanged.
+
+**Checks.**
+
+| Command | Result |
+|---|---|
+| `xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` | **BUILD SUCCEEDED**, exit **0** |
+| Focused `xcodebuild test` (`ComicArchiveTests`, `ComicImportTests`, `ComicReaderModelTests`) | **16 tests in 3 suites passed**, exit **0** |
+| `./scripts/census.sh --unit-only` | **568 tests in 110 suites**, 0 failures, 10 skips, exit **0** |
+| `./scripts/verify-sentinel-surface.sh` | exit **0** — 15 tables, 8 defaults keys, 5 notification names |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit **0** — 30 facts, 12 overview facts |
+| `git diff --check` | exit **0** |
+
+**Limits.** The app was not launched and no screenshot or real-comic pass was
+performed. CBR/CB7/CBT remain unsupported. Comic highlights are page notes, not
+text-region highlights. The knowledge graph was not refreshed, so its counts do
+not include the new files.
+
+**Evidence.** `docs/audits/2026-11-07-comic-expansion.md`; test files
+`AsterismaV2.0Tests/Reader/ComicArchiveTests.swift`,
+`AsterismaV2.0Tests/Reader/ComicImportTests.swift`, and
+`AsterismaV2.0Tests/Reader/ComicReaderModelTests.swift`.
+
+## Stage AV — 2.5.1 comic reader experience (2026-11-07)
+
+**What changed.** The 2.5 comic reader was correct but visibly a first pass: it
+swapped one image at a time, had no prefetch, kept a full-width material bar on
+screen, and offered no zoom, brightness, paper, chapter, or keyboard surface.
+Stage AV replaces that with:
+
+1. **Native paging.** Paged LTR/RTL uses a horizontal paging `ScrollView` with
+   explicit visual-order mapping. Story indices stay increasing in both
+   directions, so progress, notes, and resume positions keep one coordinate
+   system.
+2. **Prefetch and off-main decode.** `ComicPageImageStore` prefetches a
+   five-page window, de-duplicates in-flight work, and decodes through ImageIO
+   inside a detached task. The cache is bounded at 24 pages / 256 MB.
+3. **Quiet chrome.** Floating top and bottom capsules auto-hide after three
+   seconds, return on pointer movement, and expose chapter jumps, mode, page
+   notes, appearance, zoom, page scrubber, and full screen.
+4. **Reader comfort.** Four paper palettes, the shared EPUB/PDF brightness
+   dimmer, reduced-motion-aware fades, and a page-image placeholder that does
+   not flash white.
+5. **Inspection.** Double-click or the magnifier opens a pan/zoom surface with
+   a reset control and Escape-to-return.
+6. **Keyboard and focus.** A local monitor handles arrows by reading direction,
+   Space/Shift-Space, Page Up/Down, Home/End, `F`, and Escape while ignoring text
+   editors and attached sheets.
+7. **First-open inference.** Import suggests RTL for manga/manhua/manhwa titles
+   and vertical for webtoons; an explicit persisted mode still wins.
+8. **Isolation correction.** `ComicArchive`, `ComicPage`, and
+   `ComicPageImageStore` are nonisolated so the decode path genuinely leaves the
+   main actor under this project's `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`
+   setting.
+
+**Checks.**
+
+| Command | Result |
+|---|---|
+| `xcodebuild -project AsterismaV2.0.xcodeproj -scheme AsterismaV2.0 -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build` | **BUILD SUCCEEDED**, exit **0** |
+| Focused `xcodebuild test` (`ComicArchiveTests`, `ComicImportTests`, `ComicReaderModelTests`) | **19 tests in 3 suites passed**, exit **0** |
+| `./scripts/census.sh --unit-only` | **571 tests in 110 suites / 582 runs**, 572 passed, 10 skips, 0 failures, exit **0** |
+| `./scripts/verify-sentinel-surface.sh` | exit **0** — 15 tables, 8 defaults keys, 5 notification names |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit **0** — 30 facts, 12 overview facts |
+| `git diff --check` | exit **0** |
+
+**Limits.** No app launch, screenshot, real-comic pass, or Instruments
+frame-time trace. The 1×1 test image proves decode/cache wiring, not a
+multi-megapixel page on a 5K display. Native paging and prefetch are therefore
+compile/logic-verified and census-verified, not visually accepted. CBR/CB7/CBT
+remain unsupported. The graph was not refreshed, so its counts are pre-2.5.1.
+
+**Evidence.** `docs/audits/2026-11-07-comic-expansion.md`; new file
+`AsterismaV2.0/Features/Reader/ComicReaderExperience.swift`; the three comic
+test files under `AsterismaV2.0Tests/Reader/`.
+
+## Stage AW — 2.6 comic metadata and Mirage comic analysis (2026-11-07)
+
+Stage AW closes the two gaps Stage AV left open: comics had no native metadata
+source, and Mirage could not analyze them at all.
+
+1. **ComicInfo.xml parsing.** New `ComicMetadata.swift` reads the de-facto comic
+   metadata file from a CBZ entry or an image folder's root. It maps title,
+   series, number, volume, writer, penciller, publisher, summary, genre,
+   language, declared page count, front-cover page, and the `Manga` direction.
+   A malformed file returns nil; it never blocks import.
+2. **Import wiring.** `BookImporter.importComic` now uses the metadata title
+   (composing `Series #Number` when `<Title>` is absent), writer, series,
+   mapped genre, declared reading mode, and declared cover page. The fallback
+   remains the filename title and Unknown author.
+3. **Model and inspector.** `Book.comicInfo` is a tolerant decoded field;
+   `BookDetailsView` shows a read-only Comic Metadata section (series/issue,
+   publisher, language, direction, summary).
+4. **Deterministic OCR edition.** New `ComicMirageBridge.swift` opens the comic,
+   runs on-device Vision OCR (accurate, no language correction, automatic
+   language detection), and writes an EPUB 3 text edition to Mirage's own
+   directory. Entry order, 1980-01-01 timestamps, permissions, and the stored
+   `mimetype` are fixed, so the same text always yields the same digest.
+5. **Webtoon tiling and RTL order.** Tall strips are OCR'd in overlapping
+   native-resolution tiles instead of being downscaled whole. RTL modes sort
+   same-line observations right-to-left. Pages with no text are omitted from the
+   spine; a fully wordless comic is a typed refusal, not an empty import.
+6. **Identity correction.** `MirageSourceFingerprint.sha256Hex(sourceAt:)` hashes
+   a file directly and an image folder as a canonical relative-path + contents
+   digest. The identity map records the ORIGINAL comic digest; the receipt
+   suffix is checked against the DERIVED EPUB digest. Editing the comic still
+   orphans the link; re-running the same OCR reuses the engine edition.
+7. **Source kinds and gates.** `MirageImportSource` carries
+   `.epub`/`.comic`/`.unsupported`; the analyze sheet, batch analyzer, Settings
+   coverage counts, and comic reader chrome all admit comics. A preparation
+   fault has its own `.analysisPreparationFailed` outcome rather than falsely
+   claiming the source was unreadable.
+8. **Comic-specific copy.** The sheet explains the OCR text-edition path; the
+   batch and coverage labels say "analyzable" instead of "EPUB".
+9. **Bookmark scope.** `MirageSourceFingerprint.sha256Hex(sourceAt:)` and the
+   comic preparation path in `MirageEngineService.analyze` hold the URL's
+   security scope while they read, so a bookmark resolved after an app restart
+   still hashes and OCRs instead of failing with a permission error.
+10. **Paragraph cap guard.** `ComicMirageBridge.paragraphChunks` splits any
+    pathological OCR line below the engine's per-paragraph limit, so one bad
+    page cannot refuse the whole edition; the split is deterministic.
+
+**Checks.**
+
+| Command | Result |
+|---|---|
+| Debug build via the census test build (`xcodebuild ... build` path exercised by the test action) | **TEST SUCCEEDED**, exit **0** |
+| Focused `xcodebuild test` (`ComicMetadataTests`, `ComicMirageBridgeTests`, `MirageComicImportTests`, `MirageBatchAnalyzerTests`, `MirageFingerprintTests`) | **25 tests in 5 suites passed**, exit **0** |
+| `./scripts/census.sh --unit-only` | console **590 tests in 113 suites passed**; result bundle **591 passed / 10 skipped / 0 failed / 719 runs**, exit **0** |
+| `./scripts/verify-sentinel-surface.sh` | exit **0** — 15 tables, 8 defaults keys, 5 notification names |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit **0** — 30 facts, 12 overview facts |
+| `git diff --check` | exit **0** |
+
+**Limits.** No app launch, screenshot, real comic library, or OCR accuracy run.
+The bridge tests inject the recognizer, so EPUB structure, determinism, cache
+reuse, cancellation, failure typing, and long-line splitting are proven —
+Vision's real output is not. The bookmark-scope path is logic-verified only; no
+sandboxed relaunch was performed. CBR/CB7/CBT remain unsupported. The graph was
+not refreshed and is stale for the 2.6 files. Nothing is committed or pushed.
+
+**Evidence.** `docs/audits/2026-11-07-comic-expansion.md`; new files
+`AsterismaV2.0/Features/Reader/ComicMetadata.swift` and
+`AsterismaV2.0/Features/Mirage/ComicMirageBridge.swift`; new tests
+`AsterismaV2.0Tests/Reader/ComicMetadataTests.swift`,
+`AsterismaV2.0Tests/Mirage/ComicMirageBridgeTests.swift`, and
+`AsterismaV2.0Tests/Mirage/MirageComicImportTests.swift`.
+
+## Stage AX — 2.7 Mirage analysis report and measured strength (2026-11-07)
+
+Stage AX turns Mirage's link state into a derived, spoiler-safe analysis report.
+It adds no engine action and crosses no ADR-7 gate.
+
+1. **Report model.** New `MirageAnalysisReport.swift` derives coverage, indexed
+   editions, unit/claim totals and density, zero-claim editions, paused books,
+   unindexed active links, and scan freshness from the cached inventory plus
+   RT's identity map.
+2. **Active-only coverage.** Coverage counts active identity entries whose RT
+   book is analyzable. A caller cannot inflate it with a stale or orphaned link.
+   A never-scanned index reports zero unindexed links; missing evidence is not
+   proof of a missing edition.
+3. **Settings report.** Settings ▸ Mirage replaces the bare coverage rows with
+   coverage percent, indexed editions, ledger totals, per-edition density,
+   paused links, an unindexed-link warning, a zero-claim note, last measured
+   analysis time, and scan freshness. The footnote states the ADR-7 boundary.
+4. **Measured duration.** `MirageEngineService` records `lastAnalysisSeconds`
+   and `lastAnalysisAt` for the last successful analysis, including a comic's
+   on-device OCR preparation. The timer changes no flow, outcome, or gate.
+5. **Tests.** Four pure pins in `MirageAnalysisReportTests`: empty library,
+   analyzable-only coverage/density, scanned-index unindexed/paused accounting,
+   and never-scanned-index semantics.
+
+**Checks.**
+
+| Command | Result |
+|---|---|
+| Focused `xcodebuild test` (`MirageAnalysisReportTests`, `MirageEngineServiceTests`, `MirageStatusSurfaceTests`, `MirageBatchAnalyzerTests`) | **24 tests in 4 suites passed**, exit **0** |
+| `./scripts/census.sh --unit-only` | console **594 tests in 114 suites passed**; result bundle **595 passed / 10 skipped / 0 failed / 719 runs**, exit **0** |
+| `./scripts/verify-sentinel-surface.sh` | exit **0** — 15 tables, 8 defaults keys, 5 notification names |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit **0** — 30 facts, 12 overview facts |
+| `python3 scripts/audit-markdown.py` on the edited docs | exit **0** |
+| `git diff --check` | exit **0** |
+
+**Limits.** No app launch, Settings screenshot, real library scan, or real
+analysis run. The report tests use synthetic maps and indexes. The report
+measures coverage and engine counts, not extraction accuracy, recall, or book
+quality. ADR-7 detail remains disabled. Analysis duration is one wall-clock
+sample, not a benchmark. The graph was not refreshed and is stale for 2.7.
+Nothing is committed or pushed.
+
+**Evidence.** `docs/audits/2026-11-07-mirage-analysis-report.md`; new files
+`AsterismaV2.0/Features/Mirage/MirageAnalysisReport.swift` and
+`AsterismaV2.0Tests/Mirage/MirageAnalysisReportTests.swift`; the timer in
+`MirageEngineService.swift`; the report surface in `SettingsRootView.swift`.
+
+## Stage AY — ADR-7 amendment 1: reader graph at a verified chapter boundary (2026-11-07)
+
+Stage AY implements the countersigned increment that lets the EPUB reader summon
+a spoiler-safe graph. It does not edit the pinned engine and does not enable any
+claim, evidence, entity-detail, search, or correction surface.
+
+1. **Amendment and contract.** New
+   `docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md` pins the
+   read-only `edition_chapters` action, its exact result shape, the
+   previous-chapter cursor rule, RT's failure states, the cache policy, and the
+   engine work still required. The base ADR links to it and keeps every other
+   detail surface closed.
+2. **Boundary and gate.** `MirageChapterBoundaries.swift` strictly decodes
+   `{edition_id, chapters:[{chapter_index, first_unit_index, last_unit_index,
+   unit_count}]}` and refuses gaps, overlaps, impossible ranges, duplicate
+   chapter numbers, and inconsistent counts. `MirageCursor` gains exactly one
+   accepted provenance, `.chapterBoundary`; estimates, pages, and raw unit
+   indexes are still refused. `MirageDetailQuery` now composes a projection
+   only for that cursor and still refuses `search` and every other action.
+3. **Snapshot and cache.** `MirageGraphSnapshot.swift` decodes nodes, edges, and
+   metadata with a strict whitelist and per-edition check.
+   `MirageGraphCache.swift` stores 64 edition/chapter entries under
+   `mirage/graph-cache/`, validates the key on read, writes atomically, and
+   clears one edition after a successful re-analysis.
+4. **Controller and sheet.** `MirageGraphController.swift` is cache-first, maps
+   an unknown `edition_chapters` action to `engineUnsupported`, records engine
+   load time, and stays inert until an explicit `load()`. `MirageGraphView.swift`
+   renders a deterministic one-pass radial layout capped at 80 visible nodes and
+   reports the hidden count. The EPUB reader mounts a graph button and sheet;
+   no page-turn or scroll path reaches the controller.
+5. **Reader integration.** The graph button sits in the existing floating reader
+   controls next to Appearance. The sheet shows the current chapter in its title
+   but includes content only through the previous chapter. The first chapter has
+   no graph by design.
+6. **Tests.** `MirageGraphTests` adds 11 pins: boundary anchoring, malformed
+   maps, snapshot decode, cache round-trip, cache hit under two seconds, inert
+   initialization, first-chapter refusal, engine fetch + second-summon cache,
+   typed engine-unsupported, and deterministic bounded layout. The cursor suite
+   grows to six pins, the spoiler-probe suite to five, and the protocol census
+   pins the 28 engine actions plus the single amendment extension.
+
+**Checks.**
+
+| Command | Result |
+|---|---|
+| Focused `xcodebuild test` (`MirageGraphTests`, `MirageCursorContractTests`, `MirageSpoilerProbeTests`, `MirageProtocolConformanceTests`, `MiragePageTurnNonTriggerTests`) | **41 tests in 5 suites passed**, exit **0** |
+| `./scripts/census.sh --unit-only` | console **610 tests in 115 suites passed**; result bundle **611 passed / 10 skipped / 0 failed / 719 runs**, exit **0** |
+| `./scripts/verify-sentinel-surface.sh` | exit **0** — 15 tables, 8 defaults keys, 5 notification names |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit **0** — 30 facts, 12 overview facts |
+| `python3 scripts/audit-markdown.py` on the edited docs | exit **0** — OK on the eight edited docs |
+| `git diff --check` | exit **0** |
+
+**Limits.** The pinned engine does not implement `edition_chapters`; the sheet
+shows the typed capability gap, not a rendered real-ledger graph. No app launch,
+reader screenshot, real-library graph, real-graph two-second measurement, or
+comic graph. The 24-unit engine probe produced 0 nodes / 0 edges, so its
+projection timings are transport-only. The cache-hit test is a controller/cache
+measurement, not a UI frame-time receipt. The knowledge graph was not refreshed
+and is stale for the amendment files. Nothing is committed or pushed.
+
+**Evidence.** New files
+`AsterismaV2.0/Features/Mirage/MirageChapterBoundaries.swift`,
+`MirageGraphSnapshot.swift`, `MirageGraphCache.swift`,
+`MirageGraphController.swift`, `MirageGraphView.swift`, and
+`AsterismaV2.0Tests/Mirage/MirageGraphTests.swift`; edits to
+`MirageCursor.swift`, `MirageWireTypes.swift`, `MirageEngineService.swift`,
+`MirageStatusSurface.swift`, and `EPUBReaderScreen.swift`; the amendment at
+`docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md`.
+
+---
+
+## Stage AZ — 2026-11-07 — toolchain and dependency refresh
+
+**What changed.** Three upgrades are landed and verified; the remaining version
+gaps belong to the engine owner and are recorded below rather than guessed at.
+
+| Item | Before | After | Receipt |
+|---|---|---|---|
+| GRDB | 7.11.1 | **7.12.0** | `xcodebuild -resolvePackageDependencies` exit 0; `Package.resolved` revision `92a554cd0d5e8d67cb18993c6054e73fe42c066c` |
+| 3D renderer | 3d-force-graph 1.80.0 | **1.80.2** | npm tarball `3d-force-graph-1.80.2.tgz`; `scripts/vendor/3d-force-graph-1.80.2.min.js` is 1,389,818 B, SHA-256 `ae9b5ca9d525095978d0f5d23f9136dfe177b2e949773102ffbf145dd7776f04` |
+| CI toolchain | `macos-26` / Xcode 26.6 | **`xcode-27` / Xcode 27.2** | `.github/workflows/census.yml`; GitHub made the `xcode-27` image generally available on 2026-10-15 |
+
+The `project.pbxproj` GRDB requirement moved from `minimumVersion = 7.9.0` to
+`7.12.0`. That matters: the first refresh attempt deleted `Package.resolved` and
+still resolved 7.11.1, because the old requirement permitted it. Raising the
+floor is what makes the 7.12.0 pin reproducible instead of cache-dependent.
+
+**Verification**
+
+| Command | Result |
+|---|---|
+| `xcodebuild -resolvePackageDependencies` | exit **0** — GRDB 7.12.0, ZIPFoundation 0.9.20 |
+| `./scripts/census.sh --unit-only` | exit **0** — console **610 tests in 115 suites passed**; bundle **611 passed / 10 skipped / 0 failed / 621 total** |
+| `python3 scripts/build-graph-3d.py` | 9,232 nodes / 21,963 links, **9,309,801 B** |
+| `python3 scripts/build-graph-3d.py --check` | exit **0** — `ok` |
+| `./scripts/verify-sentinel-surface.sh` | exit **0** — 15 tables, 8 defaults keys, 5 notification names |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit **0** after the `ci-runner`, `ci-xcode`, and overview `ci` facts were repointed to `xcode-27` / `Xcode 27.2` |
+| `python3 scripts/audit-markdown.py` | exit **0** |
+| `git diff --check` | exit **0** |
+
+**Flake disclosed.** The first census run, started while the 9 MB 3D page was
+being regenerated in parallel, failed exactly one test:
+`ObserverLifecycleTests/startStopCyclesDoNotStackObservers`, reporting
+`RESULT baseline=0 delivered=0 total=0`. The suite run alone immediately after
+passed with `delivered=1`, and the clean full census passed with 0 failures. The
+test posts a distributed notification and waits for async delivery; CPU
+contention drops it. It does not touch GRDB. The clean census was run with no
+other work on the machine.
+
+**Not upgraded, with reasons**
+
+- **Swift language mode 6.0.** The compiler is already Swift 6.4.2, but the
+  targets compile in Swift 5 mode. A per-target `SWIFT_VERSION = 6.0` probe (not
+  a global command-line override, which also forces the SPM packages into Swift
+  6) produced **90 distinct errors in 26 app files**: `DataMaturityEngine.swift`
+  40, `WeatherVisual.swift` 12, `DataStore3.swift` 5,
+  `LibraryArchiveManager.swift` 4, and 22 files with 1–3 each. The setting was
+  restored to `SWIFT_VERSION = 5.0;` (6 occurrences); the probe left no diff
+  beyond the GRDB requirement. This is a source migration, not a version bump.
+- **Bundled Python 3.12.7.** The Mirage runtime is staged from the engine owner's
+  pinned `python-build-standalone` release (`cpython-3.12.7+20241002`, SHA-256
+  `5a9cdbb8536839a83edae3e41eb44161b640d78181fec083e07c668ba796a875`) and a
+  pinned engine SHA `81422613610701d81956394d9601bcb61e2938e9`. The latest 3.12
+  patch is 3.12.16, but re-staging replaces the signed bundle and is the engine
+  owner's call, not an app-side bump.
+- **Rust 1.98.1.** No `cargo` or `rustc` invocation exists in this repository's
+  build or scripts; Rust is the engine owner's toolchain, not an Asterisma build
+  input.
+- **Node 26.5.0.** There is no `package.json`; Node is not an app dependency.
+  Its only use here was fetching the renderer, now vendored at 1.80.2. The
+  current LTS is 26.13.0.
+
+**Limits.** The CI workflow change has **not** run on GitHub; no run exists for
+it. The 3D page was regenerated and `--check`-verified, but was not opened in a
+browser this session. Nothing is committed or pushed.

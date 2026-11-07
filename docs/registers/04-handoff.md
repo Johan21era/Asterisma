@@ -4,7 +4,7 @@
 
 This document answers the seven questions every close-out should answer, in plain language. It is written so that anyone — whether or not they have ever written code — can pick up the project and know exactly where things stand.
 
-**Refreshed 2026-11-07: the V1.0 release is merged, reorganized, and CI-green, and it carries the Sentinel v2 first tranche; `AsterismaV2.0` is the current working identity, not a shipped release.** The V2.0 tree now also carries the Home/Library shell overhaul, the reader customization pass, the offline contract pass, the ADR-13 Mirage warm-engine/library-scale overhaul, the environment/Sentinel/console navigation overhaul, and the E8 estimate-facade + behavior-SQLite tranche. The earlier tranches are committed and pushed; owner visual acceptance remains pending. The current unit census is **518 tests / 100 suites / 719 runs / 509 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; 2026-11-07), after the reading-analytics recalibration, the 200-round stress evaluation, and the E8 estimate-facade + behavior-SQLite tranche. The hand-graded real-library pass that followed was **declared void on 2026-10-29** — see the session close at the end of this file and `docs/audits/new-era-testing.md` §31. The app is usable now. The remaining work is owner acceptance of the shell/reader/offline/Mirage changes, distribution hardening, and the Sentinel holds recorded in SG7 (manual acceptance, v1 removal, localization, menu bar, accessibility, 10× benchmark).
+**Refreshed 2026-11-07: the V1.0 release is merged, reorganized, and CI-green, and it carries the Sentinel v2 first tranche; `AsterismaV2.0` is the current working identity, not a shipped release.** The V2.0 tree now also carries the Home/Library shell overhaul, the reader customization pass, the offline contract pass, the ADR-13 Mirage warm-engine/library-scale overhaul, the environment/Sentinel/console navigation overhaul, the E8 estimate-facade + behavior-SQLite tranche, and the 2.5 comic-container / 2.5.1 reader-experience / 2.6 comic-metadata-and-Mirage passes, and the 2.7 Mirage-analysis-report pass. The earlier tranches are committed and pushed; owner visual acceptance remains pending. The current unit census is **610 tests in 115 suites passed** (console) / **611 passed / 10 skipped / 0 failed / 719 runs** (`./scripts/census.sh --unit-only`, exit 0; 2026-11-07), after the reading-analytics recalibration, the 200-round stress evaluation, the E8 estimate-facade + behavior-SQLite tranche, the 2.5–2.7 passes, and the ADR-7 amendment-1 graph. The hand-graded real-library pass that followed was **declared void on 2026-10-29** — see the session close at the end of this file and `docs/audits/new-era-testing.md` §31. The app is usable now. The remaining work is owner acceptance of the shell/reader/offline/Mirage changes, distribution hardening, and the Sentinel holds recorded in SG7 (manual acceptance, v1 removal, localization, menu bar, accessibility, 10× benchmark).
 
 ---
 
@@ -12,7 +12,7 @@ This document answers the seven questions every close-out should answer, in plai
 
 First, the October audit era: verifying the app, fixing the freeze saga, and re-documenting it.
 
-Then the **RT–Mirage merge campaign** (October 2026): integrating a separately owned EPUB analysis engine (“Mirage”) behind a typed, fail-closed boundary.
+Then the **RT–Mirage merge campaign** (October 2026): integrating a separately owned EPUB-and-comic analysis engine (“Mirage”) behind a typed, fail-closed boundary.
 
 Then the **Bedrock program** (2026-10-24): fixing the audit-era correctness punch list, moving the live library to SQLite, adding Open-Meteo weather, wiring Behavior Context V3, and producing a signed local release candidate.
 
@@ -31,7 +31,7 @@ Then, the **Library Recovery program** (2026-10-28): preservation-first incident
 ## Why?
 
 1. **Trust first:** the app holds years of reading history. The Bedrock work fixed data-ordering, crash-window, cache, onboarding, and cover bugs before adding anything new.
-2. **A capability, not a rewrite:** Mirage analyzes EPUBs as a companion engine. It keeps its own ledger and never writes the app’s store.
+2. **A capability, not a rewrite:** Mirage analyzes EPUBs directly and comics through an on-device OCR text edition. It keeps its own ledger and never writes the app’s store.
 3. **Receipts, not assumptions:** every gate closed on a green census, and the release has a package checksum plus a launch receipt.
 4. **A real name:** the product is **Asterisma**; this MVP build is **AsterismaV1.0**. The internal sandbox bundle ID stayed `johan.Reading-Tracker` on purpose so the existing container and library were not orphaned.
 
@@ -80,6 +80,7 @@ An app that can be trusted with years of reading history, with a change process 
 | 7 | **Legacy cleanup + remaining dead code** | 1 short session | Repository graphify cache/backup, duplicate playbook, and OS metadata were removed on 2026-10-29; old P5-G `library.sqlite3`/`.migrated` app-support artifacts and zero-caller fragments remain, none live. |
 | 8 | **Mirage standing items** | Process, not code | TB-M0 observation cadence, a perf-budget report, and the engine-side backup-surface gap. The packaged app-embed exercise is done. |
 | 9 | **Mirage ADR-13 owner acceptance** | One focused session | Exercise the warm engine (start, two analyses without a cold restart, idle stop), a library scan, a batch cancel, and a retry-failed run from Settings ▸ Mirage. Record results in `docs/owner-test-results/`; the stage is not accepted until then. |
+| 10 | **Mirage graph engine action** | Engine-owner task | Implement the read-only `edition_chapters` action in `docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md` §3.1, then run a real ledger graph and a two-second UI measurement. The RT graph is wired and shows a typed capability gap until this lands. |
 
 **Closed 2026-11-07 — Collection rename UI:** Book Details has a pencil action on every collection row, a prefilled rename alert, and the existing `DataStore.renameCollection` path; build and the collection/metadata pins are green. The execution sequence for the remaining items is `docs/roadmap/07-master-progression.md`.
 
@@ -91,7 +92,7 @@ CI runner alignment is complete (2026-10-26): `census` runs on `macos-26` / Xcod
 
 ## What should the next person know to start instantly?
 
-**Baseline:** `main` carries the original release merge at `aba8aa4` plus the owner-accepted reader build, the preservation-first repository reorganization, CI hardening, the Sentinel v2 first tranche (`6099e4e`), and SG8 (`29dd4f6`); ready tag `asterisma-v1.0-ready-2026-10-26`, release tag `asterisma-v1.0-mvp`. At the SG8 boundary the local unit census was **432 tests / 671 runs / 9 skipped / 0 failed**; the reader boundary was **441 tests / 671 runs / 432 passed / 9 skipped / 0 failed** (Stage AA); the offline boundary was **447 tests / 671 runs / 438 passed / 9 skipped / 0 failed** (Stage AB, historical). The ADR-13 boundary was **459 tests / 671 runs / 450 passed / 9 skipped / 0 failed** (Stage AE). The Phase Zero boundary was **469 tests / 671 runs / 460 passed / 9 skipped / 0 failed** (`rt-census-20261029-183222.xcresult`); the current boundary is **518 tests / 100 suites / 719 runs / 509 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; 2026-11-07), which adds the two E8 estimate-facade pins and the G6 SQLite persistence pin to the prior 515 boundary; the four Book File Relink tests and the one Phase Zero reading-analytics probe remain part of the count. The Stage AH environment/Sentinel/console boundary is **464 tests / 671 runs / 455 passed / 9 skipped / 0 failed** (Stage AH in `docs/registers/03-fix-log.md`). Release build exit 0 for the earlier boundary; the reader and offline passes have Debug build receipts only. Test isolation was byte-identical at the earlier boundary; it was not re-run after the reader or offline pass. The generated `dist/` package was removed during the 2026-10-28 artifact cleanup; rebuild with `scripts/package-release.sh`. The last documented package SHA-256 is `786832c8049e38ebe03d6220ae0a39b3a0005b010bdce4675e440cea65ef4643`. Canonical census numbers come from `xcrun xcresulttool get test-results summary`; Sentinel evidence is indexed in `docs/plans/sentinel/gates/README.md`. The close-out graph refresh (Stage AI) is **8,156 nodes / 20,371 edges / 389 communities**; the 3D page is 8,579,333 B and all artifact hashes are in the Stage AI receipt. The earlier Stage AG refresh recorded 8,045 / 20,093 / 381; the ADR-13 refresh (Stage AF) recorded 8,037 / 20,085 / 378.
+**Baseline:** `main` carries the original release merge at `aba8aa4` plus the owner-accepted reader build, the preservation-first repository reorganization, CI hardening, the Sentinel v2 first tranche (`6099e4e`), and SG8 (`29dd4f6`); ready tag `asterisma-v1.0-ready-2026-10-26`, release tag `asterisma-v1.0-mvp`. At the SG8 boundary the local unit census was **432 tests / 671 runs / 9 skipped / 0 failed**; the reader boundary was **441 tests / 671 runs / 432 passed / 9 skipped / 0 failed** (Stage AA); the offline boundary was **447 tests / 671 runs / 438 passed / 9 skipped / 0 failed** (Stage AB, historical). The ADR-13 boundary was **459 tests / 671 runs / 450 passed / 9 skipped / 0 failed** (Stage AE). The Phase Zero boundary was **469 tests / 671 runs / 460 passed / 9 skipped / 0 failed** (`rt-census-20261029-183222.xcresult`); the current boundary is **610 tests in 115 suites passed** (console) / **611 passed / 10 skipped / 0 failed across 719 runs** (`./scripts/census.sh --unit-only`, exit 0; 2026-11-07), which includes the 38 comic container/metadata/import/reader/experience/Mirage pins, the four analysis-report pins, the eleven graph pins, the two E8 estimate-facade pins, and the G6 SQLite persistence pin; the four Book File Relink tests and the one Phase Zero reading-analytics probe remain part of the count. The Stage AH environment/Sentinel/console boundary is **464 tests / 671 runs / 455 passed / 9 skipped / 0 failed** (Stage AH in `docs/registers/03-fix-log.md`). Release build exit 0 for the earlier boundary; the reader and offline passes have Debug build receipts only. Test isolation was byte-identical at the earlier boundary; it was not re-run after the reader or offline pass. The generated `dist/` package was removed during the 2026-10-28 artifact cleanup; rebuild with `scripts/package-release.sh`. The last documented package SHA-256 is `786832c8049e38ebe03d6220ae0a39b3a0005b010bdce4675e440cea65ef4643`. Canonical census numbers come from `xcrun xcresulttool get test-results summary`; Sentinel evidence is indexed in `docs/plans/sentinel/gates/README.md`. The close-out graph refresh (Stage AI) is **8,156 nodes / 20,371 edges / 389 communities**; the 3D page is 8,579,333 B and all artifact hashes are in the Stage AI receipt. The earlier Stage AG refresh recorded 8,045 / 20,093 / 381; the ADR-13 refresh (Stage AF) recorded 8,037 / 20,085 / 378.
 
 > **History note (2026-10-28):** `main` was rewritten to remove AI co-author trailers from five commits. Trees are byte-identical. Remapped SHAs: `40bc922`→`16d6d16`, `fd524cd`→`5a369e9`, `6aecdc3`→`bed710a`, `2f40a43`→`310b9d3`, `ae4ee36`→`76e8a23`. A local-only `backup/pre-attribution-rewrite` branch may hold the old objects; it is not pushed and is safe to delete.
 
@@ -108,7 +109,7 @@ CI runner alignment is complete (2026-10-26): `census` runs on `macos-26` / Xcod
 - **Owner results outrank the census.** A personal test failure is a real failure even if the suite is green; record it and fix it.
 - Data root is `Application Support/Asterisma/`; the legacy `ReadTracker/` name is migration-only.
 - The bundle ID is intentionally stable for this MVP; changing it needs a container migration.
-- **Mirage rules:** never unify the two stores; entries are born only from validated receipts; one warm sidecar serves serialized requests and stops on idle/disable/background (ADR-13); spoiler detail surfaces stay disabled until a verified calibration amendment (ADR-7, fail-closed).
+- **Mirage rules:** never unify the two stores; entries are born only from validated receipts; one warm sidecar serves serialized requests and stops on idle/disable/background (ADR-13); claim/evidence detail stays disabled, the reader graph uses amendment 1's verified chapter boundary only, and the engine action is still pending (ADR-7, fail-closed).
 - During a freeze, run `sample <pid>` before reasoning about performance (`10-profiler-fix.md` is the proof).
 
 **Fresh-clone build:** stage the gitignored Mirage runtime first:
@@ -819,3 +820,183 @@ fixture, measured once.
 
 **Next.** G1's owner script; then WP-1.5. Watch the 25 s import timeout if a
 real library book is slower than the fixture.
+
+## Session close — 2026-11-07 (2.5 comic containers)
+
+**Delivered.** CBZ archives and image folders now import as books and open in a
+three-mode comic reader: left-to-right, right-to-left manga/manhua/manhwa, and
+continuous vertical webtoon. The same `SessionCoordinator` and `DataStore`
+progress path records page turns, so comics feed sessions, estimates,
+achievements, and annual reports. Page notes use a durable
+`.comic(pageIndex:)` anchor, library filters include format, covers come from
+the first page, and relinking accepts image folders. CBR, CB7, and CBT are
+rejected explicitly because no RAR/7z decoder is bundled. Mirage remains
+EPUB-only by design.
+
+**Verified.** Debug build **BUILD SUCCEEDED** (exit 0); focused comic suites
+**16 tests in 3 suites passed** (exit 0); unit census exit 0 with **568 tests
+in 110 suites**, 0 failures, 10 existing skips. The surface-freshness and
+comprehension-link gates both exited 0. Receipts: `docs/audits/2026-11-07-comic-expansion.md`.
+
+**Limits.** No app launch, screenshot, or real comic-library pass. The tests
+use synthetic image folders and a generated CBZ; they prove container and
+import logic, not visual polish. Comic text selection, region highlights, and
+in-book search remain future work. The knowledge graph was not refreshed in
+this session, so `graphify-out/` is stale for the new files.
+
+**Next.** Owner visual acceptance with one real CBZ and one webtoon folder;
+then graph refresh, commit, and a separate push decision. CBR support would
+need a deliberate RAR decoder dependency, not a silent fallback.
+
+## Session close — 2026-11-07 (2.5.1 comic reader experience)
+
+**Delivered.** The comic reader now has native horizontal paging with correct
+RTL visual order, a five-page prefetch window with off-main ImageIO decode, a
+bounded page cache, floating auto-hiding chrome, four paper palettes, the shared
+brightness dimmer, a direct-manipulation page scrubber, chapter jumps,
+double-click pan/zoom, full-screen and keyboard control, and import-time mode
+inference for manga/manhua/manhwa and webtoons. `ComicArchive`, `ComicPage`, and
+the page store were made nonisolated so the work actually leaves the main actor.
+
+**Verified.** Debug build **BUILD SUCCEEDED** (exit 0); focused comic suites
+**19 tests in 3 suites passed** (exit 0); unit census exit 0 with **571 tests in
+110 suites / 582 runs**, 572 passed, 10 skipped, 0 failed. Surface-freshness,
+comprehension-link, and whitespace checks exited 0. Receipt:
+`docs/audits/2026-11-07-comic-expansion.md`, Stage AV.
+
+**Limits.** The app was not launched; there is no screenshot, real comic-library
+pass, or Instruments frame-time trace. The 1×1 fixture proves decode and cache
+wiring, not a multi-megapixel page on a 5K display. CBR/CB7/CBT remain
+unsupported, comic notes remain page-anchored, and the knowledge graph is stale
+for the 2.5.1 files. Nothing is committed or pushed.
+
+**Next.** Owner acceptance with one real CBZ and one real long-strip webtoon,
+then a frame-time profile, graph refresh, and separate commit/push approvals.
+
+## Session close — 2026-11-07 (2.6 comic metadata + Mirage comic analysis)
+
+**Delivered.** ComicInfo.xml now supplies title, series, issue, volume, writer,
+penciller, publisher, summary, genre, language, declared page count, cover page,
+and reading direction at import; a malformed file is a metadata miss and never
+blocks the pages. `Book.comicInfo` decodes tolerantly, and Book Details shows a
+read-only Comic Metadata section. Mirage analyzes comics without an engine or
+protocol change: `ComicMirageBridge` runs on-device Vision OCR, writes a
+byte-deterministic EPUB 3 text edition, and sends it through the existing
+`import_epub` action. Tall webtoon strips are OCR'd in overlapping tiles, RTL
+manga orders same-line balloons right-to-left, and pages with no text are
+omitted. The identity map anchors the original comic digest (file or canonical
+folder digest); the receipt is checked against the derived EPUB digest. The
+bridge holds the bookmark's security scope while it reads and caps any single
+OCR paragraph below the engine limit. Comics
+are eligible in the analyze sheet, batch queue, Settings coverage counts, and
+the comic reader's chrome.
+
+**Verified.** Debug test build **TEST SUCCEEDED** (exit 0); focused suites
+**25 tests in 5 suites passed** (exit 0); unit census exit 0 with **590 tests in
+113 suites passed** (console) and **591 passed / 10 skipped / 0 failed / 719
+runs** (result bundle). Surface-freshness, comprehension-link, and whitespace
+checks exited 0. Receipt: `docs/audits/2026-11-07-comic-expansion.md`, Stage AW.
+
+**Limits.** The app was not launched; there is no screenshot, real comic-library
+pass, or OCR accuracy measurement. Bridge tests inject the recognizer, so
+Vision's real output on manga, manhua, manhwa, webtoon, and western-comic pages
+is unproven. CBR/CB7/CBT remain unsupported, no engine source was edited, and
+the knowledge graph is stale for the 2.6 files. Nothing is committed or pushed.
+
+**Next.** Owner acceptance with real files in all five categories; an OCR
+accuracy/language pass; a frame-time profile; graph refresh; then the separate
+commit and push approvals.
+
+## Session close — 2026-11-07 (2.7 Mirage analysis report)
+
+**Delivered.** Mirage's link state is now a measured, spoiler-safe report.
+`MirageAnalysisReport` derives coverage, indexed editions, unit/claim totals and
+density, zero-claim editions, paused links, active links missing from the last
+scan, and scan freshness from the cached engine inventory plus RT's identity
+map. Coverage counts active entries only, so a stale or orphaned link cannot
+inflate it, and a never-scanned index reports zero unindexed links. Settings ▸
+Mirage shows the report with an explicit ADR-7 provenance note, and
+`MirageEngineService` now records the last successful analysis duration,
+including a comic's OCR preparation. No engine source or wire action changed,
+and no analysis detail was enabled.
+
+**Verified.** Focused **24 tests in 4 suites passed** (exit 0); unit census exit
+0 with **594 tests in 114 suites passed** (console) and **595 passed / 10
+skipped / 0 failed / 719 runs** (result bundle). Surface-freshness,
+comprehension-link, Markdown-audit, and whitespace checks exited 0. Receipt:
+`docs/audits/2026-11-07-mirage-analysis-report.md`, Stage AX.
+
+**Limits.** The app was not launched, so Settings ▸ Mirage was not visually
+inspected. No real library scan or real analysis ran; the report tests use
+synthetic maps and indexes. The report measures coverage and engine counts, not
+extraction accuracy, recall, or book quality. ADR-7 detail remains disabled.
+Analysis duration is one wall-clock sample, not a benchmark distribution. The
+knowledge graph is stale for the 2.7 file. Nothing is committed or pushed.
+
+**Next.** Owner visual check of Settings ▸ Mirage, then a real library scan
+against a real Mirage ledger. Enabling claim/evidence detail still requires the
+countersigned ADR-7 calibration amendment; it is not a code toggle.
+
+## Session close — 2026-11-07 (ADR-7 amendment 1: reader graph)
+
+**Delivered.** The EPUB reader now has an explicit Mirage graph button. The
+sheet opens cache-first for the current edition + chapter, otherwise asks the
+engine for read-only chapter boundaries and projects at the **last unit of the
+previous chapter**. The gate accepts only that boundary cursor; every estimate,
+page coordinate, raw unit, search, claim, and evidence path stays refused. The
+snapshot is strictly decoded, cached for 64 edition/chapter entries, cleared for
+an edition after a successful re-analysis, and rendered with a deterministic
+one-pass layout capped at 80 visible nodes. The reader's graph mount has no
+page-turn or scroll aperture.
+
+**Verified.** Focused **41 tests in 5 suites passed** (exit 0); unit census exit
+0 with **610 tests in 115 suites passed** (console) and **611 passed / 10 skipped / 0 failed / 719 runs** (result bundle).
+Surface-freshness, comprehension-link, Markdown-audit, and whitespace checks
+exited 0. Receipt: `docs/integration/adr/ADR-7-amendment-1-chapter-boundary-graph.md`,
+Stage AY.
+
+**Limits.** The pinned engine does **not** implement `edition_chapters`; the
+shipped state is `engineUnsupported`, not a rendered real-ledger graph. No app
+launch, reader screenshot, real library graph, real-graph two-second measurement,
+or comic graph. The cache-hit test asserts < 2 s and completed in 0.001 s; it is
+not a UI frame-time receipt. The 24-unit engine probe produced 0 nodes / 0 edges,
+so its projection timings are transport-only. The knowledge graph is stale for
+the amendment files. Nothing is committed or pushed.
+
+**Next.** Engine owner implements the action and returns a real receipt; then
+owner visual acceptance and a real-graph latency measurement. Commit and push
+need separate explicit approvals.
+
+---
+
+## Session close — 2026-11-07 — toolchain refresh (Stage AZ)
+
+**Landed.** GRDB **7.12.0** (requirement floor raised from 7.9.0 to 7.12.0 in
+`project.pbxproj`; `Package.resolved` revision
+`92a554cd0d5e8d67cb18993c6054e73fe42c066c`). Vendored 3D renderer
+**3d-force-graph 1.80.2** (1,389,818 B, SHA-256
+`ae9b5ca9d525095978d0f5d23f9136dfe177b2e949773102ffbf145dd7776f04`), replacing
+1.80.0; the generator, README, and the regenerated 9,232-node / 21,963-link page
+(9,309,801 B, `--check` exit 0) all agree. CI now targets the GitHub-hosted
+**`xcode-27`** image / **Xcode 27.2**, matching the local Xcode 27.2 (27B52).
+
+**Verified.** `./scripts/census.sh --unit-only` exit **0** — **610 tests in 115
+suites passed**, bundle **611 passed / 10 skipped / 0 failed / 621 total**.
+Surface-freshness, comprehension-link (after repointing the CI facts to
+`xcode-27` / `Xcode 27.2`), Markdown-audit, and whitespace checks all exited 0.
+
+**Disclosed flake.** The first census, run concurrently with the 9 MB page
+regeneration, failed only `ObserverLifecycleTests/startStopCyclesDoNotStackObservers`
+(`delivered=0`); it passed alone (`delivered=1`) and in the clean census. It is
+distributed-notification timing, not GRDB.
+
+**Still behind.** Swift language mode remains **5.0**; a per-target Swift 6.0
+probe produced **90 distinct errors across 26 app files**
+(`DataMaturityEngine.swift` 40, `WeatherVisual.swift` 12, `DataStore3.swift` 5,
+`LibraryArchiveManager.swift` 4, 22 files with 1–3). Bundled Python remains
+**3.12.7** (latest 3.12 patch 3.12.16), pinned by the engine manifest; Rust
+1.98.1 is not an Asterisma build input; there is no Node dependency.
+
+**Limits.** The CI runner change has not been exercised on GitHub — no workflow
+run exists for it. The graph page was not opened in a browser. Nothing is
+committed or pushed.

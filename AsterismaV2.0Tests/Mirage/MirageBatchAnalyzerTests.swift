@@ -109,7 +109,7 @@ struct MirageBatchAnalyzerTests {
         #expect(attempts[failingID] == 2)
     }
 
-    @Test func prepareSkipsNonEpubAndAlreadyLinkedBooks() {
+    @Test func prepareIncludesComicsAndSkipsUnsupportedAndAlreadyLinkedBooks() {
         let linked = Book(
             title: "Linked EPUB", author: "Fixture",
             fileURL: URL(fileURLWithPath: "/tmp/linked.epub"),
@@ -122,17 +122,21 @@ struct MirageBatchAnalyzerTests {
             title: "PDF", author: "Fixture",
             fileURL: URL(fileURLWithPath: "/tmp/book.pdf"),
             fileType: .pdf, totalPages: 10, currentPage: 1)
+        let comic = Book(
+            title: "Manga Volume 1", author: "Fixture",
+            fileURL: URL(fileURLWithPath: "/tmp/manga.cbz"),
+            fileType: .cbz, totalPages: 180, currentPage: 0)
 
         let analyzer = MirageBatchAnalyzer { source, _ in
             .linked(entry: self.linkedEntry(source.rtBookID), reused: false)
         }
         analyzer.prepare(
-            books: [linked, unlinked, pdf],
+            books: [linked, unlinked, pdf, comic],
             linkedBookIDs: [linked.id],
             skipLinked: true)
 
-        #expect(analyzer.jobs.count == 1)
-        #expect(analyzer.jobs.first?.id == unlinked.id)
-        #expect(analyzer.jobs.first?.title == "Unlinked EPUB")
+        #expect(analyzer.jobs.map(\.id) == [unlinked.id, comic.id])
+        #expect(analyzer.jobs.last?.title == "Manga Volume 1")
+        #expect(analyzer.jobs.last?.source.kind == .comic)
     }
 }

@@ -76,6 +76,24 @@ enum AnnotationCreation {
             anchor: .pdf(pageIndex: selection.pageIndex, rect: selection.rect)
         )
     }
+
+    /// Builds a page-anchored editorial note for a comic page. Comic pages
+    /// are images, so there is no selected text or highlight rectangle: the
+    /// durable location is the 0-based page index in the comic container.
+    static func makePageNote(
+        text: String,
+        bookID: UUID,
+        pageIndex: Int,
+        tag: BookNote.NoteTag = .general
+    ) -> BookNote {
+        BookNote(
+            bookID: bookID,
+            pageNumber: pageIndex,
+            text: text,
+            tag: tag,
+            anchor: .comic(pageIndex: pageIndex)
+        )
+    }
 }
 
 // MARK: - QuoteFormatter
@@ -95,6 +113,8 @@ enum QuoteFormatter {
         case let .epub(chapterIndex, _, _):
             return "— Chapter \(chapterIndex + 1)"
         case let .pdf(pageIndex, _):
+            return "— Page \(pageIndex + 1)"
+        case let .comic(pageIndex):
             return "— Page \(pageIndex + 1)"
         case nil:
             return nil

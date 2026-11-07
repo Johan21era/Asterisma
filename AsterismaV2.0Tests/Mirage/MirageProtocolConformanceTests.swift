@@ -13,7 +13,7 @@ import Testing
 
     // MARK: - Action-name census (playbook S6-ES-2 census arithmetic on the wire)
 
-    @Test func actionSetMatchesEngineDispatcherExactly() {
+    @Test func actionSetMatchesPinnedEnginePlusAmendmentExtension() {
         let expected: [String] = [
             "health", "version", "import_epub", "analyze", "projection", "search",
             "checkpoint", "verify_checkpoint", "reconstruct", "verify_deltas",
@@ -22,11 +22,28 @@ import Testing
             "series_create", "series_list", "series_candidates", "series_attach",
             "series_detach", "series_read_state", "series_breakdown", "series_remove",
             "translate",
+            // ADR-7 amendment 1 (2026-11-07): the one read-only extension.
+            "edition_chapters",
         ]
         #expect(MirageWireAction.allCases.count == expected.count)
         for action in MirageWireAction.allCases {
             #expect(expected.contains(action.rawValue), "unmapped action \(action.rawValue)")
         }
+    }
+
+    @Test func chapterBoundaryActionIsTheSingleAmendmentExtension() {
+        let pinnedV28: Set<String> = [
+            "health", "version", "import_epub", "analyze", "projection", "search",
+            "checkpoint", "verify_checkpoint", "reconstruct", "verify_deltas",
+            "export_graph", "cited_claims", "neighborhood", "edge_detail", "history",
+            "books_list", "edition_remove", "book_remove", "search_eligible",
+            "series_create", "series_list", "series_candidates", "series_attach",
+            "series_detach", "series_read_state", "series_breakdown", "series_remove",
+            "translate",
+        ]
+        let actual = Set(MirageWireAction.allCases.map(\.rawValue))
+        #expect(actual.subtracting(pinnedV28) == Set(["edition_chapters"]))
+        #expect(MirageWireAction.editionChapters.rawValue == "edition_chapters")
     }
 
     // MARK: - Request-line encoding

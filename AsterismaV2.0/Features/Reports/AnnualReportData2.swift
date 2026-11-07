@@ -118,7 +118,7 @@ struct AnnualReportData {
     let booksCompletedThisYear: [Book] // Source: booksCompleted(year:)
     let genreSummary: GenreAnalyticsSummary // Source: AnalyticsEngine.genreSummary (year subset)
     let dominantGenre: ReadingGenre? // Source: genreSummary.dominantGenre
-    let formatBreakdown: (epub: Int, pdf: Int) // Source: booksReadThisYear partition by fileType
+    let formatBreakdown: (epub: Int, pdf: Int, comic: Int) // Source: booksReadThisYear partition by fileType
 
     // MARK: Slide 4 — Pace: How did I read?
 
@@ -338,7 +338,7 @@ enum AnnualReportGenerator {
             booksCompletedThisYear: yearCompleted,
             genreSummary: genreSummary,
             dominantGenre: genreSummary.dominantGenre,
-            formatBreakdown: (epubCount, pdfCount),
+            formatBreakdown: (epubCount, pdfCount, yearBooks.filter { $0.fileType.isComic }.count),
             averageSecondsPerPage: crossSpeed,
             speedTrend: trendAnalysis,
             improvementAnalysis: improvement,

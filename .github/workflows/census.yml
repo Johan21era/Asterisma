@@ -7,10 +7,11 @@ on:
 
 # The project is in Xcode 16+ project format (objectVersion 77) and targets
 # macOS 26.5, so the old macos-14 / Xcode 15.4 runner cannot even open it.
-# macos-26 provides Xcode 26.6 and the macOS 26.5 SDK.
+# The xcode-27 image (generally available 2026-10-15) ships Xcode 27.2, the
+# same toolchain the project is developed and verified on locally.
 jobs:
   census:
-    runs-on: macos-26
+    runs-on: xcode-27
     timeout-minutes: 45
 
     steps:

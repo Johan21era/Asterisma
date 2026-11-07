@@ -314,7 +314,7 @@ struct ReadingDeskView: View {
         VStack(alignment: .leading, spacing: 14) {
             Label("Your library is empty", systemImage: "books.vertical")
                 .font(.title2.weight(.semibold))
-            Text("Add an EPUB or PDF and it will appear here, ready to resume.")
+            Text("Add an EPUB, PDF, or comic and it will appear here, ready to resume.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
             HStack(spacing: 10) {

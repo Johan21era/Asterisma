@@ -74,7 +74,7 @@ struct CommandPaletteIndex {
             CommandPaletteItem(
                 id: "action.addBook",
                 title: "Add a Book",
-                subtitle: "Action · Import an EPUB or PDF from this Mac",
+                subtitle: "Action · Import an EPUB, PDF, or comic from this Mac",
                 systemImage: "plus",
                 kind: .action,
                 target: .addBook

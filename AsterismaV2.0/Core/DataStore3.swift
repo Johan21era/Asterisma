@@ -70,7 +70,7 @@ enum BookFileRelinkError: LocalizedError {
             return "This book is no longer in your library."
         case let .unsupportedType(ext):
             let suffix = ext.isEmpty ? "That file has no extension." : "Unsupported file type: .\(ext)"
-            return "\(suffix) Choose an EPUB or PDF file."
+            return "\(suffix) Choose an EPUB, PDF, or CBZ file, or an image folder."
         case let .formatMismatch(expected, actual):
             return "This book is a \(expected.displayName), but you chose a \(actual.displayName). " +
                 "Choose a \(expected.displayName) file so the reading position stays accurate."
@@ -446,8 +446,21 @@ final class DataStore: ObservableObject {
         }
 
         let ext = url.pathExtension.lowercased()
-        guard let actualType = BookFileType(rawValue: ext) else {
-            throw BookFileRelinkError.unsupportedType(ext)
+        let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
+        let actualType: BookFileType
+        if isDirectory {
+            // An unzipped EPUB package is a directory with META-INF; every
+            // other directory is an image-folder comic.
+            let container = url.appendingPathComponent("META-INF/container.xml")
+            actualType = FileManager.default.fileExists(atPath: container.path) ? .epub : .comic
+        } else {
+            guard let detected = BookFileType(rawValue: ext) else {
+                throw BookFileRelinkError.unsupportedType(ext)
+            }
+            actualType = detected
+        }
+        if book.fileType == .comic, !isDirectory {
+            throw BookFileRelinkError.formatMismatch(expected: book.fileType, actual: actualType)
         }
         guard actualType == book.fileType else {
             throw BookFileRelinkError.formatMismatch(

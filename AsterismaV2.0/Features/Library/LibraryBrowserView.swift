@@ -405,7 +405,7 @@ struct LibraryBrowserView: View {
                 .foregroundStyle(.secondary)
             Text("Your library is empty")
                 .font(.title2.weight(.semibold))
-            Text("Add an EPUB or PDF to start building your reading desk.")
+            Text("Add an EPUB, PDF, or comic to start building your reading desk.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
             HStack(spacing: 10) {

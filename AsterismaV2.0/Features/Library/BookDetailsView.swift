@@ -77,6 +77,36 @@ struct BookDetailsView: View {
                     LabeledContent("Progress", value: "\(book.currentPage + 1) of \(book.totalPages) pages")
                 }
 
+                if let comic = book.comicInfo {
+                    Section("Comic Metadata") {
+                        if let seriesLabel = comic.seriesLabel {
+                            LabeledContent("Series", value: seriesLabel)
+                        }
+                        if let publisher = comic.publisher {
+                            LabeledContent("Publisher", value: publisher)
+                        }
+                        if let language = comic.languageISO {
+                            LabeledContent("Language", value: language.uppercased())
+                        }
+                        LabeledContent(
+                            "Reading Direction",
+                            value: book.resolvedComicReadingMode.displayName)
+                        if let summary = comic.summary {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Summary")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                Text(summary)
+                                    .font(.callout)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+                        Text("Read from ComicInfo.xml in this comic's container.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
                 Section("Source File") {
                     LabeledContent("File") {
                         Text(book.fileURL.lastPathComponent)

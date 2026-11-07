@@ -479,7 +479,8 @@ struct EPUBReaderScreen: View {
                     || showingChapterList
                     || showingInfo
                     || showingAppearance
-                    || showingMirageAnalysis {
+                    || showingMirageAnalysis
+                    || showingMirageGraph {
                     continue
                 }
                 guard readerControlsVisible else { return }
@@ -525,6 +526,14 @@ struct EPUBReaderScreen: View {
                 .accessibilityLabel("Speed read this chapter")
                 .disabled(package == nil)
             }
+
+            Button {
+                showingMirageGraph = true
+            } label: {
+                Image(systemName: "circle.hexagongrid")
+            }
+            .help("Mirage graph for this chapter")
+            .accessibilityLabel("Mirage graph for this chapter")
 
             Button {
                 showingAppearance = true
@@ -1101,6 +1110,13 @@ struct EPUBReaderScreen: View {
         .sheet(isPresented: $showingMirageAnalysis) {
             MirageAnalysisSheet(book: book)
         }
+        // ADR-7 amendment 1: explicit graph summon from the reader controls.
+        .sheet(isPresented: $showingMirageGraph) {
+            MirageGraphSheet(
+                book: book,
+                chapterIndex: currentChapterIndex,
+                chapterTitle: chapterTitle(at: currentChapterIndex))
+        }
         .background(KeyNavigationConfigurator(isEnabled: true, onCommand: handleReaderKey))
         .overlay(alignment: .topLeading) {
             if readerControlsVisible {
@@ -1233,6 +1249,7 @@ struct EPUBReaderScreen: View {
     }
 
     @State private var showingMirageAnalysis = false
+    @State private var showingMirageGraph = false
 
     private var metadataSection: some View {
         VStack(alignment: .leading, spacing: 12) {

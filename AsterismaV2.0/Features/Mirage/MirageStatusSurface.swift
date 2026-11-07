@@ -15,8 +15,10 @@ import Foundation
 //   • the detail-disabled note (ADR-7 Decision 1) — the spoiler-sensitive
 //     surfaces stay off until a countersigned calibration amendment.
 //
-// The ONLY new wire calls are read-only `books_list`. No `projection`, no
-// `search`, nothing state-ful: `MirageDetailQuery` refuses them upstream.
+// The status surface itself makes only read-only `books_list` calls. The
+// separately amended graph surface uses the chapter-boundary projection; no
+// `search`, no mutations. `MirageDetailQuery` still refuses every other detail
+// request.
 
 /// One book's inventory row, decoded verbatim from the engine's `books_list`
 /// export (MirageV1.0 `api/service.py:505-554`). Required keys are strict — a
@@ -105,8 +107,9 @@ nonisolated enum MirageStatusCopy {
     /// The detail-disabled note — the one thing PR-6 never hides (ADR-7
     /// Decision 1: the gap is ledgered, not hidden).
     static let detailDisabledNote =
-        "Analysis detail (claims, evidence, reading graphs) is disabled in RT for now — "
-        + "Mirage's stored analysis stays safe on this Mac; this status only reports it. (ADR-7)"
+        "Claim, evidence, and entity detail remain disabled in RT for now — "
+        + "the chapter-boundary graph is available from the reader's graph button. "
+        + "Mirage's stored analysis stays safe on this Mac; this status only reports it. (ADR-7 amendment 1)"
 
     /// The A.7 transduction table, rendered read-only in RT's own words.
     static func readStateLine(

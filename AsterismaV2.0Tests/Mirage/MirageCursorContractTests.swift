@@ -2,16 +2,17 @@ import Foundation
 import Testing
 @testable import AsterismaV2_0
 
-// ADR-7 (countersigned 2026-10-18) — cursor contract pins: the gate refuses
-// EVERY cursor under the no-conversion doctrine, the edition-identity
-// requirement comes first, and the three typed failures carry their pinned
-// S9-ES-5 code names. Pure value-level: no transport, no processes.
+// ADR-7 (countersigned 2026-10-18; amendment 1 countersigned 2026-11-07) —
+// cursor contract pins: estimates, page coordinates, and raw unit indexes are
+// still refused; the amendment accepts exactly one provenance, a boundary
+// cursor whose edition matches the mapped edition. Pure value-level: no
+// transport, no processes.
 
-@Suite("Mirage Cursor Contract (PR-6)", .serialized)
+@Suite("Mirage Cursor Contract (PR-6 + amendment 1)", .serialized)
 struct MirageCursorContractTests {
-    // ---- ADR-7 Decision 1 + Annex A.2: every cursor is refused today --------
+    // ---- ADR-7 Decision 1 + Annex A.2: unverified cursors are refused ------
 
-    @Test func everyOfferedCursorIsUnverifiedUnderTheDoctrine() throws {
+    @Test func everyUnverifiedCursorIsRefused() throws {
         let edition = "edition_0123456789abcdef"
         let offered: [MirageCursor] = [
             .estimated(fraction: 0.42, maxUnitIndex: 311),
@@ -42,18 +43,65 @@ struct MirageCursorContractTests {
     @Test func noMappedEditionMeansNoCursorAtAll() {
         for cursor in MirageCursor.allTestShapes {
             #expect(throws: MirageCursorGateError.missingCursor(
-                reason: "no active Mirage identity mapping for this book (ADR-7 Annex A.3)")
-            ) {
+                reason: "no active Mirage identity mapping for this book (ADR-7 Annex A.3)"))
+            {
                 _ = try MirageCursorGate.validatedDisclosureUnits(
                     for: cursor, mappedEditionID: nil)
             }
             #expect(throws: MirageCursorGateError.missingCursor(
-                reason: "no active Mirage identity mapping for this book (ADR-7 Annex A.3)")
-            ) {
+                reason: "no active Mirage identity mapping for this book (ADR-7 Annex A.3)"))
+            {
                 _ = try MirageCursorGate.validatedDisclosureUnits(
                     for: cursor, mappedEditionID: "")
             }
         }
+    }
+
+    // ---- Amendment 1: exactly one verified provenance ----------------------
+
+    @Test func verifiedBoundaryIsAcceptedOnlyForItsMappedEdition() throws {
+        let edition = "edition_0123456789abcdef"
+        let cursor = try #require(MirageChapterBoundaryCursor(
+            editionID: edition,
+            rtChapterIndex: 2,
+            previousChapterIndex: 2,
+            cursorUnit: 23,
+            previousChapterUnitCount: 12))
+
+        #expect(try MirageCursorGate.validatedDisclosureUnits(
+            for: .chapterBoundary(cursor), mappedEditionID: edition) == 23)
+
+        #expect(throws: MirageCursorGateError.unverifiedCursor(
+            reason: "chapter-boundary cursor belongs to \(edition), not edition_other")
+        ) {
+            _ = try MirageCursorGate.validatedDisclosureUnits(
+                for: .chapterBoundary(cursor), mappedEditionID: "edition_other")
+        }
+
+        #expect(throws: MirageCursorGateError.missingCursor(
+            reason: "no active Mirage identity mapping for this book (ADR-7 Annex A.3)")
+        ) {
+            _ = try MirageCursorGate.validatedDisclosureUnits(
+                for: .chapterBoundary(cursor), mappedEditionID: nil)
+        }
+    }
+
+    @Test func boundaryCursorRejectsImpossibleShapes() {
+        #expect(MirageChapterBoundaryCursor(
+            editionID: "", rtChapterIndex: 1, previousChapterIndex: 1,
+            cursorUnit: 0, previousChapterUnitCount: 1) == nil)
+        #expect(MirageChapterBoundaryCursor(
+            editionID: "e", rtChapterIndex: 0, previousChapterIndex: 0,
+            cursorUnit: 0, previousChapterUnitCount: 1) == nil)
+        #expect(MirageChapterBoundaryCursor(
+            editionID: "e", rtChapterIndex: 2, previousChapterIndex: 1,
+            cursorUnit: 0, previousChapterUnitCount: 1) == nil)
+        #expect(MirageChapterBoundaryCursor(
+            editionID: "e", rtChapterIndex: 1, previousChapterIndex: 1,
+            cursorUnit: -1, previousChapterUnitCount: 1) == nil)
+        #expect(MirageChapterBoundaryCursor(
+            editionID: "e", rtChapterIndex: 1, previousChapterIndex: 1,
+            cursorUnit: 0, previousChapterUnitCount: 0) == nil)
     }
 
     // ---- Pinned S9-ES-5 failure codes ---------------------------------------

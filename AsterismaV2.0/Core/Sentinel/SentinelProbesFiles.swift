@@ -319,6 +319,9 @@ nonisolated struct FILE009FileTypeMismatch: SentinelProbeV2 {
 
     func run(snapshot: SentinelSnapshot, environment: SentinelEnvironment) async throws -> [RawFinding] {
         snapshot.books.compactMap { book in
+            // Image-folder comics are containers, not extension-typed files:
+            // a folder called "Webtoon.v2" is still a valid comic.
+            guard book.fileType != .comic else { return nil }
             let ext = book.fileURL.pathExtension.lowercased()
             let expected = book.fileType.rawValue.lowercased()
             guard !ext.isEmpty, ext != expected else { return nil }

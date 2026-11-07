@@ -8,7 +8,8 @@ import Foundation
 // Wire shape: one compact JSON value per LF-terminated line; UTF-8, no BOM.
 
 /// Protocol actions accepted by the Mirage engine's `run_command` dispatcher
-/// (28 documented endpoints; the bare "import" alias exists engine-side but is
+/// (28 documented endpoints, plus the ADR-7 amendment-1 `edition_chapters`
+/// read-only extension; the bare "import" alias exists engine-side but is
 /// intentionally not represented — RT always sends the canonical `import_epub`).
 nonisolated enum MirageWireAction: String, CaseIterable, Sendable, Encodable {
     case health = "health"
@@ -27,6 +28,10 @@ nonisolated enum MirageWireAction: String, CaseIterable, Sendable, Encodable {
     case edgeDetail = "edge_detail"
     case history = "history"
     case booksList = "books_list"
+    /// ADR-7 amendment 1: read-only chapter-boundary inventory. Not present in
+    /// the pinned 28-action engine build; the engine owner must add it before
+    /// the graph can go live.
+    case editionChapters = "edition_chapters"
     case editionRemove = "edition_remove"
     case bookRemove = "book_remove"
     case searchEligible = "search_eligible"

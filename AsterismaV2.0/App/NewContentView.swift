@@ -443,10 +443,13 @@ struct ContentView: View {
             .navigationDestination(item: $readerBookID) { id in
                 if let book = dataStore.book(id: id) {
                     Group {
-                        if book.fileType == .pdf {
+                        switch book.fileType {
+                        case .pdf:
                             PDFReaderScreen(book: book, coordinator: sessionCoordinator)
-                        } else {
+                        case .epub:
                             EPUBReaderScreen(book: book, coordinator: sessionCoordinator)
+                        case .cbz, .comic:
+                            ComicReaderScreen(book: book, coordinator: sessionCoordinator)
                         }
                     }
                     // The readers close themselves with @Environment(\.dismiss).

@@ -71,13 +71,13 @@
     {
       "id": "ci-runner",
       "question": "Which GitHub Actions runner image runs the census?",
-      "answer": "macos-26",
+      "answer": "xcode-27",
       "path": ".github/workflows/census.yml"
     },
     {
       "id": "ci-xcode",
       "question": "Which Xcode version does CI use?",
-      "answer": "Xcode 26\\.6",
+      "answer": "Xcode 27\\.2",
       "path": ".github/workflows/census.yml"
     },
     {
@@ -217,7 +217,7 @@
     {
       "id": "ci",
       "label": "CI runner",
-      "answer": "macos-26",
+      "answer": "xcode-27",
       "canonical": [".github/workflows/census.yml"]
     },
     {
