@@ -1127,3 +1127,14 @@ audit.
 | 2026-11-07 | `docs/registers/05-doc-audit.md` (self-digest SKIPPED, line count SKIPPED) | N/A | N/A | SKIPPED | Append-only row: a digest recorded here cannot include the row that records it. A separate person did not review every sentence. |
 
 **Post-audit gate receipt.** `python3 scripts/audit-markdown.py` over the four edited files above plus this ledger exits 0 with no FAIL lines; `./scripts/verify-sentinel-surface.sh` exit 0; `python3 scripts/comprehension-bench.py --validate-only` exit 0; `git diff --check` exit 0. The unit census was run before this documentation edit at the same code boundary: exit 0, **557 tests / 548 passed / 9 skipped / 0 failed** (546 Swift Testing tests in 105 suites, `rt-census-20261107-002415.xcresult`). No live reader run, no owner visual pass, and no live-library migration were performed; the EPUB renderer and PDF drawing are compiled and reviewed only.
+
+
+### G1 owner script — 2026-11-07
+
+| Date | File (+ SHA-256, lines) | A1…E2 scores | Weighted | Verdict | Evidence / SKIPPED reason |
+|---|---|---|---|---|---|
+| 2026-11-07 | `docs/audits/2026-11-07-g1-owner-script.md` (`a00c025c8d1712d65ef8f9614bc3f1ef0b764f258993e4b77b725848b1ec525f`, 76 lines) | 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · N/A | 100 | PASS | Ten numbered steps with the evidence each requires, an explicit not-executed status, named failure signatures the unit tests cannot see, and the build's known limits (Highlight API dependency, PDF staleness drawing nothing, no keyboard/VoiceOver script yet). No run is claimed. `audit-markdown.py` exit 0. E2 N/A. |
+| 2026-11-07 | `docs/roadmap/07-master-progression.md` (`ebd1e370e75a4e6a0ea250f31d7e173b654c4161e7b71b25ea97d0fc19885114`, 1352 lines) | 95 · 100 · 80 · 95 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · N/A | 97.4 | PASS | G1 checklist now ticks only the focused-test line, cites the census run `42342871417` for the green census, and leaves the owner-script line unchecked with a pointer to the written-but-unrun script. A3 80: earlier command examples in the plan are illustrative. E2 N/A. |
+| 2026-11-07 | `docs/registers/05-doc-audit.md` (self-digest SKIPPED, line count SKIPPED) | N/A | N/A | SKIPPED | Append-only row: a digest recorded here cannot include the row that records it. A separate person did not review every sentence. |
+
+**Post-audit gate receipt.** `python3 scripts/audit-markdown.py` over the two files above plus this ledger exits 0 with no FAIL lines; `./scripts/verify-sentinel-surface.sh` exit 0; `python3 scripts/comprehension-bench.py --validate-only` exit 0; `git diff --check` exit 0. CI run `42342871417` on `88506ae` completed **success**; the census it ran is the 557 / 548 / 9 / 0 result. No live reader pass exists, so G1 remains open on its owner-script line.

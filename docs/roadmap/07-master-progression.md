@@ -558,8 +558,11 @@ exists; the EPUB renderer and PDF drawing are compiled and reviewed only.
 - [ ] Restore after changing EPUB font size and PDF layout; no drift or duplicate.
 - [ ] Note editor saves; quote copy produces the selected text plus page/chapter.
 - [ ] 50 create/delete cycles produce no orphaned rows in the store.
-- [ ] Focused tests for schema, serialization, and anchor restore pass.
-- [ ] Full census green; owner 10-step script recorded.
+- [x] Focused tests for schema, serialization, and anchor restore pass: 29
+      tests in 3 suites, exit 0, on the WP-1.4 code.
+- [ ] Full census is green (557 / 548 / 9 / 0, run `42342871417`), but the owner
+      10-step script is **written and not run**:
+      `docs/audits/2026-11-07-g1-owner-script.md`. G1 cannot close on tests alone.
 
 **Exit criteria.** G1 passes; the annotation schema is frozen for P7 and P12;
 no reader regression in the existing appearance tests.
