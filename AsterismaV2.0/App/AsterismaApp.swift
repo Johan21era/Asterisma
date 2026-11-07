@@ -31,7 +31,7 @@ struct AsterismaApp: App {
     @StateObject private var coordinator: SessionCoordinator
     @StateObject private var goalVM = GoalProgressViewModel()
     @StateObject private var eventRouter = SessionEventRouter()
-    @StateObject private var behaviorKit = BehaviorContextAccessKit()
+    @StateObject private var behaviorKit: BehaviorContextAccessKit
     @StateObject private var contextEngine = BehaviorContextEngine()
 
     @Environment(\.scenePhase) private var scenePhase
@@ -68,6 +68,8 @@ struct AsterismaApp: App {
         let store = DataStore(storageEngine: .sqlite)
         _dataStore = StateObject(wrappedValue: store)
         _coordinator = StateObject(wrappedValue: SessionCoordinator(dataStore: store))
+        _behaviorKit = StateObject(wrappedValue: BehaviorContextAccessKit(
+            database: store.behaviorEvidenceDatabase))
     }
 
     // MARK: - Scene

@@ -128,6 +128,19 @@ struct BookEstimationResult {
 enum EstimationEngine {
     // MARK: Public API
 
+    /// E8 — the one pace every estimate surface uses.
+    ///
+    /// The measured per-book pace wins; the reader's cross-book pace is the
+    /// only fallback. Difficulty is deliberately absent: it labels content,
+    /// it does not re-scale a measured pace. Before E8, `AnalyticsEngine`
+    /// multiplied this same pace by `difficultyMultiplier`, so the estimate
+    /// screen and the prediction helpers disagreed by up to 1.77×.
+    static func effectiveSecondsPerPage(for book: Book, allBooks: [Book]) -> Double {
+        hasPersonalSpeed(for: book)
+            ? AnalyticsEngine.readingSpeed(for: book)
+            : AnalyticsEngine.crossBookReadingSpeed(allBooks: allBooks)
+    }
+
     static func estimate(for book: Book, allBooks: [Book]) -> BookEstimationResult {
         let baseSpeed = AnalyticsEngine.readingSpeed(for: book)
 
@@ -142,16 +155,15 @@ enum EstimationEngine {
         let crossSpeed = AnalyticsEngine.crossBookReadingSpeed(allBooks: allBooks)
 
         let hasPersonalSpeed = hasPersonalSpeed(for: book)
+        let effectiveSpeed = effectiveSecondsPerPage(for: book, allBooks: allBooks)
 
         let speedModel = buildSpeedModel(
             base: baseSpeed,
             genre: genreSpeed,
             trendMultiplier: trendMultiplier,
             cross: crossSpeed,
-            hasPersonalSpeed: hasPersonalSpeed
+            effective: effectiveSpeed
         )
-
-        let effectiveSpeed = speedModel.effectiveSpeed
 
         let remainingPages = max(0, book.totalPages - 1 - book.currentPage)
 
@@ -240,9 +252,8 @@ enum EstimationEngine {
         genre: Double,
         trendMultiplier: Double,
         cross: Double,
-        hasPersonalSpeed: Bool
+        effective: Double
     ) -> SpeedModel {
-        let effective = hasPersonalSpeed ? base : cross
         let volatility = computeVolatility(base: base, cross: cross)
 
         return SpeedModel(
@@ -392,9 +403,7 @@ extension EstimationEngine {
     }
 
     private static func resolveEffectiveSpeed(book: Book, allBooks: [Book]) -> Double {
-        hasPersonalSpeed(for: book)
-            ? AnalyticsEngine.readingSpeed(for: book)
-            : AnalyticsEngine.crossBookReadingSpeed(allBooks: allBooks)
+        effectiveSecondsPerPage(for: book, allBooks: allBooks)
     }
 }
 

@@ -68,31 +68,26 @@ enum DifficultyAnalyzer {
 /// count with no word estimate at all. That made a 300-page EPUB and a
 /// 300-page PDF incomparable quantities. This model is the single conversion
 /// both paths use, and it is no longer dead code.
+///
+/// E8 separates length from difficulty. Difficulty is stored as metadata and
+/// drives the label; it is not a page-length multiplier. The old conversion
+/// multiplied words by `difficultyMultiplier` before dividing by 250, so the
+/// same text could acquire pages it could not physically have.
 enum PageEstimationModel {
     /// Words per page at ordinary prose density.
     static let wordsPerPage: Double = 250
 
     /// Canonical conversion from a whole-book word count.
-    static func estimatePages(
-        wordCount: Int,
-        difficultyMultiplier: Double = 1.0
-    ) -> (pages: Int, confidence: Double) {
+    static func estimatePages(wordCount: Int) -> (pages: Int, confidence: Double) {
         let words = max(0, wordCount)
-        let adjusted = Double(words) * max(0.1, difficultyMultiplier)
-        let pages = max(1, Int((adjusted / wordsPerPage).rounded(.up)))
+        let pages = max(1, Int((Double(words) / wordsPerPage).rounded(.up)))
         let confidence = min(1.0, Double(words) / 20_000.0)
         return (pages, confidence)
     }
 
     /// Sample-text entry point, kept for callers that only have an excerpt.
     /// Delegates to the same conversion so two page estimators cannot drift.
-    static func estimatePages(
-        from text: String,
-        difficultyMultiplier: Double = 1.0
-    ) -> (pages: Int, confidence: Double) {
-        estimatePages(
-            wordCount: text.split { $0.isWhitespace }.count,
-            difficultyMultiplier: difficultyMultiplier
-        )
+    static func estimatePages(from text: String) -> (pages: Int, confidence: Double) {
+        estimatePages(wordCount: text.split { $0.isWhitespace }.count)
     }
 }

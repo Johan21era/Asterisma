@@ -73,8 +73,7 @@ struct RealBookAudit {
         for input in inputs {
             let profile = DifficultyAnalyzer.analyze(text: input.sample)
             let pageEstimate = PageEstimationModel.estimatePages(
-                wordCount: input.words,
-                difficultyMultiplier: profile.difficultyMultiplier
+                wordCount: input.words
             )
             var row: [String: Any] = [
                 "title": input.title,

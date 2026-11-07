@@ -292,11 +292,12 @@ enum BookImporter {
         let sampleText = await extractSampleText(spineItems: metadata.spineItems, maxChars: 5000)
         let difficulty = DifficultyAnalyzer.analyze(text: sampleText)
 
-        // E7: difficulty now participates in the page conversion instead of
-        // being computed and discarded.
+        // E7 / E8: page count is a function of words at the canonical density.
+        // Difficulty is stored on the book as metadata; it is not a page-length
+        // multiplier. The old conversion multiplied words by the difficulty
+        // multiplier before dividing by wordsPerPage.
         let estimatedPages = PageEstimationModel.estimatePages(
-            wordCount: wordCount,
-            difficultyMultiplier: difficulty.difficultyMultiplier
+            wordCount: wordCount
         ).pages
         let chapters = buildChapters(from: metadata, estimatedTotalPages: estimatedPages)
 

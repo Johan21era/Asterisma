@@ -2,6 +2,7 @@
 import AppKit
 import Combine
 import Foundation
+import GRDB
 import IOKit
 import IOKit.pwr_mgt
 
@@ -471,6 +472,7 @@ public final class BehaviorContextAccessKit: ObservableObject {
     /// the unified SQLite behavior tables can replace it later without changing
     /// the observation API.
     private let archiveURL: URL?
+    private let database: LibraryDatabase?
 
     struct BehaviorEvidenceArchive: Codable {
         var version: Int = 1
@@ -483,9 +485,10 @@ public final class BehaviorContextAccessKit: ObservableObject {
 
     // MARK: Initialization
 
-    public init(archiveURL: URL? = nil) {
+    init(archiveURL: URL? = nil, database: LibraryDatabase? = nil) {
         self.archiveURL = archiveURL ?? Self.defaultArchiveURL()
-        loadArchive()
+        self.database = database
+        loadEvidence()
     }
 
     private static func defaultArchiveURL() -> URL? {
@@ -500,13 +503,12 @@ public final class BehaviorContextAccessKit: ObservableObject {
         return dir.appendingPathComponent("behavior-evidence.json")
     }
 
-    private func loadArchive() {
-        guard let archiveURL,
-              let data = try? Data(contentsOf: archiveURL) else { return }
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        guard let archive = try? decoder.decode(
-            BehaviorEvidenceArchive.self, from: data) else { return }
+    private var hasEvidence: Bool {
+        !events.isEmpty || !applicationSessions.isEmpty ||
+            !inactivityRecords.isEmpty || !deviceStateEvents.isEmpty
+    }
+
+    private func apply(_ archive: BehaviorEvidenceArchive) {
         events = archive.events
         applicationSessions = archive.applicationSessions
         inactivityRecords = archive.inactivityRecords
@@ -517,14 +519,64 @@ public final class BehaviorContextAccessKit: ObservableObject {
         BehavioralRetentionController.apply(policy: retentionPolicy, to: &deviceStateEvents)
     }
 
-    /// Flush evidence to disk. Called on monitor stop (app background/quit).
+    /// G6/E8: SQLite is the live store; the JSON archive is the import seed and
+    /// a compatibility mirror for older builds and Sentinel's file probe.
+    private func loadEvidence() {
+        if let database {
+            do {
+                let stored = try database.loadBehaviorEvidence()
+                if stored.events.isEmpty, stored.applicationSessions.isEmpty,
+                   stored.inactivityRecords.isEmpty, stored.deviceStateEvents.isEmpty {
+                    loadArchive()
+                    if hasEvidence { saveArchive() }
+                } else {
+                    apply(BehaviorEvidenceArchive(
+                        events: stored.events,
+                        applicationSessions: stored.applicationSessions,
+                        inactivityRecords: stored.inactivityRecords,
+                        deviceStateEvents: stored.deviceStateEvents))
+                }
+                return
+            } catch {
+                print("[BehaviorContextAccessKit] SQLite evidence load failed: \(error)")
+            }
+        }
+        loadArchive()
+    }
+
+    private func loadArchive() {
+        guard let archiveURL,
+              let data = try? Data(contentsOf: archiveURL) else { return }
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        guard let archive = try? decoder.decode(
+            BehaviorEvidenceArchive.self, from: data) else { return }
+        apply(archive)
+    }
+
+    /// Flush evidence. Called on monitor stop (app background/quit).
     public func saveArchive() {
-        guard let archiveURL else { return }
         let archive = BehaviorEvidenceArchive(
             events: events,
             applicationSessions: applicationSessions,
             inactivityRecords: inactivityRecords,
             deviceStateEvents: deviceStateEvents)
+
+        if let database {
+            do {
+                try database.replaceBehaviorEvidence(
+                    events: events,
+                    applicationSessions: applicationSessions,
+                    inactivityRecords: inactivityRecords,
+                    deviceStateEvents: deviceStateEvents)
+            } catch {
+                print("[BehaviorContextAccessKit] SQLite evidence save failed: \(error)")
+            }
+        }
+
+        // Keep the JSON mirror current. It is no longer read when SQLite has
+        // rows; it remains the fallback for older builds and Sentinel.
+        guard let archiveURL else { return }
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         encoder.outputFormatting = [.sortedKeys]
@@ -3252,5 +3304,108 @@ public enum BehavioralMetricsGenerator {
             uniqueApplications:
             applications.count
         )
+    }
+}
+
+// MARK: - SQLite behavior evidence
+
+extension LibraryDatabase {
+    func loadBehaviorEvidence() throws -> (
+        events: [BehavioralEvent],
+        applicationSessions: [ApplicationUsageSession],
+        inactivityRecords: [InactivityRecord],
+        deviceStateEvents: [DeviceStateEvent]
+    ) {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try pool.read { db in
+            let events = try String.fetchAll(
+                db, sql: "SELECT payload_json FROM behavior_events ORDER BY timestamp"
+            ).map { try decoder.decode(BehavioralEvent.self, from: Data($0.utf8)) }
+            let sessions = try String.fetchAll(
+                db, sql: "SELECT payload_json FROM application_sessions ORDER BY start_time"
+            ).map { try decoder.decode(ApplicationUsageSession.self, from: Data($0.utf8)) }
+            let inactivity = try String.fetchAll(
+                db, sql: "SELECT payload_json FROM inactivity_records ORDER BY start_time"
+            ).map { try decoder.decode(InactivityRecord.self, from: Data($0.utf8)) }
+            let device = try String.fetchAll(
+                db, sql: "SELECT payload_json FROM device_state_events ORDER BY timestamp"
+            ).map { try decoder.decode(DeviceStateEvent.self, from: Data($0.utf8)) }
+            return (events, sessions, inactivity, device)
+        }
+    }
+
+    func replaceBehaviorEvidence(
+        events: [BehavioralEvent],
+        applicationSessions: [ApplicationUsageSession],
+        inactivityRecords: [InactivityRecord],
+        deviceStateEvents: [DeviceStateEvent]
+    ) throws {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        encoder.outputFormatting = [.sortedKeys]
+        try pool.write { db in
+            try db.execute(sql: "DELETE FROM behavior_events")
+            try db.execute(sql: "DELETE FROM application_sessions")
+            try db.execute(sql: "DELETE FROM inactivity_records")
+            try db.execute(sql: "DELETE FROM device_state_events")
+
+            for event in events {
+                let payload = try encoder.encode(event)
+                try db.execute(
+                    sql: "INSERT INTO behavior_events (id, timestamp, type, payload_json) VALUES (?, ?, ?, ?)",
+                    arguments: [
+                        event.id.uuidString,
+                        event.timestamp.timeIntervalSince1970,
+                        event.eventType.rawValue,
+                        String(decoding: payload, as: UTF8.self),
+                    ])
+            }
+            for session in applicationSessions {
+                let payload = try encoder.encode(session)
+                try db.execute(
+                    sql: "INSERT INTO application_sessions (id, start_time, end_time, payload_json) VALUES (?, ?, ?, ?)",
+                    arguments: [
+                        session.id.uuidString,
+                        session.startTime.timeIntervalSince1970,
+                        session.endTime?.timeIntervalSince1970,
+                        String(decoding: payload, as: UTF8.self),
+                    ])
+            }
+            for record in inactivityRecords {
+                let payload = try encoder.encode(record)
+                try db.execute(
+                    sql: "INSERT INTO inactivity_records (id, start_time, end_time, payload_json) VALUES (?, ?, ?, ?)",
+                    arguments: [
+                        record.id.uuidString,
+                        record.startTime.timeIntervalSince1970,
+                        record.endTime?.timeIntervalSince1970,
+                        String(decoding: payload, as: UTF8.self),
+                    ])
+            }
+            for event in deviceStateEvents {
+                let payload = try encoder.encode(event)
+                try db.execute(
+                    sql: "INSERT INTO device_state_events (id, timestamp, payload_json) VALUES (?, ?, ?)",
+                    arguments: [
+                        event.id.uuidString,
+                        event.timestamp.timeIntervalSince1970,
+                        String(decoding: payload, as: UTF8.self),
+                    ])
+            }
+        }
+    }
+
+    func behaviorEvidenceCounts() throws -> (
+        events: Int, sessions: Int, inactivity: Int, device: Int
+    ) {
+        try pool.read { db in
+            (
+                try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM behavior_events") ?? 0,
+                try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM application_sessions") ?? 0,
+                try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM inactivity_records") ?? 0,
+                try Int.fetchOne(db, sql: "SELECT COUNT(*) FROM device_state_events") ?? 0
+            )
+        }
     }
 }

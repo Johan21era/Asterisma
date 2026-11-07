@@ -97,6 +97,9 @@ final class DataStore: ObservableObject {
     private var databaseURL: URL?
     private var recoveryFreezeToken: LibraryFreezeToken?
     var isFrozenForRecovery: Bool { recoveryFreezeToken != nil }
+
+    /// G6/E8: the canonical SQLite store for behavior evidence. Nil in JSON mode.
+    var behaviorEvidenceDatabase: LibraryDatabase? { database }
     /// Set when the SQLite library could not be fully decoded. Ordinary writes
     /// stay paused so a partial in-memory library can never delete or overwrite
     /// records that still exist in the database.

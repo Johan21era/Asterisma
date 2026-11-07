@@ -45,6 +45,9 @@ enum AnalyticsEngine {
         return AnalyticsConstants.defaultSecondsPerPage
     }
 
+    /// Diagnostic only. The canonical estimate path is
+    /// `EstimationEngine.effectiveSecondsPerPage`; it never re-applies the
+    /// difficulty multiplier to a measured pace.
     static func adjustedReadingSpeed(for book: Book) -> Double {
         let base = readingSpeed(for: book)
         let multiplier = book.difficultyProfile?.difficultyMultiplier ?? 1.0
@@ -56,19 +59,7 @@ enum AnalyticsEngine {
     /// reader's average speed across all books, difficulty-adjusted for the target book.
     /// This prevents new books from always showing the default 120s/page estimate.
     static func effectiveReadingSpeed(for book: Book, allBooks: [Book]) -> Double {
-        let timings = book.sessions
-            .flatMap(\.pageTimes)
-            .filter { $0.duration > PageDurationPolicy.minimumSeconds }
-
-        // If enough per-book data, use it directly.
-        if timings.count >= AnalyticsConstants.minimumTimingsForPersonalSpeed {
-            return adjustedReadingSpeed(for: book)
-        }
-
-        // Otherwise: use cross-book average and apply this book's difficulty multiplier.
-        let crossBook = crossBookReadingSpeed(allBooks: allBooks)
-        let multiplier = book.difficultyProfile?.difficultyMultiplier ?? 1.0
-        return crossBook * multiplier
+        EstimationEngine.effectiveSecondsPerPage(for: book, allBooks: allBooks)
     }
 
     /// The reader's reading speed across books.
@@ -100,7 +91,8 @@ enum AnalyticsEngine {
     // MARK: - Predictions
 
     static func predictions(for book: Book) -> ReadingPrediction {
-        let secsPerPage = adjustedReadingSpeed(for: book)
+        let secsPerPage = EstimationEngine.effectiveSecondsPerPage(
+            for: book, allBooks: [book])
 
         // B6 FIX: currentPage is 0-based; last valid index is (totalPages - 1).
         let pagesRemaining = max(0, book.totalPages - 1 - book.currentPage)
@@ -560,7 +552,8 @@ struct ChapterPredictionAnalytics {
 
 extension AnalyticsEngine {
     static func chapterPredictions(for book: Book) -> [ChapterPredictionAnalytics] {
-        let secsPerPage = adjustedReadingSpeed(for: book)
+        let secsPerPage = EstimationEngine.effectiveSecondsPerPage(
+            for: book, allBooks: [book])
 
         return book.chapters.map { chapter in
             let pages = chapter.pageCount
@@ -592,7 +585,8 @@ extension AnalyticsEngine {
     /// Original used totalPages - currentPage; correct is totalPages - 1 - currentPage
     /// because currentPage is 0-based and totalPages-1 is the last valid index.
     static func bookForecast(for book: Book) -> BookForecastAnalytics {
-        let secsPerPage = adjustedReadingSpeed(for: book)
+        let secsPerPage = EstimationEngine.effectiveSecondsPerPage(
+            for: book, allBooks: [book])
 
         // FIX: Was `totalPages - currentPage`; now matches predictions() B6 formula.
         let remaining = max(0, book.totalPages - 1 - book.currentPage)
@@ -728,13 +722,6 @@ extension AnalyticsEngine {
 
 // MARK: - Difficulty Normalization
 
-extension AnalyticsEngine {
-    static func normalizedPages(for book: Book) -> Double {
-        let base = Double(book.totalPages - book.currentPage)
-        let multiplier = book.difficultyProfile?.difficultyMultiplier ?? 1.0
-        return base * multiplier
-    }
-}
 
 // MARK: - Improvement Engine
 
