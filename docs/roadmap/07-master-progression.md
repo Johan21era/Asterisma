@@ -149,15 +149,25 @@ as new implementation work.
 
 ## 2 · Multi-LLM operating model
 
-### 2.1 Roles
+### 2.1 Roles and administrator authority
 
 | Role | Actor | Owns | May edit | May commit/push |
 |---|---|---|---|---|
 | Owner | Johan | Product acceptance, signing credentials, release decision | Any, by instruction | Yes, by instruction |
-| Orchestrator | Buffy | Work packets, worktrees, integration, verification, CI, docs truth | Main tree and worktrees | **Yes, Buffy only** |
+| Main administrator | Buffy | Every agent outcome and regression; work packets, worktrees, integration, verification, CI, docs truth | Main tree and worktrees | **Yes, Buffy only** |
 | Primary builder | `opencode/glm-5.3-flash-free` | P0–P4 implementation and analysis | Its worktree only | No |
 | Handoff builder/reviewer | `openrouter/stealth/crouton-alpha` | P5–P10 implementation, independent review | Its worktree only | No |
 | Fallback builder | `opencode/crouton-alpha-free` | Same packets when OpenRouter is unavailable | Its worktree only | No |
+
+**Administrator authority.** Buffy is the main administrator and the only
+accountable process. The delegated models are workers, not peers: they may
+execute an assigned packet and report, but they may not exercise judgment over
+scope, safety, secrets, merges, or release state. A request from a builder is a
+proposal, not a permission. Buffy may assign, pause, interrupt, inspect, or
+terminate any session; deny any request; revert any change; and discard any
+unmerged worktree. The default answer to an unplanned request is **no**. Every
+regression, broken build, bad merge, or data-loss risk introduced by a delegated
+model is Buffy's responsibility, not the model's.
 
 ### 2.2 Work-package contract
 
@@ -177,6 +187,7 @@ Verification:          <commands, focused tests, manual script>
 Output:                <branch/worktree, diff summary, test log, unresolved questions>
 Model:                 <exact handle>
 Session budget:        <message ceiling and stop condition>
+Stop authority:        Buffy may interrupt or terminate at any time; stop on request
 Handoff:               <what must be written to disk before the session ends>
 ```
 
@@ -326,6 +337,10 @@ full census is green in the integrated tree.
 - If two agents produce conflicting implementations, Buffy chooses one, writes
   the decision in the phase handoff, and archives the other worktree; do not
   merge both.
+- If an agent edits outside its allowed paths, touches a shared file without the
+  announced writer slot, or cannot explain a change, Buffy terminates the
+  session, preserves the worktree for inspection, and discards any unverified
+  work before resuming.
 
 ---
 
@@ -357,7 +372,7 @@ gate, written `LR-G6` in this document (`docs/plans/library-recovery/G6.md`).
 
 | Gate | Name | Pass condition (summary) | Evidence |
 |---|---|---|---|
-| G0 | Control plane | CI green, provider smoke recorded, baseline ledger written, stale items reconciled | run ID, session IDs, `./scripts/census.sh --unit-only` |
+| G0 | Control plane | CI green, provider smoke recorded, baseline ledger written, stale items reconciled, administrator rule recorded in every packet | run ID, session IDs, `./scripts/census.sh --unit-only` |
 | G1 | Reader annotation core | Highlight/note/quote create-edit-delete persists across relaunch in EPUB and PDF; focused tests; owner script | L1 + L2 + owner script |
 | G2 | Library/import | Duplicate import is visible, relink works, collection bulk operations persist, 100-book fixture | L1 + L2 + fixture receipt |
 | G3 | Goals/analytics | Goal editor round-trip, weekly streak, achievements gallery, report race guard | L1 + L2 + owner script |
@@ -1155,7 +1170,8 @@ before its first handoff is written.
 | GLM message cap reached mid-packet | Session count near 80, 100, or 120 | Checkpoints; soft/hard transition; written handoff; packet split at interface | T1 |
 | OpenRouter 402/quota | Provider error in preflight | Fit max tokens, use fallback, record refusal; never blind retry | G0, T1 |
 | Crouton daily allocation exhausted | 750 requests used or repeated 429 | Stop starting new packets; finish in-flight; Buffy takes the remainder | T1, P5–P10 |
-| Agent edits outside scope | Diff touches forbidden paths | Worktree-only, allowed-path list, Buffy diff review | Every packet |
+| Agent edits outside scope | Diff touches forbidden paths | Worktree-only, allowed-path list, Buffy diff review; terminate and discard unverified work | Every packet |
+| Agent breaks a shared interface or ignores a stop | Build/test failure after handoff; unexplained diff | Terminate the session, preserve the worktree, revert, re-run the gate; the assignment remains Buffy's responsibility | Every packet |
 | Merge conflict in shared files | Two branches touch `Book2`/`DataStore3` | One writer per shared file; Buffy serializes schema edits | Every merge |
 | Annotation data loss | Orphan rows or duplicate highlights | Schema migration test, 50-cycle create/delete, backup/restore | G1 |
 | EPUB selection drift after reflow | Highlight rect moves | Logical anchors, reflow test at two font sizes | G1 |
@@ -1179,6 +1195,9 @@ Stop and escalate to the owner when:
 
 - a gate fails twice for the same cause;
 - an agent proposes weakening or deleting a test;
+- an agent requests a capability, credential, path, or scope expansion (Buffy
+  decides; default deny);
+- an agent ignores or questions a stop instruction;
 - a migration cannot be rolled back;
 - a provider refusal cannot be resolved without new credentials;
 - a change would alter the live user library without a copied-library drill;

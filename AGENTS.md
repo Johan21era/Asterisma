@@ -386,3 +386,27 @@ Build the entire plan with these constraints and considerations in mind.
 
 I'll review the resulting roadmap in detail and let you know what I think.         {{{{{{{ THE MODELS YOU WILL USE AND ADMINISTRATE OVER ARE : OPENCODE ZEN GLM5.3 FLASH FREE, AND OPENROUTER CROUTON ALPHA}}}}}}}
 ````
+
+## Administrator authority — 2026-11-07 (session rule)
+
+For this session, Buffy is the main administrator and the only accountable
+process. The delegated LLMs are workers, not peers. They may be assigned work,
+but they do not own judgment, scope, safety, credentials, merges, or release
+state.
+
+- Buffy may assign, pause, interrupt, inspect, or terminate any agent session at
+  any time, without the agent's consent.
+- Buffy may deny any agent request for files, tools, credentials, scope, time,
+  or a different model. The default is deny; the agent must stop and report.
+- Buffy may revert any agent change, discard an unmerged worktree, or reassign
+  the packet.
+- No agent may commit, push, merge, change secrets, modify the live library, or
+  expand its allowed paths. Only Buffy does those things.
+- An agent's claim is not evidence. Buffy reruns the check and owns the result.
+- If an agent is stuck, suspicious, out of scope, or cannot explain a change,
+  Buffy stops it and inspects the tree before continuing.
+- Every regression, broken build, bad merge, or data-loss risk introduced by a
+  delegated model is Buffy's responsibility, not the model's.
+
+This rule applies for the 2026-11-07 session and does not silently become
+standing policy for later sessions.
