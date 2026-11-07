@@ -57,6 +57,13 @@
 |---|---|---|
 | SQLite store: journal mode, GRDB connection that backs the live library, schema, migrations | `AsterismaV2.0/Core/Storage/LibraryDatabase.swift#L34-L45` | `AsterismaV2.0/Core/Storage/LibrarySnapshot.swift` |
 | Library snapshot: table counts struct, key paths | `AsterismaV2.0/Core/Storage/LibrarySnapshot.swift#L48` | `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` |
+| Reading analytics: Phase Zero baseline, confirmed profile-sensitivity defects, next experiments | `docs/audits/13-reading-analytics-phase-zero-2026-10-29.md` | `docs/audits/evidence/reading-analytics-phase-zero-2026-10-29.json` |
+| Synthetic reading-time evaluation: shared books, scenario tests, and limitations | `docs/audits/synthetic-reading-evaluation.md` | `tools/cde/synthetic_eval.py` |
+| Fresh stress-run error root causes: reproduced arithmetic for the candidate tail, cold start, and unlearnable scenarios | `docs/audits/fresh-stress-root-cause-2026-10-30.md` | `docs/audits/fresh-reading-stress-100-2026-10-30.md`, `tools/cde/audit_fresh_tail.py` |
+| Fresh 200-round stress evaluation: fixed baseline vs retired estimator vs rejected candidate, with holdout and demo | `docs/audits/fresh-reading-stress-200-2026-10-30.md#L1` | `docs/audits/evidence/fresh-stress-evidence-archive-2026-10-31.md`, `tools/cde/write_fresh_200_report.py` |
+| Fresh stress evidence archive: manifests, aggregates and compressed summaries for the deleted 100/200-round raw trees | `docs/audits/evidence/fresh-stress-evidence-archive-2026-10-31.md#L1` | `docs/audits/fresh-reading-stress-200-2026-10-30.md`, `tools/cde/archive_fresh_evidence.py` |
+| Real-book testing — **VOID 2026-10-29**: every hand-graded verdict declared void; read for the failure record and the surviving byte evidence only, never as accuracy results | `docs/audits/new-era-testing.md#L1456` | `docs/audits/new-era-testing.md#L3` |
+| Book difficulty engine: what the shipped model actually computes, its measured defects (X1–X13), and the proposed Cognitive Difficulty Engine architecture | `docs/plans/cde/PHASE-1-AUDIT.md#L1` | `scripts/cde-phase1-audit.py` |
 
 ## Build, test, release
 
@@ -64,10 +71,11 @@
 |---|---|---|
 | Run the latest working tree: one stable build-and-launch command | `README.md#L238` | `scripts/run-latest.sh` |
 | Build and test commands: Debug build, test, and census summary | `README.md#L254` | `scripts/census.sh`, `AGENTS.md#L117` |
-| Release receipts: git tag, package SHA-256, last unit census tests/runs record | `docs/registers/04-handoff.md#L91` | `README.md#L7` |
+| Last local unit census tests and runs record | `docs/audits/synthetic-reading-evaluation.md` | `scripts/census.sh` |
+| Release receipts: git tag, package SHA-256, historical unit census record | `docs/registers/04-handoff.md#L91` | `README.md#L7` |
 | CI receipts: last remote census run id, green Sentinel tranche | `docs/registers/04-handoff.md#L85` | `.github/workflows/census.yml` |
 | Clean test session: Erase Library & Data… menu action | `README.md#L316` | `docs/registers/04-handoff.md` |
-| Sentinel v2 tranche CI run id `40758619365` | `docs/registers/04-handoff.md#L85` | `.github/workflows/census.yml` |
+| CI run id verified the Sentinel v2 tranche `40758619365` | `docs/registers/04-handoff.md#L86` | `.github/workflows/census.yml` |
 | CI workflow: GitHub Actions census runs on the runner image, Xcode version, test steps | `.github/workflows/census.yml#L10-L13` | `AGENTS.md` |
 
 ## Knowledge graph
@@ -89,6 +97,22 @@
 | Mirage ADR-13 pins: warm-session serialization, idle teardown, index reconciliation, batch cancel/retry | `AsterismaV2.0Tests/Mirage/MirageEngineServiceTests.swift#L1` | `AsterismaV2.0Tests/Mirage/MirageLibraryIndexTests.swift`, `AsterismaV2.0Tests/Mirage/MirageBatchAnalyzerTests.swift` |
 | Environment pins: condition→visual mapping, override store, forced clock/weather, scrim ordering | `AsterismaV2.0Tests/Environment/EnvironmentWeatherVisualTests.swift#L1` | `AsterismaV2.0/Features/Environment/Weather/WeatherVisual.swift` |
 
+## Difficulty engine (CDE)
+
+| If you need… | Read first | Then |
+|---|---|---|
+| What the difficulty formula is called, and the three names it is **not** (the engine, the legacy analyzer, the number) | `docs/plans/cde/FORMULA.md#L20` | `tools/cde/cde_model.py#L44` |
+| What the new difficulty index computes, exactly: equations, six dimensions, feature definitions, weights | `docs/plans/cde/FORMULA.md#L87` | `tools/cde/cde_model.py#L72` |
+| Why the shipped engine was rebuilt: reproduced defects with receipts | `docs/plans/cde/PHASE-1-AUDIT.md#L136` | `docs/plans/cde/FORMULA.md#L454` |
+| What would prove the index is any good, and the pre-registered pass/fail gate | `docs/plans/cde/PHASE-3-VALIDATION.md#L190` | `docs/plans/cde/PHASE-3-VALIDATION.md#L51` |
+| Measured behaviour: reliability, sampling stability, ablation, weight sensitivity, interval coverage | `docs/plans/cde/FORMULA.md#L370` | `tools/cde/cde_eval.py` |
+| Which books the index scores highest and lowest | `docs/audits/evidence/cde-v0.3-scores-2026-10-29.json` | `docs/plans/cde/FORMULA.md#L454` |
+| External review objections, answered point by point with measured rebuttals | `docs/plans/cde/REVIEW-RESPONSE.md#L56` | `docs/plans/cde/FORMULA.md#L543` |
+| Adversarial measurements: coverage, feature redundancy, aggregation alternatives, split-half | `docs/audits/evidence/cde-critique-2026-10-29.json` | `tools/cde/cde_critique.py` |
+| All 149 packages scored, duplicate identity proved, and what 16 blind grades found | `docs/plans/cde/RETEST-2026-10-29.md` | `docs/audits/evidence/adf-149-sheet-2026-10-29.md` |
+| How to grade ADF against prose without mistaking judgement for ground truth | `docs/plans/cde/GRADING.md` | `tools/cde/cde_grade.py` |
+| Every book's score, band, interval and six dimension percentiles | `docs/audits/evidence/adf-149-scores-2026-10-29.json` | `docs/audits/evidence/adf-149-sheet-2026-10-29.md` |
+
 ## Documentation evidence
 
 | If you need… | Read first | Then |
@@ -96,6 +120,7 @@
 | Markdown truth audit: evidence standard, weighted rubric, verdict rules | `AGENTS.md#L12` | `docs/registers/05-doc-audit.md` |
 | Markdown evidence collector: digests, paths, anchors, commands | `scripts/audit-markdown.py` | `docs/registers/05-doc-audit.md` |
 | Current close-out receipt: environment/weather, Sentinel and console navigation, graph refresh, and truth audit | `docs/registers/04-handoff.md` (2026-10-29 baseline) | `docs/registers/03-fix-log.md` (Stage AI) |
+| CDE build record: what was implemented, what voids the earlier grades, and what is still missing | `docs/registers/03-fix-log.md` (Stages AM–AP) | `docs/plans/cde/FORMULA.md` |
 
 ## How this page is checked
 

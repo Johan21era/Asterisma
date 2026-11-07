@@ -1,0 +1,176 @@
+{
+  "aggregation": [
+    {
+      "max_delta": 0.0483,
+      "scheme": "mean (lambda=0)",
+      "spearman": 0.989,
+      "top10": 9
+    },
+    {
+      "max_delta": 0.0,
+      "scheme": "Q85 / 65-35 (shipped)",
+      "spearman": 1.0,
+      "top10": 10
+    },
+    {
+      "max_delta": 0.01,
+      "scheme": "Q85 / 70-30",
+      "spearman": 0.9993,
+      "top10": 9
+    },
+    {
+      "max_delta": 0.05,
+      "scheme": "Q90 / 65-35",
+      "spearman": 0.9941,
+      "top10": 8
+    },
+    {
+      "max_delta": 0.2217,
+      "scheme": "CVaR90",
+      "spearman": 0.9148,
+      "top10": 4
+    },
+    {
+      "max_delta": 0.255,
+      "scheme": "max (lambda=1)",
+      "spearman": 0.858,
+      "top10": 5
+    }
+  ],
+  "coverage": {
+    "max": 0.822,
+    "median": 0.232,
+    "min": 0.0054,
+    "p10": 0.0657,
+    "p90": 0.6305
+  },
+  "dimension_matrix": {
+    "AA": 1.0,
+    "AB": 0.322,
+    "AG": 0.168,
+    "AH": 0.261,
+    "AI": 0.433,
+    "AK": -0.262,
+    "BA": 0.322,
+    "BB": 1.0,
+    "BG": 0.369,
+    "BH": -0.077,
+    "BI": -0.187,
+    "BK": 0.055,
+    "GA": 0.168,
+    "GB": 0.369,
+    "GG": 1.0,
+    "GH": -0.341,
+    "GI": 0.187,
+    "GK": -0.145,
+    "HA": 0.261,
+    "HB": -0.077,
+    "HG": -0.341,
+    "HH": 1.0,
+    "HI": 0.055,
+    "HK": -0.296,
+    "IA": 0.433,
+    "IB": -0.187,
+    "IG": 0.187,
+    "IH": 0.055,
+    "II": 1.0,
+    "IK": -0.45,
+    "KA": -0.262,
+    "KB": 0.055,
+    "KG": -0.145,
+    "KH": -0.296,
+    "KI": -0.45,
+    "KK": 1.0
+  },
+  "feature_pairs": [
+    {
+      "a": "A_morph",
+      "b": "A_abstract",
+      "r": 0.954
+    },
+    {
+      "a": "B_sentence",
+      "b": "B_clause",
+      "r": 0.951
+    },
+    {
+      "a": "I_content",
+      "b": "I_np",
+      "r": 0.905
+    },
+    {
+      "a": "B_sentence",
+      "b": "B_passive",
+      "r": 0.883
+    },
+    {
+      "a": "B_clause",
+      "b": "B_passive",
+      "r": 0.838
+    },
+    {
+      "a": "B_passive",
+      "b": "G_cooc",
+      "r": 0.698
+    },
+    {
+      "a": "B_sentence",
+      "b": "G_cooc",
+      "r": 0.691
+    },
+    {
+      "a": "K_tagless",
+      "b": "K_speakers",
+      "r": -0.689
+    },
+    {
+      "a": "B_clause",
+      "b": "G_cooc",
+      "r": 0.666
+    },
+    {
+      "a": "G_names",
+      "b": "I_content",
+      "r": 0.578
+    }
+  ],
+  "lambda_sweep": [
+    {
+      "lambda": 0.0,
+      "spearman": 0.989,
+      "top10": 9
+    },
+    {
+      "lambda": 0.15,
+      "spearman": 0.9963,
+      "top10": 8
+    },
+    {
+      "lambda": 0.35,
+      "spearman": 0.9941,
+      "top10": 8
+    },
+    {
+      "lambda": 0.5,
+      "spearman": 0.9904,
+      "top10": 7
+    },
+    {
+      "lambda": 0.75,
+      "spearman": 0.9795,
+      "top10": 8
+    },
+    {
+      "lambda": 1.0,
+      "spearman": 0.9639,
+      "top10": 7
+    }
+  ],
+  "split_half": {
+    "books": 135,
+    "median_abs_diff": 0.055,
+    "median_interval_width": 0.1584,
+    "median_ratio": 0.336,
+    "share_exceeding_width": 0.015
+  }
+}

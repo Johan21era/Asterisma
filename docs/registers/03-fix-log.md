@@ -993,3 +993,681 @@ headless Chromium run is a rendering/console check, not a human design review.
 The two removed directories are intentionally regenerable; the next `graphify
 update` will recreate its AST cache, and a forced refresh recreates a dated
 backup. Remote CI is watched only after the approved push.
+
+## Stage AJ — real-library hand grading completed (2026-10-29)
+
+> **Superseded by Stage AK, later the same day:** every grading result in this
+> stage was declared **VOID** by the owner. The stage is kept as history; its
+> receipts are not results. Reasons and surviving evidence: Stage AK below and
+> `docs/audits/new-era-testing.md` §31.
+
+**Trigger:** the owner directed that the real-book pass be executed to the end
+with **no automated grading**: every engine result read against the prose and
+graded by a human, then a cross-examination against the synthetic pass.
+
+**What changed (documentation and tooling only):**
+
+| Path | Change |
+|---|---|
+| `docs/audits/new-era-testing.md` | Completed: §11–§24 fourteen grading batches, §25 method-consistency audit, §26 complete field, §27 cross-examination, §28 findings F1–F6, §29 limitations, §30 status. Header and §5/§6/§8.5 corrected from "not started" to their executed state, with superseding notes rather than silent rewrites. |
+| `docs/audits/new-era-grades.tsv` | **New.** 135 rows, one per distinct work: pages / difficulty / estimate verdict. The authoritative verdict record. |
+| `scripts/real-book-sample.py` | **New.** Read-only helper that prints metadata, engine row and a mid-document excerpt. It assigns no verdict; it exists so every grade can cite the window that was read. |
+| `docs/INDEX.md` | Row 61 re-pointed to the completed file and its verdict record. |
+
+**Grading receipts:**
+
+| Measure | Result |
+|---|---|
+| Packages inventoried | 149 |
+| Byte-identical duplicates | 14 (SHA-256 over archive bytes / package tree) |
+| Distinct works | **135** |
+| Distinct works hand-graded | **135** — no gaps, verified by index-set comparison |
+| Page counts wrong | 73 / 135 (54%) |
+| Difficulty labels wrong | 58 / 135 (43%); 49 of 53 categorical misses overstate |
+| Estimates pessimistic | 126 / 129 judgeable (98%) |
+| Estimates plausible | 3, all children's books where two errors cancel |
+
+**Checks (local CI mirror, this stage):**
+
+| Command | Result |
+|---|---|
+| `./scripts/verify-sentinel-surface.sh` | `sentinel-surface: OK — 15 tables, 8 defaults keys, 5 notification names`, exit **0** |
+| `python3 scripts/comprehension-bench.py --validate-only` | `bank ok: 30 facts, 12 overview facts`, exit **0** |
+| `./scripts/census.sh --unit-only` | `✔ Test run with 493 tests in 99 suites passed`; metadata `totalTestCount 494`, `passedTests 485`, `skippedTests 9`, `failedTests 0`; exit **0**; `rt-census-20261029-194024.xcresult` |
+
+**Limits of this stage:** no engine code was changed in this stage; the
+recalibration in §8.2–§8.3 was already in the tree. The reader side is still
+synthetic (§29.1) — every driver row carried a fabricated session, so
+provenance read `personalized` on all 149 rows. No real reading session exists.
+Nothing is committed or pushed; the working tree held 33 changed or untracked
+paths from this session's Phase Zero and real-library work at that stage
+and `git status --porcelain | wc -l` read 35 at the close of Stage AK.
+
+## Stage AK — real-library grading results declared VOID (2026-10-29)
+
+**Trigger:** the owner voided the Stage AJ grading results and directed that
+testing restart from scratch, and that no retest happen, until a genuinely heavy
+formulaic rubric for book difficulty exists.
+
+**What changed (documentation and one read-only script; no engine, weight or
+test code touched):**
+
+| Path | Change |
+|---|---|
+| `docs/audits/new-era-testing.md` | VOID banner above the header; new §31 recording the declaration, the three reasons, and a status per surviving item. Nothing above §31 was deleted or reworded. |
+| `docs/INDEX.md` | Real-book row now leads with **VOID 2026-10-29** and points at §31 and the banner instead of presenting the file as results. |
+| `docs/registers/04-handoff.md` | Header sentence corrected; new session close records the void and the surviving evidence. |
+| `docs/audits/13-reading-analytics-phase-zero-2026-10-29.md` | The “nothing graded yet” line carries a superseding note in place; the original sentence is retained. |
+| `scripts/real-book-pagination.py` | **New.** Read-only checker, assigns no verdict: 149 packages, 21 with ≥ 5 page markers, 128 without, 0 declaring a page count. Exit 0. |
+| `docs/audits/new-era-grades.tsv` | **Unchanged.** Not opened for writing during Stage AK; retained as raw evidence with no authority. |
+
+**Why the results were voided — three defects:**
+
+1. The difficulty grade was one reader's judgement. §4 fixed the axes and the
+   legal verdict values but not the arithmetic, so no second person can reproduce
+   a verdict from the same bytes.
+2. No inter-rater statistic exists. The only reliability figure is that **7 of 20**
+   verdicts changed when the same books were re-read through a different window
+   (§25.1 of the void file).
+3. The page axis scored reflowable EPUBs against print editions. Measured now:
+   **128 of 149** packages carry no page markers and **0** declare a page count,
+   so a page count is not a property the engine can be scored against.
+
+**What must not be done with the void file:** it is not a baseline, its accuracy
+percentages are not findings, and its F1–F6 are not a work queue. What survives is
+listed in its §31: the 149→135 package arithmetic, the engine's own output as
+engine behaviour, the pagination counts, and the source reading of
+`ReadingDifficultyProfile`.
+
+**Checks (local CI mirror, this stage):**
+
+| Command | Result |
+|---|---|
+| `./scripts/verify-sentinel-surface.sh` | `sentinel-surface: OK — 15 tables, 8 defaults keys, 5 notification names`, exit **0** |
+| `python3 scripts/comprehension-bench.py --validate-only` | `bank ok: 30 facts, 12 overview facts`, exit **0** |
+| `./scripts/census.sh --unit-only` | `✔ Test run with 493 tests in 99 suites passed`; metadata `passedTests 485`, `skippedTests 9`, `failedTests 0`, 719 test runs; exit **0**; `rt-census-20261029-201107.xcresult` |
+| `python3 scripts/real-book-pagination.py "asterisma new testing suite"` | `packages: 149` / `with >= 5 pagebreak markers: 21` / `with fewer than 5: 128` / `declaring a page count in the OPF: 0`; exit **0** |
+
+**Limits of this stage:** only documentation and the one read-only checker
+changed, so these checks confirm the repository still gates green; they do not
+validate anything about estimator accuracy. No results were produced by this
+stage and none may be cited from it. Nothing is committed or pushed.
+
+## Stage AL — Cognitive Difficulty Engine, Phase 1 audit (2026-10-29)
+
+**Trigger:** the owner directed a complete reconstruction of book difficulty
+estimation, with Phase 1 being an investigation only — no destructive change,
+and no production behaviour modified before evaluation.
+
+**What changed (audit and read-only tooling; no Swift source touched):**
+
+| Path | Change |
+|---|---|
+| `docs/plans/cde/PHASE-1-AUDIT.md` | **New.** The Phase 1 deliverable: end-to-end pipeline audit, the model as implemented, thirteen measured defects with receipts, the proposed CDE architecture, validation framework, feasibility matrix, phased gates, and six owner decisions. |
+| `scripts/cde-phase1-audit.py` | **New.** Read-only measurement script: closed-form check, multiplier distribution, extraction comparison, sample coverage. Assigns no verdict. |
+| `scripts/real-book-pagination.py` | Added in Stage AK; reused here for the page-marker count. |
+| `docs/INDEX.md` | New one-hop row pointing at the audit and the measurement script. |
+
+**Measured findings (all from commands run this stage):**
+
+| Finding | Measurement |
+|---|---|
+| The audited estimate is a two-variable product | `hours ≈ 8.888e-5 × words × multiplier`; R² **1.0000** against words×m, 0.9823 against words alone |
+| The multiplier is almost entirely one readability formula | r = **+0.975** against Flesch–Kincaid grade |
+| Difficulty decides a whole book from a sliver of it | 5,000-char sample = **0.75%** of the book at the median (0.02%–2.83%) |
+| The shipped splitter over-counts sentences | **1.34×** vs the project's own canonical splitter; grade level **+2.26** if corrected; 130/135 books affected |
+| Difficulty is applied to length | `ContentAnalysis.swift:81` multiplies words by the multiplier before the page conversion |
+| Two estimate paths disagree | `EstimationEngine.swift:262` vs `AnalyticsEngine.swift:58`; they differ by a factor of the multiplier, up to **1.77×** here |
+| Label resolution is poor | 87% of books in Light/Moderate; Narnia spans **1.64×** within one series |
+| Word counting is sound | Swift vs independent Python: **0.0000** median relative deviation across 135 books |
+
+**What was deliberately not done:** no weights were tuned, no formula was
+proposed as validated, no production engine was modified or replaced, and no
+reading-speed claim is made — the repository still contains no observed reading
+session.
+
+**Checks:** `verify-sentinel-surface.sh` exit 0;
+`comprehension-bench.py --validate-only` exit 0;
+`census.sh --unit-only` exit 0 (493 tests, 99 suites, 0 failed,
+`rt-census-20261029-201107.xcresult` — re-stated from Stage AK because no Swift
+source changed in this stage).
+
+**Limits:** the second estimate path is proven from source, not exercised end to
+the end through a UI. No literature was reviewed in this phase, so the audit
+asserts no citations.
+
+## Stage AM — Cognitive Difficulty Engine, Phase 2 and 4 (2026-10-29)
+
+**Trigger:** the master directive for a new Cognitive Difficulty Engine, and the
+owner's instruction to continue until the formula was built. The Stage AK
+declaration stands: **the previous round of human grades is void**, and nothing
+in this stage revives it or claims accuracy against it.
+
+**What this stage is:** a new, independently executable estimator that does not
+touch the shipped engine, plus the specification of the formula it implements.
+
+| Path | Change |
+|---|---|
+| `tools/cde/cde_extract.py` | **New.** Spine enumeration, text extraction, the exclusion ledger, and 12-window stratified sampling. |
+| `tools/cde/cde_text.py` | **New.** Canonical sentence splitter, paragraph splitter, prose test. |
+| `tools/cde/cde_features.py` | **New.** 18 raw features over six dimensions, plus the corpus-frequency index. |
+| `tools/cde/cde_model.py` | **New.** Dimension demand, peak weighting, percentile normalisation, weighted aggregation, bootstrap interval, refusal path. |
+| `tools/cde/cde_run.py` | **New.** `frequency`, `calibrate`, `evaluate`, `report` subcommands. |
+| `tools/cde/cde_eval.py` | **New.** Determinism, sampling stability, ablation, weight sensitivity, independence, series spread. |
+| `tools/cde/test_cde.py` | **New.** 9 tests over aggregation, weighting, interval ordering, refusal, and independence from input order. |
+| `tools/cde/config/lexicon-v1.json` | **New.** Top 20,000 word forms measured from the corpus's own windows. |
+| `tools/cde/config/reference-v1.json` | **New.** Frozen per-dimension quantile grids and provisional band cuts. |
+| `docs/audits/evidence/cde-v0-features-2026-10-29.json` | **New.** Per-book, per-window feature records. |
+| `docs/audits/evidence/cde-v0-scores-2026-10-29.json` | **New.** Per-book score, interval, band, dimension breakdown, explanation. |
+| `docs/plans/cde/FORMULA.md` | **New.** The canonical specification. |
+| `docs/plans/cde/PHASE-3-VALIDATION.md` | **New.** The human-rating protocol and the pre-registered pass/fail gate. |
+| `docs/INDEX.md` | Six new one-hop rows: five in a new CDE section, one in the evidence table. |
+
+**The formula, in one line:** six dimensions (lexical load, syntactic load,
+entity interaction, continuity, information density, dialogue load), each
+`(1−0.35)·mean + 0.35·Q90` over 12 windows, each mapped to a percentile against
+a frozen reference grid, summed at equal weights, with a 1,000-resample
+bootstrap interval. Exact equations, all 18 feature definitions, and the
+configuration schema are in `docs/plans/cde/FORMULA.md#L87`.
+
+**Two calibration defects found and fixed inside this stage** (recorded because
+the change is part of the evidence):
+
+| Defect | Why it mattered | Fix |
+|---|---|---|
+| Proper nouns counted as rare vocabulary | A character name absent from the word list is indistinguishable from a genuinely rare word, so books with large invented casts were penalised purely for naming their characters | Non-name tokens only for lexical rarity |
+| Z-score normalisation compressed the index | A z-score keeps each dimension's tail, so a fixed-weight sum is dominated by whichever dimension happens to have the widest spread rather than by anything about the book | Percentile against a frozen 101-point grid per dimension |
+
+A third correction replaced a static dictionary lookup with frequency rank
+measured from this corpus, because a fixed word list encodes the date it was
+built and would penalise modern prose by construction.
+
+**Measured, this stage** (`python3 tools/cde/cde_eval.py`, exit 0, 47 s):
+
+| Property | Result |
+|---|---|
+| Determinism | 135 / 135 books reproduce bit-for-bit |
+| Sampling stability (3 disjoint 4-window subsets) | within-book SD: median **0.046**, p90 0.085, max 0.156 |
+| Ablation | removing any dimension costs 3.8–5.3 index points; Spearman vs full ≥ 0.885 |
+| Weight sensitivity | ±50% on any single weight: min rank correlation **0.974** |
+| Independence from the shipped multiplier | Spearman **+0.643** |
+| Within-series SD vs corpus SD | Narnia 0.041, Spy Classroom 0.058, Naruto 0.061 vs corpus **0.113** |
+| Interval width | median 0.160, p90 0.236, max 0.382 |
+
+**Checks:** `verify-sentinel-surface.sh` exit 0 (`15 tables, 8 defaults keys, 5
+notification names`); `comprehension-bench.py --validate-only` exit 0 (`bank ok:
+30 facts, 12 overview facts`) with the new index rows in place; `census.sh
+--unit-only` exit 0 — **493 tests, 99 suites, 719 runs, 485 passed, 9 skipped, 0
+failed**, `rt-census-20261029-204123.xcresult`. `python3 -m unittest discover -s
+tools/cde -p 'test_*.py'`: 9 tests, 0.024 s, OK.
+
+**Limits, stated where the claims live:** there is **no human validation** of
+this index and therefore no accuracy figure — the 135 books were scored, not
+graded. Six of the twelve dimensions in the directive are absent (semantic
+complexity, information withholding, prior knowledge, structural memory,
+register, reader familiarity). Syntactic load is a proxy, not a parse. Lexical
+rarity is corpus frequency, not a published norm. The index is corpus-relative,
+so a book unlike the reference set saturates. The refusal path is exercised by
+unit tests only; no corpus book triggered it. No Swift source and no production
+behaviour was changed in this stage.
+
+## Stage AN — external review of the CDE, answered with measurements (2026-10-29)
+
+**Trigger:** an external engineer graded the *description* of the CDE at 62.84/100
+and asked for the code and JSON. The grade itself was not disputed; the review
+raised specific statistical objections that could be settled by measurement, and
+two that were aimed at behaviour the code does not have.
+
+**What changed (no coefficient, weight, grid or committed score was altered):**
+
+| Path | Change |
+|---|---|
+| `tools/cde/cde_critique.py` | **New.** 293 lines. Sampling coverage, feature-correlation matrix, five aggregation schemes rebuilt end to end, λ sweep, split-half disagreement against the reported interval. |
+| `docs/audits/evidence/cde-critique-2026-10-29.json` | **New.** Raw output of every figure quoted in the response. |
+| `docs/plans/cde/REVIEW-RESPONSE.md` | **New.** Point-by-point reply: what is accepted, what was refuted with a line reference, what is unfixable inside this design, the file manifest with SHA-256, and the ranked list of what would move the grade. |
+| `docs/plans/cde/FORMULA.md` | Interval renamed **sampling stability interval** with an explicit scope statement (§7); coverage distribution and the short-book overlap precondition (§5); split-half check (§11.8); feature-redundancy table (§11.9); aggregation and λ comparison (§11.10); two new limitations (§12.9–10); new §15 answering the review. |
+| `docs/plans/cde/PHASE-3-VALIDATION.md` | New §5.1 fixes the unit of analysis before any data exists: mixed model with random intercepts for book, passage-within-book and rater; variance decomposition reported first; ICC(2,5) floor of 0.40; cluster bootstrap over books; random-effects logistic model for pairwise choices. |
+| `docs/INDEX.md` | Two more one-hop rows: the review response and the adversarial measurements. |
+
+**Measured this stage** (`python3 tools/cde/cde_critique.py`, exit 0, `real 0m0.158s`):
+
+| Question | Answer |
+|---|---|
+| How much of a book is actually sampled? | median **23.2%** of words, p10 6.6%, p90 63.0%, range 0.5%–82.2% |
+| Are the 18 features independent? | No. `A_morph`/`A_abstract` **+0.954**, `B_sentence`/`B_clause` **+0.951**, `I_content`/`I_np` **+0.905**; the six *dimensions* stay below \|r\| 0.40 |
+| Does the aggregation choice matter? | Q85/70-30 gives Spearman **0.994** and an identical top ten; mean-only 0.978; CVaR90 0.906; max 0.836 |
+| Does λ matter? | No: 0.972–1.000 across λ 0–1 |
+| Does the interval cover window sampling? | Yes, conservatively: median half-to-half gap **0.0567** vs median width 0.1600, ratio 0.38; 3.0% of books exceed the width |
+
+**Two errors in my own description, corrected:** the summary said the sampler
+covered "20% to 97%" (actual 5.96%–93.04%) and "35% of the worst chunk" (actual
+Q90, never the max). The specification had both right; the prose did not. Both
+are corrected in `REVIEW-RESPONSE.md` §2 and the second is now explicit in
+`FORMULA.md` §15.
+
+**What was not done:** no weights were re-tuned, no reference grid rebuilt, no
+score regenerated. The review produced no evidence that a different coefficient
+would be better, and moving one to appear responsive is the failure mode the
+project exists to avoid.
+
+**Checks:** `comprehension-bench.py --validate-only` exit 0 (`bank ok: 30 facts,
+12 overview facts`) with the new rows; `python3 -m unittest discover -s
+tools/cde -p 'test_*.py'` exit 0 (9 tests, 0.024 s); `cde_critique.py` exit 0.
+No Swift source changed, so the census was not re-run in this stage.
+
+## Stage AO — CDE v0.3 recalibration (2026-10-29)
+
+**Trigger:** the owner asked for a recalibration that takes both the external
+review and this project's own audits into account. The constraint was that a
+recalibration without a human target can only be justified by properties that are
+measurable without one: internal reliability, feature redundancy, independence
+between dimensions, and interval coverage.
+
+**Frozen before changing anything:** `tools/cde/config/cde-v0.2.json`, the exact
+configuration that produced every v0.2 score. The new `refit` subcommand rebuilds
+grids and scores from stored window features, so a released score can be
+reproduced without the EPUB library. Verified first: running refit under v0.2
+reproduced `reference-v1.json` grids with **max absolute difference 0.00000000**
+per dimension, the same band cuts, and **135/135 identical scores**.
+
+| Path | Change |
+|---|---|
+| `tools/cde/config/cde-v0.2.json` | **New.** Frozen previous configuration. |
+| `tools/cde/config/reference-v3.json` | **New.** Ref-v3 grids and provisional bands. |
+| `tools/cde/cde_model.py` | `peak_kind` per config (`peak85`/`peak90`/`cvar`), equal within-dimension β, `joint_interval` covering window **and** reference resampling. |
+| `tools/cde/cde_run.py` | New `refit` subcommand: features → grids → scores, with two-source intervals, `sampled_share` and `low_coverage`; `evaluate` now reports coverage too. |
+| `tools/cde/cde_recalibrate.py` | **New.** Compares aggregation schemes by split-half reliability and measures what deduplication costs. |
+| `tools/cde/cde_critique.py` | Reads the shipped peak operator instead of assuming Q90; reports how many features are in use. |
+| `docs/audits/evidence/cde-v0.3-scores-2026-10-29.json` | **New.** 135 scored books, joint intervals, coverage flags. |
+| `docs/audits/evidence/cde-critique-v0.3-2026-10-29.json` | **New.** Adversarial checks against v0.3. |
+| `docs/audits/evidence/cde-recalibration-2026-10-29.json` | **New.** Reliability table behind the operator choice. |
+| `docs/plans/cde/FORMULA.md` | Rewritten as v0.3: equations, 15 in-use features, two-source interval, new battery, §16 change record. |
+| `docs/plans/cde/REVIEW-RESPONSE.md` | Postscript: that reply documents v0.2; v0.3 is canonical where they differ. |
+
+**Changes and what each bought (all measured this stage):**
+
+| Change | Effect |
+|---|---|
+| Within-dimension β equal, replacing 0.55/0.25/0.20-style splits | split-half disagreement 0.0567 → **0.0550** |
+| `A_morph`, `B_sentence`, `I_np` retired (r ≥ 0.90 with a sibling) | reliability unchanged at 0.0550; fewer near-duplicate indicators |
+| Peak operator Q90 → **Q85** at λ = 0.35 | 0.0617 → **0.0550** for that operator; Q90 and CVaR were worse (0.0617, 0.0633) |
+| Interval resamples the reference corpus as well | median width 0.150 → **0.158**; reference-only component alone is 0.055 |
+| `sampled_share` + `low_coverage` per book | six long compilations flagged below 3% coverage |
+
+**Battery, v0.2 → v0.3:**
+
+| Property | v0.2 | v0.3 |
+|---|---:|---:|
+| Determinism | 135/135 | **135/135** (and the full refit is bit-identical on rerun, intervals included) |
+| Split-half median | 0.0567 | **0.0550** |
+| Sampling SD median / p90 / max | 0.046 / 0.085 / 0.156 | **0.045 / 0.082 / 0.135** |
+| Ablation, worst Spearman | 0.885 | **0.910** |
+| Weight sensitivity, min | 0.974 | **0.977** |
+| Independence from shipped multiplier | 0.643 | **0.626** |
+| Interval width median | 0.160 | 0.158 joint (0.150 window-only) |
+| Halves beyond the interval | 3.0% | **1.5%** |
+
+**What got worse, stated plainly:** the strongest between-dimension correlation
+rose from A/I **+0.20 to +0.43**, because A and I now both lean on content-word
+measures; equal weighting therefore double-counts a little more shared variance
+than before. The ranking moved: Spearman against v0.2 is **0.929**, mean |ΔD|
+**0.031**, max **0.182**, top ten **8/10**. There is no human target that can say
+which version is closer to a reader, and no such claim is made.
+
+**Deliberately not done:** no weight was fitted to any outcome; no interaction
+term was added; the bands remain corpus quintiles; no reader model was invented.
+Fitting six weights against no target would produce numbers, not evidence.
+
+**Checks:** `python3 -m unittest discover -s tools/cde -p 'test_*.py'` exit 0
+(9 tests, 0.025 s); `refit` exit 0 (`real 0m12.304s`, 200 draws) and bit-identical
+on rerun; `cde_eval.py` exit 0 (`real 0m50.719s`); `cde_critique.py` exit 0
+(0.133 s); `cde_recalibrate.py` exit 0 (0.177 s);
+`comprehension-bench.py --validate-only` exit 0. The census was **not** re-run:
+no Swift source changed in this stage.
+
+## Stage AP — the formula gets a name: Asterisma Difficulty Formula (ADF) (2026-10-29)
+
+**Trigger:** the owner asked for one handle that can be cited across the
+codebase instead of a per-document description.
+
+**Why a name was needed, not just a label.** "CDE" (Cognitive Difficulty
+Engine) had been naming two different things: the *instrument* — corpus,
+extractor, frozen lexicons, reference grids — and the *formula* those
+instruments feed. Any sentence of the form "CDE scores a book at 0.63" is
+ambiguous about which of the two it means, and that ambiguity gets worse when a
+v0.2 and a v0.3 both exist.
+
+**The name, registered once.** Full name **Asterisma Difficulty Formula**,
+handle **ADF**, versioned **ADF v0.3**, machine identifier
+`asterisma-difficulty-formula@0.3`. The mapping to the three nearby names that
+are *not* the formula is written out in `docs/plans/cde/FORMULA.md#L20`:
+
+| Term | What it names |
+|---|---|
+| CDE | the instrument (`tools/cde/`) |
+| ADF | the model the instrument computes |
+| `DifficultyAnalyzer` | the legacy in-app engine ADF replaces, not a version of it |
+| `D` | the number, `D ∈ [0,1]`, produced by one run of ADF on one book |
+
+The bare word "difficultyformula" was considered and not adopted: it collides
+with the 130 existing `difficulty` hits in the Swift sources
+(`grep -rio difficulty --include=*.swift AsterismaV1.0 AsterismaV2.0 | wc -l`
+→ `130`), and it carries no version, while v0.2 and v0.3 must both stay
+nameable for reproducibility.
+
+**Where it lives now:**
+
+| Path | Change |
+|---|---|
+| `docs/plans/cde/FORMULA.md` | Title carries the name; new §0 "Name" (line 20) holds the canonical table and the three-way distinction. |
+| `tools/cde/cde_model.py` | `FORMULA_NAME`, `FORMULA_HANDLE`, `FORMULA_VERSION`, `FORMULA_ID` (lines 44–47), beside the existing `DEFAULT_CONFIG` at line 66. |
+| `docs/INDEX.md` | New one-hop row: "What the difficulty formula is called, and the three names it is **not**". |
+
+**What deliberately did not change.** `DEFAULT_CONFIG["version"]` still reads
+`cde-v0.3`, so every evidence artefact keeps the bytes and hashes already cited
+in Stages AM–AO. No score, band, interval or grid moved. §0 records that the
+artefact string and `FORMULA_ID` are two forms of one name, which is the reason
+the constant was not renamed underneath the receipts.
+
+**Anchors re-pointed, one defect repaired.** Inserting §0 shifted every later
+heading by 32 lines. The five `FORMULA.md#L*` anchors in `docs/INDEX.md` were
+re-derived from the new headings: equations `L55→L87`, measured behaviour
+`L338→L370`, scope `L422→L454`, review `L511→L543`. While doing it, a stale
+anchor in Stage AM was found: it cited `FORMULA.md#L47` for "the equations",
+which had already moved to line 55 before this stage. Corrected to `#L87`.
+`docs/plans/cde/REVIEW-RESPONSE.md:353` was refreshed to the new
+`cde_model.py` size and digest.
+
+**Checks (all from the repository root):**
+
+| Command | Result |
+|---|---|
+| `python3 -m unittest discover -s tools/cde -p 'test_*.py'` | exit 0, `Ran 9 tests in 0.026s`, `OK` (status captured with `set -o pipefail`) |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit 0, `bank ok: 30 facts, 12 overview facts` |
+| `python3 -c "import cde_model; print(FORMULA_ID)"` | exit 0, prints `asterisma-difficulty-formula@0.3` |
+| `sha256sum tools/cde/cde_model.py` | `9ffcc9635a1299694a236f596c0d7c29a049ed1f2c8398c2d631038caec92d75`, 13,323 bytes |
+
+**Not re-run, and why:** `cde_run.py refit`, `cde_eval.py` and `cde_critique.py`
+were not re-executed — no formula, feature, weight, grid or sampling code
+changed, so their outputs would be bit-identical by construction (Stage AO
+already proved the refit reproduces bit-identically). The Swift census was not
+run: no Swift source changed. `PHASE-3-VALIDATION.md` is untouched; the name is
+new, the validation plan is not.
+
+## Stage AQ — ADF retest: all 149 packages, 16 blind grades (2026-10-29)
+
+**Trigger:** the owner asked whether ADF is wired to anything, to wire it into
+the relevant engines, to run the tests in `oct-december plans.md`, and to run all
+149 books and hand-grade each one.
+
+**Where the governing plan actually lives.** `docs/audits/new-era-testing.md:12`
+cites `oct-december plans.md` as its governing plan, but no such file exists in
+the repository, in history, or on disk at the project root. It was found inside
+the corpus folder on the Desktop (`asterisma new testing suite/oct-december
+plans.md`, 2,339 lines). The reference is therefore dangling for anyone reading
+the repo alone; it is left as-is because the file is the owner's and relocating
+it is not this stage's business. Its §15 (human evaluation) governs this retest.
+
+**Answer to "is it wired?": no.** `grep -rn "asterisma-difficulty-formula\|FORMULA_ID\|\bADF\b"
+--include=*.swift --include=*.py --include=*.sh .` outside `tools/cde/` and
+`docs/` returns nothing. ADF was a standalone tool.
+
+**Decision: not wired into reading-time estimation, deliberately.** The retest
+below found a mean band error of −0.875 and −2.4 bands at the top of the scale.
+At that point the four engines listed here consumed
+`ReadingDifficultyProfile.difficultyMultiplier`; the main `EstimationEngine`
+no longer applies that profile to its measured page pace. The formula is wired
+to a stable JSON contract instead, and the app-facing step is deferred with the
+reason recorded in `docs/plans/cde/RETEST-2026-10-29.md` §9.
+
+| Path | Change |
+|---|---|
+| `tools/cde/cde_sheet.py` | **New.** Scores every package in a corpus including `dup_of` copies, proves duplicate identity by content digest, emits JSON + a readable sheet. |
+| `tools/cde/cde_grade.py` | **New.** Builds a blind worksheet plus a separate score key; analyses verdicts, band distance and self-consistency. |
+| `docs/plans/cde/GRADING.md` | **New.** The protocol: labels, blindness, two passes, adjudication, calibration, metrics. |
+| `docs/plans/cde/RETEST-2026-10-29.md` | **New.** Results and diagnoses. |
+| `docs/audits/evidence/adf-149-*` | **New.** Features, scores, sheet, worksheets, pass A and pass B grades, grade report. |
+
+**The 149 run.**
+
+| Measure | Value |
+|---|---:|
+| Packages / scored / failures | 149 / 149 / 0 |
+| Distinct content digests | 135 |
+| Duplicate groups / copies | 14 / 14 |
+| Duplicate score mismatches | **0** |
+| Byte-identical reruns | **2 of 2**, `907b4f19bb70ae62ac7534ec8ce5f8c9c4456397dc48df1b0df3910ca6416394` |
+| Elapsed | 46.29 s, 45.80 s |
+
+Duplicate identity is computed from package digests (zip bytes, or a sorted
+tree digest for unzipped packages), so the 14 copies match their host by
+measurement rather than by being skipped. `cde_run.py calibrate` cannot do this
+because it drops `dup_of` entries by design.
+
+**The grading pass, and what it is worth.** 16 distinct books, selected by
+SHA-256 of filename so the sample could not be steered toward easy cases, graded
+blind from a worksheet carrying no `D` or band. Result: 11 `OK`, 5 `TOO_HIGH`,
+0 `TOO_LOW`; 68.8% within one band; mean band delta −0.875, median −0.5, worst
+over-call 4 bands, worst under-call 1.
+
+| ADF band | Mean band delta | Rows |
+|---|---:|---:|
+| Light | +0.25 | 4 |
+| Moderate | 0.00 | 3 |
+| Demanding | −1.00 | 1 |
+| Heavy | −0.67 | 3 |
+| Very heavy | −2.40 | 5 |
+
+Three failures diagnosed from their own dimension percentiles, all recorded in
+the retest file: `Live by Night` (cast and dialogue at 0.90/0.85), `The Beginning
+After the End` book 10 (density 0.96 on plain action prose, four bands off), and
+`Fire and Blood` (`People / things` at 1.00). The common shape is that crowded
+genre fiction is read as hard.
+
+**A metric defect found and fixed inside this stage.** `cde_grade.py` first
+scored "signed bias" from the verdict's sign, so a one-band `OK` and a four-band
+`OK` counted identically and the reported error was −0.31. The grader's own band
+is now recorded per row (`band_as_i_would_call_it`) and distance is computed from
+it, which is where −0.875 comes from. The worksheet schema, `GRADING.md` §1/§7
+and both pass files were updated together.
+
+**Self-consistency is recorded and declared inadmissible.** Pass B, from window
+6, agreed 16/16 (κ = 1.00). Both passes were made by the same grader in the same
+session, so the band call was remembered; `GRADING.md` §4 requires a day or an
+intervening task, which was not done. The number is in the artifact and is not
+cited as reliability.
+
+**Not done, and why:**
+
+- **133 books ungraded.** The worksheet for all 149 exists and is blind; grading
+  16 took the available session. A second reader is the constraint, not the tool.
+- **No Swift port and no engine wiring.** Justified by the bias above, not by
+  time.
+- **No accuracy number.** `oct-december plans.md` §15.2 forbids treating document
+  judgements as reading-time measurements, and no session data exists for these
+  books. §12.1 forbids synthetic labels. An accuracy percentage here would be
+  invented.
+
+**Checks:**
+
+| Command | Result |
+|---|---|
+| `python3 tools/cde/cde_sheet.py --corpus "asterisma new testing suite" …` | exit 0, twice; JSON byte-identical (`907b4f19bb70ae62ac7534ec8ce5f8c9c4456397dc48df1b0df3910ca6416394`) |
+| `python3 tools/cde/cde_grade.py worksheet … --window 0` | exit 0, 149 blind rows |
+| `python3 tools/cde/cde_grade.py analyze … --second-pass …` | exit 0, report written |
+| `python3 -m unittest discover -s tools/cde -p 'test_*.py'` | exit 0, `Ran 9 tests in 0.026s`, `OK` (status captured with `set -o pipefail`) |
+| `python3 scripts/comprehension-bench.py --validate-only` | exit 0, `bank ok: 30 facts, 12 overview facts` |
+
+The Swift census was not run: no Swift source changed in this stage.
+
+## Synthetic reading-time harness closeout — 2026-10-30
+
+The synthetic experiment, its scenario limits, and results are recorded in
+`docs/audits/synthetic-reading-evaluation.md`. The full batch inputs and
+outcomes are retained under `tools/cde/synthetic-batch-762944`, with the
+summary in `docs/audits/evidence/synthetic-reading-eval-762944.json`.
+The experiment does not establish real-reader accuracy.
+
+Closeout inventory: the explicitly named temporary `.synthetic-*` test logs
+and exit files occupied 620 KiB by `du -ck` before removal; afterwards
+`find . -maxdepth 1 -name '.synthetic-*' -print | wc -l` printed `0`.
+No existing `.DS_Store` files, runtime staging, prior work, or other unknown
+artifacts were removed. The three batch directories were retained: `du -sk`
+reported 10,928 KiB, 10,924 KiB and 16,228 KiB respectively for
+`tools/cde/synthetic-batch-762943`,
+`tools/cde/synthetic-batch-762943-final`, and
+`tools/cde/synthetic-batch-762944`.
+
+`graphify update .` exited 0 and reported 8,956 nodes, 21,465 edges, and 433
+communities, with 35 inputs producing no nodes. The tool states it refreshed
+code only; semantic documentation refresh is **SKIPPED** because the local
+CLI did not perform it. `graphify export html` exited 0 and produced an
+aggregated 2D view. `python3 scripts/build-graph-3d.py` and
+`python3 scripts/build-graph-3d.py --check` exited 0; the full 3D output was
+9,048,900 bytes by `wc -c`. The mandated browser rendering, WebGL, console,
+and network checks are **SKIPPED**: this task did not request a visual
+inspection. The graph is not a complete fresh semantic index of documentation.
+
+Current SHA-256 from `shasum -a 256`: `graphify-out/graph.json`
+`e2d1123123260fc1bb4c0cfdc7a91df8ee131c302ff1a4b471f02f46488380ab`;
+`graphify-out/graph.html`
+`07c96bcd229b066f352391d1df2d494e000725868dba3a6e6bcbdecf2b03aff9`;
+`graphify-out/graph-3d-full.html`
+`30916811f6bf209aa7ef5b9888b1550399d0d0379d7fe58d4ca1f70eac1c3098`;
+`graphify-out/GRAPH_REPORT.md`
+`3457a47ffe7e97a9423670b0c6ed6476746317c4acb4cafdb7f79df934f057ef`.
+
+## Fresh 200-round stress evaluation — 2026-10-31
+
+**Changes before the run.** Two production changes: per-book normalization and
+consensus in `AnalyticsEngine.crossBookReadingSpeed`
+(`AsterismaV2.0/Engines/AnalyticsEngine.swift#L83`) with
+`PageDurationPolicy.consensusSeconds` (`#L459`), and the
+`max(median, lowerQuartile × 3)` ceiling in `robustMeanSeconds` (`#L424`)
+and `upperBound` (`#L444`). Two candidate-adapter rules: the three-timing
+minimum (`AsterismaV2.0Tests/Engines/AdversarialEvaluationTests.swift#L71`)
+and the two-sided `0.35/3.0` guard (`#L73`). The first two are production
+code; the last two are evaluation-adapter rules and are not wired into the app.
+
+**What ran.** `bash tools/cde/run_fresh_200.sh` produced 40 batches of five
+rounds, 9,914 main cases per round, plus 200 demo rounds of 16 personas:
+1,982,800 main predictions and 3,200 demo predictions. The driver was
+interrupted after batch 175 and resumed at batch 176; already graded batches
+were skipped. `run.exit` is `0` and the log ends
+`ALL DONE 2026-10-31T02:12:20Z`. `python3 tools/cde/analyze_fresh_200.py`
+exited 0; it verified 1,982,800 rows across 40 batches with no duplicate IDs,
+invalid numbers, arithmetic mismatches or candidate-rule mismatches, and 3,200
+demo rows with no errors. The complete report is
+`docs/audits/fresh-reading-stress-200-2026-10-30.md`
+(SHA-256 `76ba1ba0bc050566bcfef62219c7c218d1edcac1850193bd8222ef806f58e582`,
+356 lines).
+
+**Comparator result.** Same-case synthetic errors, all 1,982,800 main cases:
+
+| Model | Median % | Mean % | Spikes |
+|---|---:|---:|---:|
+| Fixed production baseline | 18.98 | 35.45 | 170,404 |
+| Legacy comparator (hybrid) | 21.42 | 38.21 | 185,341 |
+| Candidate at fitted 0.979 | 23.09 | 41.35 | 220,164 |
+| Candidate at pre-registered 0.5 | 26.70 | 43.35 | 223,724 |
+
+The fixed baseline improves on the differing subset too (median 9.40% against
+12.12%; 14,724 spikes against 26,009), but `corpus-evaluation` is an exception
+(median 16.51% against 15.62%; mean unchanged at 21.13%). The comparator is not
+a clean ceiling A/B: it equals the baseline on `same_book` (5.48%/7.64%/158 for
+both) because personal-speed books call the current per-book policy, and the
+gain is concentrated in the no-personal-speed pooling path (`sparse` 16.67%
+against 24.88%; `cross_book` 27.18% against 27.67%). The candidate loses at
+both weights. The fitted weight is 0.979013257067 because the calibration
+objective decreases toward recent-only on the 244,514 eligible development
+cases; that subset excludes every 2-sample fallback and guard rejection.
+
+**Why the candidate loses.** In `sparse`, 472,404 of the 484,600 two-timing
+cases differ; the candidate returns the cross-book prior while the baseline
+includes the target book. Median rises from 16.67% to 27.11% and spikes from
+12,206 to 39,528. In `same_book`, the last-eight window adds variance (mean
+7.64% to 14.82%; spikes 158 to 21,060). In `corpus`, the guard rejects a clean
+recent pace when the prior is about ten times larger; the worst differing case
+is 873.36% (round 46, target 590.60 s, recent 588.62 s, prior 5,748.67 s). The
+`adversarial` family is the exception where the candidate wins (median 10.04%
+against 18.38%; 0 spikes against 200). The report records all tables and the
+tail; the candidate is rejected rather than promoted.
+
+**Artifacts.** The 200-round tree was hashed into
+[the evidence archive](../audits/evidence/fresh-stress-evidence-archive-2026-10-31.md)
+and deleted on 2026-10-31: 1,773 files, 4,989,897,276 bytes, global manifest
+SHA-256 `df1a42e0e77b2c2b65006fc9c5974054314118b89f1fa43dad32b7fd782b441f`.
+`verified-summary.json` SHA-256
+`b543efc740decc0e581f32291cdc43be73ff90cac7c72d9061e8a21b807a6847`;
+`weight-sweep-summary.json`
+`61fcf5f877b642d102b77593411d10ddfdf6e795360edd645ec75356957360c4`;
+`worst-differing-cases.json`
+`caacae80b5dc1485df07cdcd2e74cc4342fc0b29af788d0d3fd9a3b5ef35d0f1`.
+The report generator is `tools/cde/write_fresh_200_report.py`.
+
+**Checks.** `python3 -m unittest discover -s tools/cde -p 'test_*.py'` exit 0,
+`Ran 28 tests`, `OK`. `./scripts/verify-sentinel-surface.sh` exit 0.
+`python3 scripts/comprehension-bench.py --validate-only` exit 0, `bank ok: 30
+facts, 12 overview facts`. `./scripts/census.sh --unit-only` exit 0; Xcode
+summary `result Passed; 515 total, 506 passed, 0 failed, 9 skipped; 719 test
+runs`. The nine skips are not passes.
+
+**Not done.** No independent hand grading of every case; no real-reader or
+live-app validation; no stop-on-spike restart; no clean uninterrupted 200-round
+invocation; no graph refresh, commit or push in this session. The junk cleanup
+and evidence archival were done. The outcomes are synthetic, not measurements
+of people.
+
+## Junk cleanup — 2026-10-31
+
+`du -sk .` measured 6,885,764 KiB before cleanup and 6,472,512 KiB after,
+reclaiming 413,252 KiB (about 403.6 MiB). Removed 260 KiB of `.DS_Store` files
+and 372 KiB of unreferenced root-level `.adversarial-*` logs. The 403 MiB
+`demo-200-predictions.json` was byte-identical to
+`demo-200-attachments/456E1DB7-5B93-413F-8464-A510728A6421.json` (SHA-256
+`80ab33f679f766aeb9692315df5717b8882babfa001397340be62cd8d149c793`); it was made
+a hardlink to the attachment before the tree was deleted, so both paths,
+contents and digest were preserved at that step.
+
+After that dedupe, the 100- and 200-round trees were archived and deleted. The
+archive is `docs/audits/evidence/fresh-stress-evidence-archive-2026-10-31.md`
+(SHA-256 `aba62346888056aff88a40c6686d7a8cc05e22b038e9305acfd5899d8db2e875`,
+341 lines): 2,407 files, 6,778,962,719 bytes, with global manifest hashes
+`df1a42e0e77b2c2b65006fc9c5974054314118b89f1fa43dad32b7fd782b441f` (200-round)
+and `7ace80ff67f686b7b268847315cb8973ebf02ab02c1e1bb154dc6423d689a1d2`
+(100-round). Raw per-case JSON and `.xcresult` bundles are not recoverable.
+`du -sk .` then fell from 6,885,764 KiB to 257,504 KiB at deletion, a total reduction of
+6,628,260 KiB (about 6.32 GiB).
+
+Kept `graphify-out/` (60M), `.mirage-runtime/` (48M), `.cloud-attachments/`,
+and all source, tests and docs. A follow-up scan found no remaining `.DS_Store`,
+`.profraw`, `DerivedData`, `.playwright-cli`, or root adversarial logs.
+
+## Stress-evidence archive — 2026-11-07
+
+**What moved.** The full generated stress fixture and the CDE run bulk were moved
+out of the repository to
+`/Users/johanrembeci/Desktop/AsterismaV2.0-Evidence-Archive-2026-11-07`:
+
+- `AsterismaV2.0Tests/Engines/FreshStressInput.json` — 38,660,433 B / 49,570
+  cases, SHA-256 `8d08822b9c6bee1eed2923d0a1c186a5c59e2ca5858dfb2c7fcced2bd801e110`.
+  It is replaced in-tree by a 200-case representative sample (157,597 B) so the
+  bundled-batch decode, unique-ID, and prediction assertions still run.
+- `tools/cde/final-stress-20261030`, `synthetic-batch-762943`,
+  `synthetic-batch-762943-final`, `synthetic-batch-762944`,
+  `adversarial-development-81521`, `adversarial-development-81522`,
+  `adversarial-evaluation-92743`, `corpus-development-430122`, and
+  `corpus-evaluation-430123` — 65 MB of generated run data.
+- `.cloud-attachments/` — 10 MB of imported-conversation attachment data.
+
+**Before/after.** The repository was 257,504 KiB at the 2026-10-31 deletion-time
+measurement; after this archive `du -sh .` reports 140 MB. The archive itself is
+112 MB across 449 files. The source, tests, `docs/audits/evidence` (3.6 MB),
+`tools/cde` source/config (644 KB), and graph artifacts were kept.
+
+**Checks after the move.** `python3 -m unittest discover -s tools/cde -p 'test_*.py'`
+exit 0 (28 tests); `./scripts/verify-sentinel-surface.sh` exit 0;
+`python3 scripts/comprehension-bench.py --validate-only` exit 0;
+`./scripts/census.sh --unit-only` exit 0 (515 total / 506 passed / 9 skipped /
+0 failed / 719 runs); the full Markdown audit over 103 files exit 0. No commit or
+push occurred at archive time.

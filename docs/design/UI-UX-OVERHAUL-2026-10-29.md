@@ -16,14 +16,20 @@ usability-tested.
 | App source size | `find AsterismaV2.0 -name '*.swift' \| wc -l`; concatenated line count; non-blank count | 170 files / 64,084 raw lines / 56,626 non-blank |
 | Test folder | `find AsterismaV2.0Tests -name '*.swift' \| wc -l` | 67 files |
 
+> **Superseded 2026-10-31:** the figures below are the 2026-10-29 boundary, not current totals. The current receipt is **515 tests / 99 suites / 719 runs / 506 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; see `README.md`).
+>
 > **Later counts (2026-10-29):** the offline contract pass (Stage AB) recorded
 > 447 unit tests / 671 runs / 438 passed / 9 skipped / 0 failed, and the ADR-13
 > Mirage pass (Stage AE) recorded 459 / 671 / 450 / 9 / 0 in 93 suites. The
-> environment/Sentinel/console pass (§9, Stage AH) moves the current totals to
-> **464 unit tests / 671 runs / 455 passed / 9 skipped / 0 failed** (94 suites).
-> App source is now 179 Swift files / 67,757 raw lines / 59,942 non-blank; the
-> test folder is 72 Swift files. The Stage Z figures above are the receipt for
-> the first UI tranche, not the current repository totals.
+> environment/Sentinel/console pass (§9, Stage AH) recorded 464 / 671 / 455 /
+> 9 / 0; the Phase Zero boundary was **469 unit tests / 671 runs / 460 passed /
+> 9 skipped / 0 failed** (95 suites). After the reading-analytics recalibration
+> the boundary at that time was **493 unit tests / 719 runs / 485 passed / 9 skipped /
+> 0 failed** (99 suites), adding the reading-analytics `Engines` group, the
+> page-estimation model suite and the difficulty-calibration pins. App source is now 179
+> Swift files / 67,757 raw lines / 59,942 non-blank; the test folder was 74 Swift
+> files. The Stage Z figures above are the receipt for the first UI tranche, not
+> the current repository totals.
 
 The 9 skips are the repository's deliberate environment/history skips, not new
 UI-test skips. The app was launched once and its window was observed through

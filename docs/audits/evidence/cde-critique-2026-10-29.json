@@ -1,0 +1,170 @@
+{
+  "aggregation": [
+    {
+      "max_delta": 0.0783,
+      "scheme": "mean (lambda=0)",
+      "spearman": 0.9783,
+      "top10": 8
+    },
+    {
+      "max_delta": 0.0517,
+      "scheme": "Q85 / 70-30",
+      "spearman": 0.9944,
+      "top10": 10
+    },
+    {
+      "max_delta": 0.0,
+      "scheme": "Q90 / 65-35 (current)",
+      "spearman": 1.0,
+      "top10": 10
+    },
+    {
+      "max_delta": 0.21,
+      "scheme": "CVaR90",
+      "spearman": 0.9062,
+      "top10": 7
+    },
+    {
+      "max_delta": 0.2567,
+      "scheme": "max (lambda=1)",
+      "spearman": 0.8362,
+      "top10": 6
+    }
+  ],
+  "coverage": {
+    "max": 0.822,
+    "median": 0.232,
+    "min": 0.0054,
+    "p10": 0.0657,
+    "p90": 0.6305
+  },
+  "dimension_matrix": {
+    "AA": 1.0,
+    "AB": 0.382,
+    "AG": 0.152,
+    "AH": 0.294,
+    "AI": 0.203,
+    "AK": -0.278,
+    "BA": 0.382,
+    "BB": 1.0,
+    "BG": 0.401,
+    "BH": -0.14,
+    "BI": -0.255,
+    "BK": 0.037,
+    "GA": 0.152,
+    "GB": 0.401,
+    "GG": 1.0,
+    "GH": -0.341,
+    "GI": 0.308,
+    "GK": -0.136,
+    "HA": 0.294,
+    "HB": -0.14,
+    "HG": -0.341,
+    "HH": 1.0,
+    "HI": -0.182,
+    "HK": -0.29,
+    "IA": 0.203,
+    "IB": -0.255,
+    "IG": 0.308,
+    "IH": -0.182,
+    "II": 1.0,
+    "IK": -0.398,
+    "KA": -0.278,
+    "KB": 0.037,
+    "KG": -0.136,
+    "KH": -0.29,
+    "KI": -0.398,
+    "KK": 1.0
+  },
+  "feature_pairs": [
+    {
+      "a": "A_morph",
+      "b": "A_abstract",
+      "r": 0.954
+    },
+    {
+      "a": "B_sentence",
+      "b": "B_clause",
+      "r": 0.951
+    },
+    {
+      "a": "I_content",
+      "b": "I_np",
+      "r": 0.905
+    },
+    {
+      "a": "B_sentence",
+      "b": "B_passive",
+      "r": 0.883
+    },
+    {
+      "a": "B_clause",
+      "b": "B_passive",
+      "r": 0.838
+    },
+    {
+      "a": "B_passive",
+      "b": "G_cooc",
+      "r": 0.698
+    },
+    {
+      "a": "B_sentence",
+      "b": "G_cooc",
+      "r": 0.691
+    },
+    {
+      "a": "K_tagless",
+      "b": "K_speakers",
+      "r": -0.689
+    },
+    {
+      "a": "B_clause",
+      "b": "G_cooc",
+      "r": 0.666
+    },
+    {
+      "a": "G_names",
+      "b": "I_content",
+      "r": 0.578
+    }
+  ],
+  "lambda_sweep": [
+    {
+      "lambda": 0.0,
+      "spearman": 0.9783,
+      "top10": 8
+    },
+    {
+      "lambda": 0.15,
+      "spearman": 0.9939,
+      "top10": 8
+    },
+    {
+      "lambda": 0.35,
+      "spearman": 1.0,
+      "top10": 10
+    },
+    {
+      "lambda": 0.5,
+      "spearman": 0.9969,
+      "top10": 9
+    },
+    {
+      "lambda": 0.75,
+      "spearman": 0.9873,
+      "top10": 9
+    },
+    {
+      "lambda": 1.0,
+      "spearman": 0.9724,
+      "top10": 9
+    }
+  ],
+  "split_half": {
+    "books": 135,
+    "median_abs_diff": 0.0567,
+    "median_interval_width": 0.16,
+    "median_ratio": 0.383,
+    "share_exceeding_width": 0.03
+  }
+}

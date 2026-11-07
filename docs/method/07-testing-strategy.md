@@ -17,8 +17,8 @@ This describes **what to build so the same classes of bug get caught automatical
 | | |
 |---|---|
 | **Framework** | Swift Testing — `@Suite` / `@Test` / `#expect` (the project standardized after converting the original XCTest suites) |
-| **Scale** | 72 Swift files in the test folder · 464 tests in 94 suites · 671 runs · responsibility-based groups plus Sentinel domain/runtime/catalog/persistence suites |
-| **Standing census** | GitHub census run `40811182851` (2026-10-29, Xcode 26.6) passed the older **432 tests in 88 suites** before the V2.0 rename. The current local unit receipt records **464 tests / 671 runs / 455 passed / 9 skipped / 0 failed**, including five `CommandPaletteTests`, nine `ReaderAppearanceTests`, six offline/network pins, twelve ADR-13 Mirage pins, and five environment/weather pins. The older full UI-inclusive census was 450 tests / 673 runs / 441 passed / 9 skipped / 0 failed (not re-run for the ADR-13 tree). The workflow uploads the census log for its run. |
+| **Scale** | 82 Swift files in the test folder · 515 tests in 99 suites · 719 runs · responsibility-based groups plus Sentinel domain/runtime/catalog/persistence suites |
+| **Standing census** | GitHub census run `40811182851` (2026-10-29, Xcode 26.6) passed the older **432 tests in 88 suites** before the V2.0 rename. The current local unit receipt records **515 tests / 719 runs / 506 passed / 9 skipped / 0 failed** in 99 suites (`./scripts/census.sh --unit-only`, exit 0; 2026-10-31), including five `CommandPaletteTests`, nine `ReaderAppearanceTests`, six offline/network pins, twelve ADR-13 Mirage pins, five environment/weather pins, four Book File Relink tests, one Phase Zero reading-analytics probe, and the 24 reading-analytics tests added by the recalibration. The older full UI-inclusive census was 450 tests / 673 runs / 441 passed / 9 skipped / 0 failed (not re-run for the ADR-13 tree). The workflow uploads the census log for its run. |
 | **CI scope** | The deterministic unit target is the merge-presence receipt. UI tests are placeholder launch stubs and depend on interactive automation, so they are not part of CI. The bundled-runtime assertion self-gates on `.mirage-runtime` being staged. |
 | **The 9 local skips** | 4 Mirage real-engine cases (identity import, handshake/health, and the two lifecycle steps), 1 benchmark, 2 real-library SQLite parity cases, and 2 live Open-Meteo cases. None are Sentinel coverage skips. CI may add a bundled-runtime presence skip on a clean checkout without the staged 47 MB runtime. |
 | **Census discipline** | Every fixing session opens and closes on a green census; canonical numbers come from `xcrun xcresulttool get test-results summary --path <.xcresult>` — never from eyeballing the console |
@@ -128,8 +128,11 @@ core groups.
 The tests inject an `OfflineURLProtocol` and a short-timeout session, so they
 never touch the real network. The full unit census after this band was **447
 tests / 671 runs / 438 passed / 9 skipped / 0 failed** (Stage AB, historical;
-the ADR-13 boundary is 459 / 671 / 450 / 9 / 0 in Stage AE; the
-current boundary is 464 / 671 / 455 / 9 / 0 in Stage AH).
+the ADR-13 boundary is 459 / 671 / 450 / 9 / 0 in Stage AE; the Phase Zero
+boundary was 469 / 671 / 460 / 9 / 0; the reading-analytics recalibration
+boundary was 493 / 719 / 485 / 9 / 0; the current boundary after the 200-round
+stress evaluation is **515 / 719 / 506 / 9 / 0**; the Stage AH environment
+boundary remains 464 / 671 / 455 / 9 / 0).
 
 **Limitation:** a whole-suite run under an OS-level network denial was attempted
 with `sandbox-exec`; Xcode's test runner hung before establishing its connection,

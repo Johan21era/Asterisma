@@ -1,0 +1,44 @@
+[
+  {
+    "scheme": "v0.2 (18 features, Q90 65/35)",
+    "median_abs_diff": 0.0567,
+    "p90_abs_diff": 0.1433,
+    "mean_abs_diff": 0.0682
+  },
+  {
+    "scheme": "18 feat equal-beta, peak85",
+    "median_abs_diff": 0.055,
+    "p90_abs_diff": 0.136,
+    "mean_abs_diff": 0.0654
+  },
+  {
+    "scheme": "18 feat equal-beta, peak90",
+    "median_abs_diff": 0.06,
+    "p90_abs_diff": 0.1377,
+    "mean_abs_diff": 0.0672
+  },
+  {
+    "scheme": "18 feat equal-beta, cvar",
+    "median_abs_diff": 0.0633,
+    "p90_abs_diff": 0.1377,
+    "mean_abs_diff": 0.0699
+  },
+  {
+    "scheme": "dedup equal-beta, peak85",
+    "median_abs_diff": 0.055,
+    "p90_abs_diff": 0.136,
+    "mean_abs_diff": 0.0653
+  },
+  {
+    "scheme": "dedup equal-beta, peak90",
+    "median_abs_diff": 0.0617,
+    "p90_abs_diff": 0.1377,
+    "mean_abs_diff": 0.067
+  },
+  {
+    "scheme": "18 feat equal-beta, mean only",
+    "median_abs_diff": 0.0533,
+    "p90_abs_diff": 0.131,
+    "mean_abs_diff": 0.0624
+  }
+]

@@ -83,13 +83,13 @@
     {
       "id": "graph-nodes",
       "question": "How many nodes are in the full 3D graph view?",
-      "answer": "8,156",
+      "answer": "8,956",
       "path": "README.md"
     },
     {
       "id": "graph-edges",
       "question": "How many edges are in the full 3D graph view?",
-      "answer": "20,371",
+      "answer": "21,465",
       "path": "README.md"
     },
     {
@@ -131,8 +131,8 @@
     {
       "id": "census-counts",
       "question": "How many tests and runs did the last local unit census record?",
-      "answer": "464 tests / 671 runs",
-      "path": "docs/registers/04-handoff.md"
+      "answer": "492 passed, 0 failed and 9 skipped tests",
+      "path": "docs/audits/synthetic-reading-evaluation.md"
     },
     {
       "id": "retired-3d",
@@ -211,7 +211,7 @@
     {
       "id": "census",
       "label": "Unit census counts",
-      "answer": "432 tests / 671 runs",
+      "answer": "469 tests / 671 runs",
       "canonical": ["docs/registers/04-handoff.md"]
     },
     {
@@ -235,7 +235,7 @@
     {
       "id": "graph",
       "label": "Full 3D graph counts",
-      "answer": "8,156",
+      "answer": "8,956",
       "canonical": ["README.md"]
     },
     {

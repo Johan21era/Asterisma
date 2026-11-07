@@ -1,0 +1,5384 @@
+{
+  "summary": {
+    "formula": "asterisma-difficulty-formula@0.3",
+    "reference_version": "reference-v3",
+    "packages": 149,
+    "scored": 149,
+    "insufficient": 0,
+    "failures": 0,
+    "distinct_digests": 135,
+    "duplicate_groups": 14,
+    "duplicate_packages": 14,
+    "duplicate_score_mismatches": 0,
+    "windows": 12,
+    "tokens_per_window": 1200
+  },
+  "rows": [
+    {
+      "file": "A Study in Scarlet 2.epub",
+      "title": "A Study in Scarlet",
+      "digest": "ef55a2ab0de03441647f06188ff2612f85d7d4c290376930fa557f910aa53462",
+      "dup_of": null,
+      "words": 44199,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.675,
+      "band": "Very heavy",
+      "interval": [
+        0.6316,
+        0.715
+      ],
+      "dimensions": {
+        "A": 0.93,
+        "B": 0.86,
+        "G": 0.14,
+        "H": 0.83,
+        "I": 0.57,
+        "K": 0.72
+      },
+      "contributions": {
+        "A": 0.155,
+        "B": 0.1433,
+        "G": 0.0233,
+        "H": 0.1383,
+        "I": 0.095,
+        "K": 0.12
+      },
+      "tokens_sampled": 24592,
+      "sampled_share": 0.5564,
+      "low_coverage": false
+    },
+    {
+      "file": "A Study in Scarlet.epub",
+      "title": "A Study in Scarlet",
+      "digest": "ef55a2ab0de03441647f06188ff2612f85d7d4c290376930fa557f910aa53462",
+      "dup_of": 1,
+      "words": 44199,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.675,
+      "band": "Very heavy",
+      "interval": [
+        0.6316,
+        0.715
+      ],
+      "dimensions": {
+        "A": 0.93,
+        "B": 0.86,
+        "G": 0.14,
+        "H": 0.83,
+        "I": 0.57,
+        "K": 0.72
+      },
+      "contributions": {
+        "A": 0.155,
+        "B": 0.1433,
+        "G": 0.0233,
+        "H": 0.1383,
+        "I": 0.095,
+        "K": 0.12
+      },
+      "tokens_sampled": 24592,
+      "sampled_share": 0.5564,
+      "low_coverage": false
+    },
+    {
+      "file": "Alchemised 2.epub",
+      "title": "Alchemised",
+      "digest": "1d50970c83924026e259d849b3a9f07035633a4477908580bbd4a4482ac04821",
+      "dup_of": null,
+      "words": 324221,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9979,
+      "status": "ok",
+      "score": 0.51,
+      "band": "Demanding",
+      "interval": [
+        0.43,
+        0.5633
+      ],
+      "dimensions": {
+        "A": 0.79,
+        "B": 0.14,
+        "G": 0.07,
+        "H": 0.91,
+        "I": 0.82,
+        "K": 0.33
+      },
+      "contributions": {
+        "A": 0.1317,
+        "B": 0.0233,
+        "G": 0.0117,
+        "H": 0.1517,
+        "I": 0.1367,
+        "K": 0.055
+      },
+      "tokens_sampled": 22943,
+      "sampled_share": 0.0708,
+      "low_coverage": false
+    },
+    {
+      "file": "Alchemised.epub",
+      "title": "Alchemised",
+      "digest": "1d50970c83924026e259d849b3a9f07035633a4477908580bbd4a4482ac04821",
+      "dup_of": 3,
+      "words": 324221,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9979,
+      "status": "ok",
+      "score": 0.51,
+      "band": "Demanding",
+      "interval": [
+        0.43,
+        0.5633
+      ],
+      "dimensions": {
+        "A": 0.79,
+        "B": 0.14,
+        "G": 0.07,
+        "H": 0.91,
+        "I": 0.82,
+        "K": 0.33
+      },
+      "contributions": {
+        "A": 0.1317,
+        "B": 0.0233,
+        "G": 0.0117,
+        "H": 0.1517,
+        "I": 0.1367,
+        "K": 0.055
+      },
+      "tokens_sampled": 22943,
+      "sampled_share": 0.0708,
+      "low_coverage": false
+    },
+    {
+      "file": "At the Back of the North Wind 2.epub",
+      "title": "At the Back of the North Wind",
+      "digest": "aa1cb02f7ad36c781add50e0777879783f6296afd56d20583eaaa7116dd60ddd",
+      "dup_of": null,
+      "words": 89384,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.3833,
+      "band": "Moderate",
+      "interval": [
+        0.3217,
+        0.455
+      ],
+      "dimensions": {
+        "A": 0.07,
+        "B": 0.9,
+        "G": 0.02,
+        "H": 0.46,
+        "I": 0.01,
+        "K": 0.84
+      },
+      "contributions": {
+        "A": 0.0117,
+        "B": 0.15,
+        "G": 0.0033,
+        "H": 0.0767,
+        "I": 0.0017,
+        "K": 0.14
+      },
+      "tokens_sampled": 27716,
+      "sampled_share": 0.3101,
+      "low_coverage": false
+    },
+    {
+      "file": "At the Back of the North Wind.epub",
+      "title": "At the Back of the North Wind",
+      "digest": "aa1cb02f7ad36c781add50e0777879783f6296afd56d20583eaaa7116dd60ddd",
+      "dup_of": 5,
+      "words": 89384,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.3833,
+      "band": "Moderate",
+      "interval": [
+        0.3217,
+        0.455
+      ],
+      "dimensions": {
+        "A": 0.07,
+        "B": 0.9,
+        "G": 0.02,
+        "H": 0.46,
+        "I": 0.01,
+        "K": 0.84
+      },
+      "contributions": {
+        "A": 0.0117,
+        "B": 0.15,
+        "G": 0.0033,
+        "H": 0.0767,
+        "I": 0.0017,
+        "K": 0.14
+      },
+      "tokens_sampled": 27716,
+      "sampled_share": 0.3101,
+      "low_coverage": false
+    },
+    {
+      "file": "Black Ties and White Lies 2.epub",
+      "title": "Black Ties and White Lies",
+      "digest": "d27cd1f67fa7bf8049d5ccd3f2c2182127057c3b5491670a86551007ff8a34b2",
+      "dup_of": null,
+      "words": 124413,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9981,
+      "status": "ok",
+      "score": 0.2167,
+      "band": "Light",
+      "interval": [
+        0.1917,
+        0.2484
+      ],
+      "dimensions": {
+        "A": 0.08,
+        "B": 0.16,
+        "G": 0.01,
+        "H": 0.92,
+        "I": 0.11,
+        "K": 0.02
+      },
+      "contributions": {
+        "A": 0.0133,
+        "B": 0.0267,
+        "G": 0.0017,
+        "H": 0.1533,
+        "I": 0.0183,
+        "K": 0.0033
+      },
+      "tokens_sampled": 30369,
+      "sampled_share": 0.2441,
+      "low_coverage": false
+    },
+    {
+      "file": "Black Ties and White Lies.epub",
+      "title": "Black Ties and White Lies",
+      "digest": "d27cd1f67fa7bf8049d5ccd3f2c2182127057c3b5491670a86551007ff8a34b2",
+      "dup_of": 7,
+      "words": 124413,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9981,
+      "status": "ok",
+      "score": 0.2167,
+      "band": "Light",
+      "interval": [
+        0.1917,
+        0.2484
+      ],
+      "dimensions": {
+        "A": 0.08,
+        "B": 0.16,
+        "G": 0.01,
+        "H": 0.92,
+        "I": 0.11,
+        "K": 0.02
+      },
+      "contributions": {
+        "A": 0.0133,
+        "B": 0.0267,
+        "G": 0.0017,
+        "H": 0.1533,
+        "I": 0.0183,
+        "K": 0.0033
+      },
+      "tokens_sampled": 30369,
+      "sampled_share": 0.2441,
+      "low_coverage": false
+    },
+    {
+      "file": "Bleach : Can't Fear Your Own World, Vol. 1 2.epub",
+      "title": "Bleach: Can't Fear Your Own World, Vol. 1",
+      "digest": "651d4f611606ac8e100a3904d154fbab108bc4a837e9dabe80c3da19119789ad",
+      "dup_of": null,
+      "words": 47458,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9987,
+      "status": "ok",
+      "score": 0.66,
+      "band": "Very heavy",
+      "interval": [
+        0.5733,
+        0.71
+      ],
+      "dimensions": {
+        "A": 0.81,
+        "B": 0.82,
+        "G": 0.98,
+        "H": 0.48,
+        "I": 0.64,
+        "K": 0.23
+      },
+      "contributions": {
+        "A": 0.135,
+        "B": 0.1367,
+        "G": 0.1633,
+        "H": 0.08,
+        "I": 0.1067,
+        "K": 0.0383
+      },
+      "tokens_sampled": 22530,
+      "sampled_share": 0.4747,
+      "low_coverage": false
+    },
+    {
+      "file": "Bleach : Can't Fear Your Own World, Vol. 1.epub",
+      "title": "Bleach: Can't Fear Your Own World, Vol. 1",
+      "digest": "651d4f611606ac8e100a3904d154fbab108bc4a837e9dabe80c3da19119789ad",
+      "dup_of": 9,
+      "words": 47458,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9987,
+      "status": "ok",
+      "score": 0.66,
+      "band": "Very heavy",
+      "interval": [
+        0.5733,
+        0.71
+      ],
+      "dimensions": {
+        "A": 0.81,
+        "B": 0.82,
+        "G": 0.98,
+        "H": 0.48,
+        "I": 0.64,
+        "K": 0.23
+      },
+      "contributions": {
+        "A": 0.135,
+        "B": 0.1367,
+        "G": 0.1633,
+        "H": 0.08,
+        "I": 0.1067,
+        "K": 0.0383
+      },
+      "tokens_sampled": 22530,
+      "sampled_share": 0.4747,
+      "low_coverage": false
+    },
+    {
+      "file": "Bleach : Can\u2019t Fear Your Own World, Vol. 2 2.epub",
+      "title": "Bleach: Can\u2019t Fear Your Own World, Vol. 2",
+      "digest": "5d317f880934cbc123b3e82989d5d85138352e9120836d406e0c48285e4d1a39",
+      "dup_of": null,
+      "words": 93132,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.625,
+      "band": "Very heavy",
+      "interval": [
+        0.5367,
+        0.695
+      ],
+      "dimensions": {
+        "A": 0.76,
+        "B": 0.9,
+        "G": 0.99,
+        "H": 0.36,
+        "I": 0.66,
+        "K": 0.08
+      },
+      "contributions": {
+        "A": 0.1267,
+        "B": 0.15,
+        "G": 0.165,
+        "H": 0.06,
+        "I": 0.11,
+        "K": 0.0133
+      },
+      "tokens_sampled": 20403,
+      "sampled_share": 0.2191,
+      "low_coverage": false
+    },
+    {
+      "file": "Bleach : Can\u2019t Fear Your Own World, Vol. 2.epub",
+      "title": "Bleach: Can\u2019t Fear Your Own World, Vol. 2",
+      "digest": "5d317f880934cbc123b3e82989d5d85138352e9120836d406e0c48285e4d1a39",
+      "dup_of": 11,
+      "words": 93132,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.625,
+      "band": "Very heavy",
+      "interval": [
+        0.5367,
+        0.695
+      ],
+      "dimensions": {
+        "A": 0.76,
+        "B": 0.9,
+        "G": 0.99,
+        "H": 0.36,
+        "I": 0.66,
+        "K": 0.08
+      },
+      "contributions": {
+        "A": 0.1267,
+        "B": 0.15,
+        "G": 0.165,
+        "H": 0.06,
+        "I": 0.11,
+        "K": 0.0133
+      },
+      "tokens_sampled": 20403,
+      "sampled_share": 0.2191,
+      "low_coverage": false
+    },
+    {
+      "file": "Bleach : Can\u2019t Fear Your Own World, Vol. 3 2.epub",
+      "title": "Bleach: Can\u2019t Fear Your Own World, Vol. 3",
+      "digest": "a25e547a931fc33f18a35d03b52baa9b81515fe0e456481317a1b6553e86dd03",
+      "dup_of": null,
+      "words": 76993,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.6717,
+      "band": "Very heavy",
+      "interval": [
+        0.5,
+        0.7517
+      ],
+      "dimensions": {
+        "A": 0.63,
+        "B": 0.89,
+        "G": 0.97,
+        "H": 0.7,
+        "I": 0.46,
+        "K": 0.38
+      },
+      "contributions": {
+        "A": 0.105,
+        "B": 0.1483,
+        "G": 0.1617,
+        "H": 0.1167,
+        "I": 0.0767,
+        "K": 0.0633
+      },
+      "tokens_sampled": 23003,
+      "sampled_share": 0.2988,
+      "low_coverage": false
+    },
+    {
+      "file": "Bleach : Can\u2019t Fear Your Own World, Vol. 3.epub",
+      "title": "Bleach: Can\u2019t Fear Your Own World, Vol. 3",
+      "digest": "a25e547a931fc33f18a35d03b52baa9b81515fe0e456481317a1b6553e86dd03",
+      "dup_of": 13,
+      "words": 76993,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.6717,
+      "band": "Very heavy",
+      "interval": [
+        0.5,
+        0.7517
+      ],
+      "dimensions": {
+        "A": 0.63,
+        "B": 0.89,
+        "G": 0.97,
+        "H": 0.7,
+        "I": 0.46,
+        "K": 0.38
+      },
+      "contributions": {
+        "A": 0.105,
+        "B": 0.1483,
+        "G": 0.1617,
+        "H": 0.1167,
+        "I": 0.0767,
+        "K": 0.0633
+      },
+      "tokens_sampled": 23003,
+      "sampled_share": 0.2988,
+      "low_coverage": false
+    },
+    {
+      "file": "Blood Over Bright Haven 2.epub",
+      "title": "Blood Over Bright Haven",
+      "digest": "419bbc67d7bd605178135e8467ae9d06a8f96eed7f943e7758327bfc7205ba68",
+      "dup_of": null,
+      "words": 125596,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9998,
+      "status": "ok",
+      "score": 0.6117,
+      "band": "Heavy",
+      "interval": [
+        0.495,
+        0.6917
+      ],
+      "dimensions": {
+        "A": 0.78,
+        "B": 0.69,
+        "G": 0.91,
+        "H": 0.11,
+        "I": 0.51,
+        "K": 0.67
+      },
+      "contributions": {
+        "A": 0.13,
+        "B": 0.115,
+        "G": 0.1517,
+        "H": 0.0183,
+        "I": 0.085,
+        "K": 0.1117
+      },
+      "tokens_sampled": 28121,
+      "sampled_share": 0.2239,
+      "low_coverage": false
+    },
+    {
+      "file": "Blood Over Bright Haven.epub",
+      "title": "Blood Over Bright Haven",
+      "digest": "419bbc67d7bd605178135e8467ae9d06a8f96eed7f943e7758327bfc7205ba68",
+      "dup_of": 15,
+      "words": 125596,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9998,
+      "status": "ok",
+      "score": 0.6117,
+      "band": "Heavy",
+      "interval": [
+        0.495,
+        0.6917
+      ],
+      "dimensions": {
+        "A": 0.78,
+        "B": 0.69,
+        "G": 0.91,
+        "H": 0.11,
+        "I": 0.51,
+        "K": 0.67
+      },
+      "contributions": {
+        "A": 0.13,
+        "B": 0.115,
+        "G": 0.1517,
+        "H": 0.0183,
+        "I": 0.085,
+        "K": 0.1117
+      },
+      "tokens_sampled": 28121,
+      "sampled_share": 0.2239,
+      "low_coverage": false
+    },
+    {
+      "file": "Classroom Of The Elite : Finalissimo 2.epub",
+      "title": "CLASSROOM OF THE ELITE FINALISSIMO",
+      "digest": "8ae3eeaff1f6e9d94a4a06dd277e01eed57848c984270232ecb6fe37e0da2725",
+      "dup_of": null,
+      "words": 2261648,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9996,
+      "status": "ok",
+      "score": 0.57,
+      "band": "Heavy",
+      "interval": [
+        0.435,
+        0.65
+      ],
+      "dimensions": {
+        "A": 0.65,
+        "B": 0.69,
+        "G": 0.82,
+        "H": 0.38,
+        "I": 0.15,
+        "K": 0.73
+      },
+      "contributions": {
+        "A": 0.1083,
+        "B": 0.115,
+        "G": 0.1367,
+        "H": 0.0633,
+        "I": 0.025,
+        "K": 0.1217
+      },
+      "tokens_sampled": 24306,
+      "sampled_share": 0.0107,
+      "low_coverage": true
+    },
+    {
+      "file": "Classroom Of The Elite : Finalissimo.epub",
+      "title": "CLASSROOM OF THE ELITE FINALISSIMO",
+      "digest": "8ae3eeaff1f6e9d94a4a06dd277e01eed57848c984270232ecb6fe37e0da2725",
+      "dup_of": 17,
+      "words": 2261648,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9996,
+      "status": "ok",
+      "score": 0.57,
+      "band": "Heavy",
+      "interval": [
+        0.435,
+        0.65
+      ],
+      "dimensions": {
+        "A": 0.65,
+        "B": 0.69,
+        "G": 0.82,
+        "H": 0.38,
+        "I": 0.15,
+        "K": 0.73
+      },
+      "contributions": {
+        "A": 0.1083,
+        "B": 0.115,
+        "G": 0.1367,
+        "H": 0.0633,
+        "I": 0.025,
+        "K": 0.1217
+      },
+      "tokens_sampled": 24306,
+      "sampled_share": 0.0107,
+      "low_coverage": true
+    },
+    {
+      "file": "Don Quixote ( Volumes 1 - 2 ) 2.epub",
+      "title": "Don Quixote (Volumes 1-2) (Translated by Edith Grossman 2003)",
+      "digest": "f3775b1464264d604fd593c6f8f91acd9aabe38825ff029cad97fbff704150a5",
+      "dup_of": null,
+      "words": 430563,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.992,
+      "status": "ok",
+      "score": 0.6117,
+      "band": "Heavy",
+      "interval": [
+        0.5633,
+        0.6683
+      ],
+      "dimensions": {
+        "A": 0.87,
+        "B": 1.0,
+        "G": 1.0,
+        "H": 0.08,
+        "I": 0.23,
+        "K": 0.49
+      },
+      "contributions": {
+        "A": 0.145,
+        "B": 0.1667,
+        "G": 0.1667,
+        "H": 0.0133,
+        "I": 0.0383,
+        "K": 0.0817
+      },
+      "tokens_sampled": 24474,
+      "sampled_share": 0.0568,
+      "low_coverage": false
+    },
+    {
+      "file": "Don Quixote ( Volumes 1 - 2 ).epub",
+      "title": "Don Quixote (Volumes 1-2) (Translated by Edith Grossman 2003)",
+      "digest": "f3775b1464264d604fd593c6f8f91acd9aabe38825ff029cad97fbff704150a5",
+      "dup_of": 19,
+      "words": 430563,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.992,
+      "status": "ok",
+      "score": 0.6117,
+      "band": "Heavy",
+      "interval": [
+        0.5633,
+        0.6683
+      ],
+      "dimensions": {
+        "A": 0.87,
+        "B": 1.0,
+        "G": 1.0,
+        "H": 0.08,
+        "I": 0.23,
+        "K": 0.49
+      },
+      "contributions": {
+        "A": 0.145,
+        "B": 0.1667,
+        "G": 0.1667,
+        "H": 0.0133,
+        "I": 0.0383,
+        "K": 0.0817
+      },
+      "tokens_sampled": 24474,
+      "sampled_share": 0.0568,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 1 : In the Woods 2.epub",
+      "title": "In the Woods",
+      "digest": "2ef8b58245fb9bc74c56f31011aac8eeb5d933442296ae273ee4c04f7f2b09b8",
+      "dup_of": null,
+      "words": 177036,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9995,
+      "status": "ok",
+      "score": 0.58,
+      "band": "Heavy",
+      "interval": [
+        0.5183,
+        0.6633
+      ],
+      "dimensions": {
+        "A": 0.9,
+        "B": 0.27,
+        "G": 0.07,
+        "H": 0.97,
+        "I": 0.52,
+        "K": 0.75
+      },
+      "contributions": {
+        "A": 0.15,
+        "B": 0.045,
+        "G": 0.0117,
+        "H": 0.1617,
+        "I": 0.0867,
+        "K": 0.125
+      },
+      "tokens_sampled": 21482,
+      "sampled_share": 0.1213,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 1 : In the Woods.epub",
+      "title": "In the Woods",
+      "digest": "2ef8b58245fb9bc74c56f31011aac8eeb5d933442296ae273ee4c04f7f2b09b8",
+      "dup_of": 21,
+      "words": 177036,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9995,
+      "status": "ok",
+      "score": 0.58,
+      "band": "Heavy",
+      "interval": [
+        0.5183,
+        0.6633
+      ],
+      "dimensions": {
+        "A": 0.9,
+        "B": 0.27,
+        "G": 0.07,
+        "H": 0.97,
+        "I": 0.52,
+        "K": 0.75
+      },
+      "contributions": {
+        "A": 0.15,
+        "B": 0.045,
+        "G": 0.0117,
+        "H": 0.1617,
+        "I": 0.0867,
+        "K": 0.125
+      },
+      "tokens_sampled": 21482,
+      "sampled_share": 0.1213,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 2 : The Likeness 2.epub",
+      "title": "The Likeness: A Novel",
+      "digest": "be06c5ca75042018140c8e07a43060e2f1a25b4b41f3f9ab687f33352c3e8b6e",
+      "dup_of": null,
+      "words": 205949,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.5667,
+      "band": "Heavy",
+      "interval": [
+        0.515,
+        0.6017
+      ],
+      "dimensions": {
+        "A": 0.84,
+        "B": 0.24,
+        "G": 0.02,
+        "H": 0.99,
+        "I": 0.55,
+        "K": 0.76
+      },
+      "contributions": {
+        "A": 0.14,
+        "B": 0.04,
+        "G": 0.0033,
+        "H": 0.165,
+        "I": 0.0917,
+        "K": 0.1267
+      },
+      "tokens_sampled": 21632,
+      "sampled_share": 0.105,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 2 : The Likeness.epub",
+      "title": "The Likeness: A Novel",
+      "digest": "be06c5ca75042018140c8e07a43060e2f1a25b4b41f3f9ab687f33352c3e8b6e",
+      "dup_of": 23,
+      "words": 205949,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.5667,
+      "band": "Heavy",
+      "interval": [
+        0.515,
+        0.6017
+      ],
+      "dimensions": {
+        "A": 0.84,
+        "B": 0.24,
+        "G": 0.02,
+        "H": 0.99,
+        "I": 0.55,
+        "K": 0.76
+      },
+      "contributions": {
+        "A": 0.14,
+        "B": 0.04,
+        "G": 0.0033,
+        "H": 0.165,
+        "I": 0.0917,
+        "K": 0.1267
+      },
+      "tokens_sampled": 21632,
+      "sampled_share": 0.105,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 3 : Faithful Place 2.epub",
+      "title": "Faithful Place",
+      "digest": "c2219a177863296a6ca8af8c5a043e0f85b3eb783e9415fa7cfd3b69594e63d9",
+      "dup_of": null,
+      "words": 154489,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9994,
+      "status": "ok",
+      "score": 0.54,
+      "band": "Heavy",
+      "interval": [
+        0.4382,
+        0.6317
+      ],
+      "dimensions": {
+        "A": 0.44,
+        "B": 0.54,
+        "G": 0.63,
+        "H": 0.41,
+        "I": 0.49,
+        "K": 0.73
+      },
+      "contributions": {
+        "A": 0.0733,
+        "B": 0.09,
+        "G": 0.105,
+        "H": 0.0683,
+        "I": 0.0817,
+        "K": 0.1217
+      },
+      "tokens_sampled": 22552,
+      "sampled_share": 0.146,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 3 : Faithful Place.epub",
+      "title": "Faithful Place",
+      "digest": "c2219a177863296a6ca8af8c5a043e0f85b3eb783e9415fa7cfd3b69594e63d9",
+      "dup_of": 25,
+      "words": 154489,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9994,
+      "status": "ok",
+      "score": 0.54,
+      "band": "Heavy",
+      "interval": [
+        0.4382,
+        0.6317
+      ],
+      "dimensions": {
+        "A": 0.44,
+        "B": 0.54,
+        "G": 0.63,
+        "H": 0.41,
+        "I": 0.49,
+        "K": 0.73
+      },
+      "contributions": {
+        "A": 0.0733,
+        "B": 0.09,
+        "G": 0.105,
+        "H": 0.0683,
+        "I": 0.0817,
+        "K": 0.1217
+      },
+      "tokens_sampled": 22552,
+      "sampled_share": 0.146,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 4 : Broken Harbor 2.epub",
+      "title": "Broken Harbor (Dublin Murder Squad, Book 4)",
+      "digest": "a78703249fa2186a1a41c06c6a7013008199a31fab717aaf9c5e636fea265a8f",
+      "dup_of": null,
+      "words": 204319,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9992,
+      "status": "ok",
+      "score": 0.5317,
+      "band": "Demanding",
+      "interval": [
+        0.4117,
+        0.6517
+      ],
+      "dimensions": {
+        "A": 0.37,
+        "B": 0.56,
+        "G": 0.34,
+        "H": 0.81,
+        "I": 0.41,
+        "K": 0.7
+      },
+      "contributions": {
+        "A": 0.0617,
+        "B": 0.0933,
+        "G": 0.0567,
+        "H": 0.135,
+        "I": 0.0683,
+        "K": 0.1167
+      },
+      "tokens_sampled": 22843,
+      "sampled_share": 0.1118,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 4 : Broken Harbor.epub",
+      "title": "Broken Harbor (Dublin Murder Squad, Book 4)",
+      "digest": "a78703249fa2186a1a41c06c6a7013008199a31fab717aaf9c5e636fea265a8f",
+      "dup_of": 27,
+      "words": 204319,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9992,
+      "status": "ok",
+      "score": 0.5317,
+      "band": "Demanding",
+      "interval": [
+        0.4117,
+        0.6517
+      ],
+      "dimensions": {
+        "A": 0.37,
+        "B": 0.56,
+        "G": 0.34,
+        "H": 0.81,
+        "I": 0.41,
+        "K": 0.7
+      },
+      "contributions": {
+        "A": 0.0617,
+        "B": 0.0933,
+        "G": 0.0567,
+        "H": 0.135,
+        "I": 0.0683,
+        "K": 0.1167
+      },
+      "tokens_sampled": 22843,
+      "sampled_share": 0.1118,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 5 : The Secret Place.epub",
+      "title": "The Secret Place (Dublin Murder Squad, Book 5)",
+      "digest": "1e47e63b79f51c435872629d1265694dbb636a5b3fefc0a0cc596ac1e2eeb8f7",
+      "dup_of": null,
+      "words": 188419,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.435,
+      "band": "Moderate",
+      "interval": [
+        0.3383,
+        0.5183
+      ],
+      "dimensions": {
+        "A": 0.43,
+        "B": 0.07,
+        "G": 0.71,
+        "H": 0.38,
+        "I": 0.34,
+        "K": 0.68
+      },
+      "contributions": {
+        "A": 0.0717,
+        "B": 0.0117,
+        "G": 0.1183,
+        "H": 0.0633,
+        "I": 0.0567,
+        "K": 0.1133
+      },
+      "tokens_sampled": 23606,
+      "sampled_share": 0.1253,
+      "low_coverage": false
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 6 : The Trespasser.epub",
+      "title": "The Trespasser",
+      "digest": "36e06adfc4a5616d00084ad9b084709c1c42c1350f722bf33fcf8c1354028959",
+      "dup_of": null,
+      "words": 186767,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9993,
+      "status": "ok",
+      "score": 0.365,
+      "band": "Light",
+      "interval": [
+        0.2467,
+        0.4867
+      ],
+      "dimensions": {
+        "A": 0.64,
+        "B": 0.46,
+        "G": 0.37,
+        "H": 0.34,
+        "I": 0.32,
+        "K": 0.06
+      },
+      "contributions": {
+        "A": 0.1067,
+        "B": 0.0767,
+        "G": 0.0617,
+        "H": 0.0567,
+        "I": 0.0533,
+        "K": 0.01
+      },
+      "tokens_sampled": 22165,
+      "sampled_share": 0.1187,
+      "low_coverage": false
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 10 : The Brothers Karamazov.epub",
+      "title": "The Brothers Karamazov: A Novel in Four Parts With Epilogue",
+      "digest": "a1efb58d1b237bb484dc24541e7a0f29696c52930c1e9c414b24bb31dbc5e276",
+      "dup_of": null,
+      "words": 383354,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9998,
+      "status": "ok",
+      "score": 0.5833,
+      "band": "Heavy",
+      "interval": [
+        0.4683,
+        0.6433
+      ],
+      "dimensions": {
+        "A": 0.84,
+        "B": 0.95,
+        "G": 0.2,
+        "H": 0.9,
+        "I": 0.18,
+        "K": 0.43
+      },
+      "contributions": {
+        "A": 0.14,
+        "B": 0.1583,
+        "G": 0.0333,
+        "H": 0.15,
+        "I": 0.03,
+        "K": 0.0717
+      },
+      "tokens_sampled": 23340,
+      "sampled_share": 0.0609,
+      "low_coverage": false
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 5 : Crime and Punishment.epub",
+      "title": "Crime and Punishment",
+      "digest": "9aa3b1b5fb3108790bd74417f4922ba4db022e75eae250e13d7a0149160eb642",
+      "dup_of": null,
+      "words": 248556,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9993,
+      "status": "ok",
+      "score": 0.6733,
+      "band": "Very heavy",
+      "interval": [
+        0.5317,
+        0.87
+      ],
+      "dimensions": {
+        "A": 0.88,
+        "B": 0.83,
+        "G": 0.43,
+        "H": 0.97,
+        "I": 0.61,
+        "K": 0.32
+      },
+      "contributions": {
+        "A": 0.1467,
+        "B": 0.1383,
+        "G": 0.0717,
+        "H": 0.1617,
+        "I": 0.1017,
+        "K": 0.0533
+      },
+      "tokens_sampled": 23980,
+      "sampled_share": 0.0965,
+      "low_coverage": false
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 6 : The Idiot.epub",
+      "title": "The Idiot [trans Pevear] -- Dostoevsky, FyodorM -- <London>, date of publication not identified -- Everyman's Library -- 9781857152548 -- d12cb62a2ebc483c5d2664bf4f9e6ab5 -- Anna\u2019s Archive",
+      "digest": "b00365756b92944fbac32cd5c6893f9f6b92f8e452fa91b25e7814334acfc647",
+      "dup_of": null,
+      "words": 271981,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.5267,
+      "band": "Demanding",
+      "interval": [
+        0.4633,
+        0.5883
+      ],
+      "dimensions": {
+        "A": 0.72,
+        "B": 0.89,
+        "G": 0.08,
+        "H": 0.99,
+        "I": 0.11,
+        "K": 0.37
+      },
+      "contributions": {
+        "A": 0.12,
+        "B": 0.1483,
+        "G": 0.0133,
+        "H": 0.165,
+        "I": 0.0183,
+        "K": 0.0617
+      },
+      "tokens_sampled": 21246,
+      "sampled_share": 0.0781,
+      "low_coverage": false
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 8 : Demons.epub",
+      "title": "Demons (Translated by Pevear and Volokhonsky 1994)",
+      "digest": "5b8148b142f5d68c0f715c69e6e64e0fe0bbf36dcf6ca56d279b2fdef99e2557",
+      "dup_of": null,
+      "words": 283578,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9998,
+      "status": "ok",
+      "score": 0.6167,
+      "band": "Heavy",
+      "interval": [
+        0.545,
+        0.6667
+      ],
+      "dimensions": {
+        "A": 0.91,
+        "B": 0.91,
+        "G": 0.38,
+        "H": 0.84,
+        "I": 0.4,
+        "K": 0.26
+      },
+      "contributions": {
+        "A": 0.1517,
+        "B": 0.1517,
+        "G": 0.0633,
+        "H": 0.14,
+        "I": 0.0667,
+        "K": 0.0433
+      },
+      "tokens_sampled": 20450,
+      "sampled_share": 0.0721,
+      "low_coverage": false
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 9 : The Adolescent.epub",
+      "title": "The Adolescent",
+      "digest": "35cbbcd27a63f2454db9753ede152839f6d7d558eecf18df431608e5fc82fb2f",
+      "dup_of": null,
+      "words": 247810,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.8713,
+      "status": "ok",
+      "score": 0.5417,
+      "band": "Heavy",
+      "interval": [
+        0.48,
+        0.6
+      ],
+      "dimensions": {
+        "A": 0.93,
+        "B": 0.98,
+        "G": 0.05,
+        "H": 0.94,
+        "I": 0.21,
+        "K": 0.14
+      },
+      "contributions": {
+        "A": 0.155,
+        "B": 0.1633,
+        "G": 0.0083,
+        "H": 0.1567,
+        "I": 0.035,
+        "K": 0.0233
+      },
+      "tokens_sampled": 20742,
+      "sampled_share": 0.0837,
+      "low_coverage": false
+    },
+    {
+      "file": "Game of Thrones : Book 1 : A Game of Thrones.epub",
+      "title": "A Game of Thrones",
+      "digest": "a0b49185c62e9a5eb0a2452a2c464c5a8864fd5becee877dcb541a10dd390d00",
+      "dup_of": null,
+      "words": 299132,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.997,
+      "status": "ok",
+      "score": 0.4617,
+      "band": "Moderate",
+      "interval": [
+        0.395,
+        0.5117
+      ],
+      "dimensions": {
+        "A": 0.12,
+        "B": 0.48,
+        "G": 0.8,
+        "H": 0.05,
+        "I": 0.49,
+        "K": 0.83
+      },
+      "contributions": {
+        "A": 0.02,
+        "B": 0.08,
+        "G": 0.1333,
+        "H": 0.0083,
+        "I": 0.0817,
+        "K": 0.1383
+      },
+      "tokens_sampled": 26877,
+      "sampled_share": 0.0898,
+      "low_coverage": false
+    },
+    {
+      "file": "Game of Thrones : Book 2 : A Clash of Kings.epub",
+      "title": "A Clash of Kings",
+      "digest": "f33c35f8269661caef4647ae99f280c3949671bd486c85b50d74c6557ed98223",
+      "dup_of": null,
+      "words": 329009,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.47,
+      "band": "Demanding",
+      "interval": [
+        0.3883,
+        0.53
+      ],
+      "dimensions": {
+        "A": 0.14,
+        "B": 0.45,
+        "G": 0.9,
+        "H": 0.2,
+        "I": 0.58,
+        "K": 0.55
+      },
+      "contributions": {
+        "A": 0.0233,
+        "B": 0.075,
+        "G": 0.15,
+        "H": 0.0333,
+        "I": 0.0967,
+        "K": 0.0917
+      },
+      "tokens_sampled": 22088,
+      "sampled_share": 0.0671,
+      "low_coverage": false
+    },
+    {
+      "file": "Game of Thrones : Book 3 : A Storm of Swords.epub",
+      "title": "3 A Storm of Swords",
+      "digest": "e591036fb07ba48895249d0e32b350e8666dc2b965475fb1461af89f2b4e2286",
+      "dup_of": null,
+      "words": 423206,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.505,
+      "band": "Demanding",
+      "interval": [
+        0.4449,
+        0.565
+      ],
+      "dimensions": {
+        "A": 0.19,
+        "B": 0.64,
+        "G": 0.91,
+        "H": 0.25,
+        "I": 0.43,
+        "K": 0.61
+      },
+      "contributions": {
+        "A": 0.0317,
+        "B": 0.1067,
+        "G": 0.1517,
+        "H": 0.0417,
+        "I": 0.0717,
+        "K": 0.1017
+      },
+      "tokens_sampled": 27372,
+      "sampled_share": 0.0647,
+      "low_coverage": false
+    },
+    {
+      "file": "Game of Thrones : Book 4 : A Feast of Crows.epub",
+      "title": "A Ball of Beasts",
+      "digest": "9bed4ce21fda434692c91427b78bb77189a47880a88edfa00da11fdb0c0e7618",
+      "dup_of": null,
+      "words": 728738,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9986,
+      "status": "ok",
+      "score": 0.5733,
+      "band": "Heavy",
+      "interval": [
+        0.465,
+        0.7033
+      ],
+      "dimensions": {
+        "A": 0.48,
+        "B": 0.42,
+        "G": 0.96,
+        "H": 0.31,
+        "I": 0.66,
+        "K": 0.61
+      },
+      "contributions": {
+        "A": 0.08,
+        "B": 0.07,
+        "G": 0.16,
+        "H": 0.0517,
+        "I": 0.11,
+        "K": 0.1017
+      },
+      "tokens_sampled": 26064,
+      "sampled_share": 0.0358,
+      "low_coverage": false
+    },
+    {
+      "file": "Game of Thrones : Book 5 : A Dance With Dragons.epub",
+      "title": "A Dance With Dragons: A Song of Ice and Fire",
+      "digest": "fd83ad551e1c60b3003aa348ad2ae860f5ce67ae48b8b91607cd300c28930314",
+      "dup_of": null,
+      "words": 429994,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9987,
+      "status": "ok",
+      "score": 0.505,
+      "band": "Demanding",
+      "interval": [
+        0.3967,
+        0.57
+      ],
+      "dimensions": {
+        "A": 0.18,
+        "B": 0.46,
+        "G": 0.83,
+        "H": 0.36,
+        "I": 0.58,
+        "K": 0.62
+      },
+      "contributions": {
+        "A": 0.03,
+        "B": 0.0767,
+        "G": 0.1383,
+        "H": 0.06,
+        "I": 0.0967,
+        "K": 0.1033
+      },
+      "tokens_sampled": 24884,
+      "sampled_share": 0.0579,
+      "low_coverage": false
+    },
+    {
+      "file": "Game of Thrones : Book 6 : Fire and Blood.epub",
+      "title": "Fire & Blood",
+      "digest": "a9df7ee4d3a32d56577d602ee0ded6609a3efc1c391d5ef7a7e8d4261a5cdf15",
+      "dup_of": null,
+      "words": 256090,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.7583,
+      "band": "Very heavy",
+      "interval": [
+        0.6367,
+        0.8267
+      ],
+      "dimensions": {
+        "A": 0.73,
+        "B": 0.93,
+        "G": 1.0,
+        "H": 0.8,
+        "I": 0.81,
+        "K": 0.28
+      },
+      "contributions": {
+        "A": 0.1217,
+        "B": 0.155,
+        "G": 0.1667,
+        "H": 0.1333,
+        "I": 0.135,
+        "K": 0.0467
+      },
+      "tokens_sampled": 23128,
+      "sampled_share": 0.0903,
+      "low_coverage": false
+    },
+    {
+      "file": "Greenbone Trilogy : Book 1 : Jade City.epub",
+      "title": "Jade City",
+      "digest": "c1684a862e434f01a0787315da04ac6edd1d26ec826d251cacba72b9e24b93fb",
+      "dup_of": null,
+      "words": 168258,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9976,
+      "status": "ok",
+      "score": 0.6567,
+      "band": "Very heavy",
+      "interval": [
+        0.5616,
+        0.71
+      ],
+      "dimensions": {
+        "A": 0.82,
+        "B": 0.74,
+        "G": 0.78,
+        "H": 0.17,
+        "I": 0.95,
+        "K": 0.48
+      },
+      "contributions": {
+        "A": 0.1367,
+        "B": 0.1233,
+        "G": 0.13,
+        "H": 0.0283,
+        "I": 0.1583,
+        "K": 0.08
+      },
+      "tokens_sampled": 23751,
+      "sampled_share": 0.1412,
+      "low_coverage": false
+    },
+    {
+      "file": "Greenbone Trilogy : Book 2 : Jade War.epub",
+      "title": "Jade War",
+      "digest": "35116e7974906598537c756677a4bf7225463cc106d7d2eef877a143daf5f747",
+      "dup_of": null,
+      "words": 207780,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9977,
+      "status": "ok",
+      "score": 0.6033,
+      "band": "Heavy",
+      "interval": [
+        0.5283,
+        0.6417
+      ],
+      "dimensions": {
+        "A": 0.58,
+        "B": 0.78,
+        "G": 0.85,
+        "H": 0.08,
+        "I": 0.73,
+        "K": 0.6
+      },
+      "contributions": {
+        "A": 0.0967,
+        "B": 0.13,
+        "G": 0.1417,
+        "H": 0.0133,
+        "I": 0.1217,
+        "K": 0.1
+      },
+      "tokens_sampled": 24900,
+      "sampled_share": 0.1198,
+      "low_coverage": false
+    },
+    {
+      "file": "Greenbone Trilogy : Book 3 : Jade Legacy.epub",
+      "title": "Jade Legacy",
+      "digest": "661ac7d7c880dc732aaf99f9859262fd7404278a49b37b0e65c19da74b3917a1",
+      "dup_of": null,
+      "words": 256144,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9971,
+      "status": "ok",
+      "score": 0.7233,
+      "band": "Very heavy",
+      "interval": [
+        0.66,
+        0.76
+      ],
+      "dimensions": {
+        "A": 0.83,
+        "B": 0.76,
+        "G": 0.95,
+        "H": 0.17,
+        "I": 0.96,
+        "K": 0.67
+      },
+      "contributions": {
+        "A": 0.1383,
+        "B": 0.1267,
+        "G": 0.1583,
+        "H": 0.0283,
+        "I": 0.16,
+        "K": 0.1117
+      },
+      "tokens_sampled": 25327,
+      "sampled_share": 0.0989,
+      "low_coverage": false
+    },
+    {
+      "file": "If We Were Villains.epub",
+      "title": "If We Were Villains",
+      "digest": "a78c20af9f9a4d21a5c088814c1ffe3c8590206d8557592e6faf98110ad524ca",
+      "dup_of": null,
+      "words": 109452,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.998,
+      "status": "ok",
+      "score": 0.6733,
+      "band": "Very heavy",
+      "interval": [
+        0.525,
+        0.7867
+      ],
+      "dimensions": {
+        "A": 0.69,
+        "B": 0.55,
+        "G": 0.53,
+        "H": 0.52,
+        "I": 0.78,
+        "K": 0.97
+      },
+      "contributions": {
+        "A": 0.115,
+        "B": 0.0917,
+        "G": 0.0883,
+        "H": 0.0867,
+        "I": 0.13,
+        "K": 0.1617
+      },
+      "tokens_sampled": 29038,
+      "sampled_share": 0.2653,
+      "low_coverage": false
+    },
+    {
+      "file": "Kingdom of Three : Book 1 : Strike the Zither.epub",
+      "title": "Strike the Zither",
+      "digest": "ce5378f632418790049c4616fb1c2e0c73f48b0a44f3eff60c5cb512a40b26ab",
+      "dup_of": null,
+      "words": 83324,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9963,
+      "status": "ok",
+      "score": 0.435,
+      "band": "Moderate",
+      "interval": [
+        0.33,
+        0.5133
+      ],
+      "dimensions": {
+        "A": 0.74,
+        "B": 0.0,
+        "G": 0.47,
+        "H": 0.7,
+        "I": 0.7,
+        "K": 0.0
+      },
+      "contributions": {
+        "A": 0.1233,
+        "B": 0.0,
+        "G": 0.0783,
+        "H": 0.1167,
+        "I": 0.1167,
+        "K": 0.0
+      },
+      "tokens_sampled": 27964,
+      "sampled_share": 0.3356,
+      "low_coverage": false
+    },
+    {
+      "file": "Kingdom of Three : Book 2 : Sound the Gong.epub",
+      "title": "Sound the Gong",
+      "digest": "514e6f9eb809fc2a11a1f9dc62d046521b175ec4ed5bf70d1d4c30e46f719807",
+      "dup_of": null,
+      "words": 82149,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9982,
+      "status": "ok",
+      "score": 0.42,
+      "band": "Moderate",
+      "interval": [
+        0.295,
+        0.5517
+      ],
+      "dimensions": {
+        "A": 0.58,
+        "B": 0.02,
+        "G": 0.8,
+        "H": 0.58,
+        "I": 0.52,
+        "K": 0.02
+      },
+      "contributions": {
+        "A": 0.0967,
+        "B": 0.0033,
+        "G": 0.1333,
+        "H": 0.0967,
+        "I": 0.0867,
+        "K": 0.0033
+      },
+      "tokens_sampled": 24786,
+      "sampled_share": 0.3017,
+      "low_coverage": false
+    },
+    {
+      "file": "KonoSuba : God\u2019s Blessing on this Wonderful World ! : Book 1.epub",
+      "title": "KonoSuba!",
+      "digest": "e9aa13df0ec37d48f3ea623e804c01e6f42cdf1188a84ee23aba37c45c31484d",
+      "dup_of": null,
+      "words": 814308,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.4233,
+      "band": "Moderate",
+      "interval": [
+        0.3816,
+        0.4567
+      ],
+      "dimensions": {
+        "A": 0.76,
+        "B": 0.3,
+        "G": 0.68,
+        "H": 0.19,
+        "I": 0.44,
+        "K": 0.17
+      },
+      "contributions": {
+        "A": 0.1267,
+        "B": 0.05,
+        "G": 0.1133,
+        "H": 0.0317,
+        "I": 0.0733,
+        "K": 0.0283
+      },
+      "tokens_sampled": 21132,
+      "sampled_share": 0.026,
+      "low_coverage": true
+    },
+    {
+      "file": "Konosuba : God\u2019s Blessing on This Wonderful World ! : Book 2 :  Fantastic Days.epub",
+      "title": "Konosuba: God\u2019s Blessing on This Wonderful World! Fantastic Days",
+      "digest": "8b7f6ac23b353e5b1664e5e6c25ac60c4af53702e49a526132a3b1a7efbd2561",
+      "dup_of": null,
+      "words": 56679,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9992,
+      "status": "ok",
+      "score": 0.41,
+      "band": "Moderate",
+      "interval": [
+        0.3633,
+        0.4684
+      ],
+      "dimensions": {
+        "A": 0.43,
+        "B": 0.02,
+        "G": 0.78,
+        "H": 0.06,
+        "I": 0.25,
+        "K": 0.92
+      },
+      "contributions": {
+        "A": 0.0717,
+        "B": 0.0033,
+        "G": 0.13,
+        "H": 0.01,
+        "I": 0.0417,
+        "K": 0.1533
+      },
+      "tokens_sampled": 23033,
+      "sampled_share": 0.4064,
+      "low_coverage": false
+    },
+    {
+      "file": "Live by Night.epub",
+      "title": "Live by Night",
+      "digest": "abd3e4b5f11af763bea1259b14b5a30bc042d7a0e8762a1f9b0d11d03d386cdb",
+      "dup_of": null,
+      "words": 124955,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9967,
+      "status": "ok",
+      "score": 0.6917,
+      "band": "Very heavy",
+      "interval": [
+        0.6016,
+        0.7317
+      ],
+      "dimensions": {
+        "A": 0.68,
+        "B": 0.65,
+        "G": 0.9,
+        "H": 0.7,
+        "I": 0.37,
+        "K": 0.85
+      },
+      "contributions": {
+        "A": 0.1133,
+        "B": 0.1083,
+        "G": 0.15,
+        "H": 0.1167,
+        "I": 0.0617,
+        "K": 0.1417
+      },
+      "tokens_sampled": 27722,
+      "sampled_share": 0.2219,
+      "low_coverage": false
+    },
+    {
+      "file": "Lord of the Mysteries : Volume 1 : Full Story.epub",
+      "title": "Lord of the Mysteries: A Compilation",
+      "digest": "2a024aad1012518e65fcde21a7b4cd04620c70bb607d77e94a16dedd228d8fc3",
+      "dup_of": null,
+      "words": 2716241,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9971,
+      "status": "ok",
+      "score": 0.625,
+      "band": "Very heavy",
+      "interval": [
+        0.5283,
+        0.6767
+      ],
+      "dimensions": {
+        "A": 0.87,
+        "B": 0.24,
+        "G": 0.93,
+        "H": 0.52,
+        "I": 0.61,
+        "K": 0.58
+      },
+      "contributions": {
+        "A": 0.145,
+        "B": 0.04,
+        "G": 0.155,
+        "H": 0.0867,
+        "I": 0.1017,
+        "K": 0.0967
+      },
+      "tokens_sampled": 26020,
+      "sampled_share": 0.0096,
+      "low_coverage": true
+    },
+    {
+      "file": "Lord of the Mysteries : Volume 2 : Circles of Inevitability.epub",
+      "title": "Lord of the Mysteries 2",
+      "digest": "7cf96e35aa926550a58a7ec435c89a734988853c8ac4351d4adabf77ebf0b2c9",
+      "dup_of": null,
+      "words": 2050062,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.996,
+      "status": "ok",
+      "score": 0.67,
+      "band": "Very heavy",
+      "interval": [
+        0.5666,
+        0.7868
+      ],
+      "dimensions": {
+        "A": 0.96,
+        "B": 0.19,
+        "G": 0.92,
+        "H": 0.67,
+        "I": 0.98,
+        "K": 0.3
+      },
+      "contributions": {
+        "A": 0.16,
+        "B": 0.0317,
+        "G": 0.1533,
+        "H": 0.1117,
+        "I": 0.1633,
+        "K": 0.05
+      },
+      "tokens_sampled": 24180,
+      "sampled_share": 0.0118,
+      "low_coverage": true
+    },
+    {
+      "file": "Man's Search for Meaning.epub",
+      "title": "Man's Search for Meaning",
+      "digest": "17c6c2451cea93b41fb7a8ad568dd293c6c2b658dd5371d47f1f3617b5ae0ac1",
+      "dup_of": null,
+      "words": 48475,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9996,
+      "status": "ok",
+      "score": 0.6283,
+      "band": "Very heavy",
+      "interval": [
+        0.5733,
+        0.805
+      ],
+      "dimensions": {
+        "A": 1.0,
+        "B": 0.93,
+        "G": 0.04,
+        "H": 0.99,
+        "I": 0.79,
+        "K": 0.02
+      },
+      "contributions": {
+        "A": 0.1667,
+        "B": 0.155,
+        "G": 0.0067,
+        "H": 0.165,
+        "I": 0.1317,
+        "K": 0.0033
+      },
+      "tokens_sampled": 20390,
+      "sampled_share": 0.4206,
+      "low_coverage": false
+    },
+    {
+      "file": "Murder on the Orient Express.epub",
+      "title": "Murder on the Orient Express",
+      "digest": "5a9656b953c5bde53c8e20b44a6d028a3caaf7c9223b7fa784419189c098d602",
+      "dup_of": null,
+      "words": 59799,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.973,
+      "status": "ok",
+      "score": 0.5317,
+      "band": "Demanding",
+      "interval": [
+        0.4517,
+        0.625
+      ],
+      "dimensions": {
+        "A": 0.81,
+        "B": 0.34,
+        "G": 0.45,
+        "H": 0.53,
+        "I": 0.11,
+        "K": 0.95
+      },
+      "contributions": {
+        "A": 0.135,
+        "B": 0.0567,
+        "G": 0.075,
+        "H": 0.0883,
+        "I": 0.0183,
+        "K": 0.1583
+      },
+      "tokens_sampled": 25991,
+      "sampled_share": 0.4346,
+      "low_coverage": false
+    },
+    {
+      "file": "Mushoku Tensei - Short Stories.epub",
+      "title": "Mushoku Tensei - Short Stories",
+      "digest": "fc381cca219c71865c27b672ce3a2c7718b4e05e4f2177e35d533222c052f087",
+      "dup_of": null,
+      "words": 113997,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9988,
+      "status": "ok",
+      "score": 0.4633,
+      "band": "Moderate",
+      "interval": [
+        0.3333,
+        0.5633
+      ],
+      "dimensions": {
+        "A": 0.39,
+        "B": 0.48,
+        "G": 0.51,
+        "H": 0.61,
+        "I": 0.24,
+        "K": 0.55
+      },
+      "contributions": {
+        "A": 0.065,
+        "B": 0.08,
+        "G": 0.085,
+        "H": 0.1017,
+        "I": 0.04,
+        "K": 0.0917
+      },
+      "tokens_sampled": 26023,
+      "sampled_share": 0.2283,
+      "low_coverage": false
+    },
+    {
+      "file": "Mushoku Tensei.epub",
+      "title": "Mushoku Tensei",
+      "digest": "8c5f6c3e73450c99a88f508abd64177a98fed27624bacdc6204cb94ad2c5766c",
+      "dup_of": null,
+      "words": 1758252,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.3983,
+      "band": "Moderate",
+      "interval": [
+        0.3267,
+        0.4733
+      ],
+      "dimensions": {
+        "A": 0.31,
+        "B": 0.19,
+        "G": 0.67,
+        "H": 0.4,
+        "I": 0.45,
+        "K": 0.37
+      },
+      "contributions": {
+        "A": 0.0517,
+        "B": 0.0317,
+        "G": 0.1117,
+        "H": 0.0667,
+        "I": 0.075,
+        "K": 0.0617
+      },
+      "tokens_sampled": 23315,
+      "sampled_share": 0.0133,
+      "low_coverage": true
+    },
+    {
+      "file": "Narnia Chronicles : Book 1 : The Lion, the Witch, and the Wardrobe.epub",
+      "title": "The Lion, the Witch and the Wardrobe",
+      "digest": "0c58de071b736853caf9a5e5d977731e71421fc3d7761aac292f36ad478a5373",
+      "dup_of": null,
+      "words": 37620,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9984,
+      "status": "ok",
+      "score": 0.44,
+      "band": "Moderate",
+      "interval": [
+        0.3833,
+        0.4683
+      ],
+      "dimensions": {
+        "A": 0.01,
+        "B": 0.79,
+        "G": 0.11,
+        "H": 0.72,
+        "I": 0.02,
+        "K": 0.99
+      },
+      "contributions": {
+        "A": 0.0017,
+        "B": 0.1317,
+        "G": 0.0183,
+        "H": 0.12,
+        "I": 0.0033,
+        "K": 0.165
+      },
+      "tokens_sampled": 30428,
+      "sampled_share": 0.8088,
+      "low_coverage": false
+    },
+    {
+      "file": "Narnia Chronicles : Book 2 : Prince Caspian.epub",
+      "title": "Prince Caspian. The Return to Narnia.",
+      "digest": "612836e6b2cce3d68ea45c0dcf8bb328c5142a10ddae2426c841328abb0e328f",
+      "dup_of": null,
+      "words": 45404,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.5433,
+      "band": "Heavy",
+      "interval": [
+        0.42,
+        0.6383
+      ],
+      "dimensions": {
+        "A": 0.15,
+        "B": 0.58,
+        "G": 0.67,
+        "H": 0.78,
+        "I": 0.19,
+        "K": 0.89
+      },
+      "contributions": {
+        "A": 0.025,
+        "B": 0.0967,
+        "G": 0.1117,
+        "H": 0.13,
+        "I": 0.0317,
+        "K": 0.1483
+      },
+      "tokens_sampled": 21405,
+      "sampled_share": 0.4714,
+      "low_coverage": false
+    },
+    {
+      "file": "Narnia Chronicles : Book 3 : The Voyage of the Dawn Treader.epub",
+      "title": "The Voyage of the Dawn Treader",
+      "digest": "9746c22f35cfc69218a6032ca7a95c7b03bdd953845610501b515768f6e529b8",
+      "dup_of": null,
+      "words": 52897,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9989,
+      "status": "ok",
+      "score": 0.475,
+      "band": "Demanding",
+      "interval": [
+        0.4317,
+        0.5233
+      ],
+      "dimensions": {
+        "A": 0.09,
+        "B": 0.76,
+        "G": 0.13,
+        "H": 0.92,
+        "I": 0.05,
+        "K": 0.9
+      },
+      "contributions": {
+        "A": 0.015,
+        "B": 0.1267,
+        "G": 0.0217,
+        "H": 0.1533,
+        "I": 0.0083,
+        "K": 0.15
+      },
+      "tokens_sampled": 27145,
+      "sampled_share": 0.5132,
+      "low_coverage": false
+    },
+    {
+      "file": "Narnia Chronicles : Book 4 : The Silver Chair.epub",
+      "title": "The Silver Chair",
+      "digest": "68d8d7bdc989c09b8f6829f1928ca91161eee990a3239effbe4860011a4fcb7c",
+      "dup_of": null,
+      "words": 51843,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.455,
+      "band": "Moderate",
+      "interval": [
+        0.4083,
+        0.5233
+      ],
+      "dimensions": {
+        "A": 0.2,
+        "B": 0.67,
+        "G": 0.05,
+        "H": 0.87,
+        "I": 0.17,
+        "K": 0.77
+      },
+      "contributions": {
+        "A": 0.0333,
+        "B": 0.1117,
+        "G": 0.0083,
+        "H": 0.145,
+        "I": 0.0283,
+        "K": 0.1283
+      },
+      "tokens_sampled": 21547,
+      "sampled_share": 0.4156,
+      "low_coverage": false
+    },
+    {
+      "file": "Narnia Chronicles : Book 5 : The Horse and His boy.epub",
+      "title": "The Horse and his Boy",
+      "digest": "cc267f5d7b24b28e30e384004dfd672d82a79975016e58b679eefb89a7507e7d",
+      "dup_of": null,
+      "words": 48740,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.4667,
+      "band": "Demanding",
+      "interval": [
+        0.375,
+        0.5534
+      ],
+      "dimensions": {
+        "A": 0.2,
+        "B": 0.78,
+        "G": 0.25,
+        "H": 0.58,
+        "I": 0.19,
+        "K": 0.8
+      },
+      "contributions": {
+        "A": 0.0333,
+        "B": 0.13,
+        "G": 0.0417,
+        "H": 0.0967,
+        "I": 0.0317,
+        "K": 0.1333
+      },
+      "tokens_sampled": 23232,
+      "sampled_share": 0.4767,
+      "low_coverage": false
+    },
+    {
+      "file": "Narnia Chronicles : Book 6 : The Magician's Nephew.epub",
+      "title": "The Magician's Nephew",
+      "digest": "94613b7a6fe87c0dd62cb9e2fce88ddfba8c6770ea257a102bed2ed39884aaa5",
+      "dup_of": null,
+      "words": 41738,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.4117,
+      "band": "Moderate",
+      "interval": [
+        0.37,
+        0.445
+      ],
+      "dimensions": {
+        "A": 0.04,
+        "B": 0.52,
+        "G": 0.13,
+        "H": 0.9,
+        "I": 0.05,
+        "K": 0.83
+      },
+      "contributions": {
+        "A": 0.0067,
+        "B": 0.0867,
+        "G": 0.0217,
+        "H": 0.15,
+        "I": 0.0083,
+        "K": 0.1383
+      },
+      "tokens_sampled": 21805,
+      "sampled_share": 0.5224,
+      "low_coverage": false
+    },
+    {
+      "file": "Narnia Chronicles : Book 7 : The Last Battle.epub",
+      "title": "The Last Battle",
+      "digest": "0a90c863b900183cc82c1b9baac9f136ed4e04b097f82b4ba8975ebaea544bdc",
+      "dup_of": null,
+      "words": 43836,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.535,
+      "band": "Heavy",
+      "interval": [
+        0.425,
+        0.58
+      ],
+      "dimensions": {
+        "A": 0.02,
+        "B": 0.81,
+        "G": 0.71,
+        "H": 0.75,
+        "I": 0.14,
+        "K": 0.78
+      },
+      "contributions": {
+        "A": 0.0033,
+        "B": 0.135,
+        "G": 0.1183,
+        "H": 0.125,
+        "I": 0.0233,
+        "K": 0.13
+      },
+      "tokens_sampled": 21833,
+      "sampled_share": 0.4981,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Hiden : Book 1 : Kakashi Hiden : Lightning in the Icy Sky.epub",
+      "title": "NARUTO: Kakashi\u2019s Story",
+      "digest": "74199b766507d2fbb96e05d30d5d6170339a3c3ad88b0a7bf3073205008f8252",
+      "dup_of": null,
+      "words": 33455,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.3483,
+      "band": "Light",
+      "interval": [
+        0.29,
+        0.4383
+      ],
+      "dimensions": {
+        "A": 0.1,
+        "B": 0.2,
+        "G": 0.84,
+        "H": 0.11,
+        "I": 0.37,
+        "K": 0.47
+      },
+      "contributions": {
+        "A": 0.0167,
+        "B": 0.0333,
+        "G": 0.14,
+        "H": 0.0183,
+        "I": 0.0617,
+        "K": 0.0783
+      },
+      "tokens_sampled": 27499,
+      "sampled_share": 0.822,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Hiden : Book 2 : Shikamaru Hiden : A Cloud Drifting in Silent Darkness.epub",
+      "title": "Naruto: Shikamaru's Story (Naruto Novels)",
+      "digest": "1f48388cf68bcf07c80291e847f3642deed5ac2ff1b65938d2bbb75874562303",
+      "dup_of": null,
+      "words": 37401,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9986,
+      "status": "ok",
+      "score": 0.3967,
+      "band": "Moderate",
+      "interval": [
+        0.3283,
+        0.445
+      ],
+      "dimensions": {
+        "A": 0.29,
+        "B": 0.23,
+        "G": 0.45,
+        "H": 0.57,
+        "I": 0.26,
+        "K": 0.58
+      },
+      "contributions": {
+        "A": 0.0483,
+        "B": 0.0383,
+        "G": 0.075,
+        "H": 0.095,
+        "I": 0.0433,
+        "K": 0.0967
+      },
+      "tokens_sampled": 29126,
+      "sampled_share": 0.7787,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Hiden : Book 3 : Sakura Hiden : Thoughts of Love, Riding Upon a Spring Breeze.epub",
+      "title": "Naruto: Sakura's Story (Naruto Novels)",
+      "digest": "ed9e33d3b2b883ef2e9b82cb9be989881fb6686b401b4f4f5bb82dd78e66b5a7",
+      "dup_of": null,
+      "words": 37066,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9989,
+      "status": "ok",
+      "score": 0.405,
+      "band": "Moderate",
+      "interval": [
+        0.2967,
+        0.4584
+      ],
+      "dimensions": {
+        "A": 0.05,
+        "B": 0.34,
+        "G": 0.6,
+        "H": 0.48,
+        "I": 0.2,
+        "K": 0.76
+      },
+      "contributions": {
+        "A": 0.0083,
+        "B": 0.0567,
+        "G": 0.1,
+        "H": 0.08,
+        "I": 0.0333,
+        "K": 0.1267
+      },
+      "tokens_sampled": 24104,
+      "sampled_share": 0.6503,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Hiden : Book 4 : Konoha Hiden : The Perfect Day for a Wedding.epub",
+      "title": "Naruto Hiden Series - Volume 04 - Konoha's Story - Konoha Hiden - Shuugenbiyori",
+      "digest": "4daaf356d5527902aaed0291c77eea3be38c64aca1095020f23ee73b3db4c14d",
+      "dup_of": null,
+      "words": 51856,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.3133,
+      "band": "Light",
+      "interval": [
+        0.2283,
+        0.43
+      ],
+      "dimensions": {
+        "A": 0.29,
+        "B": 0.61,
+        "G": 0.28,
+        "H": 0.28,
+        "I": 0.28,
+        "K": 0.14
+      },
+      "contributions": {
+        "A": 0.0483,
+        "B": 0.1017,
+        "G": 0.0467,
+        "H": 0.0467,
+        "I": 0.0467,
+        "K": 0.0233
+      },
+      "tokens_sampled": 20060,
+      "sampled_share": 0.3868,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Hiden : Book 5 : Gaara Hiden : A Sandstorm Mirage.epub",
+      "title": "Gaara Hiden",
+      "digest": "00719184d6331cd794d0dba612972ff7e1390875d2a3d6d4c4560da77862c3d8",
+      "dup_of": null,
+      "words": 33820,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.515,
+      "band": "Demanding",
+      "interval": [
+        0.41,
+        0.58
+      ],
+      "dimensions": {
+        "A": 0.58,
+        "B": 0.51,
+        "G": 0.49,
+        "H": 0.61,
+        "I": 0.53,
+        "K": 0.37
+      },
+      "contributions": {
+        "A": 0.0967,
+        "B": 0.085,
+        "G": 0.0817,
+        "H": 0.1017,
+        "I": 0.0883,
+        "K": 0.0617
+      },
+      "tokens_sampled": 19692,
+      "sampled_share": 0.5823,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Hiden : Book 6 : Akatsuki Hiden : Evil Flowers in Full Bloom.epub",
+      "title": "Akatsuki Hiden",
+      "digest": "2d8a58402b560a949838b5acfbfbff6637a4585f25250fcd493637f4a0169399",
+      "dup_of": null,
+      "words": 32480,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9995,
+      "status": "ok",
+      "score": 0.4933,
+      "band": "Demanding",
+      "interval": [
+        0.4033,
+        0.5317
+      ],
+      "dimensions": {
+        "A": 0.56,
+        "B": 0.86,
+        "G": 0.96,
+        "H": 0.09,
+        "I": 0.23,
+        "K": 0.26
+      },
+      "contributions": {
+        "A": 0.0933,
+        "B": 0.1433,
+        "G": 0.16,
+        "H": 0.015,
+        "I": 0.0383,
+        "K": 0.0433
+      },
+      "tokens_sampled": 24091,
+      "sampled_share": 0.7417,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Retsuden : Book 2 : Sasuke Retsuden : The Uchiha Descendants and the Heavenly Stardust.epub",
+      "title": "SASUKE RETSUDEN",
+      "digest": "9a360dd129b18228315fe8009a01fa87a434b9b0e5feb037d4a84d5d3b820789",
+      "dup_of": null,
+      "words": 37831,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.995,
+      "status": "ok",
+      "score": 0.4233,
+      "band": "Moderate",
+      "interval": [
+        0.3416,
+        0.5167
+      ],
+      "dimensions": {
+        "A": 0.63,
+        "B": 0.76,
+        "G": 0.33,
+        "H": 0.31,
+        "I": 0.4,
+        "K": 0.11
+      },
+      "contributions": {
+        "A": 0.105,
+        "B": 0.1267,
+        "G": 0.055,
+        "H": 0.0517,
+        "I": 0.0667,
+        "K": 0.0183
+      },
+      "tokens_sampled": 21805,
+      "sampled_share": 0.5764,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Retsuden : Book 3 : Naruto Uzumaki and the Spiral Destiny.epub",
+      "title": "Naruto Narutos Story Uzumaki Naruto and the Spiral Destiny",
+      "digest": "ac62ac49b452dddc83b0c7b4d43aad5158a727e547e0029e9faec0fe158e0a8f",
+      "dup_of": null,
+      "words": 54109,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9994,
+      "status": "ok",
+      "score": 0.4883,
+      "band": "Demanding",
+      "interval": [
+        0.3783,
+        0.6034
+      ],
+      "dimensions": {
+        "A": 0.47,
+        "B": 0.25,
+        "G": 0.62,
+        "H": 0.32,
+        "I": 0.81,
+        "K": 0.46
+      },
+      "contributions": {
+        "A": 0.0783,
+        "B": 0.0417,
+        "G": 0.1033,
+        "H": 0.0533,
+        "I": 0.135,
+        "K": 0.0767
+      },
+      "tokens_sampled": 20082,
+      "sampled_share": 0.3711,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Shinden (2015) : Itachi's Story, Vol. 1 : Daylight.epub",
+      "title": "Naruto: Itachi's Story, Vol. 1: Daylight (Naruto Novels)",
+      "digest": "2b436b6f3a99bd393a7d8c73aa6f5b27306f0bbcaef4d3dca5ffc2e6c8af9290",
+      "dup_of": null,
+      "words": 37155,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9992,
+      "status": "ok",
+      "score": 0.3317,
+      "band": "Light",
+      "interval": [
+        0.2683,
+        0.3933
+      ],
+      "dimensions": {
+        "A": 0.26,
+        "B": 0.14,
+        "G": 0.36,
+        "H": 0.37,
+        "I": 0.37,
+        "K": 0.49
+      },
+      "contributions": {
+        "A": 0.0433,
+        "B": 0.0233,
+        "G": 0.06,
+        "H": 0.0617,
+        "I": 0.0617,
+        "K": 0.0817
+      },
+      "tokens_sampled": 26885,
+      "sampled_share": 0.7236,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Shinden (2015) : Itachi's Story, Vol. 2 : Midnight.epub",
+      "title": "Naruto: Itachi's Story, Vol. 2: Midnight (Naruto Novels)",
+      "digest": "b7e2809d1b12a91386d86a8f9bae7ed54a9d3579395bfb32e3e27d54db99493c",
+      "dup_of": null,
+      "words": 47322,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9996,
+      "status": "ok",
+      "score": 0.3167,
+      "band": "Light",
+      "interval": [
+        0.2733,
+        0.3933
+      ],
+      "dimensions": {
+        "A": 0.34,
+        "B": 0.38,
+        "G": 0.31,
+        "H": 0.07,
+        "I": 0.28,
+        "K": 0.52
+      },
+      "contributions": {
+        "A": 0.0567,
+        "B": 0.0633,
+        "G": 0.0517,
+        "H": 0.0117,
+        "I": 0.0467,
+        "K": 0.0867
+      },
+      "tokens_sampled": 24869,
+      "sampled_share": 0.5255,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Shinden (2015): Sasuke\u2019s Story : Sunrise.epub",
+      "title": "Naruto: Sasuke\u2019s Story: Sunrise",
+      "digest": "374fb56f06bacfdb3c0d15cc95ab1da0dc7461e46a805a41115eec753d67a217",
+      "dup_of": null,
+      "words": 37456,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9985,
+      "status": "ok",
+      "score": 0.3333,
+      "band": "Light",
+      "interval": [
+        0.28,
+        0.3867
+      ],
+      "dimensions": {
+        "A": 0.07,
+        "B": 0.29,
+        "G": 0.7,
+        "H": 0.13,
+        "I": 0.33,
+        "K": 0.48
+      },
+      "contributions": {
+        "A": 0.0117,
+        "B": 0.0483,
+        "G": 0.1167,
+        "H": 0.0217,
+        "I": 0.055,
+        "K": 0.08
+      },
+      "tokens_sampled": 23028,
+      "sampled_share": 0.6148,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Shinden (2018) : Book 1 : Konoha Shinden : Steam Ninja Scrolls.epub",
+      "title": "pdfcoffee.com konoha-shinden-steam-ninja-scrollspdf-pdf-free",
+      "digest": "7661fafe4aa0bea48c3c57c353553366cf7ddd77a190346bddb14aa9b7015a6f",
+      "dup_of": null,
+      "words": 55277,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9989,
+      "status": "ok",
+      "score": 0.4167,
+      "band": "Moderate",
+      "interval": [
+        0.3333,
+        0.5067
+      ],
+      "dimensions": {
+        "A": 0.4,
+        "B": 0.87,
+        "G": 0.46,
+        "H": 0.49,
+        "I": 0.1,
+        "K": 0.18
+      },
+      "contributions": {
+        "A": 0.0667,
+        "B": 0.145,
+        "G": 0.0767,
+        "H": 0.0817,
+        "I": 0.0167,
+        "K": 0.03
+      },
+      "tokens_sampled": 20577,
+      "sampled_share": 0.3723,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Shinden (2018) : Book 2 : Naruto\u2019s Story : Family Day.epub",
+      "title": "Naruto\u2019s Story: Family Day",
+      "digest": "1dc05b744a960da92c35716f09075a269eb6360a8d3e871064569b9e07fa19b7",
+      "dup_of": null,
+      "words": 39240,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9972,
+      "status": "ok",
+      "score": 0.435,
+      "band": "Moderate",
+      "interval": [
+        0.3066,
+        0.495
+      ],
+      "dimensions": {
+        "A": 0.14,
+        "B": 0.05,
+        "G": 0.74,
+        "H": 0.78,
+        "I": 0.67,
+        "K": 0.23
+      },
+      "contributions": {
+        "A": 0.0233,
+        "B": 0.0083,
+        "G": 0.1233,
+        "H": 0.13,
+        "I": 0.1117,
+        "K": 0.0383
+      },
+      "tokens_sampled": 20914,
+      "sampled_share": 0.533,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Shinden (2018) : Book 3 : Sasuke\u2019s Story : Star Pupil.epub",
+      "title": "Sasuke\u2019s Story: Star Pupil",
+      "digest": "5ffa4b5a8e3eb7b043b3e30ca96ba344b46f6ead2d21c5cb6dc36f9b9a2ec801",
+      "dup_of": null,
+      "words": 33197,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9986,
+      "status": "ok",
+      "score": 0.3833,
+      "band": "Moderate",
+      "interval": [
+        0.3066,
+        0.44
+      ],
+      "dimensions": {
+        "A": 0.49,
+        "B": 0.04,
+        "G": 0.41,
+        "H": 0.26,
+        "I": 0.54,
+        "K": 0.56
+      },
+      "contributions": {
+        "A": 0.0817,
+        "B": 0.0067,
+        "G": 0.0683,
+        "H": 0.0433,
+        "I": 0.09,
+        "K": 0.0933
+      },
+      "tokens_sampled": 22908,
+      "sampled_share": 0.6901,
+      "low_coverage": false
+    },
+    {
+      "file": "Naruto Shinden (2018) : Book 4 : Shikamaru\u2019s Story : Morning Clouds.epub",
+      "title": "Shikamaru\u2019s Story: Mourning Clouds",
+      "digest": "6ade4d22a968b7588c4c9356de9eed92b8d22f83922d23c1ba1d0b5272ec442d",
+      "dup_of": null,
+      "words": 38960,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9987,
+      "status": "ok",
+      "score": 0.3533,
+      "band": "Light",
+      "interval": [
+        0.3,
+        0.4117
+      ],
+      "dimensions": {
+        "A": 0.17,
+        "B": 0.28,
+        "G": 0.56,
+        "H": 0.26,
+        "I": 0.43,
+        "K": 0.42
+      },
+      "contributions": {
+        "A": 0.0283,
+        "B": 0.0467,
+        "G": 0.0933,
+        "H": 0.0433,
+        "I": 0.0717,
+        "K": 0.07
+      },
+      "tokens_sampled": 20950,
+      "sampled_share": 0.5377,
+      "low_coverage": false
+    },
+    {
+      "file": "Neyuki.epub",
+      "title": "Neyuki",
+      "digest": "1e1759e92beadd70bd045a83f0d0cbf253bbad05266c68205a9771f9af594afd",
+      "dup_of": null,
+      "words": 118794,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9993,
+      "status": "ok",
+      "score": 0.5067,
+      "band": "Demanding",
+      "interval": [
+        0.4016,
+        0.5517
+      ],
+      "dimensions": {
+        "A": 0.5,
+        "B": 0.09,
+        "G": 0.55,
+        "H": 0.76,
+        "I": 0.39,
+        "K": 0.75
+      },
+      "contributions": {
+        "A": 0.0833,
+        "B": 0.015,
+        "G": 0.0917,
+        "H": 0.1267,
+        "I": 0.065,
+        "K": 0.125
+      },
+      "tokens_sampled": 22970,
+      "sampled_share": 0.1934,
+      "low_coverage": false
+    },
+    {
+      "file": "No Longer Human.epub",
+      "title": "No Longer Human",
+      "digest": "584d07dc262edb900d658e8fc6751edd2e78c1392b91f27604e0d30fbf3348c5",
+      "dup_of": null,
+      "words": 35679,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9989,
+      "status": "ok",
+      "score": 0.5767,
+      "band": "Heavy",
+      "interval": [
+        0.5233,
+        0.6067
+      ],
+      "dimensions": {
+        "A": 0.93,
+        "B": 0.64,
+        "G": 0.01,
+        "H": 1.0,
+        "I": 0.76,
+        "K": 0.12
+      },
+      "contributions": {
+        "A": 0.155,
+        "B": 0.1067,
+        "G": 0.0017,
+        "H": 0.1667,
+        "I": 0.1267,
+        "K": 0.02
+      },
+      "tokens_sampled": 22871,
+      "sampled_share": 0.641,
+      "low_coverage": false
+    },
+    {
+      "file": "One of Us Is Lying.epub",
+      "title": "One of Us Is Lying",
+      "digest": "be1816ef4f8e5ac93b8433c1e2dab75806210611fe7701810a391e56da92dee5",
+      "dup_of": null,
+      "words": 91968,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.998,
+      "status": "ok",
+      "score": 0.365,
+      "band": "Light",
+      "interval": [
+        0.2983,
+        0.445
+      ],
+      "dimensions": {
+        "A": 0.37,
+        "B": 0.28,
+        "G": 0.59,
+        "H": 0.34,
+        "I": 0.57,
+        "K": 0.04
+      },
+      "contributions": {
+        "A": 0.0617,
+        "B": 0.0467,
+        "G": 0.0983,
+        "H": 0.0567,
+        "I": 0.095,
+        "K": 0.0067
+      },
+      "tokens_sampled": 25187,
+      "sampled_share": 0.2739,
+      "low_coverage": false
+    },
+    {
+      "file": "Paris, Address Unknown: A letter. A stranger. A dangerous obsession..epub",
+      "title": "Paris, Address Unknown: A letter. A stranger. A dangerous obsession.",
+      "digest": "d1d70597c4346c5958f97aef64168db033a2134b3fe11914bb16f02c8b51a1fe",
+      "dup_of": null,
+      "words": 77226,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9982,
+      "status": "ok",
+      "score": 0.525,
+      "band": "Demanding",
+      "interval": [
+        0.45,
+        0.5733
+      ],
+      "dimensions": {
+        "A": 0.46,
+        "B": 0.52,
+        "G": 0.15,
+        "H": 0.79,
+        "I": 0.29,
+        "K": 0.94
+      },
+      "contributions": {
+        "A": 0.0767,
+        "B": 0.0867,
+        "G": 0.025,
+        "H": 0.1317,
+        "I": 0.0483,
+        "K": 0.1567
+      },
+      "tokens_sampled": 29408,
+      "sampled_share": 0.3808,
+      "low_coverage": false
+    },
+    {
+      "file": "Reverend Insanity.epub",
+      "title": "REVEREND INSANITY 1",
+      "digest": "846bb2c2a8cac131c36925ebc485ba8652ad4378e430e045a449a778373fb91a",
+      "dup_of": null,
+      "words": 4917494,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.992,
+      "status": "ok",
+      "score": 0.43,
+      "band": "Moderate",
+      "interval": [
+        0.3833,
+        0.465
+      ],
+      "dimensions": {
+        "A": 0.7,
+        "B": 0.52,
+        "G": 0.99,
+        "H": 0.2,
+        "I": 0.13,
+        "K": 0.04
+      },
+      "contributions": {
+        "A": 0.1167,
+        "B": 0.0867,
+        "G": 0.165,
+        "H": 0.0333,
+        "I": 0.0217,
+        "K": 0.0067
+      },
+      "tokens_sampled": 26768,
+      "sampled_share": 0.0054,
+      "low_coverage": true
+    },
+    {
+      "file": "Ruthless Princess.epub",
+      "title": "Ruthless Princess",
+      "digest": "5cbe44e7f0ad71c5ec5c6b05b5248b2fc87c80e65ef90ee28877ab357b206434",
+      "dup_of": null,
+      "words": 83472,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9968,
+      "status": "ok",
+      "score": 0.3767,
+      "band": "Light",
+      "interval": [
+        0.3416,
+        0.3933
+      ],
+      "dimensions": {
+        "A": 0.01,
+        "B": 0.5,
+        "G": 0.19,
+        "H": 0.83,
+        "I": 0.16,
+        "K": 0.57
+      },
+      "contributions": {
+        "A": 0.0017,
+        "B": 0.0833,
+        "G": 0.0317,
+        "H": 0.1383,
+        "I": 0.0267,
+        "K": 0.095
+      },
+      "tokens_sampled": 31000,
+      "sampled_share": 0.3714,
+      "low_coverage": false
+    },
+    {
+      "file": "Six of Crows Duology : Book 1 : Six of Crows.epub",
+      "title": "Six of Crows",
+      "digest": "3d0260d811782fc82b748b738f77f1ae4372356b1b09d183ca008b2bf9805f36",
+      "dup_of": null,
+      "words": 137493,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9981,
+      "status": "ok",
+      "score": 0.4633,
+      "band": "Moderate",
+      "interval": [
+        0.4133,
+        0.51
+      ],
+      "dimensions": {
+        "A": 0.3,
+        "B": 0.09,
+        "G": 0.52,
+        "H": 0.28,
+        "I": 0.72,
+        "K": 0.87
+      },
+      "contributions": {
+        "A": 0.05,
+        "B": 0.015,
+        "G": 0.0867,
+        "H": 0.0467,
+        "I": 0.12,
+        "K": 0.145
+      },
+      "tokens_sampled": 26241,
+      "sampled_share": 0.1909,
+      "low_coverage": false
+    },
+    {
+      "file": "Six of Crows Duology : Book 2 : Crooked Kingdom.epub",
+      "title": "Crooked Kingdom",
+      "digest": "65d912ffc14e90eb19b2c1dd296c889a338bb7eb3041c5bad31bbfccdca4f367",
+      "dup_of": null,
+      "words": 183423,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9979,
+      "status": "ok",
+      "score": 0.4783,
+      "band": "Demanding",
+      "interval": [
+        0.405,
+        0.5517
+      ],
+      "dimensions": {
+        "A": 0.35,
+        "B": 0.06,
+        "G": 0.56,
+        "H": 0.45,
+        "I": 0.64,
+        "K": 0.81
+      },
+      "contributions": {
+        "A": 0.0583,
+        "B": 0.01,
+        "G": 0.0933,
+        "H": 0.075,
+        "I": 0.1067,
+        "K": 0.135
+      },
+      "tokens_sampled": 27947,
+      "sampled_share": 0.1524,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 1 : Bridal Royale.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 1: Bridal Royale",
+      "digest": "982153ef6f497c3a350545a02efa176d49e2d143cc1137b85342fde1a29c07d9",
+      "dup_of": null,
+      "words": 59535,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9987,
+      "status": "ok",
+      "score": 0.485,
+      "band": "Demanding",
+      "interval": [
+        0.3898,
+        0.5533
+      ],
+      "dimensions": {
+        "A": 0.61,
+        "B": 0.31,
+        "G": 0.39,
+        "H": 0.57,
+        "I": 0.62,
+        "K": 0.41
+      },
+      "contributions": {
+        "A": 0.1017,
+        "B": 0.0517,
+        "G": 0.065,
+        "H": 0.095,
+        "I": 0.1033,
+        "K": 0.0683
+      },
+      "tokens_sampled": 22850,
+      "sampled_share": 0.3838,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 2 : The Spy Teacher Who Loved Me.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 2: The Spy Teacher Who Loved Me",
+      "digest": "1bbbfb0d0f30c4d063ac3056851ffddc757aa19d6db84c674764656f84fbd5de",
+      "dup_of": null,
+      "words": 59522,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9986,
+      "status": "ok",
+      "score": 0.5583,
+      "band": "Heavy",
+      "interval": [
+        0.4783,
+        0.6183
+      ],
+      "dimensions": {
+        "A": 0.47,
+        "B": 0.37,
+        "G": 0.61,
+        "H": 0.87,
+        "I": 0.72,
+        "K": 0.31
+      },
+      "contributions": {
+        "A": 0.0783,
+        "B": 0.0617,
+        "G": 0.1017,
+        "H": 0.145,
+        "I": 0.12,
+        "K": 0.0517
+      },
+      "tokens_sampled": 21038,
+      "sampled_share": 0.3534,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 3 : Honeymoon Raker.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 3: Honeymoon Raker",
+      "digest": "de75461bb91bba40977e716f82b23db69e9d7df0022a278999e5602161ed8be6",
+      "dup_of": null,
+      "words": 61973,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9918,
+      "status": "ok",
+      "score": 0.51,
+      "band": "Demanding",
+      "interval": [
+        0.44,
+        0.5817
+      ],
+      "dimensions": {
+        "A": 0.77,
+        "B": 0.21,
+        "G": 0.61,
+        "H": 0.43,
+        "I": 0.93,
+        "K": 0.11
+      },
+      "contributions": {
+        "A": 0.1283,
+        "B": 0.035,
+        "G": 0.1017,
+        "H": 0.0717,
+        "I": 0.155,
+        "K": 0.0183
+      },
+      "tokens_sampled": 20225,
+      "sampled_share": 0.3264,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 4: No Time for Goodbye.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 4: No Time for Goodbye",
+      "digest": "c8209ab34c7c284582576ba918f136456a54d6a8f2b6157dd399412fb450af42",
+      "dup_of": null,
+      "words": 56339,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9961,
+      "status": "ok",
+      "score": 0.5633,
+      "band": "Heavy",
+      "interval": [
+        0.4433,
+        0.615
+      ],
+      "dimensions": {
+        "A": 0.55,
+        "B": 0.43,
+        "G": 0.52,
+        "H": 0.77,
+        "I": 0.77,
+        "K": 0.34
+      },
+      "contributions": {
+        "A": 0.0917,
+        "B": 0.0717,
+        "G": 0.0867,
+        "H": 0.1283,
+        "I": 0.1283,
+        "K": 0.0567
+      },
+      "tokens_sampled": 22916,
+      "sampled_share": 0.4068,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 5 : From Inferno with Love.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 5: From Inferno with Love",
+      "digest": "7fa31b8ab4ee7224ff42bec30c53e55771c32fb15868da51ee4e6d30a6165e5d",
+      "dup_of": null,
+      "words": 65454,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9969,
+      "status": "ok",
+      "score": 0.5183,
+      "band": "Demanding",
+      "interval": [
+        0.41,
+        0.59
+      ],
+      "dimensions": {
+        "A": 0.69,
+        "B": 0.25,
+        "G": 0.42,
+        "H": 0.66,
+        "I": 0.84,
+        "K": 0.25
+      },
+      "contributions": {
+        "A": 0.115,
+        "B": 0.0417,
+        "G": 0.07,
+        "H": 0.11,
+        "I": 0.14,
+        "K": 0.0417
+      },
+      "tokens_sampled": 24261,
+      "sampled_share": 0.3707,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 1 : Lily of the Garden.epub",
+      "title": "Spy Classroom: Lily of the Garden, Vol. 1",
+      "digest": "712a94605c8b81273ca0ec8b2d6c0fe23aae2e71cc0d77dde0160b4d98b3fa03",
+      "dup_of": null,
+      "words": 60730,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9988,
+      "status": "ok",
+      "score": 0.4833,
+      "band": "Demanding",
+      "interval": [
+        0.3883,
+        0.5684
+      ],
+      "dimensions": {
+        "A": 0.62,
+        "B": 0.22,
+        "G": 0.26,
+        "H": 0.85,
+        "I": 0.86,
+        "K": 0.09
+      },
+      "contributions": {
+        "A": 0.1033,
+        "B": 0.0367,
+        "G": 0.0433,
+        "H": 0.1417,
+        "I": 0.1433,
+        "K": 0.015
+      },
+      "tokens_sampled": 20411,
+      "sampled_share": 0.3361,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 10 : The High Plain of Sara.epub",
+      "title": "Spy Classroom, Vol. 10: The High Plain of Sara",
+      "digest": "5fe4d654518dd5315f375c91be6607a927f08e0ef2fa4877f33ee96ee39538a0",
+      "dup_of": null,
+      "words": 61616,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9973,
+      "status": "ok",
+      "score": 0.5533,
+      "band": "Heavy",
+      "interval": [
+        0.4417,
+        0.6284
+      ],
+      "dimensions": {
+        "A": 0.81,
+        "B": 0.43,
+        "G": 0.54,
+        "H": 0.55,
+        "I": 0.83,
+        "K": 0.16
+      },
+      "contributions": {
+        "A": 0.135,
+        "B": 0.0717,
+        "G": 0.09,
+        "H": 0.0917,
+        "I": 0.1383,
+        "K": 0.0267
+      },
+      "tokens_sampled": 26008,
+      "sampled_share": 0.4221,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 2 : To My Dearest Grete.epub",
+      "title": "Spy Classroom, Vol. 2: To My Dearest Grete",
+      "digest": "579cf6cc29e3c0dccc2fa512e2f190bfa6068ee3ca6de79182dc1be06e384538",
+      "dup_of": null,
+      "words": 59820,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9988,
+      "status": "ok",
+      "score": 0.4683,
+      "band": "Demanding",
+      "interval": [
+        0.3667,
+        0.5283
+      ],
+      "dimensions": {
+        "A": 0.52,
+        "B": 0.37,
+        "G": 0.34,
+        "H": 0.87,
+        "I": 0.61,
+        "K": 0.1
+      },
+      "contributions": {
+        "A": 0.0867,
+        "B": 0.0617,
+        "G": 0.0567,
+        "H": 0.145,
+        "I": 0.1017,
+        "K": 0.0167
+      },
+      "tokens_sampled": 22067,
+      "sampled_share": 0.3689,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 3 : To Forget Is Annette.epub",
+      "title": "Spy Classroom, Vol. 3: To Forget Is Annette",
+      "digest": "ffe74c3973a8f9d0790d1965f7489ebf26ddff6c054068d389c7fdfd6517662e",
+      "dup_of": null,
+      "words": 63658,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9984,
+      "status": "ok",
+      "score": 0.3133,
+      "band": "Light",
+      "interval": [
+        0.2267,
+        0.4017
+      ],
+      "dimensions": {
+        "A": 0.46,
+        "B": 0.13,
+        "G": 0.37,
+        "H": 0.29,
+        "I": 0.55,
+        "K": 0.08
+      },
+      "contributions": {
+        "A": 0.0767,
+        "B": 0.0217,
+        "G": 0.0617,
+        "H": 0.0483,
+        "I": 0.0917,
+        "K": 0.0133
+      },
+      "tokens_sampled": 22070,
+      "sampled_share": 0.3467,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 4 : Thea in Dreamland.epub",
+      "title": "Spy Classroom, Vol. 4: Thea in Dreamland",
+      "digest": "de77e404993ed3e0b7fa2ea3d0dc553ac07e5695a12b296d6418e635d6d883e0",
+      "dup_of": null,
+      "words": 65217,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9986,
+      "status": "ok",
+      "score": 0.52,
+      "band": "Demanding",
+      "interval": [
+        0.4267,
+        0.58
+      ],
+      "dimensions": {
+        "A": 0.67,
+        "B": 0.17,
+        "G": 0.58,
+        "H": 0.73,
+        "I": 0.76,
+        "K": 0.21
+      },
+      "contributions": {
+        "A": 0.1117,
+        "B": 0.0283,
+        "G": 0.0967,
+        "H": 0.1217,
+        "I": 0.1267,
+        "K": 0.035
+      },
+      "tokens_sampled": 22348,
+      "sampled_share": 0.3427,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 5 : Fool Erna Once.epub",
+      "title": "Spy Classroom, Vol. 5: Fool Erna Once",
+      "digest": "1ab2e2db525521356255281ab83a3b286a1ba04042912bd94b90c3c26e398f4c",
+      "dup_of": null,
+      "words": 66791,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.6283,
+      "band": "Very heavy",
+      "interval": [
+        0.5466,
+        0.685
+      ],
+      "dimensions": {
+        "A": 0.72,
+        "B": 0.33,
+        "G": 0.73,
+        "H": 0.81,
+        "I": 0.88,
+        "K": 0.3
+      },
+      "contributions": {
+        "A": 0.12,
+        "B": 0.055,
+        "G": 0.1217,
+        "H": 0.135,
+        "I": 0.1467,
+        "K": 0.05
+      },
+      "tokens_sampled": 20265,
+      "sampled_share": 0.3034,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 6 : Pandemonium, Thy Name Is Sybilla.epub",
+      "title": "Spy Classroom, Vol. 6: Pandemonium, Thy Name Is Sybilla",
+      "digest": "5c6b424eec486a44e5512d4b54b7793c4bf1a46950c89a546f022eeb205fea38",
+      "dup_of": null,
+      "words": 56861,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9987,
+      "status": "ok",
+      "score": 0.5417,
+      "band": "Heavy",
+      "interval": [
+        0.48,
+        0.5917
+      ],
+      "dimensions": {
+        "A": 0.65,
+        "B": 0.28,
+        "G": 0.76,
+        "H": 0.46,
+        "I": 0.88,
+        "K": 0.22
+      },
+      "contributions": {
+        "A": 0.1083,
+        "B": 0.0467,
+        "G": 0.1267,
+        "H": 0.0767,
+        "I": 0.1467,
+        "K": 0.0367
+      },
+      "tokens_sampled": 21024,
+      "sampled_share": 0.3697,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 7 : A Glint in Monika\u2019s Eye.epub",
+      "title": "Spy Classroom, Vol. 7: A Glint in Monika\u2019s Eye",
+      "digest": "cfcbc6dc06bacccfd14761db7bf3d616361ed27576c02ae1e8cdca5097db8d81",
+      "dup_of": null,
+      "words": 68651,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9923,
+      "status": "ok",
+      "score": 0.5683,
+      "band": "Heavy",
+      "interval": [
+        0.4383,
+        0.6917
+      ],
+      "dimensions": {
+        "A": 0.7,
+        "B": 0.4,
+        "G": 0.64,
+        "H": 0.73,
+        "I": 0.74,
+        "K": 0.2
+      },
+      "contributions": {
+        "A": 0.1167,
+        "B": 0.0667,
+        "G": 0.1067,
+        "H": 0.1217,
+        "I": 0.1233,
+        "K": 0.0333
+      },
+      "tokens_sampled": 22379,
+      "sampled_share": 0.326,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 8 : Sara\u2019s Meadow of Opportunity.epub",
+      "title": "Spy Classroom, Vol. 8: Sara\u2019s Meadow of Opportunity",
+      "digest": "9f092a40a4de72bd579f045cfd2b9b0c8ceb177a7b487865e4e660ad7b9f2203",
+      "dup_of": null,
+      "words": 64287,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9916,
+      "status": "ok",
+      "score": 0.5467,
+      "band": "Heavy",
+      "interval": [
+        0.39,
+        0.6334
+      ],
+      "dimensions": {
+        "A": 0.5,
+        "B": 0.35,
+        "G": 0.75,
+        "H": 0.75,
+        "I": 0.75,
+        "K": 0.18
+      },
+      "contributions": {
+        "A": 0.0833,
+        "B": 0.0583,
+        "G": 0.125,
+        "H": 0.125,
+        "I": 0.125,
+        "K": 0.03
+      },
+      "tokens_sampled": 21961,
+      "sampled_share": 0.3416,
+      "low_coverage": false
+    },
+    {
+      "file": "Spy Classroom, Vol. 9 : Annette and Her Many Knickknacks.epub",
+      "title": "Spy Classroom, Vol. 9: Annette and Her Many Knickknacks",
+      "digest": "79d43217f1880502ab990861eafa79a5884ad3996b3416f43df199e05045c408",
+      "dup_of": null,
+      "words": 64323,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.993,
+      "status": "ok",
+      "score": 0.5167,
+      "band": "Demanding",
+      "interval": [
+        0.4,
+        0.61
+      ],
+      "dimensions": {
+        "A": 0.76,
+        "B": 0.36,
+        "G": 0.39,
+        "H": 0.59,
+        "I": 0.85,
+        "K": 0.15
+      },
+      "contributions": {
+        "A": 0.1267,
+        "B": 0.06,
+        "G": 0.065,
+        "H": 0.0983,
+        "I": 0.1417,
+        "K": 0.025
+      },
+      "tokens_sampled": 20586,
+      "sampled_share": 0.32,
+      "low_coverage": false
+    },
+    {
+      "file": "Teixcalaan : Book 1 : A Memory Called Empire.epub",
+      "title": "A Memory Called Empire (Teixcalaan)",
+      "digest": "4dc942264e04d4f90f1887e608837e973b337ec925ebe4e8f97114c8a78363c0",
+      "dup_of": null,
+      "words": 129956,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9994,
+      "status": "ok",
+      "score": 0.725,
+      "band": "Very heavy",
+      "interval": [
+        0.63,
+        0.8017
+      ],
+      "dimensions": {
+        "A": 0.97,
+        "B": 0.71,
+        "G": 0.89,
+        "H": 0.24,
+        "I": 0.92,
+        "K": 0.62
+      },
+      "contributions": {
+        "A": 0.1617,
+        "B": 0.1183,
+        "G": 0.1483,
+        "H": 0.04,
+        "I": 0.1533,
+        "K": 0.1033
+      },
+      "tokens_sampled": 21885,
+      "sampled_share": 0.1684,
+      "low_coverage": false
+    },
+    {
+      "file": "Texicalaan : Book 2 : A Desolation Called Peace.epub",
+      "title": "A Desolation Called Peace",
+      "digest": "eb424a5b888978ca6357c8fdc7d11d5044783e631bd8e0d19e2701f441e18bea",
+      "dup_of": null,
+      "words": 155783,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9988,
+      "status": "ok",
+      "score": 0.6783,
+      "band": "Very heavy",
+      "interval": [
+        0.5983,
+        0.7333
+      ],
+      "dimensions": {
+        "A": 0.98,
+        "B": 0.78,
+        "G": 0.88,
+        "H": 0.43,
+        "I": 0.49,
+        "K": 0.51
+      },
+      "contributions": {
+        "A": 0.1633,
+        "B": 0.13,
+        "G": 0.1467,
+        "H": 0.0717,
+        "I": 0.0817,
+        "K": 0.085
+      },
+      "tokens_sampled": 24713,
+      "sampled_share": 0.1586,
+      "low_coverage": false
+    },
+    {
+      "file": "The 48 Laws of Power.epub",
+      "title": "48 Laws of Power",
+      "digest": "a1fbdeec4facb241e443c188153a93a8db35097196c7c056c42752b995bf30d6",
+      "dup_of": null,
+      "words": 222159,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.7417,
+      "band": "Very heavy",
+      "interval": [
+        0.6983,
+        0.7733
+      ],
+      "dimensions": {
+        "A": 0.99,
+        "B": 0.81,
+        "G": 0.67,
+        "H": 0.96,
+        "I": 0.97,
+        "K": 0.05
+      },
+      "contributions": {
+        "A": 0.165,
+        "B": 0.135,
+        "G": 0.1117,
+        "H": 0.16,
+        "I": 0.1617,
+        "K": 0.0083
+      },
+      "tokens_sampled": 20528,
+      "sampled_share": 0.0924,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After The End : Book 1 : Early Years.epub",
+      "title": "Early Years: The Beginning After The End (Book 1)",
+      "digest": "cf3b61aedabccf46cf30542183b3d21c8c980f33cea62b1ea0ac26722c678cef",
+      "dup_of": null,
+      "words": 56523,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.4533,
+      "band": "Moderate",
+      "interval": [
+        0.385,
+        0.54
+      ],
+      "dimensions": {
+        "A": 0.22,
+        "B": 0.96,
+        "G": 0.93,
+        "H": 0.25,
+        "I": 0.31,
+        "K": 0.05
+      },
+      "contributions": {
+        "A": 0.0367,
+        "B": 0.16,
+        "G": 0.155,
+        "H": 0.0417,
+        "I": 0.0517,
+        "K": 0.0083
+      },
+      "tokens_sampled": 26918,
+      "sampled_share": 0.4762,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After the End : Book 10 : Retribution.epub",
+      "title": "The Beginning After the End: Book 10: Retribution",
+      "digest": "7580d8b6a1ffa00e79998d49634182dcce54a1d2afcc535821fad9d6b26f339d",
+      "dup_of": null,
+      "words": 228965,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.655,
+      "band": "Very heavy",
+      "interval": [
+        0.5533,
+        0.7134
+      ],
+      "dimensions": {
+        "A": 0.67,
+        "B": 0.61,
+        "G": 0.31,
+        "H": 0.68,
+        "I": 0.96,
+        "K": 0.7
+      },
+      "contributions": {
+        "A": 0.1117,
+        "B": 0.1017,
+        "G": 0.0517,
+        "H": 0.1133,
+        "I": 0.16,
+        "K": 0.1167
+      },
+      "tokens_sampled": 26846,
+      "sampled_share": 0.1172,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After the End : Book 11 : Providence.epub",
+      "title": "The Beginning After The End: Providence, Book 11",
+      "digest": "fd2e8f9871d5c743df9b2fbf2966cc06a6c9810508fdb71bac074b36a0bffd5a",
+      "dup_of": null,
+      "words": 291810,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9992,
+      "status": "ok",
+      "score": 0.5233,
+      "band": "Demanding",
+      "interval": [
+        0.4517,
+        0.58
+      ],
+      "dimensions": {
+        "A": 0.54,
+        "B": 0.61,
+        "G": 0.46,
+        "H": 0.28,
+        "I": 0.9,
+        "K": 0.35
+      },
+      "contributions": {
+        "A": 0.09,
+        "B": 0.1017,
+        "G": 0.0767,
+        "H": 0.0467,
+        "I": 0.15,
+        "K": 0.0583
+      },
+      "tokens_sampled": 24804,
+      "sampled_share": 0.085,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After the End : Book 2 : New Heights.epub",
+      "title": "The Beginning After the End: Book 2: New Heights",
+      "digest": "eb7053d463ab2e4cd2f8bbfa48292b5c69b9cbc99ba1b9c63525424a106b9127",
+      "dup_of": null,
+      "words": 66130,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.998,
+      "status": "ok",
+      "score": 0.515,
+      "band": "Demanding",
+      "interval": [
+        0.42,
+        0.6267
+      ],
+      "dimensions": {
+        "A": 0.31,
+        "B": 0.59,
+        "G": 0.22,
+        "H": 0.8,
+        "I": 0.84,
+        "K": 0.33
+      },
+      "contributions": {
+        "A": 0.0517,
+        "B": 0.0983,
+        "G": 0.0367,
+        "H": 0.1333,
+        "I": 0.14,
+        "K": 0.055
+      },
+      "tokens_sampled": 21734,
+      "sampled_share": 0.3287,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After the End : Book 3 : Beckoning Fates.epub",
+      "title": "The Beginning After the End: Book 3: Beckoning Fates",
+      "digest": "9d5cf257c508bb0d57fb871c57e3b1db4b3c9c3196e7e13c3432d430410d787b",
+      "dup_of": null,
+      "words": 73001,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9977,
+      "status": "ok",
+      "score": 0.355,
+      "band": "Light",
+      "interval": [
+        0.2867,
+        0.4067
+      ],
+      "dimensions": {
+        "A": 0.17,
+        "B": 0.37,
+        "G": 0.17,
+        "H": 0.72,
+        "I": 0.41,
+        "K": 0.29
+      },
+      "contributions": {
+        "A": 0.0283,
+        "B": 0.0617,
+        "G": 0.0283,
+        "H": 0.12,
+        "I": 0.0683,
+        "K": 0.0483
+      },
+      "tokens_sampled": 27556,
+      "sampled_share": 0.3775,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After The End : Book 4 : Horizons Edge.epub",
+      "title": "Horizon's Edge: The Beginning After The End (Book 4)",
+      "digest": "9e8a98c7e86b7c0859cfa35ea6c5bf519478267e8fa54bfd32dc26e843d35a18",
+      "dup_of": null,
+      "words": 64886,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.5533,
+      "band": "Heavy",
+      "interval": [
+        0.4717,
+        0.6017
+      ],
+      "dimensions": {
+        "A": 0.42,
+        "B": 0.96,
+        "G": 0.87,
+        "H": 0.23,
+        "I": 0.48,
+        "K": 0.36
+      },
+      "contributions": {
+        "A": 0.07,
+        "B": 0.16,
+        "G": 0.145,
+        "H": 0.0383,
+        "I": 0.08,
+        "K": 0.06
+      },
+      "tokens_sampled": 28612,
+      "sampled_share": 0.441,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After the End : Book 5 : Convergence.epub",
+      "title": "The Beginning After the End: Book 5: Convergence",
+      "digest": "73c70a2a83618d3dd1d78b96d97528504b7c683520306917f318b8b43affa304",
+      "dup_of": null,
+      "words": 103015,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9977,
+      "status": "ok",
+      "score": 0.5117,
+      "band": "Demanding",
+      "interval": [
+        0.4317,
+        0.5617
+      ],
+      "dimensions": {
+        "A": 0.41,
+        "B": 0.62,
+        "G": 0.09,
+        "H": 0.64,
+        "I": 0.51,
+        "K": 0.8
+      },
+      "contributions": {
+        "A": 0.0683,
+        "B": 0.1033,
+        "G": 0.015,
+        "H": 0.1067,
+        "I": 0.085,
+        "K": 0.1333
+      },
+      "tokens_sampled": 30133,
+      "sampled_share": 0.2925,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After the End : Book 6 : Transcendence.epub",
+      "title": "The Beginning After the End: Book 6: Transcendence",
+      "digest": "82f6ae1b5b459481ad666918f555891eab89fafee29b021ad16f753c37afe57c",
+      "dup_of": null,
+      "words": 154752,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9981,
+      "status": "ok",
+      "score": 0.575,
+      "band": "Heavy",
+      "interval": [
+        0.46,
+        0.6633
+      ],
+      "dimensions": {
+        "A": 0.52,
+        "B": 0.57,
+        "G": 0.23,
+        "H": 0.64,
+        "I": 0.7,
+        "K": 0.79
+      },
+      "contributions": {
+        "A": 0.0867,
+        "B": 0.095,
+        "G": 0.0383,
+        "H": 0.1067,
+        "I": 0.1167,
+        "K": 0.1317
+      },
+      "tokens_sampled": 25609,
+      "sampled_share": 0.1655,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After the End : Book 7 : Divergence.epub",
+      "title": "The Beginning After the End: Book 7: Divergence",
+      "digest": "38cafee65bed0d0c432481c6f29ba418f1e2c01ad7b313a56b1060c9c83cea8d",
+      "dup_of": null,
+      "words": 154510,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9981,
+      "status": "ok",
+      "score": 0.67,
+      "band": "Very heavy",
+      "interval": [
+        0.5267,
+        0.75
+      ],
+      "dimensions": {
+        "A": 0.6,
+        "B": 0.84,
+        "G": 0.5,
+        "H": 0.53,
+        "I": 0.92,
+        "K": 0.63
+      },
+      "contributions": {
+        "A": 0.1,
+        "B": 0.14,
+        "G": 0.0833,
+        "H": 0.0883,
+        "I": 0.1533,
+        "K": 0.105
+      },
+      "tokens_sampled": 24771,
+      "sampled_share": 0.1603,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After The End : Book 8 : Ascension.epub",
+      "title": "Ascension: The Beginning After The End (Book 8)",
+      "digest": "8a6e5705d794e61ffd2978cacba7fcfcca7f608e750f407241d2cc0833d4fe09",
+      "dup_of": null,
+      "words": 225795,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.4883,
+      "band": "Demanding",
+      "interval": [
+        0.4367,
+        0.6217
+      ],
+      "dimensions": {
+        "A": 0.33,
+        "B": 0.88,
+        "G": 0.25,
+        "H": 0.21,
+        "I": 0.59,
+        "K": 0.67
+      },
+      "contributions": {
+        "A": 0.055,
+        "B": 0.1467,
+        "G": 0.0417,
+        "H": 0.035,
+        "I": 0.0983,
+        "K": 0.1117
+      },
+      "tokens_sampled": 24353,
+      "sampled_share": 0.1079,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After The End : Book 8.5 : Amongst the Fallen.epub",
+      "title": "The Beginning After The End: Amongst the Fallen, Book 8.5",
+      "digest": "29f1385bbbf03305a2e3d82fcfdb95035ec1852494084a4909231158eb62561d",
+      "dup_of": null,
+      "words": 51705,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9959,
+      "status": "ok",
+      "score": 0.3983,
+      "band": "Moderate",
+      "interval": [
+        0.3249,
+        0.485
+      ],
+      "dimensions": {
+        "A": 0.35,
+        "B": 0.18,
+        "G": 0.08,
+        "H": 0.67,
+        "I": 0.67,
+        "K": 0.44
+      },
+      "contributions": {
+        "A": 0.0583,
+        "B": 0.03,
+        "G": 0.0133,
+        "H": 0.1117,
+        "I": 0.1117,
+        "K": 0.0733
+      },
+      "tokens_sampled": 25866,
+      "sampled_share": 0.5003,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After The End : Book 9 : Reckoning.epub",
+      "title": "[Title here]",
+      "digest": "a7c28f768442fa8ddf03a6c67a19b591a7fc0fc8ac819b5ed2e97fe5e4380c0c",
+      "dup_of": null,
+      "words": 226513,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.6083,
+      "band": "Heavy",
+      "interval": [
+        0.4783,
+        0.7617
+      ],
+      "dimensions": {
+        "A": 0.32,
+        "B": 0.66,
+        "G": 0.4,
+        "H": 0.85,
+        "I": 0.84,
+        "K": 0.58
+      },
+      "contributions": {
+        "A": 0.0533,
+        "B": 0.11,
+        "G": 0.0667,
+        "H": 0.1417,
+        "I": 0.14,
+        "K": 0.0967
+      },
+      "tokens_sampled": 24903,
+      "sampled_share": 0.1099,
+      "low_coverage": false
+    },
+    {
+      "file": "The Beginning After the End Book 12 : Apotheosis.epub",
+      "title": "Apotheosis: The Beginning After the End, Book 12",
+      "digest": "51c5c221fb3c4c46deb9238f5d23c0e4adc8c6341c8a2fc1066de0de2ee76429",
+      "dup_of": null,
+      "words": 236389,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9994,
+      "status": "ok",
+      "score": 0.5667,
+      "band": "Heavy",
+      "interval": [
+        0.4583,
+        0.6217
+      ],
+      "dimensions": {
+        "A": 0.61,
+        "B": 0.43,
+        "G": 0.42,
+        "H": 0.5,
+        "I": 0.9,
+        "K": 0.54
+      },
+      "contributions": {
+        "A": 0.1017,
+        "B": 0.0717,
+        "G": 0.07,
+        "H": 0.0833,
+        "I": 0.15,
+        "K": 0.09
+      },
+      "tokens_sampled": 26734,
+      "sampled_share": 0.1131,
+      "low_coverage": false
+    },
+    {
+      "file": "The Blonde Identity.epub",
+      "title": "The Blonde Identity",
+      "digest": "71cc7b42b167aadc412f00f538b302b0247fe6b056e19baf32476e7e8e0f6533",
+      "dup_of": null,
+      "words": 87307,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9935,
+      "status": "ok",
+      "score": 0.3633,
+      "band": "Light",
+      "interval": [
+        0.29,
+        0.415
+      ],
+      "dimensions": {
+        "A": 0.11,
+        "B": 0.49,
+        "G": 0.12,
+        "H": 0.93,
+        "I": 0.08,
+        "K": 0.45
+      },
+      "contributions": {
+        "A": 0.0183,
+        "B": 0.0817,
+        "G": 0.02,
+        "H": 0.155,
+        "I": 0.0133,
+        "K": 0.075
+      },
+      "tokens_sampled": 29724,
+      "sampled_share": 0.3405,
+      "low_coverage": false
+    },
+    {
+      "file": "The Bloodsworn Saga : Book 1 : The Shadow of the Gods.epub",
+      "title": "The Shadow of the Gods",
+      "digest": "a8f64095ddf590186dc2bfab9bd5ca804dfc495be4147ce17a105ba8f1fadc2c",
+      "dup_of": null,
+      "words": 167795,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9969,
+      "status": "ok",
+      "score": 0.365,
+      "band": "Light",
+      "interval": [
+        0.2967,
+        0.485
+      ],
+      "dimensions": {
+        "A": 0.23,
+        "B": 0.4,
+        "G": 0.05,
+        "H": 0.18,
+        "I": 0.43,
+        "K": 0.9
+      },
+      "contributions": {
+        "A": 0.0383,
+        "B": 0.0667,
+        "G": 0.0083,
+        "H": 0.03,
+        "I": 0.0717,
+        "K": 0.15
+      },
+      "tokens_sampled": 26358,
+      "sampled_share": 0.1571,
+      "low_coverage": false
+    },
+    {
+      "file": "The Bloodsworn Saga : Book 2 : The Hunger of the Gods.epub",
+      "title": "The Hunger of the Gods: Book Two of the Bloodsworn Saga",
+      "digest": "b038f3e148571f5b9e299c185273b2e4ad0e6d27847890c8a6692db98ca464d0",
+      "dup_of": null,
+      "words": 211988,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.3683,
+      "band": "Light",
+      "interval": [
+        0.2966,
+        0.4367
+      ],
+      "dimensions": {
+        "A": 0.28,
+        "B": 0.31,
+        "G": 0.3,
+        "H": 0.02,
+        "I": 0.31,
+        "K": 0.99
+      },
+      "contributions": {
+        "A": 0.0467,
+        "B": 0.0517,
+        "G": 0.05,
+        "H": 0.0033,
+        "I": 0.0517,
+        "K": 0.165
+      },
+      "tokens_sampled": 26835,
+      "sampled_share": 0.1266,
+      "low_coverage": false
+    },
+    {
+      "file": "The Bloodsworn Saga : Book 3 : The Fury of the Gods.epub",
+      "title": "The Fury of the Gods: Book Three of the Bloodsworn Saga",
+      "digest": "fbfcc07ef3b9c927cf20d8e07e81174027e871d4cbcc939f8f688e8ca2e9adb4",
+      "dup_of": null,
+      "words": 175604,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9968,
+      "status": "ok",
+      "score": 0.35,
+      "band": "Light",
+      "interval": [
+        0.2966,
+        0.3883
+      ],
+      "dimensions": {
+        "A": 0.16,
+        "B": 0.54,
+        "G": 0.23,
+        "H": 0.02,
+        "I": 0.24,
+        "K": 0.91
+      },
+      "contributions": {
+        "A": 0.0267,
+        "B": 0.09,
+        "G": 0.0383,
+        "H": 0.0033,
+        "I": 0.04,
+        "K": 0.1517
+      },
+      "tokens_sampled": 26459,
+      "sampled_share": 0.1507,
+      "low_coverage": false
+    },
+    {
+      "file": "The Book Thief.epub",
+      "title": "The Book Thief",
+      "digest": "a9911bc61241bc0812b9d01ed1298e0f9445beb3ea98c5a3243282679dc736c5",
+      "dup_of": null,
+      "words": 120248,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.997,
+      "status": "ok",
+      "score": 0.5333,
+      "band": "Demanding",
+      "interval": [
+        0.4633,
+        0.58
+      ],
+      "dimensions": {
+        "A": 0.54,
+        "B": 0.12,
+        "G": 0.63,
+        "H": 0.93,
+        "I": 0.34,
+        "K": 0.64
+      },
+      "contributions": {
+        "A": 0.09,
+        "B": 0.02,
+        "G": 0.105,
+        "H": 0.155,
+        "I": 0.0567,
+        "K": 0.1067
+      },
+      "tokens_sampled": 27892,
+      "sampled_share": 0.232,
+      "low_coverage": false
+    },
+    {
+      "file": "The Burning Series : Book 1 : The Rage of Dragons.epub",
+      "title": "The Rage of Dragons",
+      "digest": "2be5a654e475aae3b8200e41440c8e0a0503018d65c5d4af2858cd048b5ee20b",
+      "dup_of": null,
+      "words": 145846,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9975,
+      "status": "ok",
+      "score": 0.2867,
+      "band": "Light",
+      "interval": [
+        0.245,
+        0.335
+      ],
+      "dimensions": {
+        "A": 0.02,
+        "B": 0.08,
+        "G": 0.52,
+        "H": 0.02,
+        "I": 0.21,
+        "K": 0.87
+      },
+      "contributions": {
+        "A": 0.0033,
+        "B": 0.0133,
+        "G": 0.0867,
+        "H": 0.0033,
+        "I": 0.035,
+        "K": 0.145
+      },
+      "tokens_sampled": 28318,
+      "sampled_share": 0.1942,
+      "low_coverage": false
+    },
+    {
+      "file": "The Burning Series : Book 2 : The Fires of Vengeance.epub",
+      "title": "The Fires of Vengeance: The Burning, Book Two",
+      "digest": "6c53d0252e968dc2c76733eba04db34ce47195d2a90fcc34b49caebf50e868c9",
+      "dup_of": null,
+      "words": 153891,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9976,
+      "status": "ok",
+      "score": 0.4067,
+      "band": "Moderate",
+      "interval": [
+        0.305,
+        0.58
+      ],
+      "dimensions": {
+        "A": 0.25,
+        "B": 0.21,
+        "G": 0.7,
+        "H": 0.06,
+        "I": 0.26,
+        "K": 0.96
+      },
+      "contributions": {
+        "A": 0.0417,
+        "B": 0.035,
+        "G": 0.1167,
+        "H": 0.01,
+        "I": 0.0433,
+        "K": 0.16
+      },
+      "tokens_sampled": 29461,
+      "sampled_share": 0.1914,
+      "low_coverage": false
+    },
+    {
+      "file": "The Calamity Club.epub",
+      "title": "The Calamity Club",
+      "digest": "e70cb4c3ad7567518081aa0fd2f48b051dd9474282e7daf8fa412fb7ab5867c4",
+      "dup_of": null,
+      "words": 255922,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9993,
+      "status": "ok",
+      "score": 0.46,
+      "band": "Moderate",
+      "interval": [
+        0.3316,
+        0.5667
+      ],
+      "dimensions": {
+        "A": 0.28,
+        "B": 0.4,
+        "G": 0.49,
+        "H": 0.62,
+        "I": 0.32,
+        "K": 0.65
+      },
+      "contributions": {
+        "A": 0.0467,
+        "B": 0.0667,
+        "G": 0.0817,
+        "H": 0.1033,
+        "I": 0.0533,
+        "K": 0.1083
+      },
+      "tokens_sampled": 25547,
+      "sampled_share": 0.0998,
+      "low_coverage": false
+    },
+    {
+      "file": "The Castle of Otranto.epub",
+      "title": "The Castle of Otranto",
+      "digest": "47c603d309a17c22a2a675812fbd95a6e5319cc5581493eb84361a7f4f80f173",
+      "dup_of": null,
+      "words": 37324,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.675,
+      "band": "Very heavy",
+      "interval": [
+        0.5967,
+        0.7084
+      ],
+      "dimensions": {
+        "A": 0.99,
+        "B": 0.97,
+        "G": 0.73,
+        "H": 0.0,
+        "I": 0.47,
+        "K": 0.89
+      },
+      "contributions": {
+        "A": 0.165,
+        "B": 0.1617,
+        "G": 0.1217,
+        "H": 0.0,
+        "I": 0.0783,
+        "K": 0.1483
+      },
+      "tokens_sampled": 21931,
+      "sampled_share": 0.5876,
+      "low_coverage": false
+    },
+    {
+      "file": "The Count of Monte Cristo.epub",
+      "title": "1184-h",
+      "digest": "647a22a8f8459c32551cf6044354579a6b4bbc8b6cb597ce699805ade766576b",
+      "dup_of": null,
+      "words": 461583,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 1.0,
+      "status": "ok",
+      "score": 0.6267,
+      "band": "Very heavy",
+      "interval": [
+        0.5533,
+        0.6883
+      ],
+      "dimensions": {
+        "A": 0.94,
+        "B": 0.99,
+        "G": 0.75,
+        "H": 0.03,
+        "I": 0.35,
+        "K": 0.7
+      },
+      "contributions": {
+        "A": 0.1567,
+        "B": 0.165,
+        "G": 0.125,
+        "H": 0.005,
+        "I": 0.0583,
+        "K": 0.1167
+      },
+      "tokens_sampled": 25753,
+      "sampled_share": 0.0558,
+      "low_coverage": false
+    },
+    {
+      "file": "The D'Artagnan Romances Trilogy :  Book 1 : The Three Musketeers.epub",
+      "title": "The Three Musketeers",
+      "digest": "be1542adf6e34d74ac1a490a34cc6c79805ed45947fc16588722b17cecd25ec2",
+      "dup_of": null,
+      "words": 230529,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.5883,
+      "band": "Heavy",
+      "interval": [
+        0.4966,
+        0.6667
+      ],
+      "dimensions": {
+        "A": 0.73,
+        "B": 0.96,
+        "G": 0.28,
+        "H": 0.49,
+        "I": 0.14,
+        "K": 0.93
+      },
+      "contributions": {
+        "A": 0.1217,
+        "B": 0.16,
+        "G": 0.0467,
+        "H": 0.0817,
+        "I": 0.0233,
+        "K": 0.155
+      },
+      "tokens_sampled": 26967,
+      "sampled_share": 0.117,
+      "low_coverage": false
+    },
+    {
+      "file": "The D'Artagnan Romances Trilogy : Book 2 : Twenty Years After.epub",
+      "title": "Twenty Years After",
+      "digest": "43a4796e26ccc832b3c64c5593e6e4d6b1394230ff573c6a3720dcfc42826b96",
+      "dup_of": null,
+      "words": 243013,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.5817,
+      "band": "Heavy",
+      "interval": [
+        0.4866,
+        0.6617
+      ],
+      "dimensions": {
+        "A": 0.55,
+        "B": 0.93,
+        "G": 0.76,
+        "H": 0.17,
+        "I": 0.08,
+        "K": 1.0
+      },
+      "contributions": {
+        "A": 0.0917,
+        "B": 0.155,
+        "G": 0.1267,
+        "H": 0.0283,
+        "I": 0.0133,
+        "K": 0.1667
+      },
+      "tokens_sampled": 26719,
+      "sampled_share": 0.1099,
+      "low_coverage": false
+    },
+    {
+      "file": "The D'Artagnan Romances Trilogy : Book 3 : The Vicomte De Bragelonne.epub",
+      "title": "The Vicomte de Bragelonne",
+      "digest": "c685338dfa6201313fab877499e54375bd23e9a977869986d4d1c907144d6e42",
+      "dup_of": null,
+      "words": 715201,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9999,
+      "status": "ok",
+      "score": 0.645,
+      "band": "Very heavy",
+      "interval": [
+        0.5716,
+        0.6717
+      ],
+      "dimensions": {
+        "A": 0.88,
+        "B": 0.99,
+        "G": 0.84,
+        "H": 0.05,
+        "I": 0.14,
+        "K": 0.97
+      },
+      "contributions": {
+        "A": 0.1467,
+        "B": 0.165,
+        "G": 0.14,
+        "H": 0.0083,
+        "I": 0.0233,
+        "K": 0.1617
+      },
+      "tokens_sampled": 30314,
+      "sampled_share": 0.0424,
+      "low_coverage": false
+    },
+    {
+      "file": "The Daevabad Trilogy : Book 1 : The City of Brass.epub",
+      "title": "The City of Brass",
+      "digest": "9ed00c8a5ac4ac348efd0d573464c9e08850808ecaa5730129b5e072bcd0d6e9",
+      "dup_of": null,
+      "words": 161423,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9986,
+      "status": "ok",
+      "score": 0.34,
+      "band": "Light",
+      "interval": [
+        0.295,
+        0.4184
+      ],
+      "dimensions": {
+        "A": 0.22,
+        "B": 0.01,
+        "G": 0.17,
+        "H": 0.39,
+        "I": 0.97,
+        "K": 0.28
+      },
+      "contributions": {
+        "A": 0.0367,
+        "B": 0.0017,
+        "G": 0.0283,
+        "H": 0.065,
+        "I": 0.1617,
+        "K": 0.0467
+      },
+      "tokens_sampled": 23910,
+      "sampled_share": 0.1481,
+      "low_coverage": false
+    },
+    {
+      "file": "The Daevabad Trilogy : Book 2 : The Kingdom of Copper.epub",
+      "title": "The Kingdom of Copper",
+      "digest": "ff300344a4791aae3ed77a48824e1ad26ecdc48534b897bbcac57c02e9b355ab",
+      "dup_of": null,
+      "words": 186045,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9975,
+      "status": "ok",
+      "score": 0.37,
+      "band": "Light",
+      "interval": [
+        0.31,
+        0.4384
+      ],
+      "dimensions": {
+        "A": 0.27,
+        "B": 0.1,
+        "G": 0.25,
+        "H": 0.21,
+        "I": 0.99,
+        "K": 0.4
+      },
+      "contributions": {
+        "A": 0.045,
+        "B": 0.0167,
+        "G": 0.0417,
+        "H": 0.035,
+        "I": 0.165,
+        "K": 0.0667
+      },
+      "tokens_sampled": 21548,
+      "sampled_share": 0.1158,
+      "low_coverage": false
+    },
+    {
+      "file": "The Daevabad Trilogy : Book 3 : The Empire of Gold.epub",
+      "title": "The Empire of Gold",
+      "digest": "8703132df140ae918ed0dd7b3bf323f8d000b87a1cd0a6fff9e5ff5ca7d85ff7",
+      "dup_of": null,
+      "words": 222190,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.999,
+      "status": "ok",
+      "score": 0.345,
+      "band": "Light",
+      "interval": [
+        0.2833,
+        0.4367
+      ],
+      "dimensions": {
+        "A": 0.37,
+        "B": 0.12,
+        "G": 0.17,
+        "H": 0.14,
+        "I": 0.87,
+        "K": 0.4
+      },
+      "contributions": {
+        "A": 0.0617,
+        "B": 0.02,
+        "G": 0.0283,
+        "H": 0.0233,
+        "I": 0.145,
+        "K": 0.0667
+      },
+      "tokens_sampled": 26847,
+      "sampled_share": 0.1208,
+      "low_coverage": false
+    },
+    {
+      "file": "The Dandelion Dynasty : Book 1 : The Grace of Kings.epub",
+      "title": "The Grace of Kings",
+      "digest": "725e5bd6832e869816535ea8a7a7741c88d7c4a36ccb230c9ac2dff39c76fc69",
+      "dup_of": null,
+      "words": 195716,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9998,
+      "status": "ok",
+      "score": 0.5567,
+      "band": "Heavy",
+      "interval": [
+        0.4616,
+        0.64
+      ],
+      "dimensions": {
+        "A": 0.52,
+        "B": 0.72,
+        "G": 0.79,
+        "H": 0.11,
+        "I": 0.69,
+        "K": 0.51
+      },
+      "contributions": {
+        "A": 0.0867,
+        "B": 0.12,
+        "G": 0.1317,
+        "H": 0.0183,
+        "I": 0.115,
+        "K": 0.085
+      },
+      "tokens_sampled": 27506,
+      "sampled_share": 0.1405,
+      "low_coverage": false
+    },
+    {
+      "file": "The Dandelion Dynasty : Book 2 : The Wall of Storms.epub",
+      "title": "The Wall of Storms",
+      "digest": "acb55c93c0a2edac4b8a36eb8b41c8b447ea6bbab692a0df8898b0a118e0b994",
+      "dup_of": null,
+      "words": 276906,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.7233,
+      "band": "Very heavy",
+      "interval": [
+        0.6166,
+        0.81
+      ],
+      "dimensions": {
+        "A": 0.9,
+        "B": 0.84,
+        "G": 0.84,
+        "H": 0.3,
+        "I": 0.94,
+        "K": 0.52
+      },
+      "contributions": {
+        "A": 0.15,
+        "B": 0.14,
+        "G": 0.14,
+        "H": 0.05,
+        "I": 0.1567,
+        "K": 0.0867
+      },
+      "tokens_sampled": 22144,
+      "sampled_share": 0.08,
+      "low_coverage": false
+    },
+    {
+      "file": "The Dandelion Dynasty : Book 3 : The Veiled Throne.epub",
+      "title": "The Veiled Throne",
+      "digest": "22c4a73e63590832520a580e60e6143e24b6bc32f1036904b82d1a4ce4c238cc",
+      "dup_of": null,
+      "words": 348030,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.6667,
+      "band": "Very heavy",
+      "interval": [
+        0.5717,
+        0.745
+      ],
+      "dimensions": {
+        "A": 0.8,
+        "B": 0.7,
+        "G": 0.65,
+        "H": 0.41,
+        "I": 0.71,
+        "K": 0.73
+      },
+      "contributions": {
+        "A": 0.1333,
+        "B": 0.1167,
+        "G": 0.1083,
+        "H": 0.0683,
+        "I": 0.1183,
+        "K": 0.1217
+      },
+      "tokens_sampled": 23969,
+      "sampled_share": 0.0689,
+      "low_coverage": false
+    },
+    {
+      "file": "The Dandelion Dynasty : Book 4 : Speaking Bones.epub",
+      "title": "Speaking Bones",
+      "digest": "f5e424d6e26fafea6002e3f54bcfa3f2cfb73392ac40fbb2b43cfc278f762076",
+      "dup_of": null,
+      "words": 363918,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.6767,
+      "band": "Very heavy",
+      "interval": [
+        0.6117,
+        0.7533
+      ],
+      "dimensions": {
+        "A": 0.95,
+        "B": 0.74,
+        "G": 0.81,
+        "H": 0.33,
+        "I": 1.0,
+        "K": 0.23
+      },
+      "contributions": {
+        "A": 0.1583,
+        "B": 0.1233,
+        "G": 0.135,
+        "H": 0.055,
+        "I": 0.1667,
+        "K": 0.0383
+      },
+      "tokens_sampled": 21918,
+      "sampled_share": 0.0602,
+      "low_coverage": false
+    },
+    {
+      "file": "The First Law Trilogy : Book 1 : The Blade Itself.epub",
+      "title": "The Blade Itself",
+      "digest": "7df7bb97105bb4995ca9061195d63eae354081d0c5fb920a39172fae56349630",
+      "dup_of": null,
+      "words": 191068,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.3733,
+      "band": "Light",
+      "interval": [
+        0.275,
+        0.48
+      ],
+      "dimensions": {
+        "A": 0.06,
+        "B": 0.04,
+        "G": 0.43,
+        "H": 0.65,
+        "I": 0.64,
+        "K": 0.42
+      },
+      "contributions": {
+        "A": 0.01,
+        "B": 0.0067,
+        "G": 0.0717,
+        "H": 0.1083,
+        "I": 0.1067,
+        "K": 0.07
+      },
+      "tokens_sampled": 24233,
+      "sampled_share": 0.1268,
+      "low_coverage": false
+    },
+    {
+      "file": "The First Law Trilogy : Book 2 : Before They are Hanged.epub",
+      "title": "Before They Are Hanged",
+      "digest": "b3be49bd9e552ba067cfa87677f3979f6ab226a07adf56af2666e080402879a7",
+      "dup_of": null,
+      "words": 197142,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9989,
+      "status": "ok",
+      "score": 0.3567,
+      "band": "Light",
+      "interval": [
+        0.2733,
+        0.4817
+      ],
+      "dimensions": {
+        "A": 0.24,
+        "B": 0.06,
+        "G": 0.29,
+        "H": 0.45,
+        "I": 0.9,
+        "K": 0.2
+      },
+      "contributions": {
+        "A": 0.04,
+        "B": 0.01,
+        "G": 0.0483,
+        "H": 0.075,
+        "I": 0.15,
+        "K": 0.0333
+      },
+      "tokens_sampled": 22225,
+      "sampled_share": 0.1127,
+      "low_coverage": false
+    },
+    {
+      "file": "The First Law Trilogy : Book 3 : Last Argument of Kings.epub",
+      "title": "The First Law #03 - Last Argument of Kings",
+      "digest": "854a21cdee91d73884f250431fdc38c173f0c8e401c14051efa24dfd9f0d19ed",
+      "dup_of": null,
+      "words": 232504,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9989,
+      "status": "ok",
+      "score": 0.4417,
+      "band": "Moderate",
+      "interval": [
+        0.325,
+        0.555
+      ],
+      "dimensions": {
+        "A": 0.38,
+        "B": 0.16,
+        "G": 0.66,
+        "H": 0.55,
+        "I": 0.79,
+        "K": 0.11
+      },
+      "contributions": {
+        "A": 0.0633,
+        "B": 0.0267,
+        "G": 0.11,
+        "H": 0.0917,
+        "I": 0.1317,
+        "K": 0.0183
+      },
+      "tokens_sampled": 25263,
+      "sampled_share": 0.1087,
+      "low_coverage": false
+    },
+    {
+      "file": "The Girl with the Dragon Tattoo.epub",
+      "title": "The Girl with the Dragon Tattoo",
+      "digest": "e8228ee815ce090a3310bad828c2a1050fb33b2a2ec2360afad26e6512d9a159",
+      "dup_of": null,
+      "words": 165793,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9982,
+      "status": "ok",
+      "score": 0.6517,
+      "band": "Very heavy",
+      "interval": [
+        0.56,
+        0.7033
+      ],
+      "dimensions": {
+        "A": 0.91,
+        "B": 0.67,
+        "G": 0.57,
+        "H": 0.89,
+        "I": 0.73,
+        "K": 0.14
+      },
+      "contributions": {
+        "A": 0.1517,
+        "B": 0.1117,
+        "G": 0.095,
+        "H": 0.1483,
+        "I": 0.1217,
+        "K": 0.0233
+      },
+      "tokens_sampled": 21578,
+      "sampled_share": 0.1302,
+      "low_coverage": false
+    },
+    {
+      "file": "The Goldfinch.epub",
+      "title": "The Goldfinch",
+      "digest": "d8d386748482c4fad40bbe8f021d81e23f854d3f97543dc0eab3c62101415e92",
+      "dup_of": null,
+      "words": 294094,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9995,
+      "status": "ok",
+      "score": 0.7767,
+      "band": "Very heavy",
+      "interval": [
+        0.6799,
+        0.8383
+      ],
+      "dimensions": {
+        "A": 0.97,
+        "B": 0.83,
+        "G": 0.87,
+        "H": 0.54,
+        "I": 1.0,
+        "K": 0.45
+      },
+      "contributions": {
+        "A": 0.1617,
+        "B": 0.1383,
+        "G": 0.145,
+        "H": 0.09,
+        "I": 0.1667,
+        "K": 0.075
+      },
+      "tokens_sampled": 20729,
+      "sampled_share": 0.0705,
+      "low_coverage": false
+    },
+    {
+      "file": "The Handmaid\u2019s Tale.epub",
+      "title": "The Handmaid\u2019s Tale",
+      "digest": "1fe3005a97efb1ad0962ca46b9f9f34f12aa906c35f4852c9b529a6bf0fb8e18",
+      "dup_of": null,
+      "words": 97119,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9988,
+      "status": "ok",
+      "score": 0.44,
+      "band": "Moderate",
+      "interval": [
+        0.3483,
+        0.6067
+      ],
+      "dimensions": {
+        "A": 0.85,
+        "B": 0.11,
+        "G": 0.2,
+        "H": 0.95,
+        "I": 0.29,
+        "K": 0.24
+      },
+      "contributions": {
+        "A": 0.1417,
+        "B": 0.0183,
+        "G": 0.0333,
+        "H": 0.1583,
+        "I": 0.0483,
+        "K": 0.04
+      },
+      "tokens_sampled": 31749,
+      "sampled_share": 0.3269,
+      "low_coverage": false
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 1 : The Tower Treasure.epub",
+      "title": "The Tower Treasure",
+      "digest": "b92bef94fa590bf5ff9070afa0caed399bea69d94256380eec20506ae76d03f1",
+      "dup_of": null,
+      "words": 42010,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9998,
+      "status": "ok",
+      "score": 0.3717,
+      "band": "Light",
+      "interval": [
+        0.3317,
+        0.435
+      ],
+      "dimensions": {
+        "A": 0.23,
+        "B": 0.7,
+        "G": 0.28,
+        "H": 0.13,
+        "I": 0.02,
+        "K": 0.87
+      },
+      "contributions": {
+        "A": 0.0383,
+        "B": 0.1167,
+        "G": 0.0467,
+        "H": 0.0217,
+        "I": 0.0033,
+        "K": 0.145
+      },
+      "tokens_sampled": 31159,
+      "sampled_share": 0.7417,
+      "low_coverage": false
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 2 : The House on the Cliff.epub",
+      "title": "The House on the Cliff",
+      "digest": "faf9feb1b793737e268d557c0a02d44768eefde9e93ae0a38970f4474f88eb00",
+      "dup_of": null,
+      "words": 41464,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.3267,
+      "band": "Light",
+      "interval": [
+        0.2583,
+        0.39
+      ],
+      "dimensions": {
+        "A": 0.05,
+        "B": 0.55,
+        "G": 0.1,
+        "H": 0.43,
+        "I": 0.02,
+        "K": 0.81
+      },
+      "contributions": {
+        "A": 0.0083,
+        "B": 0.0917,
+        "G": 0.0167,
+        "H": 0.0717,
+        "I": 0.0033,
+        "K": 0.135
+      },
+      "tokens_sampled": 27465,
+      "sampled_share": 0.6624,
+      "low_coverage": false
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 3 : The Secret of the old Mill.epub",
+      "title": "The Secret of the Old Mill",
+      "digest": "7312b5213cd7cc083a3eb71859976b8ecb0c683783a850170efb69898f78d0ab",
+      "dup_of": null,
+      "words": 41551,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.3617,
+      "band": "Light",
+      "interval": [
+        0.295,
+        0.4534
+      ],
+      "dimensions": {
+        "A": 0.11,
+        "B": 0.73,
+        "G": 0.2,
+        "H": 0.14,
+        "I": 0.04,
+        "K": 0.95
+      },
+      "contributions": {
+        "A": 0.0183,
+        "B": 0.1217,
+        "G": 0.0333,
+        "H": 0.0233,
+        "I": 0.0067,
+        "K": 0.1583
+      },
+      "tokens_sampled": 31348,
+      "sampled_share": 0.7544,
+      "low_coverage": false
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 4 : The Missing Chums.epub",
+      "title": "The Missing Chums",
+      "digest": "47d840c77ef9e89664d292062b0c20e9370578beafbb1c5fd581cba8bd7f3314",
+      "dup_of": null,
+      "words": 43030,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9998,
+      "status": "ok",
+      "score": 0.3333,
+      "band": "Light",
+      "interval": [
+        0.2866,
+        0.415
+      ],
+      "dimensions": {
+        "A": 0.19,
+        "B": 0.66,
+        "G": 0.22,
+        "H": 0.22,
+        "I": 0.07,
+        "K": 0.64
+      },
+      "contributions": {
+        "A": 0.0317,
+        "B": 0.11,
+        "G": 0.0367,
+        "H": 0.0367,
+        "I": 0.0117,
+        "K": 0.1067
+      },
+      "tokens_sampled": 29467,
+      "sampled_share": 0.6848,
+      "low_coverage": false
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 5 : Hunting for Hidden Gold.epub",
+      "title": "Hunting for Hidden Gold",
+      "digest": "16ebc4a76ce8769e86936d7eeacca9ddc33f88e7a38588d981a7a0624d893959",
+      "dup_of": null,
+      "words": 43140,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9998,
+      "status": "ok",
+      "score": 0.445,
+      "band": "Moderate",
+      "interval": [
+        0.3433,
+        0.5283
+      ],
+      "dimensions": {
+        "A": 0.4,
+        "B": 0.59,
+        "G": 0.14,
+        "H": 0.64,
+        "I": 0.04,
+        "K": 0.86
+      },
+      "contributions": {
+        "A": 0.0667,
+        "B": 0.0983,
+        "G": 0.0233,
+        "H": 0.1067,
+        "I": 0.0067,
+        "K": 0.1433
+      },
+      "tokens_sampled": 30459,
+      "sampled_share": 0.7061,
+      "low_coverage": false
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 6 : The Shore Road Mystery.epub",
+      "title": "The Shore Road Mystery",
+      "digest": "7f2649142fe2747110d8a5f6dd7c144c0b69bf1bc3029e68a8048050c6d3fb24",
+      "dup_of": null,
+      "words": 40274,
+      "windows_attempted": 12,
+      "windows_used": 12,
+      "prose_share": 0.9997,
+      "status": "ok",
+      "score": 0.4283,
+      "band": "Moderate",
+      "interval": [
+        0.3583,
+        0.4767
+      ],
+      "dimensions": {
+        "A": 0.1,
+        "B": 0.47,
+        "G": 0.34,
+        "H": 0.6,
+        "I": 0.06,
+        "K": 1.0
+      },
+      "contributions": {
+        "A": 0.0167,
+        "B": 0.0783,
+        "G": 0.0567,
+        "H": 0.1,
+        "I": 0.01,
+        "K": 0.1667
+      },
+      "tokens_sampled": 30689,
+      "sampled_share": 0.762,
+      "low_coverage": false
+    }
+  ],
+  "duplicate_mismatches": [],
+  "failures": []
+}

@@ -1,0 +1,1516 @@
+{
+  "folder": "asterisma new testing suite",
+  "books": 149,
+  "failures": [],
+  "totalWords": 37785898,
+  "minWords": 32480,
+  "maxWords": 4917494,
+  "medianWords": 120248,
+  "languages": [
+    "en",
+    "en-GB",
+    "en-US",
+    "eng",
+    "es",
+    "ru"
+  ],
+  "rows": [
+    {
+      "file": "A Study in Scarlet 2.epub",
+      "title": "A Study in Scarlet",
+      "creator": "Arthur Conan Doyle",
+      "language": "en-GB",
+      "subjects": [
+        "Holmes, Sherlock (Fictitious character) -- Fiction",
+        "Private investigators -- England -- Fiction",
+        "Detective and mystery stories",
+        "England -- Fiction"
+      ],
+      "spineDocuments": 21,
+      "words": 44199
+    },
+    {
+      "file": "A Study in Scarlet.epub",
+      "title": "A Study in Scarlet",
+      "creator": "Arthur Conan Doyle",
+      "language": "en-GB",
+      "subjects": [
+        "Holmes, Sherlock (Fictitious character) -- Fiction",
+        "Private investigators -- England -- Fiction",
+        "Detective and mystery stories",
+        "England -- Fiction"
+      ],
+      "spineDocuments": 21,
+      "words": 44199
+    },
+    {
+      "file": "Alchemised 2.epub",
+      "title": "Alchemised",
+      "creator": "SenLinYu",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 172,
+      "words": 324221
+    },
+    {
+      "file": "Alchemised.epub",
+      "title": "Alchemised",
+      "creator": "SenLinYu",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 172,
+      "words": 324221
+    },
+    {
+      "file": "At the Back of the North Wind 2.epub",
+      "title": "At the Back of the North Wind",
+      "creator": "George MacDonald",
+      "language": "en-GB",
+      "subjects": [
+        "Fairy tales"
+      ],
+      "spineDocuments": 42,
+      "words": 89384
+    },
+    {
+      "file": "At the Back of the North Wind.epub",
+      "title": "At the Back of the North Wind",
+      "creator": "George MacDonald",
+      "language": "en-GB",
+      "subjects": [
+        "Fairy tales"
+      ],
+      "spineDocuments": 42,
+      "words": 89384
+    },
+    {
+      "file": "Black Ties and White Lies 2.epub",
+      "title": "Black Ties and White Lies",
+      "creator": "Singleton, Kat",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 68,
+      "words": 124413
+    },
+    {
+      "file": "Black Ties and White Lies.epub",
+      "title": "Black Ties and White Lies",
+      "creator": "Singleton, Kat",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 68,
+      "words": 124413
+    },
+    {
+      "file": "Bleach : Can't Fear Your Own World, Vol. 1 2.epub",
+      "title": "Bleach: Can't Fear Your Own World, Vol. 1",
+      "creator": "Tite Kubo, Ryohgo Narita",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 15,
+      "words": 47458
+    },
+    {
+      "file": "Bleach : Can't Fear Your Own World, Vol. 1.epub",
+      "title": "Bleach: Can't Fear Your Own World, Vol. 1",
+      "creator": "Tite Kubo, Ryohgo Narita",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 15,
+      "words": 47458
+    },
+    {
+      "file": "Bleach : Can’t Fear Your Own World, Vol. 2 2.epub",
+      "title": "Bleach: Can’t Fear Your Own World, Vol. 2",
+      "creator": "Tite Kubo, Ryohgo Narita",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 22,
+      "words": 93132
+    },
+    {
+      "file": "Bleach : Can’t Fear Your Own World, Vol. 2.epub",
+      "title": "Bleach: Can’t Fear Your Own World, Vol. 2",
+      "creator": "Tite Kubo, Ryohgo Narita",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 22,
+      "words": 93132
+    },
+    {
+      "file": "Bleach : Can’t Fear Your Own World, Vol. 3 2.epub",
+      "title": "Bleach: Can’t Fear Your Own World, Vol. 3",
+      "creator": "Tite Kubo, Ryohgo Narita",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 17,
+      "words": 76993
+    },
+    {
+      "file": "Bleach : Can’t Fear Your Own World, Vol. 3.epub",
+      "title": "Bleach: Can’t Fear Your Own World, Vol. 3",
+      "creator": "Tite Kubo, Ryohgo Narita",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 17,
+      "words": 76993
+    },
+    {
+      "file": "Blood Over Bright Haven 2.epub",
+      "title": "Blood Over Bright Haven",
+      "creator": "M. L. Wang",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 32,
+      "words": 125596
+    },
+    {
+      "file": "Blood Over Bright Haven.epub",
+      "title": "Blood Over Bright Haven",
+      "creator": "M. L. Wang",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 32,
+      "words": 125596
+    },
+    {
+      "file": "Classroom Of The Elite : Finalissimo 2.epub",
+      "title": "CLASSROOM OF THE ELITE FINALISSIMO",
+      "creator": "Unknown",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 1425,
+      "words": 2261648
+    },
+    {
+      "file": "Classroom Of The Elite : Finalissimo.epub",
+      "title": "CLASSROOM OF THE ELITE FINALISSIMO",
+      "creator": "Unknown",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 1425,
+      "words": 2261648
+    },
+    {
+      "file": "Don Quixote ( Volumes 1 - 2 ) 2.epub",
+      "title": "Don Quixote (Volumes 1-2) (Translated by Edith Grossman 2003)",
+      "creator": "Miguel De Cervantes",
+      "language": "en",
+      "subjects": [
+        "Challenge",
+        "Literature",
+        "Fiction",
+        "Translated",
+        "Historical"
+      ],
+      "spineDocuments": 150,
+      "words": 430563
+    },
+    {
+      "file": "Don Quixote ( Volumes 1 - 2 ).epub",
+      "title": "Don Quixote (Volumes 1-2) (Translated by Edith Grossman 2003)",
+      "creator": "Miguel De Cervantes",
+      "language": "en",
+      "subjects": [
+        "Challenge",
+        "Literature",
+        "Fiction",
+        "Translated",
+        "Historical"
+      ],
+      "spineDocuments": 150,
+      "words": 430563
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 1 : In the Woods 2.epub",
+      "title": "In the Woods",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [
+        "thriller"
+      ],
+      "spineDocuments": 25,
+      "words": 177036
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 1 : In the Woods.epub",
+      "title": "In the Woods",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [
+        "thriller"
+      ],
+      "spineDocuments": 25,
+      "words": 177036
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 2 : The Likeness 2.epub",
+      "title": "The Likeness: A Novel",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 10,
+      "words": 205949
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 2 : The Likeness.epub",
+      "title": "The Likeness: A Novel",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 10,
+      "words": 205949
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 3 : Faithful Place 2.epub",
+      "title": "Faithful Place",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 32,
+      "words": 154489
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 3 : Faithful Place.epub",
+      "title": "Faithful Place",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 32,
+      "words": 154489
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 4 : Broken Harbor 2.epub",
+      "title": "Broken Harbor (Dublin Murder Squad, Book 4)",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 35,
+      "words": 204319
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 4 : Broken Harbor.epub",
+      "title": "Broken Harbor (Dublin Murder Squad, Book 4)",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 35,
+      "words": 204319
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 5 : The Secret Place.epub",
+      "title": "The Secret Place (Dublin Murder Squad, Book 5)",
+      "creator": "Tana French",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 45,
+      "words": 188419
+    },
+    {
+      "file": "Dublin Murder Squad Series : Book 6 : The Trespasser.epub",
+      "title": "The Trespasser",
+      "creator": "French, Tana",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 29,
+      "words": 186767
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 10 : The Brothers Karamazov.epub",
+      "title": "The Brothers Karamazov: A Novel in Four Parts With Epilogue",
+      "creator": "Fyodor Dostoevsky",
+      "language": "en",
+      "subjects": [
+        "公众号：古德猫宁李"
+      ],
+      "spineDocuments": 19,
+      "words": 383354
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 5 : Crime and Punishment.epub",
+      "title": "Crime and Punishment",
+      "creator": "Fyodor Dostoyevsky",
+      "language": "en",
+      "subjects": [
+        "Classics"
+      ],
+      "spineDocuments": 71,
+      "words": 248556
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 6 : The Idiot.epub",
+      "title": "The Idiot [trans Pevear] -- Dostoevsky, FyodorM -- <London>, date of publication not identified -- Everyman's Library -- 9781857152548 -- d12cb62a2ebc483c5d2664bf4f9e6ab5 -- Anna’s Archive",
+      "creator": "Unknown",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 9,
+      "words": 271981
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 8 : Demons.epub",
+      "title": "Demons (Translated by Pevear and Volokhonsky 1994)",
+      "creator": "Unknown",
+      "language": "ru",
+      "subjects": [
+        "Literature"
+      ],
+      "spineDocuments": 67,
+      "words": 283578
+    },
+    {
+      "file": "Fyodor Mikhailovich Dostoevsky : Book 9 : The Adolescent.epub",
+      "title": "The Adolescent",
+      "creator": "Fyodor Dostoevsky",
+      "language": "en",
+      "subjects": [
+        "antique"
+      ],
+      "spineDocuments": 9,
+      "words": 247810
+    },
+    {
+      "file": "Game of Thrones : Book 1 : A Game of Thrones.epub",
+      "title": "A Game of Thrones",
+      "creator": "George R. R. Martin",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 215,
+      "words": 299132
+    },
+    {
+      "file": "Game of Thrones : Book 2 : A Clash of Kings.epub",
+      "title": "A Clash of Kings",
+      "creator": "George R. R. Martin",
+      "language": "en",
+      "subjects": [
+        "Clash of King",
+        "games of thrones"
+      ],
+      "spineDocuments": 76,
+      "words": 329009
+    },
+    {
+      "file": "Game of Thrones : Book 3 : A Storm of Swords.epub",
+      "title": "3 A Storm of Swords",
+      "creator": "MaelstroM",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 91,
+      "words": 423206
+    },
+    {
+      "file": "Game of Thrones : Book 4 : A Feast of Crows.epub",
+      "title": "A Ball of Beasts",
+      "creator": "George R. R. Martin",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 273,
+      "words": 728738
+    },
+    {
+      "file": "Game of Thrones : Book 5 : A Dance With Dragons.epub",
+      "title": "A Dance With Dragons: A Song of Ice and Fire",
+      "creator": "George R. R. Martin",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 218,
+      "words": 429994
+    },
+    {
+      "file": "Game of Thrones : Book 6 : Fire and Blood.epub",
+      "title": "Fire & Blood",
+      "creator": "George R R Martin",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 73,
+      "words": 256090
+    },
+    {
+      "file": "Greenbone Trilogy : Book 1 : Jade City.epub",
+      "title": "Jade City",
+      "creator": "Fonda Lee",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 109,
+      "words": 168258
+    },
+    {
+      "file": "Greenbone Trilogy : Book 2 : Jade War.epub",
+      "title": "Jade War",
+      "creator": "Fonda Lee",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 77,
+      "words": 207780
+    },
+    {
+      "file": "Greenbone Trilogy : Book 3 : Jade Legacy.epub",
+      "title": "Jade Legacy",
+      "creator": "Lee, Fonda",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 159,
+      "words": 256144
+    },
+    {
+      "file": "If We Were Villains.epub",
+      "title": "If We Were Villains",
+      "creator": "M. L. Rio",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 72,
+      "words": 109452
+    },
+    {
+      "file": "Kingdom of Three : Book 1 : Strike the Zither.epub",
+      "title": "Strike the Zither",
+      "creator": "Joan He",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 50,
+      "words": 83324
+    },
+    {
+      "file": "Kingdom of Three : Book 2 : Sound the Gong.epub",
+      "title": "Sound the Gong",
+      "creator": "Joan He",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 48,
+      "words": 82149
+    },
+    {
+      "file": "KonoSuba : God’s Blessing on this Wonderful World ! : Book 1.epub",
+      "title": "KonoSuba!",
+      "creator": "Unknown",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 192,
+      "words": 814308
+    },
+    {
+      "file": "Konosuba : God’s Blessing on This Wonderful World ! : Book 2 :  Fantastic Days.epub",
+      "title": "Konosuba: God’s Blessing on This Wonderful World! Fantastic Days",
+      "creator": "Natsume Akatsuki",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 15,
+      "words": 56679
+    },
+    {
+      "file": "Live by Night.epub",
+      "title": "Live by Night",
+      "creator": "Dennis Lehane",
+      "language": "en",
+      "subjects": [
+        "Suspense"
+      ],
+      "spineDocuments": 58,
+      "words": 124955
+    },
+    {
+      "file": "Lord of the Mysteries : Volume 1 : Full Story.epub",
+      "title": "Lord of the Mysteries: A Compilation",
+      "creator": "ePub created by Goldenagato",
+      "language": "en",
+      "subjects": [
+        "Action",
+        "Adventure",
+        "Fantasy",
+        "Historical",
+        "Horror",
+        "Mature",
+        "Mystery",
+        "Supernatural"
+      ],
+      "spineDocuments": 1414,
+      "words": 2716241
+    },
+    {
+      "file": "Lord of the Mysteries : Volume 2 : Circles of Inevitability.epub",
+      "title": "Lord of the Mysteries 2",
+      "creator": "Circle of Inevitability",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 2292,
+      "words": 2050062
+    },
+    {
+      "file": "Man's Search for Meaning.epub",
+      "title": "Man's Search for Meaning",
+      "creator": "Viktor E. Frankl",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 15,
+      "words": 48475
+    },
+    {
+      "file": "Murder on the Orient Express.epub",
+      "title": "Murder on the Orient Express",
+      "creator": "Agatha Christie",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 36,
+      "words": 59799
+    },
+    {
+      "file": "Mushoku Tensei - Short Stories.epub",
+      "title": "Mushoku Tensei - Short Stories",
+      "creator": "Part Four-merged",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 116,
+      "words": 113997
+    },
+    {
+      "file": "Mushoku Tensei.epub",
+      "title": "Mushoku Tensei",
+      "creator": "Unknown",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 613,
+      "words": 1758252
+    },
+    {
+      "file": "Narnia Chronicles : Book 1 : The Lion, the Witch, and the Wardrobe.epub",
+      "title": "The Lion, the Witch and the Wardrobe",
+      "creator": "C. S. Lewis",
+      "language": "en",
+      "subjects": [
+        "Children's Fantasy & Magical Realism"
+      ],
+      "spineDocuments": 20,
+      "words": 37620
+    },
+    {
+      "file": "Narnia Chronicles : Book 2 : Prince Caspian.epub",
+      "title": "Prince Caspian. The Return to Narnia.",
+      "creator": "Lewis, C. S. (Clive Staples)",
+      "language": "en",
+      "subjects": [
+        "fantasy",
+        "fiction",
+        "film adaptation",
+        "juvenile"
+      ],
+      "spineDocuments": 4,
+      "words": 45404
+    },
+    {
+      "file": "Narnia Chronicles : Book 3 : The Voyage of the Dawn Treader.epub",
+      "title": "The Voyage of the Dawn Treader",
+      "creator": "C. S. Lewis",
+      "language": "en",
+      "subjects": [
+        "Children's Fantasy & Magical Realism"
+      ],
+      "spineDocuments": 19,
+      "words": 52897
+    },
+    {
+      "file": "Narnia Chronicles : Book 4 : The Silver Chair.epub",
+      "title": "The Silver Chair",
+      "creator": "Lewis, C. S. (Clive Staples)",
+      "language": "en",
+      "subjects": [
+        "fantasy",
+        "fiction",
+        "juvenile",
+        "film adaptation"
+      ],
+      "spineDocuments": 4,
+      "words": 51843
+    },
+    {
+      "file": "Narnia Chronicles : Book 5 : The Horse and His boy.epub",
+      "title": "The Horse and his Boy",
+      "creator": "Lewis, C. S. [Clive Staples]",
+      "language": "en",
+      "subjects": [
+        "Fantasy",
+        "Religion"
+      ],
+      "spineDocuments": 4,
+      "words": 48740
+    },
+    {
+      "file": "Narnia Chronicles : Book 6 : The Magician's Nephew.epub",
+      "title": "The Magician's Nephew",
+      "creator": "Lewis, C. S. [Clive Staples]",
+      "language": "en",
+      "subjects": [
+        "fantasy",
+        "fiction",
+        "juvenile",
+        "film adaptation"
+      ],
+      "spineDocuments": 3,
+      "words": 41738
+    },
+    {
+      "file": "Narnia Chronicles : Book 7 : The Last Battle.epub",
+      "title": "The Last Battle",
+      "creator": "Lewis, C. S. (Clive Staples)",
+      "language": "en",
+      "subjects": [
+        "fantasy",
+        "fiction",
+        "juvenile",
+        "Carnegie Medal",
+        "film adaptation"
+      ],
+      "spineDocuments": 4,
+      "words": 43836
+    },
+    {
+      "file": "Naruto Hiden : Book 1 : Kakashi Hiden : Lightning in the Icy Sky.epub",
+      "title": "NARUTO: Kakashi’s Story",
+      "creator": "Masashi Kishimoto",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 22,
+      "words": 33455
+    },
+    {
+      "file": "Naruto Hiden : Book 2 : Shikamaru Hiden : A Cloud Drifting in Silent Darkness.epub",
+      "title": "Naruto: Shikamaru's Story (Naruto Novels)",
+      "creator": "Higashiyama, Akira,Yano, Takashi,Ohsaki, Tomohito",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 28,
+      "words": 37401
+    },
+    {
+      "file": "Naruto Hiden : Book 3 : Sakura Hiden : Thoughts of Love, Riding Upon a Spring Breeze.epub",
+      "title": "Naruto: Sakura's Story (Naruto Novels)",
+      "creator": "Takashi Yano",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 40,
+      "words": 37066
+    },
+    {
+      "file": "Naruto Hiden : Book 4 : Konoha Hiden : The Perfect Day for a Wedding.epub",
+      "title": "Naruto Hiden Series - Volume 04 - Konoha's Story - Konoha Hiden - Shuugenbiyori",
+      "creator": "The Perfect Day for a Wedding [cacatua]",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 4,
+      "words": 51856
+    },
+    {
+      "file": "Naruto Hiden : Book 5 : Gaara Hiden : A Sandstorm Mirage.epub",
+      "title": "Gaara Hiden",
+      "creator": "Devaj Mohanpuria",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 3,
+      "words": 33820
+    },
+    {
+      "file": "Naruto Hiden : Book 6 : Akatsuki Hiden : Evil Flowers in Full Bloom.epub",
+      "title": "Akatsuki Hiden",
+      "creator": "Marian GS",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 13,
+      "words": 32480
+    },
+    {
+      "file": "Naruto Retsuden : Book 2 : Sasuke Retsuden : The Uchiha Descendants and the Heavenly Stardust.epub",
+      "title": "SASUKE RETSUDEN",
+      "creator": "Twain King",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 166,
+      "words": 37831
+    },
+    {
+      "file": "Naruto Retsuden : Book 3 : Naruto Uzumaki and the Spiral Destiny.epub",
+      "title": "Naruto Narutos Story Uzumaki Naruto and the Spiral Destiny",
+      "creator": "PDF Room",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 10,
+      "words": 54109
+    },
+    {
+      "file": "Naruto Shinden (2015) : Itachi's Story, Vol. 1 : Daylight.epub",
+      "title": "Naruto: Itachi's Story, Vol. 1: Daylight (Naruto Novels)",
+      "creator": "Yano, Takashi,Towada, Shin,Higashiyama, Akira,Ohsaki, Tomohito",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 24,
+      "words": 37155
+    },
+    {
+      "file": "Naruto Shinden (2015) : Itachi's Story, Vol. 2 : Midnight.epub",
+      "title": "Naruto: Itachi's Story, Vol. 2: Midnight (Naruto Novels)",
+      "creator": "Yano, Takashi,Towada, Shin,Higashiyama, Akira,Ohsaki, Tomohito",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 22,
+      "words": 47322
+    },
+    {
+      "file": "Naruto Shinden (2015): Sasuke’s Story : Sunrise.epub",
+      "title": "Naruto: Sasuke’s Story: Sunrise",
+      "creator": "Masashi Kishimoto",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 12,
+      "words": 37456
+    },
+    {
+      "file": "Naruto Shinden (2018) : Book 1 : Konoha Shinden : Steam Ninja Scrolls.epub",
+      "title": "pdfcoffee.com konoha-shinden-steam-ninja-scrollspdf-pdf-free",
+      "creator": "Unknown",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 15,
+      "words": 55277
+    },
+    {
+      "file": "Naruto Shinden (2018) : Book 2 : Naruto’s Story : Family Day.epub",
+      "title": "Naruto’s Story: Family Day",
+      "creator": "Masashi Kishimoto, Mirei Miyamoto",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 17,
+      "words": 39240
+    },
+    {
+      "file": "Naruto Shinden (2018) : Book 3 : Sasuke’s Story : Star Pupil.epub",
+      "title": "Sasuke’s Story: Star Pupil",
+      "creator": "Masashi Kishimoto, Jun Esaka",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 14,
+      "words": 33197
+    },
+    {
+      "file": "Naruto Shinden (2018) : Book 4 : Shikamaru’s Story : Morning Clouds.epub",
+      "title": "Shikamaru’s Story: Mourning Clouds",
+      "creator": "Masashi Kishimoto, Takashi Yano",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 11,
+      "words": 38960
+    },
+    {
+      "file": "Neyuki.epub",
+      "title": "Neyuki",
+      "creator": "M. Harmon Wilkinson",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 30,
+      "words": 118794
+    },
+    {
+      "file": "No Longer Human.epub",
+      "title": "No Longer Human",
+      "creator": "Osamu Dazai",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 13,
+      "words": 35679
+    },
+    {
+      "file": "One of Us Is Lying.epub",
+      "title": "One of Us Is Lying",
+      "creator": "Karen M. McManus",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 50,
+      "words": 91968
+    },
+    {
+      "file": "Paris, Address Unknown: A letter. A stranger. A dangerous obsession..epub",
+      "title": "Paris, Address Unknown: A letter. A stranger. A dangerous obsession.",
+      "creator": "Nacer, Rachel",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 35,
+      "words": 77226
+    },
+    {
+      "file": "Reverend Insanity.epub",
+      "title": "REVEREND INSANITY 1",
+      "creator": "500-merged",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 6264,
+      "words": 4917494
+    },
+    {
+      "file": "Ruthless Princess.epub",
+      "title": "Ruthless Princess",
+      "creator": "Van Dyken , Rachel",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 73,
+      "words": 83472
+    },
+    {
+      "file": "Six of Crows Duology : Book 1 : Six of Crows.epub",
+      "title": "Six of Crows",
+      "creator": "Leigh Bardugo",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 62,
+      "words": 137493
+    },
+    {
+      "file": "Six of Crows Duology : Book 2 : Crooked Kingdom.epub",
+      "title": "Crooked Kingdom",
+      "creator": "Bardugo, Leigh",
+      "language": "en",
+      "subjects": [
+        "Fantasy",
+        "Young Adult",
+        "Romance",
+        "Adventure"
+      ],
+      "spineDocuments": 72,
+      "words": 183423
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 1 : Bridal Royale.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 1: Bridal Royale",
+      "creator": "Takemachi",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 12,
+      "words": 59535
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 2 : The Spy Teacher Who Loved Me.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 2: The Spy Teacher Who Loved Me",
+      "creator": "Takemachi",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 12,
+      "words": 59522
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 3 : Honeymoon Raker.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 3: Honeymoon Raker",
+      "creator": "Takemachi and Tomari",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 37,
+      "words": 61973
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 4: No Time for Goodbye.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 4: No Time for Goodbye",
+      "creator": "Takemachi and Tomari",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 36,
+      "words": 56339
+    },
+    {
+      "file": "Spy Classroom Short Story Collection, Vol. 5 : From Inferno with Love.epub",
+      "title": "Spy Classroom Short Story Collection, Vol. 5: From Inferno with Love",
+      "creator": "Takemachi and Tomari",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 35,
+      "words": 65454
+    },
+    {
+      "file": "Spy Classroom, Vol. 1 : Lily of the Garden.epub",
+      "title": "Spy Classroom: Lily of the Garden, Vol. 1",
+      "creator": "Takemachi",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 12,
+      "words": 60730
+    },
+    {
+      "file": "Spy Classroom, Vol. 10 : The High Plain of Sara.epub",
+      "title": "Spy Classroom, Vol. 10: The High Plain of Sara",
+      "creator": "Takemachi and Tomari",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 36,
+      "words": 61616
+    },
+    {
+      "file": "Spy Classroom, Vol. 2 : To My Dearest Grete.epub",
+      "title": "Spy Classroom, Vol. 2: To My Dearest Grete",
+      "creator": "Takemachi",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 12,
+      "words": 59820
+    },
+    {
+      "file": "Spy Classroom, Vol. 3 : To Forget Is Annette.epub",
+      "title": "Spy Classroom, Vol. 3: To Forget Is Annette",
+      "creator": "Takemachi",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 18,
+      "words": 63658
+    },
+    {
+      "file": "Spy Classroom, Vol. 4 : Thea in Dreamland.epub",
+      "title": "Spy Classroom, Vol. 4: Thea in Dreamland",
+      "creator": "Takemachi",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 16,
+      "words": 65217
+    },
+    {
+      "file": "Spy Classroom, Vol. 5 : Fool Erna Once.epub",
+      "title": "Spy Classroom, Vol. 5: Fool Erna Once",
+      "creator": "Takemachi",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 13,
+      "words": 66791
+    },
+    {
+      "file": "Spy Classroom, Vol. 6 : Pandemonium, Thy Name Is Sybilla.epub",
+      "title": "Spy Classroom, Vol. 6: Pandemonium, Thy Name Is Sybilla",
+      "creator": "Takemachi",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 13,
+      "words": 56861
+    },
+    {
+      "file": "Spy Classroom, Vol. 7 : A Glint in Monika’s Eye.epub",
+      "title": "Spy Classroom, Vol. 7: A Glint in Monika’s Eye",
+      "creator": "Takemachi and Tomari",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 35,
+      "words": 68651
+    },
+    {
+      "file": "Spy Classroom, Vol. 8 : Sara’s Meadow of Opportunity.epub",
+      "title": "Spy Classroom, Vol. 8: Sara’s Meadow of Opportunity",
+      "creator": "Takemachi and Tomari",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 35,
+      "words": 64287
+    },
+    {
+      "file": "Spy Classroom, Vol. 9 : Annette and Her Many Knickknacks.epub",
+      "title": "Spy Classroom, Vol. 9: Annette and Her Many Knickknacks",
+      "creator": "Takemachi and Tomari",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 33,
+      "words": 64323
+    },
+    {
+      "file": "Teixcalaan : Book 1 : A Memory Called Empire.epub",
+      "title": "A Memory Called Empire (Teixcalaan)",
+      "creator": "Arkady Martine",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 37,
+      "words": 129956
+    },
+    {
+      "file": "Texicalaan : Book 2 : A Desolation Called Peace.epub",
+      "title": "A Desolation Called Peace",
+      "creator": "Arkady Martine",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 41,
+      "words": 155783
+    },
+    {
+      "file": "The 48 Laws of Power.epub",
+      "title": "48 Laws of Power",
+      "creator": "Greene, Robert",
+      "language": "es",
+      "subjects": [],
+      "spineDocuments": 52,
+      "words": 222159
+    },
+    {
+      "file": "The Beginning After The End : Book 1 : Early Years.epub",
+      "title": "Early Years: The Beginning After The End (Book 1)",
+      "creator": "TurtleMe",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 25,
+      "words": 56523
+    },
+    {
+      "file": "The Beginning After The End : Book 4 : Horizons Edge.epub",
+      "title": "Horizon's Edge: The Beginning After The End (Book 4)",
+      "creator": "TurtleMe",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 33,
+      "words": 64886
+    },
+    {
+      "file": "The Beginning After The End : Book 8 : Ascension.epub",
+      "title": "Ascension: The Beginning After The End (Book 8)",
+      "creator": "TurtleMe",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 74,
+      "words": 225795
+    },
+    {
+      "file": "The Beginning After The End : Book 8.5 : Amongst the Fallen.epub",
+      "title": "The Beginning After The End: Amongst the Fallen, Book 8.5",
+      "creator": "TurtleMe",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 48,
+      "words": 51705
+    },
+    {
+      "file": "The Beginning After The End : Book 9 : Reckoning.epub",
+      "title": "[Title here]",
+      "creator": "",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 63,
+      "words": 226513
+    },
+    {
+      "file": "The Beginning After the End : Book 10 : Retribution.epub",
+      "title": "The Beginning After the End: Book 10: Retribution",
+      "creator": "TurtleMe",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 53,
+      "words": 228965
+    },
+    {
+      "file": "The Beginning After the End : Book 11 : Providence.epub",
+      "title": "The Beginning After The End: Providence, Book 11",
+      "creator": "TurtleMe",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 63,
+      "words": 291810
+    },
+    {
+      "file": "The Beginning After the End : Book 2 : New Heights.epub",
+      "title": "The Beginning After the End: Book 2: New Heights",
+      "creator": "TurtleMe",
+      "language": "eng",
+      "subjects": [],
+      "spineDocuments": 25,
+      "words": 66130
+    },
+    {
+      "file": "The Beginning After the End : Book 3 : Beckoning Fates.epub",
+      "title": "The Beginning After the End: Book 3: Beckoning Fates",
+      "creator": "TurtleMe",
+      "language": "eng",
+      "subjects": [],
+      "spineDocuments": 30,
+      "words": 73001
+    },
+    {
+      "file": "The Beginning After the End : Book 5 : Convergence.epub",
+      "title": "The Beginning After the End: Book 5: Convergence",
+      "creator": "TurtleMe",
+      "language": "eng",
+      "subjects": [],
+      "spineDocuments": 45,
+      "words": 103015
+    },
+    {
+      "file": "The Beginning After the End : Book 6 : Transcendence.epub",
+      "title": "The Beginning After the End: Book 6: Transcendence",
+      "creator": "TurtleMe",
+      "language": "eng",
+      "subjects": [],
+      "spineDocuments": 60,
+      "words": 154752
+    },
+    {
+      "file": "The Beginning After the End : Book 7 : Divergence.epub",
+      "title": "The Beginning After the End: Book 7: Divergence",
+      "creator": "TurtleMe",
+      "language": "eng",
+      "subjects": [],
+      "spineDocuments": 64,
+      "words": 154510
+    },
+    {
+      "file": "The Beginning After the End Book 12 : Apotheosis.epub",
+      "title": "Apotheosis: The Beginning After the End, Book 12",
+      "creator": "TurtleMe",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 109,
+      "words": 236389
+    },
+    {
+      "file": "The Blonde Identity.epub",
+      "title": "The Blonde Identity",
+      "creator": "Ally Carter",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 119,
+      "words": 87307
+    },
+    {
+      "file": "The Bloodsworn Saga : Book 1 : The Shadow of the Gods.epub",
+      "title": "The Shadow of the Gods",
+      "creator": "John Gwynne",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 106,
+      "words": 167795
+    },
+    {
+      "file": "The Bloodsworn Saga : Book 2 : The Hunger of the Gods.epub",
+      "title": "The Hunger of the Gods: Book Two of the Bloodsworn Saga",
+      "creator": "John Gwynne",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 96,
+      "words": 211988
+    },
+    {
+      "file": "The Bloodsworn Saga : Book 3 : The Fury of the Gods.epub",
+      "title": "The Fury of the Gods: Book Three of the Bloodsworn Saga",
+      "creator": "John Gwynne",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 110,
+      "words": 175604
+    },
+    {
+      "file": "The Book Thief.epub",
+      "title": "The Book Thief",
+      "creator": "Markus Zusak",
+      "language": "en",
+      "subjects": [
+        "Fiction"
+      ],
+      "spineDocuments": 134,
+      "words": 120248
+    },
+    {
+      "file": "The Burning Series : Book 1 : The Rage of Dragons.epub",
+      "title": "The Rage of Dragons",
+      "creator": "Evan Winter",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 119,
+      "words": 145846
+    },
+    {
+      "file": "The Burning Series : Book 2 : The Fires of Vengeance.epub",
+      "title": "The Fires of Vengeance: The Burning, Book Two",
+      "creator": "Evan Winter",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 127,
+      "words": 153891
+    },
+    {
+      "file": "The Calamity Club.epub",
+      "title": "The Calamity Club",
+      "creator": "Kathryn Stockett",
+      "language": "en-US",
+      "subjects": [],
+      "spineDocuments": 59,
+      "words": 255922
+    },
+    {
+      "file": "The Castle of Otranto.epub",
+      "title": "The Castle of Otranto",
+      "creator": "Horace Walpole",
+      "language": "en-GB",
+      "subjects": [
+        "Horror tales",
+        "Inheritance and succession -- Fiction",
+        "Gothic fiction (Literary genre)"
+      ],
+      "spineDocuments": 13,
+      "words": 37324
+    },
+    {
+      "file": "The Count of Monte Cristo.epub",
+      "title": "1184-h",
+      "creator": "Unknown",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 118,
+      "words": 461583
+    },
+    {
+      "file": "The D'Artagnan Romances Trilogy :  Book 1 : The Three Musketeers.epub",
+      "title": "The Three Musketeers",
+      "creator": "Alexandre Dumas",
+      "language": "en-US",
+      "subjects": [
+        "Historical fiction",
+        "France -- History -- Louis XIII, 1610-1643 -- Fiction",
+        "Adventure and adventurers -- Fiction",
+        "Swordsmen -- Fiction"
+      ],
+      "spineDocuments": 75,
+      "words": 230529
+    },
+    {
+      "file": "The D'Artagnan Romances Trilogy : Book 2 : Twenty Years After.epub",
+      "title": "Twenty Years After",
+      "creator": "Alexandre Dumas",
+      "language": "en-US",
+      "subjects": [
+        "Historical fiction",
+        "France -- History -- Louis XIV, 1643-1715 -- Fiction",
+        "Adventure stories",
+        "Swordsmen -- Fiction"
+      ],
+      "spineDocuments": 95,
+      "words": 243013
+    },
+    {
+      "file": "The D'Artagnan Romances Trilogy : Book 3 : The Vicomte De Bragelonne.epub",
+      "title": "The Vicomte de Bragelonne",
+      "creator": "Alexandre Dumas",
+      "language": "en-US",
+      "subjects": [
+        "Historical fiction",
+        "France -- History -- Louis XIV, 1643-1715 -- Fiction",
+        "Adventure stories",
+        "Swordsmen -- Fiction"
+      ],
+      "spineDocuments": 280,
+      "words": 715201
+    },
+    {
+      "file": "The Daevabad Trilogy : Book 1 : The City of Brass.epub",
+      "title": "The City of Brass",
+      "creator": "S. A. Chakraborty",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 43,
+      "words": 161423
+    },
+    {
+      "file": "The Daevabad Trilogy : Book 2 : The Kingdom of Copper.epub",
+      "title": "The Kingdom of Copper",
+      "creator": "S. A. Chakraborty",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 61,
+      "words": 186045
+    },
+    {
+      "file": "The Daevabad Trilogy : Book 3 : The Empire of Gold.epub",
+      "title": "The Empire of Gold",
+      "creator": "S. A. Chakraborty",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 71,
+      "words": 222190
+    },
+    {
+      "file": "The Dandelion Dynasty : Book 1 : The Grace of Kings.epub",
+      "title": "The Grace of Kings",
+      "creator": "Ken Liu",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 74,
+      "words": 195716
+    },
+    {
+      "file": "The Dandelion Dynasty : Book 2 : The Wall of Storms.epub",
+      "title": "The Wall of Storms",
+      "creator": "Ken Liu",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 84,
+      "words": 276906
+    },
+    {
+      "file": "The Dandelion Dynasty : Book 3 : The Veiled Throne.epub",
+      "title": "The Veiled Throne",
+      "creator": "Ken Liu",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 81,
+      "words": 348030
+    },
+    {
+      "file": "The Dandelion Dynasty : Book 4 : Speaking Bones.epub",
+      "title": "Speaking Bones",
+      "creator": "Ken Liu",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 93,
+      "words": 363918
+    },
+    {
+      "file": "The First Law Trilogy : Book 1 : The Blade Itself.epub",
+      "title": "The Blade Itself",
+      "creator": "Joe Abercrombie",
+      "language": "en",
+      "subjects": [
+        "Fantasy"
+      ],
+      "spineDocuments": 51,
+      "words": 191068
+    },
+    {
+      "file": "The First Law Trilogy : Book 2 : Before They are Hanged.epub",
+      "title": "Before They Are Hanged",
+      "creator": "Joe Abercrombie",
+      "language": "en",
+      "subjects": [
+        "Fiction",
+        "General",
+        "Fantasy",
+        "Science Fiction & Fantasy"
+      ],
+      "spineDocuments": 56,
+      "words": 197142
+    },
+    {
+      "file": "The First Law Trilogy : Book 3 : Last Argument of Kings.epub",
+      "title": "The First Law #03 - Last Argument of Kings",
+      "creator": "Joe Abercrombie",
+      "language": "en",
+      "subjects": [
+        "Fantasy",
+        "Science Fiction",
+        "Fiction",
+        "General",
+        "Science Fiction & Fantasy"
+      ],
+      "spineDocuments": 65,
+      "words": 232504
+    },
+    {
+      "file": "The Girl with the Dragon Tattoo.epub",
+      "title": "The Girl with the Dragon Tattoo",
+      "creator": "Marius",
+      "language": "en",
+      "subjects": [],
+      "spineDocuments": 62,
+      "words": 165793
+    },
+    {
+      "file": "The Goldfinch.epub",
+      "title": "The Goldfinch",
+      "creator": "Donna Tartt",
+      "language": "en",
+      "subjects": [
+        "Fiction",
+        "Literary",
+        "Fiction / Literary"
+      ],
+      "spineDocuments": 26,
+      "words": 294094
+    },
+    {
+      "file": "The Handmaid’s Tale.epub",
+      "title": "The Handmaid’s Tale",
+      "creator": "Margaret Atwood",
+      "language": "en",
+      "subjects": [
+        "Novela",
+        "Ciencia ficción"
+      ],
+      "spineDocuments": 65,
+      "words": 97119
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 1 : The Tower Treasure.epub",
+      "title": "The Tower Treasure",
+      "creator": "Franklin W. Dixon",
+      "language": "en-US",
+      "subjects": [
+        "Brothers -- Juvenile fiction",
+        "Mystery and detective stories",
+        "Hardy Boys (Fictitious characters) -- Juvenile fiction"
+      ],
+      "spineDocuments": 28,
+      "words": 42010
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 2 : The House on the Cliff.epub",
+      "title": "The House on the Cliff",
+      "creator": "Franklin W. Dixon",
+      "language": "en-US",
+      "subjects": [
+        "Brothers -- Juvenile fiction",
+        "Mystery and detective stories",
+        "Hardy Boys (Fictitious characters) -- Juvenile fiction"
+      ],
+      "spineDocuments": 29,
+      "words": 41464
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 3 : The Secret of the old Mill.epub",
+      "title": "The Secret of the Old Mill",
+      "creator": "Franklin W. Dixon",
+      "language": "en-US",
+      "subjects": [
+        "Brothers -- Juvenile fiction",
+        "Mystery and detective stories",
+        "Counterfeits and counterfeiting -- Juvenile fiction",
+        "Hardy Boys (Fictitious characters) -- Juvenile fiction"
+      ],
+      "spineDocuments": 29,
+      "words": 41551
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 4 : The Missing Chums.epub",
+      "title": "The Missing Chums",
+      "creator": "Franklin W. Dixon",
+      "language": "en-US",
+      "subjects": [
+        "Brothers -- Juvenile fiction",
+        "Missing persons -- Juvenile fiction",
+        "Mystery and detective stories",
+        "Hardy Boys (Fictitious characters) -- Juvenile fiction"
+      ],
+      "spineDocuments": 27,
+      "words": 43030
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 5 : Hunting for Hidden Gold.epub",
+      "title": "Hunting for Hidden Gold",
+      "creator": "Franklin W. Dixon",
+      "language": "en-US",
+      "subjects": [
+        "Brothers -- Juvenile fiction",
+        "Gold mines and mining -- Juvenile fiction",
+        "Mystery and detective stories",
+        "Montana -- Juvenile fiction",
+        "Robbers and outlaws -- Juvenile fiction",
+        "Hardy Boys (Fictitious characters) -- Juvenile fiction"
+      ],
+      "spineDocuments": 28,
+      "words": 43140
+    },
+    {
+      "file": "The Hardy Boys Collection : Book 6 : The Shore Road Mystery.epub",
+      "title": "The Shore Road Mystery",
+      "creator": "Franklin W. Dixon",
+      "language": "en-US",
+      "subjects": [
+        "Brothers -- Juvenile fiction",
+        "Mystery and detective stories",
+        "Hardy Boys (Fictitious characters) -- Juvenile fiction",
+        "Automobile theft -- Juvenile fiction"
+      ],
+      "spineDocuments": 27,
+      "words": 40274
+    }
+  ]
+}

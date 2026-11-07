@@ -1,7 +1,7 @@
 {
   "README.md": {
-    "mtime": 1793259721.3572655,
-    "ast_hash": "41238e125a149acdbafb748f1b609655",
+    "mtime": 1793330371.7002845,
+    "ast_hash": "f98cbe1891d90c0bc5916061ae0f22f5",
     "semantic_hash": ""
   },
   "docs/history/LAST_DEFEAT_demo_profiles.txt": {
@@ -45,8 +45,8 @@
     "semantic_hash": ""
   },
   "docs/01-project-tree.md": {
-    "mtime": 1793259734.1480486,
-    "ast_hash": "014a56a640566b249d33bf02eea73079",
+    "mtime": 1793317455.628432,
+    "ast_hash": "29cf69d5ef93e171c0561646d89d9ddf",
     "semantic_hash": ""
   },
   "docs/audits/08-deep-audit.md": {
@@ -190,8 +190,8 @@
     "semantic_hash": "5649bcfa5bdf18d842374e96d6113a76"
   },
   "docs/method/07-testing-strategy.md": {
-    "mtime": 1793259881.2028415,
-    "ast_hash": "ec8feee097b76185af2a5512220a3449",
+    "mtime": 1793317469.3029084,
+    "ast_hash": "db96bd91f4e271eb572ac191e8f09ce4",
     "semantic_hash": ""
   },
   "docs/registers/02-defect-register.md": {
@@ -200,18 +200,18 @@
     "semantic_hash": ""
   },
   "docs/registers/03-fix-log.md": {
-    "mtime": 1793260201.1066647,
-    "ast_hash": "47f0c42781556d5acd35a67d6284206c",
+    "mtime": 1793330392.784946,
+    "ast_hash": "4b8d587efc4ec86e743476f98a6c1f9c",
     "semantic_hash": ""
   },
   "docs/registers/04-handoff.md": {
-    "mtime": 1793259925.336711,
-    "ast_hash": "a8325d6cf886063ca3b9f9bc08b57460",
+    "mtime": 1793319215.0974739,
+    "ast_hash": "58ed3cd547a38f6bebf4d441087abede",
     "semantic_hash": ""
   },
   "docs/roadmap/05-remediation-roadmap.md": {
-    "mtime": 1793259941.2080786,
-    "ast_hash": "540ba43bbbc820943703c43c3f772b95",
+    "mtime": 1793317507.5421655,
+    "ast_hash": "f8b405564775b039bfbac80d73589971",
     "semantic_hash": ""
   },
   "docs/roadmap/06-rsvp-feature-plan.md": {
@@ -540,8 +540,8 @@
     "semantic_hash": ""
   },
   "scripts/comprehension-questions.json": {
-    "mtime": 1793260058.256986,
-    "ast_hash": "4121a699ebafc5587cff41a4c61081ab",
+    "mtime": 1793313316.6788857,
+    "ast_hash": "2e2f664ed2db5228a2a52c68e70a9675",
     "semantic_hash": ""
   },
   "scripts/vendor/3d-force-graph-1.80.0.min.js": {
@@ -550,13 +550,13 @@
     "semantic_hash": ""
   },
   "docs/INDEX.md": {
-    "mtime": 1793260047.734197,
-    "ast_hash": "9af2c8b6929e084c1599b464c04168d9",
+    "mtime": 1793329376.0342133,
+    "ast_hash": "9c524939c6fbebf3be33def8f6e84d12",
     "semantic_hash": ""
   },
   "docs/registers/05-doc-audit.md": {
-    "mtime": 1793260227.3356373,
-    "ast_hash": "080ab63947d4f54eaa386b1aa31c724e",
+    "mtime": 1793333440.6640382,
+    "ast_hash": "6f857119d36e027a7b757b73f54e51c3",
     "semantic_hash": ""
   },
   "scripts/graph3d-template.html": {
@@ -580,8 +580,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/App/NewContentView.swift": {
-    "mtime": 1793249754.672023,
-    "ast_hash": "1921528e3d18765ebaf35d724f7a1795",
+    "mtime": 1793313860.5144682,
+    "ast_hash": "5b779cf21cc65db1d8fcf9669ba43cd8",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Assets.xcassets/AccentColor.colorset/Contents.json": {
@@ -610,8 +610,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Core/Book2.swift": {
-    "mtime": 1793247301.7423809,
-    "ast_hash": "51ca8ca3ab25d4b0e670fb787f702d82",
+    "mtime": 1793314637.242145,
+    "ast_hash": "c654b37f44d4dff3956231c968ca32ea",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Core/BookCoverSupport.swift": {
@@ -630,8 +630,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Core/DataStore3.swift": {
-    "mtime": 1793247301.7447047,
-    "ast_hash": "80abfa24627539a0b08aa3fb3b2f4a7a",
+    "mtime": 1793308488.863936,
+    "ast_hash": "0f5e36522b24263bb18e40361172e4b2",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Core/DesignGrid.swift": {
@@ -880,8 +880,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Engines/AnalyticsEngine.swift": {
-    "mtime": 1793247301.7630565,
-    "ast_hash": "609bf8b64f3c7eb9f0c112ab0f315d56",
+    "mtime": 1793313785.784157,
+    "ast_hash": "7fe701196a7c03808cc35c6454946d42",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Engines/DataMaturityEngine.swift": {
@@ -895,8 +895,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Engines/EstimationEngine.swift": {
-    "mtime": 1793247301.7639322,
-    "ast_hash": "37ac1ee6732a516acd84c57834233686",
+    "mtime": 1793330363.8640583,
+    "ast_hash": "28e866067e4540356212aec283035ef9",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Achievements/AchievementEngine2.swift": {
@@ -950,8 +950,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/DeveloperConsole/DemoProfileLabView.swift": {
-    "mtime": 1793247301.767713,
-    "ast_hash": "126d36ae17c1abb46bd8426db91969ea",
+    "mtime": 1793331729.0893793,
+    "ast_hash": "c0efbb1789e6af8a965f6e92e42a3567",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/DeveloperConsole/DeveloperConsoleDashboardView.swift": {
@@ -1000,8 +1000,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Discovery/DemoDataService.swift": {
-    "mtime": 1793247301.770026,
-    "ast_hash": "d9743aea6f290d6c944f990a6c2993d2",
+    "mtime": 1793331601.1086762,
+    "ast_hash": "bad60d391727c6d890366b14f06c3b91",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Discovery/OnlineBook.swift": {
@@ -1135,8 +1135,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Goals/GoalsDashboard.swift": {
-    "mtime": 1793248840.0150917,
-    "ast_hash": "6413ae2171cbfb0f095a2d1e9589f6a3",
+    "mtime": 1793307356.4172122,
+    "ast_hash": "06e2b5695c5f1822c43a60644e2850ba",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Goals/ReadingGoalManager2.swift": {
@@ -1155,18 +1155,18 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Insights/ReadingInsightsDashboard.swift": {
-    "mtime": 1793248835.9320786,
-    "ast_hash": "6fc518a2f8dc48404e95ca67c9c1dc20",
+    "mtime": 1793307356.4212003,
+    "ast_hash": "a0821688a44a2d561b7fd20a7e1b89b5",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Library/BookDetailsView.swift": {
-    "mtime": 1792825179.0,
-    "ast_hash": "8fc5814b0a8cc6a77f3fd3af2159cb54",
+    "mtime": 1793308527.9781656,
+    "ast_hash": "a4d4858bbb69417f44c13c5db295d3fa",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Library/BookImporter.swift": {
-    "mtime": 1792900867.0,
-    "ast_hash": "8df1bb266a2c9fa0a3af44fc0b212634",
+    "mtime": 1793314508.3120017,
+    "ast_hash": "2877e3f5ca5cfb0e118fc36f4d17c199",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Library/LibraryExplorerView2.swift": {
@@ -1365,8 +1365,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Reports/AnnualReportData2.swift": {
-    "mtime": 1793247301.7836492,
-    "ast_hash": "ef6ec071cbdb308f20c9b8bf5cad4aec",
+    "mtime": 1793313638.3243067,
+    "ast_hash": "5efc4f8809be8d26de8081b5e845d290",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Reports/AnnualReportView.swift": {
@@ -1590,8 +1590,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/DeveloperConsole/DemoProfileServiceTests.swift": {
-    "mtime": 1793247301.7998385,
-    "ast_hash": "0d6c90a1b31d6d8f8a78159825f99059",
+    "mtime": 1793331452.6731522,
+    "ast_hash": "05642a31288c8fd63e7b3485e2016623",
     "semantic_hash": ""
   },
   "AsterismaV2.0Tests/Environment/EnvironmentEngineTests.swift": {
@@ -1810,8 +1810,8 @@
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Home/ReadingDeskView.swift": {
-    "mtime": 1793249718.661978,
-    "ast_hash": "777d347f21c6787b894f9c02a859bdb7",
+    "mtime": 1793330802.719377,
+    "ast_hash": "d5ef55869a2896c9fc23765406d072a3",
     "semantic_hash": ""
   },
   "AsterismaV2.0/Features/Library/LibraryBrowserView.swift": {
@@ -1820,8 +1820,8 @@
     "semantic_hash": ""
   },
   "docs/design/UI-UX-OVERHAUL-2026-10-29.md": {
-    "mtime": 1793260189.22893,
-    "ast_hash": "f0a2148b31753ef9563b5045993c54ed",
+    "mtime": 1793317484.0944302,
+    "ast_hash": "b7c657ffd6de52cc2d0c5da19db200b0",
     "semantic_hash": ""
   },
   "AsterismaV2.0/App/CommandPalette.swift": {
@@ -1912,6 +1912,396 @@
   "AsterismaV2.0Tests/Environment/EnvironmentWeatherVisualTests.swift": {
     "mtime": 1793259412.5107133,
     "ast_hash": "18f6a70df136d9fbe621802c77e828a6",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0/Features/Library/ContentAnalysis.swift": {
+    "mtime": 1793314500.7575257,
+    "ast_hash": "1113f5ba2d06ac7c4718fda26753fbbd",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Core/BookFileRelinkTests.swift": {
+    "mtime": 1793308730.0281532,
+    "ast_hash": "7beb8959717c251863a7c6a94b585bf4",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Core/ReadingDifficultyCalibrationTests.swift": {
+    "mtime": 1793314657.8198404,
+    "ast_hash": "3b3c3906561a3e1bc6e8cfac5cff2085",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/EstimationProvenanceTests.swift": {
+    "mtime": 1793330288.3658361,
+    "ast_hash": "b0cfeaa9ab7ef84dea18a224e50f8288",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/PageDurationPolicyTests.swift": {
+    "mtime": 1793313652.3508897,
+    "ast_hash": "5075654b36c155786d1612b7adde5a13",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/ReadingAnalyticsPhaseZeroTests.swift": {
+    "mtime": 1793313771.1264987,
+    "ast_hash": "cfabcea6671988e3aef47b109d0b20d7",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Engines/SyntheticEvaluationTests.swift": {
+    "mtime": 1793333123.9232543,
+    "ast_hash": "5a88b9d3652081e4c57ee43cc4743c10",
+    "semantic_hash": ""
+  },
+  "AsterismaV2.0Tests/Library/PageEstimationModelTests.swift": {
+    "mtime": 1793313943.1964707,
+    "ast_hash": "1bb0753af028eaf294de22f20de5a7ff",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/adf-149-features-2026-10-29.json": {
+    "mtime": 1793329488.9243414,
+    "ast_hash": "948af21db0126f85a38551d033883f99",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/adf-149-scores-2026-10-29.json": {
+    "mtime": 1793329488.9283633,
+    "ast_hash": "e374b5c5dfd80511a30f760d1bccb3a9",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/adf-grade-report-2026-10-29.json": {
+    "mtime": 1793329431.059973,
+    "ast_hash": "1691ce7c9ca372b34179a09a0a453f6a",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/cde-critique-2026-10-29.json": {
+    "mtime": 1793321680.4358294,
+    "ast_hash": "e6e4e2a3f07826ed927646f1edbc9368",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/cde-critique-v0.3-2026-10-29.json": {
+    "mtime": 1793322440.8988695,
+    "ast_hash": "233f39901afeee2fe80fa9b46c7bcfd8",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/cde-phase1-engine-output-2026-10-29.json": {
+    "mtime": 1793319705.6585186,
+    "ast_hash": "08095662c4f5d234f80c133c2159644c",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/cde-recalibration-2026-10-29.json": {
+    "mtime": 1793322309.0456393,
+    "ast_hash": "fa915aaa819a97ea51316d7e0ce511c7",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/cde-v0-features-2026-10-29.json": {
+    "mtime": 1793320585.8060517,
+    "ast_hash": "d7770b9a30be8a3f70a8a41f7b9f346e",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/cde-v0-scores-2026-10-29.json": {
+    "mtime": 1793320588.1970654,
+    "ast_hash": "bc4742eb82f18024da610ef36a791bee",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/cde-v0.3-scores-2026-10-29.json": {
+    "mtime": 1793322342.4558468,
+    "ast_hash": "6f67889195ba503823a76e61c2380fd3",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/reading-analytics-phase-one-2026-10-29.json": {
+    "mtime": 1793314003.3355386,
+    "ast_hash": "0c7bd674054864ebaa9c4ef2d43a409d",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/reading-analytics-phase-zero-2026-10-29.json": {
+    "mtime": 1793312959.3862243,
+    "ast_hash": "8fa8d9ef7045ce194779cd171c1c4109",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/real-book-inventory-2026-10-29.json": {
+    "mtime": 1793314395.477931,
+    "ast_hash": "42cb6ff1228eb377233323cfd0d20c5f",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/synthetic-reading-eval-762943-final.json": {
+    "mtime": 1793333061.7709358,
+    "ast_hash": "42355e2729ef7a4941062b4d25ec6869",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/synthetic-reading-eval-762943-v2.json": {
+    "mtime": 1793332776.4569967,
+    "ast_hash": "e260b54ad8fb98f71bbe9c5a5570e9c0",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/synthetic-reading-eval-762943.json": {
+    "mtime": 1793332701.8082898,
+    "ast_hash": "c43f191e12534a46b2a85b12404c3fd1",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/synthetic-reading-eval-762944.json": {
+    "mtime": 1793333256.8602133,
+    "ast_hash": "c18f4d4b747a5195c5cf6d4d78945328",
+    "semantic_hash": ""
+  },
+  "scripts/astera-bootstrap.sh": {
+    "mtime": 1793262071.5386648,
+    "ast_hash": "2da97b5138a4ba577c081b4a3d79cfe3",
+    "semantic_hash": ""
+  },
+  "scripts/astera.sh": {
+    "mtime": 1793262051.471701,
+    "ast_hash": "a2ffebeb301371b70a8737a03f0d5179",
+    "semantic_hash": ""
+  },
+  "scripts/cde-phase1-audit.py": {
+    "mtime": 1793319798.318767,
+    "ast_hash": "16a0d33b693d7760c0f78e110431cb50",
+    "semantic_hash": ""
+  },
+  "scripts/real-book-inventory.py": {
+    "mtime": 1793314600.0550916,
+    "ast_hash": "83e8de757e6fa62b30929ba4253b9977",
+    "semantic_hash": ""
+  },
+  "scripts/real-book-pagination.py": {
+    "mtime": 1793319015.2197337,
+    "ast_hash": "01d70cdfbbedc210c5af322a7d15789d",
+    "semantic_hash": ""
+  },
+  "scripts/real-book-sample.py": {
+    "mtime": 1793316071.6793697,
+    "ast_hash": "f0605eefab2d93ef10b86311c2e485f0",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_critique.py": {
+    "mtime": 1793322435.6943262,
+    "ast_hash": "6796b1a4ce7fcb2636d1b0319f185378",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_eval.py": {
+    "mtime": 1793320441.9359112,
+    "ast_hash": "09ad6ed73738acb74b74d26f1ee9fd1e",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_extract.py": {
+    "mtime": 1793320092.21869,
+    "ast_hash": "111ff10a69b530ecea6a3f33946fb63f",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_features.py": {
+    "mtime": 1793320534.5495648,
+    "ast_hash": "e02672d07ab5c89372297aa541072d5a",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_grade.py": {
+    "mtime": 1793329438.4894657,
+    "ast_hash": "74fb4ff861a5c2bd958c14032ccd0d2c",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_model.py": {
+    "mtime": 1793327961.8608255,
+    "ast_hash": "ca022dd93f47317dd2110782648a955e",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_personal.py": {
+    "mtime": 1793330891.7824843,
+    "ast_hash": "fbabc40f13c4a7a846cc9367db0316cf",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_recalibrate.py": {
+    "mtime": 1793322305.4400468,
+    "ast_hash": "f171798381db1f51c780be5dbe5ba146",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_run.py": {
+    "mtime": 1793322251.171374,
+    "ast_hash": "f5886f03ec012219bf664946075cd058",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_sheet.py": {
+    "mtime": 1793329438.4726393,
+    "ast_hash": "6f33a0eb5bdb92b754313808b456414e",
+    "semantic_hash": ""
+  },
+  "tools/cde/cde_text.py": {
+    "mtime": 1793320158.7147536,
+    "ast_hash": "2f66629457d5243e929b40eda6d52965",
+    "semantic_hash": ""
+  },
+  "tools/cde/config/cde-v0.2.json": {
+    "mtime": 1793322188.8753557,
+    "ast_hash": "cd0ceb2aee7d152248dc56139d65e153",
+    "semantic_hash": ""
+  },
+  "tools/cde/config/lexicon-v1.json": {
+    "mtime": 1793320381.1461608,
+    "ast_hash": "8f89f6189a4b9d6ae70a4c9893000313",
+    "semantic_hash": ""
+  },
+  "tools/cde/config/reference-v1.json": {
+    "mtime": 1793320585.8075876,
+    "ast_hash": "83a26fb4d3a963af9e4f6605dc602cca",
+    "semantic_hash": ""
+  },
+  "tools/cde/config/reference-v3.json": {
+    "mtime": 1793322330.2376642,
+    "ast_hash": "296ca95daeaa24e573a1faeaa085f75a",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943-final/app-input.json": {
+    "mtime": 1793332956.5512192,
+    "ast_hash": "194e70dff739da337f0d1ac7b667f161",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943-final/attachments/A0C02CE2-D062-4ED2-97AB-B63B18F6E3CA.json": {
+    "mtime": 1793333061.5418518,
+    "ast_hash": "77f51f1167af4e93076f724eac949315",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943-final/attachments/manifest.json": {
+    "mtime": 1793333061.5429251,
+    "ast_hash": "d75c8738715baee1664ad263c80e1b66",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943-final/prepared.json": {
+    "mtime": 1793332956.6650167,
+    "ast_hash": "c38483481665c8e60e8296514934d6b1",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943-final/swift-predictions.json": {
+    "mtime": 1793333061.582393,
+    "ast_hash": "77f51f1167af4e93076f724eac949315",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943/app-input.json": {
+    "mtime": 1793332366.5144203,
+    "ast_hash": "194e70dff739da337f0d1ac7b667f161",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943/attachments/6F7AB80C-4249-4394-A45E-DC8A5AFB5C90.json": {
+    "mtime": 1793332677.6820893,
+    "ast_hash": "41920c8a8f56a895925f7c86c1e285b5",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943/attachments/manifest.json": {
+    "mtime": 1793332677.6827435,
+    "ast_hash": "95bc42dcacc5be5e7adafce981a852af",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943/prepared.json": {
+    "mtime": 1793332366.627321,
+    "ast_hash": "ca032d92a4f39dc57167d8b4366f88c6",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762943/swift-predictions.json": {
+    "mtime": 1793332701.582834,
+    "ast_hash": "41920c8a8f56a895925f7c86c1e285b5",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762944/app-input.json": {
+    "mtime": 1793333150.6696322,
+    "ast_hash": "539bf9cf74ef550bea33e0b749cfc249",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762944/attachments/9C4F5611-1CBC-4284-9D02-C8522A76176E.json": {
+    "mtime": 1793333256.5369532,
+    "ast_hash": "fd06c456ef9239c4fc2ea2db8dbf0be8",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762944/attachments/manifest.json": {
+    "mtime": 1793333256.5374918,
+    "ast_hash": "f55ad3f143eaa71ed1bf9d184850513e",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762944/prepared.json": {
+    "mtime": 1793333150.8416042,
+    "ast_hash": "db1c86f878969ae4a8af0243509f9bb7",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic-batch-762944/swift-predictions.json": {
+    "mtime": 1793333256.5901275,
+    "ast_hash": "fd06c456ef9239c4fc2ea2db8dbf0be8",
+    "semantic_hash": ""
+  },
+  "tools/cde/synthetic_eval.py": {
+    "mtime": 1793333095.93835,
+    "ast_hash": "ccb430703a2b7361c7f0755836cde7c5",
+    "semantic_hash": ""
+  },
+  "tools/cde/test_cde.py": {
+    "mtime": 1793330977.2394516,
+    "ast_hash": "dd91aae70ef06ce131f3315b8d1d8d14",
+    "semantic_hash": ""
+  },
+  "tools/cde/test_personal.py": {
+    "mtime": 1793330994.6966045,
+    "ast_hash": "7ec7a7dffa920a62c4607de1b36753d0",
+    "semantic_hash": ""
+  },
+  "tools/cde/test_synthetic_eval.py": {
+    "mtime": 1793333123.9400918,
+    "ast_hash": "76a672ecefc6f3748e48be88c238c481",
+    "semantic_hash": ""
+  },
+  "tools/real-book-audit/Stubs.swift": {
+    "mtime": 1793314541.1376913,
+    "ast_hash": "ecb1db64397d85572d5dc9c54be9492c",
+    "semantic_hash": ""
+  },
+  "tools/real-book-audit/main.swift": {
+    "mtime": 1793314576.0891616,
+    "ast_hash": "524ed8b68c8b2f86c10a8ef9acd97e69",
+    "semantic_hash": ""
+  },
+  "docs/audits/13-reading-analytics-phase-zero-2026-10-29.md": {
+    "mtime": 1793331785.7338884,
+    "ast_hash": "e81719096b866eda911d149e4e42db33",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/adf-149-sheet-2026-10-29.md": {
+    "mtime": 1793329488.9293234,
+    "ast_hash": "cf89f4bac42e644bdb9157d17db391da",
+    "semantic_hash": ""
+  },
+  "docs/audits/evidence/adf-grades-worksheet-2026-10-29.md": {
+    "mtime": 1793329499.5278556,
+    "ast_hash": "63c8dc9c11f003cc89565b68594a109d",
+    "semantic_hash": ""
+  },
+  "docs/audits/new-era-testing.md": {
+    "mtime": 1793319208.555584,
+    "ast_hash": "e32fdf87de46df43533d53024c746dca",
+    "semantic_hash": ""
+  },
+  "docs/audits/synthetic-reading-evaluation.md": {
+    "mtime": 1793333359.7183328,
+    "ast_hash": "b94074566d417f76f514962388020a7d",
+    "semantic_hash": ""
+  },
+  "docs/plans/cde/FORMULA.md": {
+    "mtime": 1793327987.6428761,
+    "ast_hash": "f0d30e63c3efa8cf8bc052efe2e75c31",
+    "semantic_hash": ""
+  },
+  "docs/plans/cde/GRADING.md": {
+    "mtime": 1793329415.2746806,
+    "ast_hash": "7bd8a2729885cc8aba4f0e89799366fa",
+    "semantic_hash": ""
+  },
+  "docs/plans/cde/PHASE-1-AUDIT.md": {
+    "mtime": 1793330383.1838346,
+    "ast_hash": "7eaaaac71fa92c1baa40e3e43334642f",
+    "semantic_hash": ""
+  },
+  "docs/plans/cde/PHASE-3-VALIDATION.md": {
+    "mtime": 1793321773.5585186,
+    "ast_hash": "8c9bc20a7c54c2f2a6f57ac8cf7d7696",
+    "semantic_hash": ""
+  },
+  "docs/plans/cde/RETEST-2026-10-29.md": {
+    "mtime": 1793331023.0665617,
+    "ast_hash": "fef221847dd2c6c50e9a8546a447ef66",
+    "semantic_hash": ""
+  },
+  "docs/plans/cde/REVIEW-RESPONSE.md": {
+    "mtime": 1793328008.7386208,
+    "ast_hash": "bd9d5598fbdb8e8339b61c25c1e314a9",
     "semantic_hash": ""
   }
 }

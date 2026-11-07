@@ -1,0 +1,42 @@
+{
+  "formula": "asterisma-difficulty-formula@0.3",
+  "graded_rows": 16,
+  "resolved_rows": 16,
+  "cannot_judge_rows": 0,
+  "unresolved_rows": 0,
+  "ungraded_rows": 0,
+  "cannot_judge_rate": 0.0,
+  "verdict_tally": {
+    "OK": 11,
+    "TOO_LOW": 0,
+    "TOO_HIGH": 5,
+    "CANNOT_JUDGE": 0
+  },
+  "band_agreement_within_one": 0.6875,
+  "band_distance_basis": "grader's own band",
+  "mean_band_delta": -0.875,
+  "median_band_delta": -0.5,
+  "max_under_call": 1,
+  "max_over_call": -4,
+  "rows_per_band": {
+    "Heavy": 3,
+    "Very heavy": 5,
+    "Moderate": 3,
+    "Light": 4,
+    "Demanding": 1
+  },
+  "signed_bias_by_band": {
+    "Light": 0.25,
+    "Moderate": 0,
+    "Demanding": -1,
+    "Heavy": -0.6667,
+    "Very heavy": -2.4
+  },
+  "self_consistency": {
+    "paired_rows": 16,
+    "agreement": 1.0,
+    "cohens_kappa": 1.0,
+    "label": "self-consistency (one grader, two passes); not inter-rater"
+  },
+  "interpretation_limit": "Document grades locate suspicious outputs. They are not a reading-time measurement and cannot certify accuracy; see GRADING.md \u00a70."
+}

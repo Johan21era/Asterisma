@@ -4,7 +4,7 @@
 
 This document answers the seven questions every close-out should answer, in plain language. It is written so that anyone — whether or not they have ever written code — can pick up the project and know exactly where things stand.
 
-**Refreshed 2026-10-29: the V1.0 release is merged, reorganized, and CI-green, and it carries the Sentinel v2 first tranche; `AsterismaV2.0` is the current working identity, not a shipped release.** The V2.0 tree now also carries the Home/Library shell overhaul, the reader customization pass, the offline contract pass, the ADR-13 Mirage warm-engine/library-scale overhaul, and the environment/Sentinel/console navigation overhaul (live atmosphere, weather layer, deepened daylight palettes with a readability scrim, Sentinel sidebar, Environment Studio, Subsystem Explorer), all compiled and unit-tested but **not committed and not visually accepted**. The current unit census is **464 tests / 671 runs / 455 passed / 9 skipped / 0 failed** (94 suites). The app is usable now. The remaining work is owner acceptance of the shell/reader/offline/Mirage changes, distribution hardening, and the Sentinel holds recorded in SG7 (manual acceptance, v1 removal, localization, menu bar, accessibility, 10× benchmark).
+**Refreshed 2026-10-29: the V1.0 release is merged, reorganized, and CI-green, and it carries the Sentinel v2 first tranche; `AsterismaV2.0` is the current working identity, not a shipped release.** The V2.0 tree now also carries the Home/Library shell overhaul, the reader customization pass, the offline contract pass, the ADR-13 Mirage warm-engine/library-scale overhaul, and the environment/Sentinel/console navigation overhaul (live atmosphere, weather layer, deepened daylight palettes with a readability scrim, Sentinel sidebar, Environment Studio, Subsystem Explorer), all compiled and unit-tested but **not committed and not visually accepted**. The current unit census is **515 tests / 99 suites / 719 runs / 506 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; 2026-10-31), after the reading-analytics recalibration and the 200-round stress evaluation. The hand-graded real-library pass that followed was **declared void on 2026-10-29** — see the session close at the end of this file and `docs/audits/new-era-testing.md` §31. The app is usable now. The remaining work is owner acceptance of the shell/reader/offline/Mirage changes, distribution hardening, and the Sentinel holds recorded in SG7 (manual acceptance, v1 removal, localization, menu bar, accessibility, 10× benchmark).
 
 ---
 
@@ -69,6 +69,7 @@ An app that can be trusted with years of reading history, with a change process 
 
 | # | Item | Estimate | Details |
 |---|------|----------|---------|
+| **A** | **Reading analytics Phase Zero → E1/E2** | Multi-session program | The evidence report is `docs/audits/13-reading-analytics-phase-zero-2026-10-29.md`. Next: fix the DEBUG-only synthetic generator (E1), then replace the 60 s timing ceiling with a measured attention policy (E2). Do not tune the genre weight or the 40/25/20/15 blend until both are green. |
 | 0 | **Library Recovery owner acceptance (G6)** | One focused session | Run the nine-step acceptance script in `docs/plans/library-recovery/G6.md` on a copied library. The gate is not passed until this is signed off. Performance tuning for 1.38 M timings is a separate follow-up, by owner decision. |
 | 1 | **Sentinel owner acceptance + SG7 close** | One focused session | Run the ten roadwork scenarios on a copied library, decide v1 removal, then close or narrow SG7. Localization, menu bar, accessibility, and the 10× benchmark remain separate holds. |
 | 2 | **Distribution hardening** | Signing/account setup | Developer ID signing + notarization so first launch is a normal double-click. Today the build is ad-hoc signed and needs right-click → Open. |
@@ -88,7 +89,7 @@ CI runner alignment is complete (2026-10-26): `census` runs on `macos-26` / Xcod
 
 ## What should the next person know to start instantly?
 
-**Baseline:** `main` carries the original release merge at `aba8aa4` plus the owner-accepted reader build, the preservation-first repository reorganization, CI hardening, the Sentinel v2 first tranche (`6099e4e`), and SG8 (`29dd4f6`); ready tag `asterisma-v1.0-ready-2026-10-26`, release tag `asterisma-v1.0-mvp`. At the SG8 boundary the local unit census was **432 tests / 671 runs / 9 skipped / 0 failed**; the reader boundary was **441 tests / 671 runs / 432 passed / 9 skipped / 0 failed** (Stage AA); the offline boundary was **447 tests / 671 runs / 438 passed / 9 skipped / 0 failed** (Stage AB, historical). The ADR-13 boundary was **459 tests / 671 runs / 450 passed / 9 skipped / 0 failed** (Stage AE). The current environment/Sentinel/console boundary is **464 tests / 671 runs / 455 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; see Stage AH in `docs/registers/03-fix-log.md`). Release build exit 0 for the earlier boundary; the reader and offline passes have Debug build receipts only. Test isolation was byte-identical at the earlier boundary; it was not re-run after the reader or offline pass. The generated `dist/` package was removed during the 2026-10-28 artifact cleanup; rebuild with `scripts/package-release.sh`. The last documented package SHA-256 is `786832c8049e38ebe03d6220ae0a39b3a0005b010bdce4675e440cea65ef4643`. Canonical census numbers come from `xcrun xcresulttool get test-results summary`; Sentinel evidence is indexed in `docs/plans/sentinel/gates/README.md`. The close-out graph refresh (Stage AI) is **8,156 nodes / 20,371 edges / 389 communities**; the 3D page is 8,579,333 B and all artifact hashes are in the Stage AI receipt. The earlier Stage AG refresh recorded 8,045 / 20,093 / 381; the ADR-13 refresh (Stage AF) recorded 8,037 / 20,085 / 378.
+**Baseline:** `main` carries the original release merge at `aba8aa4` plus the owner-accepted reader build, the preservation-first repository reorganization, CI hardening, the Sentinel v2 first tranche (`6099e4e`), and SG8 (`29dd4f6`); ready tag `asterisma-v1.0-ready-2026-10-26`, release tag `asterisma-v1.0-mvp`. At the SG8 boundary the local unit census was **432 tests / 671 runs / 9 skipped / 0 failed**; the reader boundary was **441 tests / 671 runs / 432 passed / 9 skipped / 0 failed** (Stage AA); the offline boundary was **447 tests / 671 runs / 438 passed / 9 skipped / 0 failed** (Stage AB, historical). The ADR-13 boundary was **459 tests / 671 runs / 450 passed / 9 skipped / 0 failed** (Stage AE). The Phase Zero boundary was **469 tests / 671 runs / 460 passed / 9 skipped / 0 failed** (`rt-census-20261029-183222.xcresult`); the current boundary is **515 tests / 99 suites / 719 runs / 506 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; 2026-10-31), which adds the four Book File Relink tests and the one Phase Zero reading-analytics probe to the Stage AH environment/Sentinel/console boundary of **464 tests / 671 runs / 455 passed / 9 skipped / 0 failed** (Stage AH in `docs/registers/03-fix-log.md`). Release build exit 0 for the earlier boundary; the reader and offline passes have Debug build receipts only. Test isolation was byte-identical at the earlier boundary; it was not re-run after the reader or offline pass. The generated `dist/` package was removed during the 2026-10-28 artifact cleanup; rebuild with `scripts/package-release.sh`. The last documented package SHA-256 is `786832c8049e38ebe03d6220ae0a39b3a0005b010bdce4675e440cea65ef4643`. Canonical census numbers come from `xcrun xcresulttool get test-results summary`; Sentinel evidence is indexed in `docs/plans/sentinel/gates/README.md`. The close-out graph refresh (Stage AI) is **8,156 nodes / 20,371 edges / 389 communities**; the 3D page is 8,579,333 B and all artifact hashes are in the Stage AI receipt. The earlier Stage AG refresh recorded 8,045 / 20,093 / 381; the ADR-13 refresh (Stage AF) recorded 8,037 / 20,085 / 378.
 
 > **History note (2026-10-28):** `main` was rewritten to remove AI co-author trailers from five commits. Trees are byte-identical. Remapped SHAs: `40bc922`→`16d6d16`, `fd524cd`→`5a369e9`, `6aecdc3`→`bed710a`, `2f40a43`→`310b9d3`, `ae4ee36`→`76e8a23`. A local-only `backup/pre-attribution-rewrite` branch may hold the old objects; it is not pushed and is safe to delete.
 
@@ -458,3 +459,128 @@ The graph was refreshed immediately afterward in Stage AC: **7,836 nodes / 19,61
 an EPUB and a PDF → Goals/Insights; open Discover and confirm the offline state
 and that the sheet closes cleanly. Then reconnect, confirm search resumes, and
 commit/push with `census.yml` watched to green.
+
+## Session close — 2026-10-29 (real-library hand grading completed)
+
+> **Superseded later the same day:** every figure in this section was declared
+> **VOID** by the owner. The section is kept as history. The void, its reasons
+> and the surviving byte evidence are in the final session close below and in
+> `docs/audits/new-era-testing.md` §31. Do not use the table below as a baseline.
+
+**What was finished.** The owner-directed real-book pass is complete. All 149
+EPUB packages in `asterisma new testing suite` were inventoried; 14 were proved
+byte-identical duplicates by SHA-256, leaving **135 distinct works**, and **all
+135 were read and hand-graded** against the app's own engine output. No script
+assigned a verdict; the verdict record is `docs/audits/new-era-grades.tsv`, and
+the reasoning, per-batch receipts and corrections are in
+`docs/audits/new-era-testing.md`.
+
+**The three results that matter.**
+
+| Axis | Wrong | Direction |
+|---|---:|---|
+| Reading time | 126 / 129 judgeable (98%) | always **pessimistic**, 1.2×–3.1× |
+| Page count | 73 / 135 (54%) | 46 too long, 27 too short |
+| Difficulty label | 58 / 135 (43%) | 49 of 53 categorical misses **overstate** |
+
+**The three structural causes** (detailed in §28):
+
+1. The default pace is 120 s per 250-word page = **125 wpm**, about half of
+   ordinary reading. Every reader without history is told a book takes ~2× as
+   long as it will.
+2. Page density is one constant (250 wpp) for a library whose real density runs
+   **141–440 wpp**. Accuracy happens only where a book's difficulty multiplier
+   accidentally offsets the gap — which is why epic fantasy looks right and
+   Dumas, Dumas-length translations and light novels do not.
+3. `difficultyMultiplier` is sensitive to *where* you sample. Five authors
+   reproduce it: Tana French 1.95×, TurtleMe 1.47×, Hardy Boys 1.55×, Gwynne
+   1.21×, Itachi's Story 1.17× — same authors, same prose, different badges.
+   The same effect moved **7 of my own 20 verdicts (35%)** when I re-read those
+   books from the middle instead of the front.
+
+**Next actions, in order.**
+
+- **A.** Fix F1 (pace) and re-grade the estimate column. The re-grade is not
+  optional: three books currently read `plausible` only because the page error
+  cancels the pace error, and fixing pace alone will falsify them.
+- **B.** Run the three-window sampling experiment (F3). It is the cheapest test
+  that can falsify this file's central claim; the hypothesis is stated in §22.2.
+- **C.** Introduce a format-aware density band (F2) with a ≥70%-within-±15%
+  acceptance test over the same 135 books.
+- **D.** Detect compilations (F4) and exclude nav/TOC/footnote documents (F5)
+  from both word count and the analysis sample.
+
+**Not done, and not implied:** no real reading session exists, so the reader
+side of the model is still synthetic (§29.1); the PDF path was not graded; there
+is one grader and no inter-rater statistic; nothing was committed or pushed.
+
+**Checks at close:** `verify-sentinel-surface.sh` exit 0;
+`comprehension-bench.py --validate-only` exit 0; `census.sh --unit-only` exit 0
+with **493 tests / 99 suites / 719 runs / 485 passed / 9 skipped / 0 failed**
+(`rt-census-20261029-194024.xcresult`).
+
+## Session close — 2026-10-29 (real-library results declared VOID)
+
+**Declaration.** The owner voided every result of the real-library hand-graded
+pass. The 135 verdicts, the per-batch tallies, the three accuracy figures,
+findings F1–F6 and the cross-examination are withdrawn as evidence. Testing
+restarts from scratch once a formulaic difficulty rubric exists. Full reasons and
+a status per surviving item: `docs/audits/new-era-testing.md` §31.
+
+**Why it was voided.** Three defects, in ascending order of severity. The
+difficulty grade was one reader's judgement — §4 fixed the axes and the legal
+values but not the arithmetic, so a second person cannot reproduce a verdict.
+There is no second grader and no agreement statistic, while my own re-read moved
+**7 of 20** verdicts (§25.1). And the page axis scored books against print
+editions even though **128 of 149 packages carry no page markers and none
+declares a page count**
+(`python3 scripts/real-book-pagination.py "asterisma new testing suite"`, exit 0).
+
+**What still stands.** 149 packages, 14 byte-identical duplicates, 135 distinct
+works; the engine's own output as engine behaviour; and the pagination counts.
+The verdict file `docs/audits/new-era-grades.tsv` is retained unchanged and
+carries no authority; it was not opened for writing.
+
+**Next.** Do not retest, do not tune the estimator, and do not cite the void file
+as a baseline. The next action is authoring the difficulty formula the owner
+requires. Nothing is committed or pushed.
+
+## Session close — 2026-10-31 (200-round stress evaluation)
+
+**State.** The 200-round run finished: 40 batches, 200/200 main rounds graded,
+1,982,800 main predictions and 3,200 demo predictions. The driver was
+interrupted after batch 175 and resumed at batch 176. `analyze_fresh_200.py`
+exited 0 and verified every row; the demo verifier found no errors. The report
+is `docs/audits/fresh-reading-stress-200-2026-10-30.md`
+(SHA-256 `76ba1ba0bc050566bcfef62219c7c218d1edcac1850193bd8222ef806f58e582`,
+356 lines). `docs/INDEX.md`, the root-cause audit's status section, the fix log
+and this handoff were updated. The raw 100- and 200-round trees were then
+archived in `docs/audits/evidence/fresh-stress-evidence-archive-2026-10-31.md`
+(SHA-256 `aba62346888056aff88a40c6686d7a8cc05e22b038e9305acfd5899d8db2e875`)
+and deleted; `du -sk .` fell from 6,885,764 KiB to 257,504 KiB at deletion.
+`graphify-out/` was not touched.
+
+**Result.** The fixed baseline beats the saved legacy comparator overall:
+median 18.98% against 21.42%, mean 35.45% against 38.21%, spikes 170,404
+against 185,341. That comparator is a hybrid: it equals the baseline on
+`same_book` (5.48%/7.64%/158 for both) and uses the current per-book policy
+there, so it isolates the pooling change on no-personal-speed cases, not the
+ceiling change on personal-speed books. The exception is `corpus-evaluation`
+(median 16.51% against 15.62%; mean unchanged at 21.13%). The candidate loses at the fitted 0.979
+weight (median 23.09%, mean 41.35%, 220,164 spikes) and at the pre-registered
+0.5 weight (26.70%, 43.35%, 223,724 spikes). The holdout repeats development
+almost exactly, so this is not a failed weight transfer. The report records the
+sparse-prior, last-eight and guard-inversion mechanisms; the candidate is
+rejected.
+
+**Checks.** Python tests exit 0 (28 tests, `OK`); Sentinel surface exit 0;
+index validation exit 0 (`bank ok: 30 facts, 12 overview facts`); unit census
+exit 0 (515 total, 506 passed, 0 failed, 9 skipped, 719 runs). The nine skips are
+not passes. No independent hand grading or real-reader validation exists.
+
+**Next.** Keep the two production changes. Do not promote the candidate. If the
+owner wants another experiment, fall back to the fixed baseline when `recent` is
+missing or rejected, shrink recent toward the target's full history, pre-register
+the rule, and calibrate on the cases where it changes the answer. That experiment
+has not been run. Graph refresh, commit and push remain separately owner-gated
+and were not done; the cleanup and evidence archival are recorded above.
