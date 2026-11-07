@@ -69,7 +69,7 @@ An app that can be trusted with years of reading history, with a change process 
 
 | # | Item | Estimate | Details |
 |---|------|----------|---------|
-| **A** | **Reading analytics Phase Zero → E1/E2** | Multi-session program | The evidence report is `docs/audits/13-reading-analytics-phase-zero-2026-10-29.md`. Next: fix the DEBUG-only synthetic generator (E1), then replace the 60 s timing ceiling with a measured attention policy (E2). Do not tune the genre weight or the 40/25/20/15 blend until both are green. |
+| **A** | **Reading analytics Phase Zero → E4/E5** | Multi-session program | The evidence report is `docs/audits/13-reading-analytics-phase-zero-2026-10-29.md`. E1–E3, E6, and E7 were executed on 2026-10-29. Remaining: E4 visibility/focus instrumentation and the monotonic elapsed clock; E5's 73% session-record proof. Do not tune the genre weight or the 40/25/20/15 blend until both are green. |
 | 0 | **Library Recovery owner acceptance (G6)** | One focused session | Run the nine-step acceptance script in `docs/plans/library-recovery/G6.md` on a copied library. The gate is not passed until this is signed off. Performance tuning for 1.38 M timings is a separate follow-up, by owner decision. |
 | 1 | **Sentinel owner acceptance + SG7 close** | One focused session | Run the ten roadwork scenarios on a copied library, decide v1 removal, then close or narrow SG7. Localization, menu bar, accessibility, and the 10× benchmark remain separate holds. |
 | 2 | **Distribution hardening** | Signing/account setup | Developer ID signing + notarization so first launch is a normal double-click. Today the build is ad-hoc signed and needs right-click → Open. |

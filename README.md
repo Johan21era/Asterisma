@@ -49,8 +49,8 @@ There is also a hidden **Developer Console** (⌘⇧D, Debug builds only) for st
 | **What it is** | A sandboxed macOS AppKit/SwiftUI app for tracking your reading — plus the integrated Mirage companion engine (optional feature) |
 | **Language** | Swift 5 mode, SwiftUI + AppKit only |
 | **Build config** | `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`, `SWIFT_APPROACHABLE_CONCURRENCY = YES`, deployment target macOS 26.5, Xcode 27.1 locally; CI pins Xcode 26.6 |
-| **Dependencies** | Exactly one Swift dependency: ZIPFoundation 0.9.20 (SPM, pinned via `Package.resolved` — used for unzipping EPUBs). Mirage ships as a self-contained bundled runtime (its own Python interpreter), not a Swift dependency |
-| **App size** | 180 Swift files · 68,185 raw lines (60,366 non-blank) — counted from the tree on 2026-10-31 |
+| **Dependencies** | Two Swift packages: GRDB 7.11.1 (SQLite summary/behavior store) and ZIPFoundation 0.9.20 (EPUB extraction), both pinned via `Package.resolved`. Mirage ships as a self-contained bundled runtime (its own Python interpreter), not a Swift dependency |
+| **App size** | 180 Swift files · 68,367 raw lines (60,538 non-blank) — counted from the tree on 2026-11-07 |
 | **Tests** | **518 tests / 100 suites / 719 runs · 509 passed · 9 skips · 0 failures** in the local unit census (2026-11-07, after the E8 estimate facade, page/difficulty separation, and behavior-evidence SQLite tranche); CI runs the surface-freshness gate before the census |
 | **How it is tested** | Swift Testing (`@Suite` / `@Test` / `#expect`) — not XCTest |
 | **History** | ~30 working sessions (Jun–Oct 2026), 45+ commits, then the **RT–Mirage merge campaign** (Oct 2026): the 8-PR integration ladder PR-1…PR-8, closed with owner signatures; then the **Bedrock / AsterismaV1.0 release** (2026-10-24) |

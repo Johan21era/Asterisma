@@ -91,7 +91,7 @@ Everything else hangs from them.
 | Docs commit CI | run `42333251100`, **in progress at revision time** | `gh run view 42333251100` |
 | Product identity | `AsterismaV2.0`, SwiftUI + AppKit, Swift 5 mode | `README.md` §2 |
 | Persistence | SQLite summary store plus JSON compatibility surfaces | `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` |
-| Dependency policy | One Swift package, ZIPFoundation; Mirage is a bundled runtime | `README.md` §2 |
+| Dependency policy | Two Swift packages: GRDB 7.11.1 and ZIPFoundation 0.9.20; Mirage is a bundled runtime | `README.md` §2, `Package.resolved` |
 | Test policy | Swift Testing; census is the merge gate | `AGENTS.md`, `scripts/census.sh` |
 | Known skips | 4 Mirage real-engine, 1 benchmark, 2 real-library SQLite parity, 2 live Open-Meteo | `README.md` §4 |
 
@@ -112,12 +112,12 @@ appropriate phase. It does not reopen work that code already proves is done.
 | Legacy/dead code cleanup | Some zero-caller fragments remain | P9, G9 |
 | Mirage standing items | Observation cadence, perf budget, backup-surface gap | P6, G6 |
 | Environment/Sentinel/console visual acceptance | No screenshot receipt; owner review pending | P7, G7 |
-| Reading analytics Phase Zero → E1/E2 | Multi-session program | P3, G3 |
+| Reading analytics Phase Zero → E4/E5 | E1–E3, E6, E7 executed 2026-10-29; E4 focus/visibility instrumentation and E5 73% session-record proof remain | P3, G3 |
 
 The old remediation roadmap (`docs/roadmap/05-remediation-roadmap.md`) remains
 the detailed defect ledger. It is not deleted or contradicted. Items already
 implemented in code — the report generation token, privacy manifest, apple-events
-entitlement, and subscription resets — are treated as **verify-and-close**, not
+entitlement, and F-12 rebind reset — are treated as **verify-and-close**, not
 as new implementation work.
 
 ### 1.3 Non-negotiable constraints
@@ -238,7 +238,10 @@ and `ses_e4c04fa4cffeLMbdGo53gJH56J`. This is a **credit** ceiling, not proof
 that the daily request allocation is exhausted. The preflight must therefore
 check both request access and the model's `max_tokens` fit; if it returns 402,
 record the blocked request and use `opencode/crouton-alpha-free` rather than
-retrying paid calls blindly.
+retrying paid calls blindly. A minimal Crouton smoke on 2026-11-07
+(`ses_e4bea78ddffetH7olv1j7NqkID`) returned `PREFLIGHT_OK` at cost 0, confirming
+that the earlier 402 was a completion-ceiling fit issue rather than a blanket
+request block. The fit check still applies.
 
 ### 2.6 Message accounting
 
