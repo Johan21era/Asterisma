@@ -712,3 +712,39 @@ visual pass exists.
 
 **Next.** WP-1.4 (packet written, not started): factory, one `upsertNote` path,
 extracted editor, idempotent restore, and the two new test suites.
+
+## Session close — 2026-11-07 (WP-1.4 annotation UI)
+
+**Delivered.** The annotation surface is wired end to end. GLM session
+`ses_e4b97d907ffe7MZavRdmhkB9bN` wrote the factory (`AnnotationCreation`), the
+restore resolver (`HighlightRestore`), the shared views (`HighlightViews`), both
+test suites, the DataStore helpers (`upsertNote`, `deleteNote`), and the
+`BookDetailsView` extraction, then hit its free-message cap before building.
+Buffy verified the tree and finished the packet:
+
+- EPUB: coordinator members and an injected renderer keyed by note id on the
+  CSS Custom Highlight API; re-applying a payload cannot duplicate a mark. A
+  click maps to a character offset and opens that note. A cleared selection now
+  posts nil, so the action bar disappears with it (CR-1 finding 4, EPUB half).
+- PDF: every highlight is resolved per page from `PDFPage.string`; the stored
+  rect is provenance only and is never drawn. Annotations carry an
+  `asterisma:note:` tag so each re-render removes exactly its own marks, and a
+  `mouseDown` hit test maps a tap back to the note. Action bar, editor popover,
+  and DataStore helpers are shared with EPUB.
+- One Swift `..<` parse bug in GLM's resolver was fixed; the build had failed.
+
+**Verified.** Debug build exit 0; focused run 29 tests in 3 suites passed; full
+census exit 0 with **557 tests / 548 passed / 9 skipped / 0 failed** (`546`
+Swift Testing tests in 105 suites, `rt-census-20261107-002415.xcresult`);
+`git diff --check`, surface, and index gates exit 0. Only the eight allowed paths
+changed.
+
+**Limits.** Nothing was exercised in a live `WKWebView` or `PDFView`: the
+highlight renderer, the click-offset mapping, and PDF annotation drawing are
+compiled and reviewed only. A WebKit build without the Highlight API draws no
+marks (the model is unaffected). PDF staleness is expressed by drawing nothing
+rather than an inline message, because the screen never opens the document. No
+owner visual pass exists, and no live library was migrated.
+
+**Next.** WP-1.5 (persistence, backup, recovery) or WP-1.6 (accessibility and
+owner acceptance script). G1 still needs the owner's 10-step script.

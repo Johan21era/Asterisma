@@ -32,6 +32,29 @@ import Foundation
 
 // MARK: - Book file relinking
 
+// MARK: - Note-array mutations (WP-1.4)
+
+/// WP-1.4: pure note-array upsert backing `DataStore.upsertNote`. A note id
+/// already present is replaced in place — an edit never mints a new row,
+/// which is what keeps edit cycles from orphaning rows; a new id is simply
+/// appended. Returns the new array.
+func noteArrayByUpserting(_ note: BookNote, into notes: [BookNote]) -> [BookNote] {
+    var updated = notes
+    if let index = updated.firstIndex(where: { $0.id == note.id }) {
+        updated[index] = note
+    } else {
+        updated.append(note)
+    }
+    return updated
+}
+
+/// WP-1.4: pure note-array delete backing `DataStore.deleteNote`. Removes
+/// exactly the notes with the given id — no other element is touched — so
+/// a delete can never leave an orphaned row behind. Returns the new array.
+func noteArrayByDeleting(id: UUID, from notes: [BookNote]) -> [BookNote] {
+    notes.filter { $0.id != id }
+}
+
 /// Recoverable failures when a user points a library entry at a new copy of
 /// its source file. Every case is a message the UI can show; none are fatal.
 enum BookFileRelinkError: LocalizedError {
@@ -367,6 +390,48 @@ final class DataStore: ObservableObject {
 
     func book(id: UUID) -> Book? {
         books.first { $0.id == id }
+    }
+
+    // MARK: - Public API — Notes (WP-1.4: the single book.notes mutation path)
+
+    /// WP-1.4: THE single mutation path for `book.notes`. Highlight creation,
+    /// note edits, and re-saves all flow through here; the readers and
+    /// BookDetailsView call only this and `deleteNote(id:inBook:)`. Nothing
+    /// anywhere else appends to or mutates `book.notes` in place, so the
+    /// persisted mirror can never diverge from the in-memory array.
+    ///
+    /// A note id already present is replaced in place (edits never mint
+    /// rows); a new id is appended. Returns false when the book does not
+    /// exist (the caller drops the note rather than orphaning it).
+    @discardableResult
+    func upsertNote(_ note: BookNote, inBook bookID: UUID) -> Bool {
+        guard let idx = books.firstIndex(where: { $0.id == bookID }) else {
+            print("[DataStore] upsertNote: book \(bookID) not found — " +
+                "note \(note.id) dropped.")
+            return false
+        }
+        let updated = noteArrayByUpserting(note, into: books[idx].notes)
+        guard updated != books[idx].notes else { return true }
+        books[idx].notes = updated
+        scheduleSave()
+        return true
+    }
+
+    /// WP-1.4: THE single delete path for a note. Removes exactly the note
+    /// with that id and nothing else, so deletion can never leave a row
+    /// behind. Returns false when the book or the note does not exist.
+    @discardableResult
+    func deleteNote(id noteID: UUID, inBook bookID: UUID) -> Bool {
+        guard let idx = books.firstIndex(where: { $0.id == bookID }) else {
+            print("[DataStore] deleteNote: book \(bookID) not found — " +
+                "note \(noteID) delete dropped.")
+            return false
+        }
+        let updated = noteArrayByDeleting(id: noteID, from: books[idx].notes)
+        guard updated.count != books[idx].notes.count else { return false }
+        books[idx].notes = updated
+        scheduleSave()
+        return true
     }
 
     /// Points an existing library entry at a replacement copy of its source

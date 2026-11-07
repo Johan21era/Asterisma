@@ -526,6 +526,19 @@ unreadable after a downgrade. Four further findings are deferred with reasons in
 `docs/audits/2026-11-07-cr1-annotation-review.md`; two are assigned to WP-1.4.
 The census after the fixes is **537 tests / 528 passed / 9 skipped / 0 failed**.
 
+**WP-1.4 receipt (2026-11-07).** GLM session `ses_e4b97d907ffe7MZavRdmhkB9bN`
+wrote the factory, restore resolver, shared views, tests, and DataStore helpers,
+then hit its free-message cap before wiring the EPUB coordinator or opening
+`PDFReaderView2.swift`. Buffy kept what held up and finished the packet: the
+EPUB coordinator members and an idempotent CSS-Highlight renderer with a
+tap-to-edit bridge, clearing on deselection (closing CR-1 finding 4 for EPUB),
+and PDF annotations resolved per page from page text with a click hit test, the
+same action bar, and the same editor popover. One Swift `..<` parsing bug in
+GLM's resolver was fixed. Debug build exit 0; 29 focused tests in 3 suites
+passed; full census exit 0 at **557 tests / 548 passed / 9 skipped / 0 failed**
+(`rt-census-20261107-002415.xcresult`). No live reader run or owner visual pass
+exists; the EPUB renderer and PDF drawing are compiled and reviewed only.
+
 **Technical guardrails**
 
 - Store annotation anchors as logical locators (chapter/CFI or page + normalized

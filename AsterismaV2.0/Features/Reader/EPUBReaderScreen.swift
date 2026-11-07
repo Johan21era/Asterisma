@@ -40,6 +40,22 @@ struct EPUBReaderScreen: View {
     /// `onSelection`.
     @State private var selectionState = EPUBSelectionState()
 
+    /// WP-1.4: the note currently open in the shared editor popover, keyed
+    /// by id so the popover always reflects the live model row.
+    @State private var editingNoteID: UUID?
+
+    /// WP-1.4: the currently-loaded chapter's plain text
+    /// (`document.body.textContent`), fetched from the live web view so
+    /// `HighlightRestore` can re-derive mark locations from content. Cleared
+    /// on chapter change — it must never describe a chapter we are not
+    /// showing.
+    @State private var chapterBodyText: String = ""
+
+    /// WP-1.4: the user's default highlight color, set from the action-bar
+    /// swatches; new highlights start with it.
+    @AppStorage("notes.defaultHighlightColor")
+    private var defaultHighlightColor: String = AnnotationColor.yellow.rawValue
+
     /// Reference to the in-flight open Task so it can be cancelled on
     /// disappear, exactly like the previous implementation's loadTask.
     @State private var openTask: Task<Void, Never>?
@@ -211,6 +227,11 @@ struct EPUBReaderScreen: View {
         // WP-1.2: chapter change — the previous selection no longer anchors
         // to text the reader is showing.
         selectionState.clear()
+        // WP-1.4: the editor pointed into the previous chapter, and the
+        // fetched chapter text describes it too; drop both so nothing stale
+        // can mark or mis-status the new chapter before its text arrives.
+        editingNoteID = nil
+        chapterBodyText = ""
         persistPosition()
         coordinator.turnToPage(globalPage)
         updatePositionLabel()
@@ -313,6 +334,96 @@ struct EPUBReaderScreen: View {
         persistPosition()
         coordinator.turnToPage(globalPage)
         updatePositionLabel()
+    }
+
+    // MARK: - Annotation UI (WP-1.4)
+
+    private var activeColor: AnnotationColor {
+        AnnotationColor(rawValue: defaultHighlightColor) ?? .yellow
+    }
+
+    /// The note the shared editor currently points at, read from the live
+    /// DataStore row (never from the stale `book` copy passed at open).
+    private var editorNote: BookNote? {
+        guard let editingNoteID else { return nil }
+        return dataStore.book(id: book.id)?.notes.first { $0.id == editingNoteID }
+    }
+
+    /// Inline stale status for the open editor: when the note no longer
+    /// resolves against the currently-loaded chapter, the popover says so
+    /// inline (requirement 7 — no modal error alerts). Empty chapter text
+    /// (not yet fetched) reports no status rather than a false alarm.
+    private var editorStatusMessage: String? {
+        guard let note = editorNote,
+              let quote = note.selectedText,
+              !chapterBodyText.isEmpty
+        else { return nil }
+        let outcome = HighlightRestore.resolveEPUB(
+            chapterText: chapterBodyText,
+            chapterIndex: currentChapterIndex,
+            anchor: note.anchor,
+            selectedText: quote
+        )
+        return outcome.range == nil
+            ? "Couldn't find this highlight in the text."
+            : nil
+    }
+
+    /// The JSON mark payload for the currently-loaded chapter, derived in
+    /// Swift by `HighlightRestore` from the live chapter text plus
+    /// `book.notes`. The stored `pageInChapter` is never a draw input here;
+    /// every range comes from content. Pushed into `EPUBChapterWebView`,
+    /// whose injected script applies it idempotently by note id.
+    private var chapterMarksJSON: String {
+        let notes = dataStore.book(id: book.id)?.notes ?? []
+        var marks: [[String: Any]] = []
+        for note in notes {
+            guard let quote = note.selectedText else { continue }
+            let outcome = HighlightRestore.resolveEPUB(
+                chapterText: chapterBodyText,
+                chapterIndex: currentChapterIndex,
+                anchor: note.anchor,
+                selectedText: quote
+            )
+            guard let range = outcome.range else { continue }
+            marks.append([
+                "id": note.id.uuidString,
+                "start": range.lowerBound,
+                "end": range.upperBound,
+                "color": (note.color ?? .yellow).rawValue
+            ])
+        }
+        guard let data = try? JSONSerialization.data(withJSONObject: marks) else {
+            return "[]"
+        }
+        return String(data: data, encoding: .utf8) ?? "[]"
+    }
+
+    /// Action bar → Highlight: build the note through the one factory and
+    /// hand it to the one mutation path, then open the shared editor for it.
+    /// The highlight row exists even if the editor is dismissed untouched.
+    private func createHighlight(from selection: EPUBTextSelection) {
+        let note = AnnotationCreation.makeNote(
+            from: selection,
+            bookID: book.id,
+            color: activeColor
+        )
+        guard dataStore.upsertNote(note, inBook: book.id) else { return }
+        selectionState.clear()
+        editingNoteID = note.id
+    }
+
+    /// Action bar → Copy: the ephemeral note is formatted by the ONE quote
+    /// formatter, so the copied string is byte-identical to what a row or
+    /// the editor popover copies for the same quote.
+    private func copySelectionQuote(_ selection: EPUBTextSelection) {
+        let ephemeral = AnnotationCreation.makeNote(
+            from: selection,
+            bookID: book.id,
+            color: activeColor
+        )
+        guard let quote = QuoteFormatter.copyQuote(ephemeral) else { return }
+        AnnotationClipboard.copy(quote)
     }
 
     // MARK: - Content Views
@@ -856,6 +967,7 @@ struct EPUBReaderScreen: View {
                     startPage: pageInChapter,
                     targetPage: pageInChapter,
                     settingsJSON: readerSettingsJSON,
+                    marksJSON: chapterMarksJSON,
                     onExternalLink: { url in
                         NSWorkspace.shared.open(url)
                     },
@@ -885,12 +997,32 @@ struct EPUBReaderScreen: View {
                         updatePositionLabel()
                     },
                     onSelection: { selection in
-                        selectionState.record(selection)
+                        // CR-1 / WP-1.4: a cleared selection now arrives as
+                        // nil, so the action bar cannot outlive the text it
+                        // would highlight.
+                        if let selection {
+                            selectionState.record(selection)
+                        } else {
+                            selectionState.clear()
+                        }
                         #if DEBUG
                         logger.debug(
                             "EPUB latest selection: \(selectionState.latest?.locator ?? "none", privacy: .public)"
                         )
                         #endif
+                    },
+                    // WP-1.4: the bridge publishes the chapter's plain text so
+                    // Swift re-derives mark locations from content, and the
+                    // note id tapped in the web view opens the shared editor.
+                    onBodyText: { text in
+                        chapterBodyText = text
+                    },
+                    onHighlightTap: { noteID in
+                        if dataStore.book(id: book.id)?.notes.contains(where: { $0.id == noteID })
+                            == true
+                        {
+                            editingNoteID = noteID
+                        }
                     }
                 )
             } else {
@@ -1014,6 +1146,56 @@ struct EPUBReaderScreen: View {
             }
         }
         .animation(.easeOut(duration: 0.16), value: readerShowPageNumbers)
+        // WP-1.4: the in-reader action bar, shown while a selection is live.
+        // It sits above the page controls.
+        .overlay(alignment: .bottom) {
+            if let selection = selectionState.latest, editingNoteID == nil {
+                HighlightActionBar(
+                    defaultColor: activeColor,
+                    onDefaultColor: { defaultHighlightColor = $0.rawValue },
+                    onHighlight: { createHighlight(from: selection) },
+                    onCopy: { copySelectionQuote(selection) }
+                )
+                .padding(.bottom, 64)
+                .transition(.opacity)
+            }
+        }
+        .animation(.easeOut(duration: 0.16), value: selectionState.latest == nil)
+        // WP-1.4: the shared editor popover for one highlight. Every action
+        // (save / copy / delete) routes to the DataStore helpers; the inline
+        // status reports an anchor that no longer resolves.
+        .popover(
+            isPresented: Binding(
+                get: { editorNote != nil },
+                set: { if !$0 { editingNoteID = nil } }
+            ),
+            arrowEdge: .bottom
+        ) {
+            if let note = editorNote {
+                HighlightEditorView(
+                    note: note,
+                    statusMessage: editorStatusMessage,
+                    onSave: { body, color in
+                        var updated = note
+                        // Save mutates ONLY body and color on the same id;
+                        // anchor, selectedText, and id pass through.
+                        updated.text = body
+                        updated.color = color
+                        updated.modifiedAt = Date()
+                        dataStore.upsertNote(updated, inBook: note.bookID)
+                    },
+                    onCopy: {
+                        if let quote = QuoteFormatter.copyQuote(note) {
+                            AnnotationClipboard.copy(quote)
+                        }
+                    },
+                    onDelete: {
+                        dataStore.deleteNote(id: note.id, inBook: note.bookID)
+                        editingNoteID = nil
+                    }
+                )
+            }
+        }
     }
 
     /// Extracts plain text from the current chapter for RSVP streaming.
@@ -1205,6 +1387,130 @@ struct EPUBSelectionState: Equatable {
 /// of its own — EPUBPackage (owned by the parent view's @State) is what
 /// keeps the underlying files and security scope alive; this view only
 /// ever needs to be handed a currently-valid local file URL.
+/// WP-1.4: the highlight renderer and tap bridge injected into every chapter.
+///
+/// Rendering is idempotent by construction: the CSS Custom Highlight API is
+/// keyed `asterisma-<note id>`, so applying the same payload twice still
+/// yields exactly one highlight per note, and a re-apply after reflow just
+/// re-derives the same ranges from character offsets. Offsets are UTF-16
+/// offsets into `document.body.textContent`, matching `EPUBTextSelection`.
+/// Tapping a highlight posts its note id; the body text is posted once the
+/// chapter has loaded so Swift can resolve stored annotations against the
+/// exact text the page shows.
+private let epubHighlightScript = """
+(function() {
+  if (window.__epubHighlightsInstalled) return;
+  window.__epubHighlightsInstalled = true;
+  window.__epubMarkRanges = [];
+
+  var FALLBACK = 'rgba(255, 214, 64, 0.45)';
+  var COLORS = {
+    yellow: 'rgba(255, 214, 64, 0.45)',
+    green: 'rgba(150, 220, 140, 0.45)',
+    blue: 'rgba(140, 185, 245, 0.45)',
+    pink: 'rgba(245, 160, 195, 0.45)',
+    purple: 'rgba(190, 160, 245, 0.45)'
+  };
+
+  function textNodes() {
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    var node;
+    while ((node = walker.nextNode())) nodes.push(node);
+    return nodes;
+  }
+
+  function rangeForOffsets(start, end) {
+    var nodes = textNodes();
+    var running = 0;
+    var startNode = null, startOffset = 0, endNode = null, endOffset = 0;
+    for (var i = 0; i < nodes.length; i++) {
+      var length = nodes[i].nodeValue.length;
+      if (startNode === null && start >= running && start <= running + length) {
+        startNode = nodes[i]; startOffset = start - running;
+      }
+      if (endNode === null && end >= running && end <= running + length) {
+        endNode = nodes[i]; endOffset = end - running;
+      }
+      running += length;
+    }
+    if (!startNode || !endNode) return null;
+    var range = document.createRange();
+    try { range.setStart(startNode, startOffset); range.setEnd(endNode, endOffset); }
+    catch (e) { return null; }
+    return range;
+  }
+
+  function styleFor(id, color) {
+    var styleID = 'asterisma-hl-' + id;
+    var el = document.getElementById(styleID);
+    if (!el) {
+      el = document.createElement('style');
+      el.id = styleID;
+      document.head.appendChild(el);
+    }
+    el.textContent = '::highlight(asterisma-' + id + ') { background-color: ' + color + '; }';
+  }
+
+  window.__epubApplyHighlights = function(marks) {
+    window.__epubMarkRanges = [];
+    if (!window.CSS || !CSS.highlights || typeof Highlight === 'undefined') return;
+    var stale = [];
+    CSS.highlights.forEach(function(value, key) {
+      if (key.indexOf('asterisma-') === 0) stale.push(key);
+    });
+    stale.forEach(function(key) { CSS.highlights.delete(key); });
+    (marks || []).forEach(function(mark) {
+      var range = rangeForOffsets(mark.start, mark.end);
+      if (!range) return;
+      CSS.highlights.set('asterisma-' + mark.id, new Highlight(range));
+      styleFor(mark.id, COLORS[mark.color] || FALLBACK);
+      window.__epubMarkRanges.push({id: mark.id, start: mark.start, end: mark.end});
+    });
+  };
+
+  function caretOffset(x, y) {
+    if (!document.caretRangeFromPoint) return null;
+    var range = document.caretRangeFromPoint(x, y);
+    if (!range) return null;
+    var nodes = textNodes();
+    var running = 0;
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i] === range.startContainer) return running + range.startOffset;
+      running += nodes[i].nodeValue.length;
+    }
+    return null;
+  }
+
+  document.addEventListener('click', function(event) {
+    if (!window.__epubMarkRanges.length) return;
+    var selection = window.getSelection();
+    if (selection && !selection.isCollapsed) return;
+    var offset = caretOffset(event.clientX, event.clientY);
+    if (offset === null) return;
+    var hit = null;
+    for (var i = 0; i < window.__epubMarkRanges.length; i++) {
+      var mark = window.__epubMarkRanges[i];
+      if (offset >= mark.start && offset < mark.end) { hit = mark; break; }
+    }
+    if (!hit) return;
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.epubHighlight) {
+      window.webkit.messageHandlers.epubHighlight.postMessage({noteID: hit.id});
+    }
+  }, true);
+
+  function postBodyText() {
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.epubHighlight) {
+      window.webkit.messageHandlers.epubHighlight.postMessage({
+        bodyText: document.body.textContent || ''
+      });
+    }
+  }
+  if (document.readyState === 'complete') { postBodyText(); }
+  else { window.addEventListener('load', postBodyText); }
+})();
+"""
+
 private struct EPUBChapterWebView: NSViewRepresentable {
     let fileURL: URL
     let allowedReadRoot: URL
@@ -1214,14 +1520,25 @@ private struct EPUBChapterWebView: NSViewRepresentable {
     let startPage: Int
     let targetPage: Int
     let settingsJSON: String
+    /// WP-1.4: JSON mark payload `[{id, start, end, color}]`, derived in
+    /// Swift by HighlightRestore. The injected script applies it
+    /// idempotently (removes every Asterisma span, then re-wraps), so a
+    /// data refresh or reflow re-render never duplicates a mark.
+    let marksJSON: String
     let onExternalLink: (URL) -> Void
     let onLoadError: (String) -> Void
     let onPageCount: (Int) -> Void
     let onPageChanged: (Int) -> Void
-    /// WP-1.2: called with each settled, validated selection. WP-1.4's
-    /// annotation UI attaches here; this packet deliberately stops short
-    /// of building that UI.
-    let onSelection: (EPUBTextSelection) -> Void
+    /// WP-1.2: called with each settled, validated selection; nil when the
+    /// selection was cleared (CR-1: the action bar must not outlive it).
+    let onSelection: (EPUBTextSelection?) -> Void
+    /// WP-1.4: called with the chapter's `document.body.textContent` after
+    /// every load, so Swift resolution works on exactly the text the page
+    /// shows (not the chapter file, whose stripped text can differ).
+    let onBodyText: (String) -> Void
+    /// WP-1.4: called with the note id when the user taps one of this
+    /// reader's highlight marks in the page.
+    let onHighlightTap: (UUID) -> Void
 
     func makeNSView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
@@ -1229,11 +1546,12 @@ private struct EPUBChapterWebView: NSViewRepresentable {
         // JavaScript. Book content itself still cannot be trusted with
         // app privileges.
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
-        // Both handlers live on the same content controller as the user
-        // scripts; `dismantleNSView` removes both so the controller does not
-        // retain the coordinator after the view goes away.
+        // All handlers live on the same content controller as the user
+        // scripts; `dismantleNSView` removes all three so the controller
+        // does not retain the coordinator after the view goes away.
         configuration.userContentController.add(context.coordinator, name: "epubPage")
         configuration.userContentController.add(context.coordinator, name: "epubSelection")
+        configuration.userContentController.add(context.coordinator, name: "epubHighlight")
         for script in Self.makeUserScripts(
             chapterIndex: chapterIndex,
             startPage: startPage,
@@ -1249,6 +1567,7 @@ private struct EPUBChapterWebView: NSViewRepresentable {
         context.coordinator.webView = webView
         context.coordinator.targetPage = startPage
         context.coordinator.settingsJSON = settingsJSON
+        context.coordinator.marksJSON = marksJSON
         context.coordinator.currentlyLoadedURL = fileURL
         webView.loadFileURL(fileURL, allowingReadAccessTo: allowedReadRoot)
         return webView
@@ -1261,11 +1580,14 @@ private struct EPUBChapterWebView: NSViewRepresentable {
         context.coordinator.onPageCount = onPageCount
         context.coordinator.onPageChanged = onPageChanged
         context.coordinator.onSelection = onSelection
+        context.coordinator.onBodyText = onBodyText
+        context.coordinator.onHighlightTap = onHighlightTap
 
         if context.coordinator.currentlyLoadedURL != fileURL {
             context.coordinator.currentlyLoadedURL = fileURL
             context.coordinator.targetPage = startPage
             context.coordinator.ready = false
+            context.coordinator.marksJSON = marksJSON
             // Chapter changed: user scripts are frozen at their make-time
             // source, so rebuild them so `__epubSelectionChapter` /
             // `__epubInitialPage` carry the NEW chapter and page instead of
@@ -1290,19 +1612,32 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             )
         }
 
+        // WP-1.4: a new mark payload (chapter text arrived, or the notes
+        // model changed) is applied by the idempotent script. `ready` is
+        // not required: before load the script's global is simply absent
+        // and the call is a no-op.
+        if context.coordinator.marksJSON != marksJSON {
+            context.coordinator.marksJSON = marksJSON
+            webView.evaluateJavaScript(
+                "window.__epubApplyHighlights && window.__epubApplyHighlights(\(marksJSON))"
+            )
+        }
+
         if context.coordinator.targetPage != targetPage {
             context.coordinator.go(to: targetPage)
         }
     }
 
     static func dismantleNSView(_ nsView: WKWebView, coordinator: Coordinator) {
-        // Remove BOTH script-message handlers so the userContentController
+        // Remove ALL script-message handlers so the userContentController
         // does not retain the coordinator (and its closures) after the view
         // is dismantled.
         nsView.configuration.userContentController.removeScriptMessageHandler(
             forName: "epubPage")
         nsView.configuration.userContentController.removeScriptMessageHandler(
             forName: "epubSelection")
+        nsView.configuration.userContentController.removeScriptMessageHandler(
+            forName: "epubHighlight")
     }
 
     func makeCoordinator() -> Coordinator {
@@ -1313,7 +1648,9 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             onLoadError: onLoadError,
             onPageCount: onPageCount,
             onPageChanged: onPageChanged,
-            onSelection: onSelection
+            onSelection: onSelection,
+            onBodyText: onBodyText,
+            onHighlightTap: onHighlightTap
         )
     }
 
@@ -1327,7 +1664,15 @@ private struct EPUBChapterWebView: NSViewRepresentable {
         var onLoadError: (String) -> Void
         var onPageCount: (Int) -> Void
         var onPageChanged: (Int) -> Void
-        var onSelection: (EPUBTextSelection) -> Void
+        var onSelection: (EPUBTextSelection?) -> Void
+        /// WP-1.4: last mark payload pushed into this view, so `updateNSView`
+        /// re-applies only when it actually changed.
+        var marksJSON: String = "[]"
+        /// WP-1.4: the chapter's `document.body.textContent`, posted after
+        /// load; Swift resolves annotations against exactly this text.
+        var onBodyText: (String) -> Void
+        /// WP-1.4: note id tapped in the page, so the editor opens for it.
+        var onHighlightTap: (UUID) -> Void
 
         init(
             startPage: Int,
@@ -1336,7 +1681,9 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             onLoadError: @escaping (String) -> Void,
             onPageCount: @escaping (Int) -> Void,
             onPageChanged: @escaping (Int) -> Void,
-            onSelection: @escaping (EPUBTextSelection) -> Void
+            onSelection: @escaping (EPUBTextSelection?) -> Void,
+            onBodyText: @escaping (String) -> Void = { _ in },
+            onHighlightTap: @escaping (UUID) -> Void = { _ in }
         ) {
             targetPage = startPage
             self.settingsJSON = settingsJSON
@@ -1345,6 +1692,8 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             self.onPageCount = onPageCount
             self.onPageChanged = onPageChanged
             self.onSelection = onSelection
+            self.onBodyText = onBodyText
+            self.onHighlightTap = onHighlightTap
         }
 
         func go(to page: Int) {
@@ -1363,6 +1712,20 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
+            if message.name == "epubHighlight" {
+                guard let body = message.body as? [String: Any] else { return }
+                if let text = body["bodyText"] as? String {
+                    DispatchQueue.main.async { self.onBodyText(text) }
+                    return
+                }
+                if let raw = body["noteID"] as? String,
+                   let noteID = UUID(uuidString: raw)
+                {
+                    DispatchQueue.main.async { self.onHighlightTap(noteID) }
+                }
+                return
+            }
+
             if message.name == "epubSelection" {
                 guard let body = message.body as? [String: Any],
                       let chapterIndex = body["chapterIndex"] as? Int,
@@ -1382,7 +1745,12 @@ private struct EPUBChapterWebView: NSViewRepresentable {
                           startOffset: startOffset,
                           endOffset: endOffset
                       )
-                else { return }
+                else {
+                    // A whitespace-only or fully collapsed selection means
+                    // the user cleared it; upstream shows no action bar.
+                    DispatchQueue.main.async { self.onSelection(nil) }
+                    return
+                }
                 DispatchQueue.main.async {
                     self.onSelection(selection)
                 }
@@ -1460,6 +1828,11 @@ private struct EPUBChapterWebView: NSViewRepresentable {
             ),
             WKUserScript(
                 source: selectionScript,
+                injectionTime: .atDocumentEnd,
+                forMainFrameOnly: true
+            ),
+            WKUserScript(
+                source: epubHighlightScript,
                 injectionTime: .atDocumentEnd,
                 forMainFrameOnly: true
             ),

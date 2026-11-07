@@ -142,6 +142,36 @@ final class ReaderPDFView: PDFView {
 
     private var isApplyingFit = false
 
+    /// WP-1.4: every highlight annotation this reader adds is tagged with
+    /// this prefix plus the note id, so a re-render can remove exactly its
+    /// own marks (never a third-party annotation) and a click can identify
+    /// which note was hit.
+    static let annotationPrefix = "asterisma:note:"
+
+    /// WP-1.4: fired when a click lands on one of this reader's highlight
+    /// annotations, so the screen can open the shared editor for that note.
+    var onAnnotationTap: ((UUID) -> Void)?
+
+    /// WP-1.4: hit-test before PDFKit's own click handling, so tapping a
+    /// highlight opens its editor instead of starting a new selection.
+    override func mouseDown(with event: NSEvent) {
+        if let onAnnotationTap {
+            let viewPoint = convert(event.locationInWindow, from: nil)
+            if let page = page(for: viewPoint, nearest: true) {
+                let pagePoint = convert(viewPoint, to: page)
+                if let annotation = page.annotation(at: pagePoint),
+                   let name = annotation.userName,
+                   name.hasPrefix(Self.annotationPrefix),
+                   let id = UUID(uuidString: String(name.dropFirst(Self.annotationPrefix.count)))
+                {
+                    onAnnotationTap(id)
+                    return
+                }
+            }
+        }
+        super.mouseDown(with: event)
+    }
+
     override func layout() {
         super.layout()
         applyFit()
@@ -192,6 +222,13 @@ struct PDFReaderView: NSViewRepresentable {
     /// value for a usable, non-whitespace selection and with `nil` when the
     /// selection is cleared, so the screen cannot keep showing a stale anchor.
     let onSelection: ((PDFTextSelection?) -> Void)?
+    /// WP-1.4: every anchored note for this book. Resolution happens against
+    /// each page's own text inside the coordinator, so a stored rect is never
+    /// drawn — it is provenance only.
+    let highlightNotes: [BookNote]
+    /// WP-1.4: a clicked highlight annotation's note id, so the screen can
+    /// open the shared editor for it.
+    let onAnnotationTap: ((UUID) -> Void)?
 
     init(book: Book,
          currentPage: Int,
@@ -199,7 +236,9 @@ struct PDFReaderView: NSViewRepresentable {
          onPageChange: @escaping (Int) -> Void,
          onLoadError: ((String) -> Void)? = nil,
          onLoadSuccess: (() -> Void)? = nil,
-         onSelection: ((PDFTextSelection?) -> Void)? = nil)
+         onSelection: ((PDFTextSelection?) -> Void)? = nil,
+         highlightNotes: [BookNote] = [],
+         onAnnotationTap: ((UUID) -> Void)? = nil)
     {
         self.book = book
         self.currentPage = currentPage
@@ -208,6 +247,8 @@ struct PDFReaderView: NSViewRepresentable {
         self.onLoadError = onLoadError
         self.onLoadSuccess = onLoadSuccess
         self.onSelection = onSelection
+        self.highlightNotes = highlightNotes
+        self.onAnnotationTap = onAnnotationTap
     }
 
     func makeNSView(context: Context) -> ReaderPDFView {
@@ -311,6 +352,10 @@ struct PDFReaderView: NSViewRepresentable {
 
         view.document = doc
         view.applyFit()
+        // WP-1.4: draw stored highlights for this document, resolved against
+        // each page's own text; then keep the tap target in sync.
+        view.onAnnotationTap = onAnnotationTap
+        context.coordinator.applyHighlights(highlightNotes, to: view, force: true)
         if currentPage > 0, let page = doc.page(at: currentPage) {
             print("🔍 [PDFReaderView] Navigating to page: \(currentPage)")
             view.go(to: page)
@@ -326,9 +371,16 @@ struct PDFReaderView: NSViewRepresentable {
         return view
     }
 
-    func updateNSView(_ nsView: ReaderPDFView, context _: Context) {
+    func updateNSView(_ nsView: ReaderPDFView, context: Context) {
         // TASK 20 (confirmed): guard nil document — no security access started here.
         guard let doc = nsView.document else { return }
+
+        // WP-1.4: a note was created, edited, or deleted (or the page layout
+        // re-flowed): re-derive every mark from page text. Idempotent by
+        // construction — all Asterisma annotations are removed before any are
+        // re-added, so a re-render can never duplicate a highlight.
+        nsView.onAnnotationTap = onAnnotationTap
+        context.coordinator.applyHighlights(highlightNotes, to: nsView)
 
         let layoutChanged = nsView.displayMode != settings.layout.displayMode
         if layoutChanged {
@@ -391,6 +443,9 @@ struct PDFReaderView: NSViewRepresentable {
 
         // B1: polling state
         private var pollingTimer: Timer?
+        /// WP-1.4: the note set the currently-drawn annotations came from, so
+        /// an unchanged model does not re-run resolution on every update.
+        private var appliedNotes: [BookNote]?
         private var lastReportedPage: Int = -1
 
         /// TASK 4: Security-scoped URL held for the lifetime of the PDFView.
@@ -458,6 +513,55 @@ struct PDFReaderView: NSViewRepresentable {
                 guard idx != self.lastReportedPage else { return }
                 self.lastReportedPage = idx
                 self.onPageChange(idx)
+            }
+        }
+
+        /// WP-1.4: idempotent highlight application. Removes every Asterisma
+        /// annotation from the document first, then re-resolves each note
+        /// against its page's own text (`PDFPage.string`) and adds one fresh
+        /// annotation per resolved range. A stored normalized rect is never
+        /// read here, so zoom, fit, rotation, and page-gap changes cannot
+        /// drift a mark.
+        func applyHighlights(_ notes: [BookNote], to view: PDFView, force: Bool = false) {
+            guard force || appliedNotes != notes else { return }
+            appliedNotes = notes
+            guard let doc = view.document else { return }
+
+            for index in 0 ..< doc.pageCount {
+                guard let page = doc.page(at: index) else { continue }
+                for annotation in page.annotations
+                where annotation.userName?.hasPrefix(ReaderPDFView.annotationPrefix) == true {
+                    page.removeAnnotation(annotation)
+                }
+            }
+
+            for note in notes {
+                guard case let .pdf(pageIndex, _) = note.anchor,
+                      let quote = note.selectedText,
+                      let page = doc.page(at: pageIndex),
+                      let pageText = page.string
+                else { continue }
+
+                let outcome = HighlightRestore.resolvePDF(
+                    pageText: pageText,
+                    pageIndex: pageIndex,
+                    pageCount: doc.pageCount,
+                    anchor: note.anchor,
+                    selectedText: quote)
+                guard let range = outcome.range,
+                      range.lowerBound >= 0,
+                      range.upperBound <= (pageText as NSString).length
+                else { continue }
+
+                let nsRange = NSRange(location: range.lowerBound, length: range.count)
+                guard let selection = page.selection(for: nsRange) else { continue }
+                let bounds = selection.bounds(for: page)
+                guard !bounds.isEmpty else { continue }
+
+                let annotation = PDFAnnotation(bounds: bounds, forType: .highlight, withProperties: nil)
+                annotation.color = (note.color ?? .yellow).nsColor
+                annotation.userName = ReaderPDFView.annotationPrefix + note.id.uuidString
+                page.addAnnotation(annotation)
             }
         }
 
@@ -570,12 +674,22 @@ struct PDFReaderScreen: View {
     let book: Book
     @ObservedObject var coordinator: SessionCoordinator
     @Environment(\.dismiss) private var dismiss
+    /// WP-1.4: the single note mutation path (`upsertNote` / `deleteNote`).
+    @EnvironmentObject private var dataStore: DataStore
+
+    /// WP-1.4: the note currently open in the shared editor popover.
+    @State private var editingNoteID: UUID?
+
+    /// WP-1.4: the user's default highlight color, shared with the EPUB
+    /// reader through the same AppStorage key.
+    @AppStorage("notes.defaultHighlightColor")
+    private var defaultHighlightColor: String = AnnotationColor.yellow.rawValue
 
     /// TASK 19: Populated when PDFReaderView signals a load failure.
     @State private var errorMessage: String?
 
-    /// WP-1.3: the latest usable text selection from the PDF view. The packet
-    /// ends here — no persistence, no note editor; WP-1.4 owns the UI.
+    /// WP-1.4: the latest usable text selection from the PDF view. It drives
+    /// the in-reader action bar only (create / copy); nil hides the bar.
     /// Cleared whenever the page changes so a stale anchor is never shown.
     @State private var latestSelection: PDFTextSelection?
 
@@ -598,6 +712,52 @@ struct PDFReaderScreen: View {
     init(book: Book, coordinator: SessionCoordinator) {
         self.book = book
         self.coordinator = coordinator
+    }
+
+    // MARK: - Annotation UI (WP-1.4)
+
+    private var activeColor: AnnotationColor {
+        AnnotationColor(rawValue: defaultHighlightColor) ?? .yellow
+    }
+
+    /// The note the shared editor points at, read from the live store row so
+    /// a save is always applied to current data.
+    private var editorNote: BookNote? {
+        guard let editingNoteID else { return nil }
+        return dataStore.book(id: book.id)?.notes.first { $0.id == editingNoteID }
+    }
+
+    /// Anchored highlights only: plain editorial notes carry no quote or
+    /// anchor and are not drawn on the page.
+    private var highlightNotes: [BookNote] {
+        (dataStore.book(id: book.id)?.notes ?? []).filter {
+            $0.anchor != nil && $0.selectedText != nil
+        }
+    }
+
+    /// Action bar → Highlight. The row exists even if the editor is dismissed
+    /// untouched; every write goes through `upsertNote`.
+    private func createHighlight(from selection: PDFTextSelection) {
+        let note = AnnotationCreation.makeNote(
+            from: selection,
+            bookID: book.id,
+            color: activeColor
+        )
+        guard dataStore.upsertNote(note, inBook: book.id) else { return }
+        latestSelection = nil
+        editingNoteID = note.id
+    }
+
+    /// Action bar → Copy: the one formatter builds the string, so the copied
+    /// text is identical to what a row or the popover copies.
+    private func copySelectionQuote(_ selection: PDFTextSelection) {
+        let ephemeral = AnnotationCreation.makeNote(
+            from: selection,
+            bookID: book.id,
+            color: activeColor
+        )
+        guard let quote = QuoteFormatter.copyQuote(ephemeral) else { return }
+        AnnotationClipboard.copy(quote)
     }
 
     var body: some View {
@@ -626,8 +786,11 @@ struct PDFReaderScreen: View {
                     onPageChange: { newPage in
                         // WP-1.3: a changed page invalidates the selection —
                         // clear before the coordinator turns, so a stale
-                        // normalized rect can never outlive its page.
+                        // normalized rect can never outlive its page. WP-1.4
+                        // also closes the editor: its note may live on the
+                        // page being left.
                         latestSelection = nil
+                        editingNoteID = nil
                         // onPageChange callback → coordinator is the only entity that
                         // writes currentPage, which in turn updates DataStore.
                         coordinator.turnToPage(newPage)
@@ -653,7 +816,9 @@ struct PDFReaderScreen: View {
                             print("📝 [PDFReaderScreen] selection cleared")
                         }
                         #endif
-                    }
+                    },
+                    highlightNotes: highlightNotes,
+                    onAnnotationTap: { editingNoteID = $0 }
                 )
                 .overlay {
                     ReaderBrightnessOverlay(brightness: readerBrightness)
@@ -661,6 +826,19 @@ struct PDFReaderScreen: View {
 
                 pdfBottomControls
                     .padding(.bottom, 14)
+
+                // WP-1.4: the same in-reader action bar the EPUB reader
+                // uses, shown only while a selection is live.
+                if let selection = latestSelection, editingNoteID == nil {
+                    HighlightActionBar(
+                        defaultColor: activeColor,
+                        onDefaultColor: { defaultHighlightColor = $0.rawValue },
+                        onHighlight: { createHighlight(from: selection) },
+                        onCopy: { copySelectionQuote(selection) }
+                    )
+                    .padding(.bottom, 64)
+                    .transition(.opacity)
+                }
             }
         }
         .background(
@@ -668,6 +846,42 @@ struct PDFReaderScreen: View {
         )
         .popover(isPresented: $showingPDFAppearance) {
             pdfAppearancePanel
+        }
+        // WP-1.4: the shared highlight editor. `statusMessage` is nil here:
+        // the screen never opens a PDFDocument, so it cannot honestly claim a
+        // quote is missing — a stale anchor simply draws no mark, and the
+        // note remains reachable from the library row.
+        .popover(
+            isPresented: Binding(
+                get: { editorNote != nil },
+                set: { if !$0 { editingNoteID = nil } }
+            ),
+            arrowEdge: .bottom
+        ) {
+            if let note = editorNote {
+                HighlightEditorView(
+                    note: note,
+                    statusMessage: nil,
+                    onSave: { body, color in
+                        var updated = note
+                        // Only body and color change; id, anchor, and
+                        // selectedText pass through untouched.
+                        updated.text = body
+                        updated.color = color
+                        updated.modifiedAt = Date()
+                        dataStore.upsertNote(updated, inBook: note.bookID)
+                    },
+                    onCopy: {
+                        if let quote = QuoteFormatter.copyQuote(note) {
+                            AnnotationClipboard.copy(quote)
+                        }
+                    },
+                    onDelete: {
+                        dataStore.deleteNote(id: note.id, inBook: note.bookID)
+                        editingNoteID = nil
+                    }
+                )
+            }
         }
         .sheet(isPresented: $showingRSVP) {
             if let text = rsvpText {

@@ -150,42 +150,22 @@ struct BookDetailsView: View {
 
     // MARK: - Notes
 
+    // WP-1.4: the note editor and row are the shared extracted views in
+    // HighlightViews.swift; this surface owns only the list container, the
+    // editorial bindings, and wiring. Mutations go exclusively through
+    // DataStore.upsertNote / deleteNote — the single book.notes path — so
+    // this view no longer mutates notes via updateBook.
+
     private var notesTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let book, !book.notes.isEmpty {
                 List {
                     ForEach(book.notes.sorted { $0.createdAt > $1.createdAt }) { note in
-                        VStack(alignment: .leading, spacing: 6) {
-                            HStack {
-                                Text(note.tag.rawValue)
-                                    .font(.caption2)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(Color.accentColor.opacity(0.12), in: Capsule())
-                                if let page = note.pageNumber {
-                                    Text("p. \(page + 1)")
-                                        .font(.caption2)
-                                        .foregroundColor(.secondary)
-                                }
-                                Spacer()
-                                Button {
-                                    edit(note)
-                                } label: {
-                                    Image(systemName: "pencil")
-                                }
-                                .buttonStyle(.plain)
-                                Button(role: .destructive) {
-                                    delete(note)
-                                } label: {
-                                    Image(systemName: "trash")
-                                }
-                                .buttonStyle(.plain)
-                            }
-                            Text(.init(note.text))
-                                .font(.callout)
-                                .textSelection(.enabled)
-                        }
-                        .padding(.vertical, 4)
+                        BookNoteRowView(
+                            note: note,
+                            onEdit: { edit(note) },
+                            onDelete: { delete(note) }
+                        )
                     }
                 }
                 .frame(minHeight: 220)
@@ -199,38 +179,17 @@ struct BookDetailsView: View {
 
             Divider()
 
-            VStack(alignment: .leading, spacing: 8) {
-                Text(editingNoteID == nil ? "Add Note" : "Edit Note")
-                    .font(.headline)
-                TextEditor(text: $noteText)
-                    .font(.body)
-                    .frame(minHeight: 90)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(Color.secondary.opacity(0.25)))
-                HStack {
-                    Picker("Tag", selection: $noteTag) {
-                        ForEach(BookNote.NoteTag.allCases, id: \.self) { tag in
-                            Text(tag.rawValue).tag(tag)
-                        }
-                    }
-                    .frame(width: 180)
-                    TextField("Page (optional)", text: $notePage)
-                        .frame(width: 130)
-                    Spacer()
-                    if editingNoteID != nil {
-                        Button("Cancel") { resetNoteEditor() }
-                    }
-                    Button(editingNoteID == nil ? "Add Note" : "Save Note") {
-                        commitNote()
-                    }
-                    .keyboardShortcut(.defaultAction)
-                    .disabled(noteText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                }
-                Text("Markdown is supported in the note body.")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-            }
+            BookNoteEditorView(
+                title: editingNoteID == nil ? "Add Note" : "Edit Note",
+                noteText: $noteText,
+                noteTag: $noteTag,
+                notePage: $notePage,
+                showsEditorialFields: true,
+                allowEmptyBody: false,
+                actionTitle: editingNoteID == nil ? "Add Note" : "Save Note",
+                onCommit: { commitNote() },
+                onCancel: editingNoteID == nil ? nil : { resetNoteEditor() }
+            )
         }
         .padding(.top, 8)
     }
@@ -250,31 +209,35 @@ struct BookDetailsView: View {
     }
 
     private func commitNote() {
-        guard var book else { return }
         let trimmed = noteText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         let page = Int(notePage).map { max(0, $0 - 1) }
         if let editingNoteID,
-           let index = book.notes.firstIndex(where: { $0.id == editingNoteID }) {
-            book.notes[index].text = trimmed
-            book.notes[index].tag = noteTag
-            book.notes[index].pageNumber = page
-            book.notes[index].modifiedAt = Date()
+           var existing = dataStore.book(id: bookID)?.notes
+            .first(where: { $0.id == editingNoteID })
+        {
+            // Edits rewrite only the editorial fields on the SAME id; id,
+            // anchor, selectedText, and color are never touched here.
+            existing.text = trimmed
+            existing.tag = noteTag
+            existing.pageNumber = page
+            existing.modifiedAt = Date()
+            dataStore.upsertNote(existing, inBook: bookID)
         } else {
-            book.notes.append(BookNote(
-                bookID: book.id,
-                pageNumber: page,
-                text: trimmed,
-                tag: noteTag))
+            dataStore.upsertNote(
+                BookNote(
+                    bookID: bookID,
+                    pageNumber: page,
+                    text: trimmed,
+                    tag: noteTag),
+                inBook: bookID)
         }
-        dataStore.updateBook(book)
         resetNoteEditor()
     }
 
     private func delete(_ note: BookNote) {
-        guard var book else { return }
-        book.notes.removeAll { $0.id == note.id }
-        dataStore.updateBook(book)
+        // WP-1.4: remove exactly that note id; no other row is touched.
+        dataStore.deleteNote(id: note.id, inBook: bookID)
         if editingNoteID == note.id { resetNoteEditor() }
     }
 

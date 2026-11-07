@@ -47,6 +47,7 @@ same oversized request; fit the ceiling or use `opencode/crouton-alpha-free`.
 | GLM | `ses_e4bc3d036ffewaz2oeFsMJzyFO` | WP-1.3 PDF selection | completed | worktree `kind-orchid` at `b81fc99`; one dead-callback defect corrected by Buffy; merged in `a010a72` |
 | Crouton | `ses_e4bad8f47ffemS5k67Um9XkLyR` | CR-1 annotation review | completed | read-only; three S1 findings confirmed and fixed in `98aaaf3`; dispositions in `docs/audits/2026-11-07-cr1-annotation-review.md` |
 | Crouton | `ses_e4bad8ec1ffdlUh6HdHcTxrXHl` | CR-2 annotation UI design | completed | design only; brief folded into `docs/roadmap/packets/WP-1.4.md` |
+| GLM | `ses_e4b97d907ffe7MZavRdmhkB9bN` | WP-1.4 annotation UI | cap reached | worktree `kind-planet`; five new files and three edits, no build, coordinator and PDF untouched; finished by Buffy |
 
 The message count is taken from `opencode session export <session-id>`, not from
 memory. The GLM window uses the 80/100/120/160-message checkpoints in the master
@@ -119,6 +120,22 @@ tolerance) and two are assigned to WP-1.4 (EPUB deselect clearing, the single
 
 Checks after the fix: build exit 0; five focused suites **32 tests passed**;
 census exit 0 with **537 tests / 528 passed / 9 skipped / 0 failed / 719 runs**.
+
+## WP-1.4 — annotation UI, 2026-11-07
+
+GLM session `ses_e4b97d907ffe7MZavRdmhkB9bN` ran in worktree `kind-planet` at
+`54640b1` and ended with `Error: Free usage limit reached` after writing the
+factory, restore resolver, shared views, both test suites, the DataStore
+helpers, and the `BookDetailsView` extraction. It did not build or test, and
+`PDFReaderView2.swift` was untouched. Buffy verified the tree, fixed a Swift
+`..<` parse error, added the missing EPUB coordinator members and highlight
+renderer, closed the EPUB half of CR-1 finding 4, and implemented the entire PDF
+side (annotation rendering, tap hit test, action bar, editor popover).
+
+Checks: build exit 0; focused run 29 tests in 3 suites passed; full census exit
+0 with **557 tests / 548 passed / 9 skipped / 0 failed** (546 Swift Testing
+tests in 105 suites; `rt-census-20261107-002415.xcresult`); `git diff --check`
+exit 0. No live reader run, no owner visual pass, no live-library migration.
 
 ## Baseline build — 2026-11-07
 

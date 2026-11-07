@@ -1,9 +1,10 @@
 # WP-1.4 — Annotation UI
 
-**Status:** active
+**Status:** completed (2026-11-07) — see the receipt at the end of this file
 **Administrator:** Buffy
-**Executor:** `opencode/glm-5.3-flash-free`
-**Baseline:** `main` after the CR-1 fix commit
+**Executor:** `opencode/glm-5.3-flash-free` (session `ses_e4b97d907ffe7MZavRdmhkB9bN`),
+completed by Buffy after the free-message cap
+**Baseline:** `main` at `54640b1`
 **Mode:** code writer, isolated worktree only
 
 ## Objective
@@ -105,3 +106,45 @@ same text) still resolves; applying the same note twice yields one mark.
 Buffy may interrupt or terminate this session at any time, deny any request,
 revert any change, and discard the worktree. Stop immediately if asked to change
 the schema, the save model, or a forbidden path.
+
+## Receipt — 2026-11-07
+
+**Session.** `ses_e4b97d907ffe7MZavRdmhkB9bN`, worktree `kind-planet` at
+`54640b1`. GLM wrote `AnnotationCreation.swift`, `HighlightRestore.swift`,
+`HighlightViews.swift`, both test suites, the DataStore helpers, and the
+`BookDetailsView` extraction, then reported `Error: Free usage limit reached`
+mid-edit. It never built or tested its own work, and `PDFReaderView2.swift` was
+untouched. Its handoff is therefore not evidence of anything; Buffy inspected
+the tree, kept the parts that held up, and finished the packet.
+
+**Completed by Buffy.** One Swift syntax error (`a ..< (b)` parses as a prefix
+range operator) was rewritten. The missing `EPUBChapterWebView.Coordinator`
+members were added: `marksJSON`, `onBodyText`, `onHighlightTap`, the
+`epubHighlight` message branch, and an injected renderer
+(`window.__epubApplyHighlights`) built on the CSS Custom Highlight API, keyed by
+note id so re-applying a payload cannot duplicate a mark. A click is mapped to a
+character offset and, when it lands inside a mark, posts that note id back. CR-1
+finding 4's EPUB half is closed: a cleared selection now posts nil and the
+screen clears `selectionState`, so the action bar cannot outlive its text.
+
+`PDFReaderView2.swift` gained what the packet required and GLM never wrote:
+highlight annotations resolved per page from `PDFPage.string` via
+`HighlightRestore.resolvePDF` (the stored rect is provenance only), removed and
+re-added by a tagged prefix so re-renders are idempotent, a `mouseDown` hit test
+that maps a tapped annotation to its note id, and the same action bar, editor
+popover, and DataStore helpers as EPUB.
+
+**Checks.** Debug build exit 0. Focused run over `AnnotationCreationTests`,
+`HighlightRestoreTests`, and `ReaderAppearanceTests`: 29 tests in 3 suites
+passed, exit 0. Full census exit 0 with 557 tests, 548 passed, 9 skipped, 0
+failed (546 Swift Testing tests in 105 suites); result bundle
+`rt-census-20261107-002415.xcresult`. `git diff --check` exit 0. Surface and
+index gates exit 0. No file outside the allowed paths changed.
+
+**Not verified.** No live `WKWebView` or `PDFView` run: the CSS Custom Highlight
+API path, the click-to-offset mapping, and PDF annotation drawing are compiled
+and reviewed, not exercised. If a WebKit build lacks the Highlight API, marks
+simply do not draw — the model and notes are unaffected. No owner visual pass
+and no live-library migration. PDF staleness is expressed by drawing nothing
+rather than an inline message, because the screen never opens the document and
+so cannot honestly claim a quote is missing.
