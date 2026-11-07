@@ -5,11 +5,12 @@
 > started or passed. The literal session directive is recorded in
 > [`AGENTS.md`](../../AGENTS.md#session-directive--2026-11-07-literal-owner-authored).
 >
-> **Baseline at the time of writing:** `main` is `e69677a`; the local unit census
+> **Baseline at the time of writing:** the plan baseline is `main` at `e69677a`;
+> the docs commit is `84b0177` and does not change app code. The local unit census
 > is **518 tests / 100 suites / 719 runs / 509 passed / 9 skipped / 0 failed**
-> (`./scripts/census.sh --unit-only`, exit 0, 2026-11-07). The rename CI run
-> `42332377245` was still **in progress** when this plan was written; no phase
-> execution starts until that run is green.
+> (`./scripts/census.sh --unit-only`, exit 0, 2026-11-07). Rename CI run
+> `42332377245` is green. The docs run `42333251100` was still **in progress**
+> when this revision was written; no phase execution starts until it is green.
 >
 > **Models in scope:** `opencode/glm-5.3-flash-free` (primary, free), then
 > `openrouter/stealth/crouton-alpha` (handoff executor/reviewer), with
@@ -60,7 +61,7 @@ system it is:
 - **Buffy** owns the control plane: worktree allocation, prompt packets,
   conflict resolution, integration, local verification, commit messages, pushes,
   CI watching, and the final truth audit. No agent commits or pushes.
-- **The owner** owns product acceptance: the Library Recovery G6 script, the
+- **The owner** owns product acceptance: the Library Recovery LR-G6 script, the
   Sentinel SG7 scenarios, reader/annotation feel, visual acceptance, signing
   credentials, and the release decision.
 
@@ -72,9 +73,9 @@ the roadmap does not fragment into busywork.
 
 The central sequencing rule is simple: **build the interfaces that other
 workstreams need first, then parallelize, then integrate at a gate.** The reader
-annotation schema, the persistence boundary, the provider harness, and the
-worktree protocol are the four dependency roots. Everything else hangs from
-them.
+annotation schema, the persistence boundary, the provider harness, the
+worktree protocol, and the truth reconciliation are the five dependency roots.
+Everything else hangs from them.
 
 ---
 
@@ -84,9 +85,10 @@ them.
 
 | Fact | Value | Evidence |
 |---|---|---|
-| Branch and commit | `main` at `e69677a` | `git rev-parse --short HEAD` |
+| Branch and commit | `main` at `84b0177` (docs commit); plan baseline `e69677a` | `git rev-parse --short HEAD` |
 | Local unit census | **518 tests / 100 suites / 719 runs / 509 passed / 9 skipped / 0 failed** | `./scripts/census.sh --unit-only`, exit 0, 2026-11-07 |
-| Remote rename CI | run `42332377245`, **in progress at plan time** | `gh run view 42332377245` |
+| Remote rename CI | run `42332377245`, **success** | `gh run view 42332377245` |
+| Docs commit CI | run `42333251100`, **in progress at revision time** | `gh run view 42333251100` |
 | Product identity | `AsterismaV2.0`, SwiftUI + AppKit, Swift 5 mode | `README.md` §2 |
 | Persistence | SQLite summary store plus JSON compatibility surfaces | `AsterismaV2.0/Core/Storage/LibraryDatabase.swift` |
 | Dependency policy | One Swift package, ZIPFoundation; Mirage is a bundled runtime | `README.md` §2 |
@@ -101,11 +103,11 @@ appropriate phase. It does not reopen work that code already proves is done.
 
 | Source item | Current state | Roadmap home |
 |---|---|---|
-| Library Recovery G6 owner acceptance | Code complete, owner script pending | P5, G5 |
+| Library Recovery LR-G6 owner acceptance | Code complete, owner script pending | P5, G5 |
 | Sentinel SG7 acceptance and holds | Holds recorded, manual scenarios pending | P5, G5 |
 | Distribution hardening | Ad-hoc signed, not notarized | P8, G8 |
 | Bundle-ID migration | Still `johan.Reading-Tracker` for container compatibility | P8, G8 |
-| Swift 6 strict concurrency | 148 actor-isolation errors on attempt | P9, G9 |
+| Swift 6 strict concurrency | The last recorded attempt reported 148 actor-isolation errors (inherited; `docs/plans/bedrock/gates/GATE-G7.md#L20`); P9.1 re-derives the exact baseline | P9, G9 |
 | Reader selection highlights/quotes | Notes/tags/anchors exist; text selection is not wired | P1, G1 |
 | Legacy/dead code cleanup | Some zero-caller fragments remain | P9, G9 |
 | Mirage standing items | Observation cadence, perf budget, backup-surface gap | P6, G6 |
@@ -333,20 +335,25 @@ full census is green in the integrated tree.
 
 ```text
 P0 Control plane
- ├──► P1 Reader annotations ──► P7 Experience ──► P13 Release
- ├──► P2 Library/import ──────┘
- ├──► P3 Goals/analytics ─────┘
- ├──► P4 Persistence/scale ───► P10 Performance
- ├──► P5 Sentinel/recovery ───► P8 Distribution ──► P13 Release
- ├──► P6 Mirage ──────────────┘
- ├──► P9 Swift 6 ─────────────► P10 Performance
- └──► P11 Quality ────────────► P12 Docs ──► P13 Release
+ ├──► P1 Reader annotations ──► P7 Experience ─────────────────────┐
+ ├──► P2 Library/import ──────┘                                    │
+ ├──► P3 Goals/analytics ──────────────────────────────────────────┤
+ ├──► P4 Persistence/scale ──► P10 Performance                     │
+ │        └──► P5 Sentinel/recovery ──► P8 Distribution ───────────┤
+ ├──► P6 Mirage ────────────────────────────────────────────────────┤
+ ├──► P9 Swift 6 ─────────────► P10 Performance                    │
+ └──► P11 Quality ────────────► P12 Docs ──────────────────────────┴──► P13 Release
 ```
 
-P0 and P1 are the critical path. P8 and P13 have owner/credential dependencies
-and must start early enough to absorb external delays.
+P0 and P1 are the critical path. P4 feeds both P5 and P8; P5's recovery
+receipts are an input to P8. P8 and P13 have owner/credential dependencies and
+must start early enough to absorb external delays. P6's clean-machine Mirage
+smoke uses an ad-hoc package; Developer ID signing and notarization are P8.
 
 ### 4.2 Gate summary
+
+Progression gates `G0–G14` are distinct from the inherited **Library Recovery**
+gate, written `LR-G6` in this document (`docs/plans/library-recovery/G6.md`).
 
 | Gate | Name | Pass condition (summary) | Evidence |
 |---|---|---|---|
@@ -355,11 +362,11 @@ and must start early enough to absorb external delays.
 | G2 | Library/import | Duplicate import is visible, relink works, collection bulk operations persist, 100-book fixture | L1 + L2 + fixture receipt |
 | G3 | Goals/analytics | Goal editor round-trip, weekly streak, achievements gallery, report race guard | L1 + L2 + owner script |
 | G4 | Persistence/scale | Save path has no main-actor disk I/O; 20-mutation storm produces one write; 10× fixture | L1 + L2 + benchmark |
-| G5 | Sentinel/recovery | G6 owner script passes on a copied library; SG7 scenarios recorded; no critical issue | owner receipt + SG7 |
+| G5 | Sentinel/recovery | `LR-G6` owner script passes on a copied library; SG7 scenarios recorded; no critical issue | owner receipt + SG7 |
 | G6 | Mirage | Warm engine, idle stop, batch cancel/retry, backup surface, spoiler-safe refusal | L1 + L2 + Mirage script |
 | G7 | Experience | Owner visual acceptance at 900×640, 900×640+300 pt sidebar, 1200×780; accessibility audit | owner receipt |
 | G8 | Distribution | Bundle-ID migration plan executed; Developer ID signed; notarized; clean-machine launch | notarization receipt + clean-Mac log |
-| G9 | Swift 6/architecture | 148 → 0 actor-isolation errors; full census green; no behavior regression | build log + L2 |
+| G9 | Swift 6/architecture | The last recorded 148 actor-isolation errors (`GATE-G7`) → 0; P9.1 re-derives the baseline; full census green; no behavior regression | build log + L2 |
 | G10 | Performance | Baseline budgets measured; 10×/100× fixtures; no unexplained regression | benchmark report |
 | G11 | Quality | Critical-path UI tests, fixture suite, 20 consecutive clean runs | CI receipts |
 | G12 | Documentation | INDEX anchors resolve; full facts gate; touched docs audited | `--mode all`, audit ledger |
@@ -414,7 +421,7 @@ is larger than any single bug. P0 is the cheapest possible insurance.
 
 **Validation gate G0**
 
-- [ ] CI run `42332377245` (or its successor) is green.
+- [ ] Docs CI run `42333251100` is green; rename run `42332377245` is green.
 - [ ] `./scripts/verify-sentinel-surface.sh` exits 0.
 - [ ] `python3 scripts/comprehension-bench.py --validate-only` exits 0.
 - [ ] `./scripts/census.sh --unit-only` exits 0 with the baseline count.
@@ -600,7 +607,7 @@ for P10.
 
 **Window:** Crouton Alpha. **Priority:** high. **Gate:** G5.
 
-**Objective.** Close the owner-facing reliability gates: Library Recovery G6,
+**Objective.** Close the owner-facing reliability gates: Library Recovery LR-G6,
 Sentinel SG7, diagnostics, redaction, offline behavior, and the holds that are
 still explicitly open.
 
@@ -612,7 +619,7 @@ This phase converts code-complete recovery into owner-accepted recovery.
 
 | ID | Outcome | Model | Depends on | Parallel |
 |---|---|---|---|---|
-| WP-5.1 | Library Recovery G6 owner script: copied-library drill, restore, rollback, orphan repair | Crouton + owner | P4 | no |
+| WP-5.1 | Library Recovery LR-G6 owner script: copied-library drill, restore, rollback, orphan repair (`docs/plans/library-recovery/G6.md`) | Crouton + owner | P4 | no |
 | WP-5.2 | Sentinel SG7 scenario harness: ten manual scenarios, issue lifecycle, repair verification | Crouton | P0 | with 5.1 |
 | WP-5.3 | Diagnostics/redaction/offline safety: export review, no secret leakage, offline session close | Crouton | 5.2 | with 5.4 |
 | WP-5.4 | Localization/menu-bar/accessibility holds: narrow or close each SG7 hold explicitly | Crouton | 5.2 | with 5.3 |
@@ -620,7 +627,7 @@ This phase converts code-complete recovery into owner-accepted recovery.
 
 **Validation gate G5**
 
-- [ ] G6 nine-step owner script passes on a copied library.
+- [ ] LR-G6 nine-step owner script passes on a copied library.
 - [ ] Sentinel ten scenarios are recorded in `docs/owner-test-results/`.
 - [ ] Diagnostics export contains no API keys, tokens, or raw personal text.
 - [ ] Offline session close does not delay notifications or local analysis.
@@ -650,7 +657,7 @@ boundary. An operational gap is both a product bug and an ownership violation.
 | WP-6.1 | Warm engine/observation cadence: start, reuse, idle stop, background behavior | Crouton | P0 | with 6.2 |
 | WP-6.2 | Mirage performance budget and backup-surface gap: measured analysis time, backup ownership | Crouton | P0 | with 6.1 |
 | WP-6.3 | Chapter-cursor mapping and spoiler safety: calibration gate, typed refusal, no leak | Crouton | 6.1 | with 6.4 |
-| WP-6.4 | Packaging and clean-machine Mirage rehearsal: embedded runtime, signature, manifest | Crouton | 6.2 | with 6.3 |
+| WP-6.4 | Ad-hoc packaging and clean-machine Mirage rehearsal: embedded runtime, ad-hoc signature, manifest; Developer ID/notarization is P8 | Crouton | 6.2 | with 6.3 |
 | WP-6.5 | Mirage integration and owner gate | Buffy + owner | 6.1–6.4 | no |
 
 **Validation gate G6**
@@ -659,7 +666,7 @@ boundary. An operational gap is both a product bug and an ownership violation.
 - [ ] Batch cancel and retry-failed produce the documented states.
 - [ ] No second sidecar lifecycle is spawned while one lives.
 - [ ] Spoiler detail surfaces refuse safely until calibration is verified.
-- [ ] Clean-machine packaged app can run the Mirage smoke test.
+- [ ] Ad-hoc packaged app can run the Mirage smoke test on a clean account; Developer ID/notarized clean-machine launch is G8.
 - [ ] Full census green; Mirage real-engine tests remain explicitly skipped.
 
 **Exit criteria.** G6 passes; Mirage standing items are closed or moved to an
@@ -749,7 +756,8 @@ not just locally ad-hoc signed.
 behavior regressions, while paying down the module, dependency, and dead-code
 debt that blocks the flip.
 
-**Why it matters.** The 148-error attempt is a concrete ceiling on future
+**Why it matters.** The last recorded 148-error attempt
+(`docs/plans/bedrock/gates/GATE-G7.md#L20`) is a concrete ceiling on future
 concurrency work. Leaving it unresolved makes every new async feature more
 expensive.
 
@@ -757,7 +765,7 @@ expensive.
 
 | ID | Outcome | Model | Depends on | Parallel |
 |---|---|---|---|---|
-| WP-9.1 | Error inventory and actor map: categorize 148 errors by root cause and file owner | Crouton | P4 | no |
+| WP-9.1 | Error inventory and actor map: categorize the re-derived error inventory (last recorded: 148) by root cause and file owner | Crouton | P4 | no |
 | WP-9.2 | Concurrency boundary fixes, batch 1: persistence, analytics, weather, discovery | Crouton | 9.1 | with 9.3 |
 | WP-9.3 | Concurrency boundary fixes, batch 2: reader, Mirage, Sentinel, UI bridges | Crouton | 9.1 | with 9.2 |
 | WP-9.4 | Module/dependency/dead-code cleanup: zero-caller fragments, duplicate utilities | Crouton | 9.1 | with 9.2 |
@@ -1054,7 +1062,10 @@ than silently downgrading.
 The soft transition is **120 messages**: finish the current packet, write the
 handoff, and stop starting new GLM packets. The hard transition is **160**.
 These are inside the owner's 100–200 estimate and leave a reserve for
-integration.
+integration. Add two earlier checkpoints: at **80 messages**, finish the current
+packet and re-plan; at **100 messages**, start no new GLM packet. If the measured
+ceiling is 100 or lower, protect P1.1/P1.2 and move P2–P4 to Crouton rather than
+blowing the cap mid-phase.
 
 ### 7.2 Transition gate T1
 
@@ -1092,10 +1103,27 @@ reserves it as follows:
 | Verification/reproduction | 20% | Re-run a failing gate, inspect a regression |
 | Reserve | 15% | Provider errors, owner questions, integration |
 
-The request allowance is not a credit guarantee. The 2026-11-07 smoke attempts
-returned HTTP 402 when the completion ceiling exceeded the available balance.
-Preflight must select a model/limit that fits, or record the block and use the
-fallback. Do not retry a 402 with the same request.
+**Per-phase request ceilings (sum = 1,000):**
+
+| Phase | Work packages | Request ceiling | Per-packet ceiling |
+|---|---:|---:|---:|
+| P5 | 5 | 70 | 14 |
+| P6 | 5 | 70 | 14 |
+| P7 | 5 | 60 | 12 |
+| P8 | 5 | 80 | 16 |
+| P9 | 5 | 80 | 16 |
+| P10 | 5 | 40 | 8 |
+| Independent review | — | 250 | — |
+| Verification/reproduction | — | 200 | — |
+| Reserve | — | 150 | — |
+
+No packet may exceed **30 requests**. At **750 requests** (75% of the daily
+allocation), stop starting new Crouton packets, finish the in-flight packet, and
+hand the remainder to Buffy. The request allowance is not a credit guarantee.
+The 2026-11-07 smoke attempts returned HTTP 402 when the completion ceiling
+exceeded the available balance. Preflight must select a model/limit that fits,
+or record the block and use the fallback. Do not retry a 402 with the same
+request.
 
 ### 7.4 Final window
 
@@ -1124,8 +1152,9 @@ before its first handoff is written.
 
 | Risk | Early signal | Mitigation | Gate |
 |---|---|---|---|
-| GLM message cap reached mid-packet | Session count near 120 | Soft/hard transition; written handoff; packet split at interface | T1 |
+| GLM message cap reached mid-packet | Session count near 80, 100, or 120 | Checkpoints; soft/hard transition; written handoff; packet split at interface | T1 |
 | OpenRouter 402/quota | Provider error in preflight | Fit max tokens, use fallback, record refusal; never blind retry | G0, T1 |
+| Crouton daily allocation exhausted | 750 requests used or repeated 429 | Stop starting new packets; finish in-flight; Buffy takes the remainder | T1, P5–P10 |
 | Agent edits outside scope | Diff touches forbidden paths | Worktree-only, allowed-path list, Buffy diff review | Every packet |
 | Merge conflict in shared files | Two branches touch `Book2`/`DataStore3` | One writer per shared file; Buffy serializes schema edits | Every merge |
 | Annotation data loss | Orphan rows or duplicate highlights | Schema migration test, 50-cycle create/delete, backup/restore | G1 |
@@ -1219,7 +1248,7 @@ still applies to the release commit.
 
 ## 11 · First ten actions
 
-1. Wait for CI run `42332377245` (or its successor) to report green.
+1. Confirm docs CI run `42333251100` and the execution-baseline census run are green.
 2. Run the provider preflight for GLM, OpenRouter Crouton, and the Zen fallback;
    record session IDs and any 402.
 3. Create the resource ledger and worktree directories.
