@@ -74,6 +74,30 @@ enum BookImportPanel {
     }
 }
 
+/// Reuses the import panel's exact type restrictions when repairing a moved
+/// book. Kept beside `BookImportPanel` so imports and relinks can never drift
+/// into accepting different files.
+enum BookFilePicker {
+    static func chooseReplacement(for book: Book, completion: @escaping (URL?) -> Void) {
+        let panel = NSOpenPanel()
+        BookImportPanel.configure(panel)
+        panel.message = "Choose the \(book.fileType.displayName) file for “\(book.title)”"
+        panel.prompt = "Relink"
+        let parent = book.fileURL.deletingLastPathComponent()
+        if FileManager.default.fileExists(atPath: parent.path) {
+            panel.directoryURL = parent
+        }
+        // A relink is often launched from an alert button. Let SwiftUI finish
+        // dismissing that presentation before the panel tries to become key;
+        // otherwise the panel can be swallowed by the closing alert.
+        DispatchQueue.main.async {
+            panel.begin { response in
+                completion(response == .OK ? panel.url : nil)
+            }
+        }
+    }
+}
+
 // MARK: - BookImporter
 
 enum BookImporter {
@@ -155,6 +179,20 @@ enum BookImporter {
 
         // FINAL TRACES Upgrade #2: cover goes to the FILE STORE keyed by the
         // book's id — NOT into the library payload.
+        // E7: give PDFs the same content record EPUBs get. A PDF previously had
+        // no word estimate and no difficulty profile, so its estimate was pure
+        // page-duration extrapolation. Sampling is bounded and off-main.
+        let sample = await Task.detached(priority: .utility) {
+            PDFTextSampler.sample(doc)
+        }.value
+        let difficulty = sample.text.isEmpty
+            ? nil
+            : DifficultyAnalyzer.analyze(text: sample.text)
+        let estimatedWordCount = sample.pagesSampled > 0
+            ? Int((Double(sample.wordCount) / Double(sample.pagesSampled))
+                    * Double(totalPages))
+            : 0
+
         let newBook = Book(
             title: title,
             author: author,
@@ -162,7 +200,9 @@ enum BookImporter {
             fileType: .pdf,
             totalPages: totalPages,
             chapters: chapters,
-            bookmarkData: bookmarkData
+            difficultyProfile: difficulty,
+            bookmarkData: bookmarkData,
+            wordCountEstimate: max(0, estimatedWordCount)
         )
         if let coverData {
             CoverStore.active.store(coverData, forBookID: newBook.id)
@@ -248,11 +288,17 @@ enum BookImporter {
         let metadata = try parseOPF(opfURL: opfURL, baseDir: contentRoot)
 
         let wordCount = await estimateTotalWords(spineItems: metadata.spineItems)
-        let estimatedPages = max(1, wordCount / 250)
-        let chapters = buildChapters(from: metadata, estimatedTotalPages: estimatedPages)
 
         let sampleText = await extractSampleText(spineItems: metadata.spineItems, maxChars: 5000)
         let difficulty = DifficultyAnalyzer.analyze(text: sampleText)
+
+        // E7: difficulty now participates in the page conversion instead of
+        // being computed and discarded.
+        let estimatedPages = PageEstimationModel.estimatePages(
+            wordCount: wordCount,
+            difficultyMultiplier: difficulty.difficultyMultiplier
+        ).pages
+        let chapters = buildChapters(from: metadata, estimatedTotalPages: estimatedPages)
 
         // TASK 2 FIX: Same treatment as Task 1 — do/catch instead of try?.
         var bookmarkData: Data?
@@ -538,58 +584,6 @@ enum BookCoverCapture {
     }
 }
 
-// MARK: - DifficultyAnalyzer
-
-enum DifficultyAnalyzer {
-    static func analyze(text: String) -> ReadingDifficultyProfile {
-        guard !text.isEmpty else { return .baseline }
-
-        let words = text.split { $0.isWhitespace }.map(String.init)
-        let sentences = text.components(separatedBy: .init(charactersIn: ".!?"))
-            .map { $0.trimmingCharacters(in: .whitespaces) }
-            .filter { !$0.isEmpty }
-
-        let wordCount = max(1, words.count)
-        let sentenceCount = max(1, sentences.count)
-
-        let avgWordLen = Double(words.reduce(0) { $0 + $1.count }) / Double(wordCount)
-        let avgSentenceLen = Double(wordCount) / Double(sentenceCount)
-
-        let rareCount = words.filter { $0.count > 8 }.count
-        let rareLexiconRatio = Double(rareCount) / Double(wordCount)
-
-        let syllables = words.reduce(0) { $0 + approximateSyllables($1) }
-        let avgSyllables = Double(syllables) / Double(wordCount)
-        let gradeLevel = 0.39 * avgSentenceLen + 11.8 * avgSyllables - 15.59
-
-        return ReadingDifficultyProfile(
-            gradeLevel: max(0, gradeLevel),
-            averageWordLength: avgWordLen,
-            averageSentenceLength: avgSentenceLen,
-            rareLexiconRatio: rareLexiconRatio
-        )
-    }
-
-    private static func approximateSyllables(_ word: String) -> Int {
-        let lower = word.lowercased().filter { $0.isLetter }
-        guard !lower.isEmpty else { return 1 }
-        let vowels = CharacterSet(charactersIn: "aeiouy")
-        var count = 0
-        var prevWasVowel = false
-        for char in lower.unicodeScalars {
-            let isVowel = vowels.contains(char)
-            if isVowel && !prevWasVowel {
-                count += 1
-            }
-            prevWasVowel = isVowel
-        }
-        if lower.hasSuffix("e") && count > 1 {
-            count -= 1
-        }
-        return max(1, count)
-    }
-}
-
 // MARK: - APPENDED IMPORT INTELLIGENCE LAYER (v2 FULL MODULE)
 
 import Foundation
@@ -745,22 +739,43 @@ enum ImportWarningEngine {
     }
 }
 
-// MARK: - Page Estimation Model
+// MARK: - PDF text sampling (E7)
 
-enum PageEstimationModel {
-    static func estimatePages(from text: String, difficultyMultiplier: Double = 1.0) -> (pages: Int, confidence: Double) {
-        let words = text.split { $0.isWhitespace }.count
-        let sentences = text.components(separatedBy: ".").count
+/// Bounded text sample from a PDF: enough to estimate words-per-page and
+/// difficulty without reading a whole scanned document at import time.
+enum PDFTextSampler {
+    struct Sample {
+        let text: String
+        let pagesSampled: Int
+        let wordCount: Int
+    }
 
-        let densityFactor = Double(sentences) / max(Double(words), 1)
-        let adjustedWords = Double(words) * (1.0 + densityFactor)
+    static func sample(
+        _ doc: PDFDocument,
+        maxPages: Int = 24,
+        maxCharacters: Int = 60_000
+    ) -> Sample {
+        let pages = min(max(0, maxPages), doc.pageCount)
+        var collected = ""
+        var sampled = 0
 
-        let pages = max(1, Int((adjustedWords / 250.0) * difficultyMultiplier))
-        let confidence = min(1.0, Double(words) / 2000.0)
+        for index in 0..<pages {
+            guard let pageText = doc.page(at: index)?.string else { continue }
+            collected += pageText + "\n"
+            sampled += 1
+            if collected.count >= maxCharacters { break }
+        }
 
-        return (pages, confidence)
+        let text = String(collected.prefix(maxCharacters))
+        return Sample(
+            text: text,
+            pagesSampled: sampled,
+            wordCount: text.split { $0.isWhitespace }.count
+        )
     }
 }
+
+// MARK: - Page Estimation Model
 
 // MARK: - Debug Snapshot System
 

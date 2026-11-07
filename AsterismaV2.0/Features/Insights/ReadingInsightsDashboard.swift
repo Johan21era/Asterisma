@@ -57,34 +57,45 @@ struct ReadingInsightsDashboard: View {
     }
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if dataStore.books.isEmpty {
-                    emptyState
-                } else {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 28) {
-                            statsHeader
-                            if !insights.isEmpty {
-                                insightsSection
+        Group {
+            if embedded {
+                dashboardContent
+            } else {
+                NavigationStack {
+                    dashboardContent
+                        .navigationTitle("Insights")
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { dismiss() }
                             }
-                            activitySection
-                            timeOfDaySection
                         }
-                        .padding(24)
-                    }
-                }
-            }
-            .navigationTitle("Insights")
-            .toolbar {
-                if !embedded {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") { dismiss() }
-                    }
                 }
             }
         }
         .frame(minWidth: embedded ? 0 : 540, minHeight: embedded ? 0 : 600)
+    }
+
+    /// Embedded mode is already inside ContentView's reader stack. Wrapping it
+    /// in a second NavigationStack made the two stacks collide on a reader push
+    /// (`AnyNavigationPath.Error.comparisonTypeMismatch`).
+    private var dashboardContent: some View {
+        Group {
+            if dataStore.books.isEmpty {
+                emptyState
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 28) {
+                        statsHeader
+                        if !insights.isEmpty {
+                            insightsSection
+                        }
+                        activitySection
+                        timeOfDaySection
+                    }
+                    .padding(24)
+                }
+            }
+        }
     }
 
     // MARK: - Stats Header

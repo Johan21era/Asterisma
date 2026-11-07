@@ -22,36 +22,48 @@ struct GoalsDashboard: View {
     var embedded: Bool = false
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    // ── Projection banner ──────────────────────────────────
-                    projectionBanner
-
-                    // ── Daily / annual / streak goal cards ─────────────────
-                    if goalVM.statuses.isEmpty {
-                        noGoalsState
-                    } else {
-                        goalsSection
-                    }
-
-                    // ── Per-book deadlines ─────────────────────────────────
-                    if !goalVM.deadlineStatuses.isEmpty {
-                        deadlinesSection
-                    }
-                }
-                .padding(24)
-            }
-            .navigationTitle("Goals")
-            .toolbar {
-                if !embedded {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") { dismiss() }
-                    }
+        Group {
+            if embedded {
+                dashboardContent
+            } else {
+                NavigationStack {
+                    dashboardContent
+                        .navigationTitle("Goals")
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { dismiss() }
+                            }
+                        }
                 }
             }
         }
         .frame(minWidth: embedded ? 0 : 480, minHeight: embedded ? 0 : 520)
+    }
+
+    /// The dashboard itself. Embedded mode deliberately has no NavigationStack:
+    /// it already sits inside ContentView's reader stack, and a second stack
+    /// makes SwiftUI collide the two paths when a book is opened from here
+    /// (`AnyNavigationPath.Error.comparisonTypeMismatch`).
+    private var dashboardContent: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 28) {
+                // ── Projection banner ──────────────────────────────────
+                projectionBanner
+
+                // ── Daily / annual / streak goal cards ─────────────────
+                if goalVM.statuses.isEmpty {
+                    noGoalsState
+                } else {
+                    goalsSection
+                }
+
+                // ── Per-book deadlines ─────────────────────────────────
+                if !goalVM.deadlineStatuses.isEmpty {
+                    deadlinesSection
+                }
+            }
+            .padding(24)
+        }
     }
 
     // MARK: - Projection Banner

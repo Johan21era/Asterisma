@@ -22,6 +22,7 @@ struct BookDetailsView: View {
     @State private var editingNoteID: UUID?
 
     @State private var newCollectionName = ""
+    @State private var relinkError: String?
 
     private var book: Book? { dataStore.book(id: bookID) }
 
@@ -56,6 +57,24 @@ struct BookDetailsView: View {
                     LabeledContent("Progress", value: "\(book.currentPage + 1) of \(book.totalPages) pages")
                 }
 
+                Section("Source File") {
+                    LabeledContent("File") {
+                        Text(book.fileURL.lastPathComponent)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                    }
+                    Button("Locate File…") { locateFile(book) }
+                    Text("If this book's file was moved, renamed, or deleted, choose it again here. " +
+                        "Progress, notes, and collections are kept.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    if let relinkError {
+                        Text(relinkError)
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                    }
+                }
+
                 Section("Classification") {
                     Picker("Genre", selection: $genre) {
                         ForEach(ReadingGenre.allCases, id: \.self) { genre in
@@ -85,6 +104,19 @@ struct BookDetailsView: View {
         genre = book.genre
         series = book.series ?? ""
         isFavorite = book.isFavorite
+        relinkError = nil
+    }
+
+    private func locateFile(_ book: Book) {
+        BookFilePicker.chooseReplacement(for: book) { url in
+            guard let url else { return }
+            do {
+                try dataStore.relinkBookFile(id: book.id, to: url)
+                relinkError = nil
+            } catch {
+                relinkError = error.localizedDescription
+            }
+        }
     }
 
     private func saveDetails() {

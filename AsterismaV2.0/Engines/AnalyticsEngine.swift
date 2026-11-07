@@ -31,26 +31,18 @@ enum AnalyticsEngine {
     // MARK: - Reading Speed
 
     static func readingSpeed(for book: Book) -> Double {
-        let timings = book.sessions
-            .flatMap(\.pageTimes)
-            .map { $0.duration }
-            .filter { $0 > 0.5 && $0 < 60 }
+        let durations = book.sessions.flatMap(\.pageTimes).map(\.duration)
 
-        guard !timings.isEmpty else {
-            // G3B: page timings are lazy in SQLite mode; use the exact cache
-            // captured when the book was written.
-            if let cached = book.cachedSecondsPerPage, cached > 0 {
-                return cached
-            }
-            return AnalyticsConstants.defaultSecondsPerPage
+        if let robust = PageDurationPolicy.robustMeanSeconds(durations) {
+            return robust
         }
 
-        let durations = timings.sorted()
-        let median = durations[durations.count / 2]
-        let filtered = durations.filter { $0 <= median * 2 && $0 >= 5 }
-        guard !filtered.isEmpty else { return AnalyticsConstants.defaultSecondsPerPage }
-
-        return filtered.reduce(0, +) / Double(filtered.count)
+        // G3B: page timings are lazy in SQLite mode; use the exact cache
+        // captured when the book was written.
+        if let cached = book.cachedSecondsPerPage, cached > 0 {
+            return cached
+        }
+        return AnalyticsConstants.defaultSecondsPerPage
     }
 
     static func adjustedReadingSpeed(for book: Book) -> Double {
@@ -64,10 +56,12 @@ enum AnalyticsEngine {
     /// reader's average speed across all books, difficulty-adjusted for the target book.
     /// This prevents new books from always showing the default 120s/page estimate.
     static func effectiveReadingSpeed(for book: Book, allBooks: [Book]) -> Double {
-        let timings = book.sessions.flatMap(\.pageTimes).filter { $0.duration > 0.5 && $0.duration < 60 }
+        let timings = book.sessions
+            .flatMap(\.pageTimes)
+            .filter { $0.duration > PageDurationPolicy.minimumSeconds }
 
         // If enough per-book data, use it directly.
-        if timings.count >= 5 {
+        if timings.count >= AnalyticsConstants.minimumTimingsForPersonalSpeed {
             return adjustedReadingSpeed(for: book)
         }
 
@@ -77,24 +71,30 @@ enum AnalyticsEngine {
         return crossBook * multiplier
     }
 
-    /// UPGRADE v3: Average reading speed across all books, weighted by data density.
+    /// The reader's reading speed across books.
+    ///
+    /// **Per-book normalization (2026-10-30).** The previous implementation
+    /// pooled every page duration from every book and filtered the pooled list
+    /// with one median and one ceiling. One book whose pages carried idle time
+    /// could then move the reader's cross-book pace by an arbitrary amount: a
+    /// pooled mean of incompatible page scales is not a pace. Each book is now
+    /// filtered on its own, and the book paces are combined by
+    /// `PageDurationPolicy.consensusSeconds`.
     static func crossBookReadingSpeed(allBooks: [Book]) -> Double {
-        let allTimings = allBooks.flatMap(\.sessions).flatMap(\.pageTimes)
-            .map(\.duration).filter { $0 > 0.5 && $0 < 60 }
-
-        guard !allTimings.isEmpty else {
-            // G3B summary mode: no page timing rows were loaded.
-            let cached = allBooks.compactMap(\.cachedSecondsPerPage).filter { $0 > 0 }
-            guard !cached.isEmpty else { return AnalyticsConstants.defaultSecondsPerPage }
-            return cached.reduce(0, +) / Double(cached.count)
+        let perBook = allBooks.compactMap { book in
+            PageDurationPolicy.robustMeanSeconds(
+                book.sessions.flatMap(\.pageTimes).map(\.duration)
+            )
         }
 
-        let sorted = allTimings.sorted()
-        let median = sorted[sorted.count / 2]
-        let filtered = sorted.filter { $0 <= median * 2 && $0 >= 5 }
-        guard !filtered.isEmpty else { return AnalyticsConstants.defaultSecondsPerPage }
+        if !perBook.isEmpty {
+            return PageDurationPolicy.consensusSeconds(perBook)
+        }
 
-        return filtered.reduce(0, +) / Double(filtered.count)
+        // G3B summary mode: no page timing rows were loaded.
+        let cached = allBooks.compactMap(\.cachedSecondsPerPage).filter { $0 > 0 }
+        guard !cached.isEmpty else { return AnalyticsConstants.defaultSecondsPerPage }
+        return cached.reduce(0, +) / Double(cached.count)
     }
 
     // MARK: - Predictions
@@ -387,6 +387,96 @@ enum AnalyticsPeriod: Hashable {
 }
 
 // MARK: - Constants
+
+/// E2 — one documented page-duration policy for every speed consumer.
+///
+/// The old absolute `0.5 < duration < 60` window made 60 s/page a universal
+/// reading ceiling: every reader slower than one minute per page was deleted
+/// and replaced by the 120 s/page default. Idle time is not a property of the
+/// clock alone — it is an outlier inside one reader's own distribution — so the
+/// upper bound is relative to this reader's distribution.
+///
+/// **Contamination-resistant bound (2026-10-30).** Anchoring the ceiling to
+/// `median × 3` fails when interruptions are not a minority: the median itself
+/// moves upward with the contamination, the ceiling moves with it, and the
+/// filter stops rejecting anything. Interruptions only ever add elapsed time,
+/// so the lower quartile still describes clean pages. A value is retained when
+/// it is at most `max(median, lowerQuartile × 3)`. The median floor preserves
+/// genuinely long active pages in a right-skewed but uncontaminated
+/// distribution; the quartile arm tightens the ceiling for contaminated ones.
+///
+/// Residual limitation (recorded in the Phase Zero report, E4): when
+/// interruptions occupy half the pages, no distribution-only rule can recover
+/// the clean pace; the median floor keeps the bound at the contaminated
+/// median. Distinguishing the reader's own idle page from slow reading still
+/// requires visibility/interaction events, which this policy never invents.
+enum PageDurationPolicy {
+    /// Faster than this is a page-turn artefact, not reading.
+    static let minimumSeconds: Double = 0.5
+    /// A page beyond this multiple of the reader's lower quartile is treated as
+    /// an idle/stall outlier rather than as reading pace.
+    static let upperMultipleOfLowerQuartile: Double = 3.0
+    /// Two books that differ by more than this are not the same reading pace;
+    /// the slower one is the likelier contaminated one.
+    static let bookDisagreementMultiple: Double = 3.0
+
+    /// Distribution-relative robust mean, or `nil` when no usable duration exists.
+    static func robustMeanSeconds(_ durations: [Double]) -> Double? {
+        let positive = durations.filter { $0 > minimumSeconds }.sorted()
+        guard let median = median(of: positive) else { return nil }
+        let upperBound = upperBound(median: median, sorted: positive)
+        let retained = positive.filter { $0 <= upperBound }
+        guard !retained.isEmpty else { return median }
+        return retained.reduce(0, +) / Double(retained.count)
+    }
+
+    /// Lower median. Page durations are contaminated upward only, so with an
+    /// even count the lower middle value is the cleaner reference; it also
+    /// keeps the accepted set from being cut exactly at the contaminated
+    /// median when interruptions occupy half the pages.
+    static func median(of durations: [Double]) -> Double? {
+        let sorted = durations.sorted()
+        guard !sorted.isEmpty else { return nil }
+        return sorted[(sorted.count - 1) / 2]
+    }
+
+    /// `max(median, lowerQuartile × 3)` — see the type comment.
+    static func upperBound(median: Double, sorted: [Double]) -> Double {
+        guard !sorted.isEmpty else { return median }
+        let lowerQuartile = sorted[sorted.count / 4]
+        return max(median, lowerQuartile * upperMultipleOfLowerQuartile)
+    }
+
+    /// Consensus pace across books.
+    ///
+    /// With three or more books this is the ordinary median, which rejects one
+    /// contaminated book without preferring a direction. With exactly two
+    /// books there is no majority to lean on: they are averaged when they agree
+    /// within `bookDisagreementMultiple`, because two ordinary books genuinely
+    /// differ by less than that. A larger gap is treated as upward
+    /// contamination — interruptions only add elapsed time — so the faster book
+    /// is used. This is also the round-59 shape: 978 s/page against 24.9 s/page.
+    static func consensusSeconds(_ paces: [Double]) -> Double {
+        let sorted = paces.sorted()
+        guard let first = sorted.first else { return AnalyticsConstants.defaultSecondsPerPage }
+        guard sorted.count > 1 else { return first }
+        if sorted.count == 2 {
+            let fast = sorted[0], slow = sorted[1]
+            return slow > fast * bookDisagreementMultiple ? fast : (fast + slow) / 2
+        }
+        let middle = sorted.count / 2
+        return sorted.count.isMultiple(of: 2)
+            ? (sorted[middle - 1] + sorted[middle]) / 2
+            : sorted[middle]
+    }
+
+    /// The window a caller would need to reproduce this policy.
+    static func acceptedRange(_ durations: [Double]) -> ClosedRange<Double>? {
+        let positive = durations.filter { $0 > minimumSeconds }.sorted()
+        guard let median = median(of: positive) else { return nil }
+        return minimumSeconds...upperBound(median: median, sorted: positive)
+    }
+}
 
 enum AnalyticsConstants {
     /// Fallback reading speed: 2 minutes per page.
@@ -844,6 +934,15 @@ extension AnalyticsEngine {
         return result
     }
 
+    /// E3 — genre is a *relative* signal and no longer multiplies the reader.
+    ///
+    /// The retired formula was `base × (genreAverage / 120)`. `base` already
+    /// contains this reader's pace and the book's difficulty, and 120 is the
+    /// global default, so the multiplication re-applied the reader and produced
+    /// 10× distortions (P0-3). This version compares the genre's pace with the
+    /// same reader's overall pace and shrinks the deviation halfway to 1, so a
+    /// thin genre sample cannot swing the diagnostic. The shipping estimate
+    /// uses the reader's own speed directly; this value is display/diagnostic.
     static func genreAdjustedReadingSpeed(for book: Book, books: [Book]) -> Double {
         let base = adjustedReadingSpeed(for: book)
         let profiles = genreProfiles(from: books)
@@ -851,8 +950,11 @@ extension AnalyticsEngine {
 
         guard let profile = profiles[genre], genre != .unknown else { return base }
 
-        let genreMultiplier = profile.averageSecondsPerPage / AnalyticsConstants.defaultSecondsPerPage
-        return base * genreMultiplier
+        let readerPace = crossBookReadingSpeed(allBooks: books)
+        guard readerPace > 0 else { return base }
+
+        let relative = profile.averageSecondsPerPage / readerPace
+        return base * (1 + 0.5 * (relative - 1))
     }
 
     static func genrePrediction(for book: Book, allBooks: [Book]) -> ReadingPrediction {

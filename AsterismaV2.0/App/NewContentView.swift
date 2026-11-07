@@ -81,6 +81,7 @@ struct ContentView: View {
     @State private var detailsBook: Book?
     @State private var currentEstimation: BookEstimationResult?
     @State private var importError: String?
+    @State private var bookOpenNotice: String?
 
     // ── Feature sheet presentation ─────────────────────────────────────────
     @State private var showRecommendations: Bool = false
@@ -103,7 +104,8 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var sortMode: LibrarySortMode = .dateAddedDesc
     @State private var selectedBookID: Book.ID?
-    @State private var readerPath: [Book.ID] = []
+    @State private var readerBookID: Book.ID?
+    @State private var missingBook: Book?
     @State private var showEraseConfirmation = false
     @State private var eraseNotice: String?
     @State private var sidebarWidth: CGFloat = DesignGrid.sidebarIdealWidth
@@ -424,7 +426,13 @@ struct ContentView: View {
     // MARK: - Main canvas
 
     private var mainCanvas: some View {
-        NavigationStack(path: $readerPath) {
+        // A single item-driven destination, not a typed NavigationPath. The
+        // reader used to bind `[UUID]`, and macOS 26's NavigationColumnState
+        // asserted with `AnyNavigationPath.Error.comparisonTypeMismatch` when
+        // that path was replaced after a nested stack had been on screen.
+        // `navigationDestination(item:)` keeps the push internal to SwiftUI
+        // and has no path type for it to compare.
+        NavigationStack {
             ZStack {
                 if let book = inspectedBook, let estimation = currentEstimation {
                     estimationScreen(book: book, estimation: estimation)
@@ -432,12 +440,20 @@ struct ContentView: View {
                     sectionContent
                 }
             }
-            .navigationDestination(for: UUID.self) { id in
+            .navigationDestination(item: $readerBookID) { id in
                 if let book = dataStore.book(id: id) {
-                    if book.fileType == .pdf {
-                        PDFReaderScreen(book: book, coordinator: sessionCoordinator)
-                    } else {
-                        EPUBReaderScreen(book: book, coordinator: sessionCoordinator)
+                    Group {
+                        if book.fileType == .pdf {
+                            PDFReaderScreen(book: book, coordinator: sessionCoordinator)
+                        } else {
+                            EPUBReaderScreen(book: book, coordinator: sessionCoordinator)
+                        }
+                    }
+                    // The readers close themselves with @Environment(\.dismiss).
+                    // Clear the item when they leave so the sidebar and keyboard
+                    // handling cannot get stranded behind a popped destination.
+                    .onDisappear {
+                        if readerBookID == id { readerBookID = nil }
                     }
                 } else {
                     Text("This book is no longer in your library.")
@@ -449,8 +465,8 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.clear)
         .onExitCommand {
-            if !readerPath.isEmpty {
-                readerPath = []
+            if readerBookID != nil {
+                readerBookID = nil
             } else if inspectedBook != nil {
                 inspectedBook = nil
                 currentEstimation = nil
@@ -586,14 +602,46 @@ struct ContentView: View {
     }
 
     private func openBook(_ book: Book) {
-        selectedBookID = book.id
-        readerPath = [book.id]
+        // A view can hold a Book value that was removed from the store (a
+        // stale shelf, a palette result, a deferred action). Pushing its id
+        // would open a destination with no backing record, so refuse the
+        // navigation and explain instead.
+        guard let liveBook = dataStore.book(id: book.id) else {
+            bookOpenNotice = "\u{201C}\(book.title)\u{201D} is no longer in your library. "
+                + "Refresh the library or re-import the file."
+            return
+        }
+        // A moved or deleted source file is also a normal state. Do not push a
+        // reader that can only fail: offer the relink path in an alert first.
+        guard liveBook.isFileAvailable else {
+            missingBook = liveBook
+            return
+        }
+        selectedBookID = liveBook.id
+        if readerBookID != liveBook.id {
+            readerBookID = liveBook.id
+        }
+    }
+
+    /// Opens the same restricted panel the importer uses, then attaches the
+    /// chosen file to the existing record. Progress, notes, sessions, and
+    /// collections all survive because only the source location changes.
+    private func locateFile(for book: Book) {
+        BookFilePicker.chooseReplacement(for: book) { url in
+            guard let url else { return }
+            do {
+                let relinked = try dataStore.relinkBookFile(id: book.id, to: url)
+                openBook(relinked)
+            } catch {
+                bookOpenNotice = error.localizedDescription
+            }
+        }
     }
 
     /// Arrow keys move the sidebar selection; Return opens it. Typing in the
     /// search field is passed through untouched by KeyNavigationConfigurator.
     private func handleKeyCommand(_ command: KeyNavigationCommand) -> Bool {
-        guard readerPath.isEmpty else { return false }
+        guard readerBookID == nil else { return false }
 
         switch command {
         case .up, .left:
@@ -658,7 +706,7 @@ struct ContentView: View {
             inspectedBook = nil
             currentEstimation = nil
             selectedBookID = nil
-            readerPath = []
+            readerBookID = nil
             section = .home
             searchText = ""
             importWarnings = nil
@@ -766,18 +814,18 @@ struct ContentView: View {
             .allowsHitTesting(false)
 
             HStack(spacing: 0) {
-                if readerPath.isEmpty {
+                if readerBookID == nil {
                     navigationSidebar
                         .transition(.move(edge: .leading).combined(with: .opacity))
                 }
                 mainCanvas
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .animation(.easeInOut(duration: 0.2), value: readerPath.isEmpty)
+            .animation(.easeInOut(duration: 0.2), value: readerBookID == nil)
         }
         .background(WindowChromeConfigurator())
         .background(WindowToolbarVisibility(visible: false))
-        .background(KeyNavigationConfigurator(isEnabled: readerPath.isEmpty, onCommand: handleKeyCommand))
+        .background(KeyNavigationConfigurator(isEnabled: readerBookID == nil, onCommand: handleKeyCommand))
         .toolbarBackgroundVisibility(.hidden, for: .windowToolbar)
         .environmentObject(environmentEngine) // Phase 2: downstream consumers read the same instance
         // P5 Feature 5: first-run wizard when library is empty and never dismissed.
@@ -820,6 +868,31 @@ struct ContentView: View {
             Button("OK") { importError = nil }
         } message: {
             Text(importError ?? "")
+        }
+
+        .alert("Book Unavailable", isPresented: Binding(
+            get: { bookOpenNotice != nil },
+            set: { if !$0 { bookOpenNotice = nil } }
+        )) {
+            Button("OK") { bookOpenNotice = nil }
+        } message: {
+            Text(bookOpenNotice ?? "")
+        }
+
+        .alert("Book File Missing", isPresented: Binding(
+            get: { missingBook != nil },
+            set: { if !$0 { missingBook = nil } }
+        )) {
+            Button("Locate File…") {
+                let book = missingBook
+                missingBook = nil
+                if let book { locateFile(for: book) }
+            }
+            Button("Cancel", role: .cancel) { missingBook = nil }
+        } message: {
+            Text("Asterisma can't find the file for “\(missingBook?.title ?? "this book")”. " +
+                "It may have been moved, renamed, or deleted. Choose Locate File… to point " +
+                "Asterisma at it; your reading progress and notes are kept.")
         }
 
         // ── AUDIT §1.1 verdict executed (Phase 2): Import Intelligence surfaces ──
@@ -951,7 +1024,7 @@ struct ContentView: View {
         }
         // P5 Feature 3 + UI REVIEW grid: HUD inset from shared constants.
         .overlay(alignment: .topLeading) {
-            if readerPath.isEmpty {
+            if readerBookID == nil {
                 ReadingHUD()
                     .padding(.leading, DesignGrid.hudLeadingInset)
                     .padding(.top, DesignGrid.hudTopInset)
@@ -1242,6 +1315,13 @@ struct BookEstimationView: View {
                     Text(completionLabel)
                         .font(.caption)
                         .foregroundColor(.secondary)
+                    // E6: a baseline or default estimate must say so. Rule 8 of
+                    // the analytics plan forbids silent fallbacks.
+                    Text(estimation.provenance.status.disclosure)
+                        .font(.caption2)
+                        .foregroundColor(estimation.provenance.status.isFallback
+                            ? .orange : .secondary)
+                        .accessibilityIdentifier("estimationProvenance")
                 }
                 .opacity(wave2 ? 1 : 0)
                 .offset(y: wave2 ? 0 : 16)

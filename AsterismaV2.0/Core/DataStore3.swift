@@ -30,6 +30,37 @@
 import Combine
 import Foundation
 
+// MARK: - Book file relinking
+
+/// Recoverable failures when a user points a library entry at a new copy of
+/// its source file. Every case is a message the UI can show; none are fatal.
+enum BookFileRelinkError: LocalizedError {
+    case bookNotFound
+    case unsupportedType(String)
+    case formatMismatch(expected: BookFileType, actual: BookFileType)
+    case unreadable(URL)
+    case bookmarkCreationFailed(URL, underlying: Error)
+
+    var errorDescription: String? {
+        switch self {
+        case .bookNotFound:
+            return "This book is no longer in your library."
+        case let .unsupportedType(ext):
+            let suffix = ext.isEmpty ? "That file has no extension." : "Unsupported file type: .\(ext)"
+            return "\(suffix) Choose an EPUB or PDF file."
+        case let .formatMismatch(expected, actual):
+            return "This book is a \(expected.displayName), but you chose a \(actual.displayName). " +
+                "Choose a \(expected.displayName) file so the reading position stays accurate."
+        case let .unreadable(url):
+            return "Asterisma can't read “\(url.lastPathComponent)”. " +
+                "Check that the file still exists and that you have permission to open it."
+        case let .bookmarkCreationFailed(url, underlying):
+            return "Asterisma couldn't save permission to read “\(url.lastPathComponent)”. " +
+                "\(underlying.localizedDescription) Try choosing the file again."
+        }
+    }
+}
+
 /// Thread-safe observable store. All mutations happen on the main actor.
 @MainActor
 final class DataStore: ObservableObject {
@@ -333,6 +364,52 @@ final class DataStore: ObservableObject {
 
     func book(id: UUID) -> Book? {
         books.first { $0.id == id }
+    }
+
+    /// Points an existing library entry at a replacement copy of its source
+    /// file without touching progress, notes, sessions, or collections. This is
+    /// the recovery path for a moved/renamed book: the old URL is only replaced
+    /// after the new file is confirmed readable and a security-scoped bookmark
+    /// has been created, so a failed relink leaves the entry untouched.
+    @discardableResult
+    func relinkBookFile(id: UUID, to url: URL) throws -> Book {
+        guard var book = book(id: id) else {
+            throw BookFileRelinkError.bookNotFound
+        }
+
+        let ext = url.pathExtension.lowercased()
+        guard let actualType = BookFileType(rawValue: ext) else {
+            throw BookFileRelinkError.unsupportedType(ext)
+        }
+        guard actualType == book.fileType else {
+            throw BookFileRelinkError.formatMismatch(
+                expected: book.fileType,
+                actual: actualType
+            )
+        }
+
+        let scope = url.startAccessingSecurityScopedResource()
+        defer { if scope { url.stopAccessingSecurityScopedResource() } }
+
+        guard FileManager.default.isReadableFile(atPath: url.path) else {
+            throw BookFileRelinkError.unreadable(url)
+        }
+
+        let bookmark: Data
+        do {
+            bookmark = try url.bookmarkData(
+                options: .withSecurityScope,
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
+        } catch {
+            throw BookFileRelinkError.bookmarkCreationFailed(url, underlying: error)
+        }
+
+        book.fileURL = url
+        book.bookmarkData = bookmark
+        updateBook(book)
+        return book
     }
 
     /// G3C: archive export needs the full page-timing rows even in SQLite

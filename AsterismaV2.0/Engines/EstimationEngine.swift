@@ -13,8 +13,8 @@ import Foundation
 
 // MARK: - ReadingContext
 
-/// Optional runtime context used to adjust predictions for non-linear reading behavior.
-/// This does NOT persist state and is purely input-driven.
+/// Optional context retained for callers; the page estimate does not apply
+/// context adjustments until their effect has been validated.
 struct ReadingContext {
     var currentPage: Int?
     var selectedChapterID: UUID?
@@ -60,6 +60,44 @@ struct ChapterEstimation {
     let completionDate: Date
 }
 
+// MARK: - Estimation Provenance (E6)
+
+/// Where an estimate's speed actually came from. Before E6 the UI showed a
+/// number with no way to tell a measured reader from the 120 s/page constant;
+/// Rule 8 of the analytics plan forbids silent fallbacks.
+enum EstimationStatus: String {
+    /// Built from this book's own page timings.
+    case personalized
+    /// This book has no usable timings; the reader's cross-book pace was used.
+    case crossBookBaseline
+    /// Neither the book nor the library has usable timings; 120 s/page was used.
+    case globalDefault
+
+    var disclosure: String {
+        switch self {
+        case .personalized:
+            return "Personalised from this book's page timings."
+        case .crossBookBaseline:
+            return "No page timings for this book yet — estimated from your cross-book reading pace."
+        case .globalDefault:
+            return "No reading history yet — estimated from the 2 min/page default."
+        }
+    }
+
+    var isFallback: Bool { self != .personalized }
+}
+
+struct EstimationProvenance {
+    let status: EstimationStatus
+    let fallbackReason: String?
+    let modelVersion: String
+    let predictionTarget: String
+    let measuredSecondsPerPage: Double
+
+    static let modelVersion = "reading-time/page-speed-e4"
+    static let predictionTarget = "active reading time, page-timing policy E2"
+}
+
 // MARK: - Book Estimation Result
 
 struct BookEstimationResult {
@@ -79,6 +117,10 @@ struct BookEstimationResult {
     let confidence: ConfidenceModel
 
     let chapterEstimates: [ChapterEstimation]
+
+    /// E6: status, fallback disclosure, and model identity travel with the
+    /// estimate instead of being inferred by the caller.
+    let provenance: EstimationProvenance
 }
 
 // MARK: - EstimationEngine
@@ -87,9 +129,7 @@ enum EstimationEngine {
     // MARK: Public API
 
     static func estimate(for book: Book, allBooks: [Book]) -> BookEstimationResult {
-        let context = buildContext(book: book)
-
-        let baseSpeed = AnalyticsEngine.adjustedReadingSpeed(for: book)
+        let baseSpeed = AnalyticsEngine.readingSpeed(for: book)
 
         let genreSpeed = AnalyticsEngine.genreAdjustedReadingSpeed(
             for: book,
@@ -101,11 +141,14 @@ enum EstimationEngine {
 
         let crossSpeed = AnalyticsEngine.crossBookReadingSpeed(allBooks: allBooks)
 
+        let hasPersonalSpeed = hasPersonalSpeed(for: book)
+
         let speedModel = buildSpeedModel(
             base: baseSpeed,
             genre: genreSpeed,
             trendMultiplier: trendMultiplier,
-            cross: crossSpeed
+            cross: crossSpeed,
+            hasPersonalSpeed: hasPersonalSpeed
         )
 
         let effectiveSpeed = speedModel.effectiveSpeed
@@ -134,6 +177,23 @@ enum EstimationEngine {
             level: confidence.level
         )
 
+        let libraryHasEvidence = PageDurationPolicy.robustMeanSeconds(
+            allBooks.flatMap(\.sessions).flatMap(\.pageTimes).map(\.duration)
+        ) != nil || allBooks.contains { ($0.cachedSecondsPerPage ?? 0) > 0 }
+
+        let status: EstimationStatus
+        let fallbackReason: String?
+        if hasPersonalSpeed {
+            status = .personalized
+            fallbackReason = nil
+        } else if libraryHasEvidence {
+            status = .crossBookBaseline
+            fallbackReason = "no usable page timings for this book"
+        } else {
+            status = .globalDefault
+            fallbackReason = "no usable page timings in the library"
+        }
+
         return BookEstimationResult(
             remainingSeconds: remainingSeconds,
             remainingHours: remainingHours,
@@ -150,57 +210,39 @@ enum EstimationEngine {
             speedModel: speedModel,
             confidence: confidenceModel,
 
-            chapterEstimates: chapterEstimates
-        )
-    }
+            chapterEstimates: chapterEstimates,
 
-    // MARK: Context
-
-    private static func buildContext(book: Book) -> ReadingContext {
-        ReadingContext(
-            currentPage: book.currentPage,
-            selectedChapterID: nil,
-            isTableOfContentsMode: false,
-            timeOfDay: Date(),
-            dayOfWeek: Calendar.current.component(.weekday, from: Date())
+            provenance: EstimationProvenance(
+                status: status,
+                fallbackReason: fallbackReason,
+                modelVersion: EstimationProvenance.modelVersion,
+                predictionTarget: EstimationProvenance.predictionTarget,
+                measuredSecondsPerPage: effectiveSpeed
+            )
         )
     }
 
     // MARK: Speed Model Builder
 
+    /// E3 — the ablation rejected the 40/25/20/15 blend.
+    ///
+    /// With the measurement policy corrected (E2), the reader's own robust page
+    /// speed is within 1–4% of the observed page-timing median on all eight
+    /// personas, while the shipped blend lands 12–47% away. Genre contributed
+    /// 25% of the estimate and measured the reader twice; trend contributed 20%
+    /// and is a direction, not a speed. The estimate is therefore the reader's
+    /// own speed, with the cross-book average used only as a cold start.
+    ///
+    /// `genreAdjustedSpeed` and `trendAdjustedSpeed` remain in the model as
+    /// display/diagnostic values; they no longer move the effective speed.
     private static func buildSpeedModel(
         base: Double,
         genre: Double,
         trendMultiplier: Double,
-        cross: Double
+        cross: Double,
+        hasPersonalSpeed: Bool
     ) -> SpeedModel {
-        // Normalize speeds into weights
-        let components = SpeedComponents(
-            base: base,
-            genre: genre,
-            trend: cross * trendMultiplier,
-            crossBook: cross
-        )
-
-        // NOTE (F-13a cleanup): a former `totalWeight = Double(values.count)` here was
-        // computed and never used; deleted. The four weights below are fixed by design.
-
-        let weightBase = 0.40
-        let weightGenre = 0.25
-        let weightTrend = 0.20
-        let weightCross = 0.15
-
-        let adjustedBase = components.base ?? cross
-        let adjustedGenre = components.genre ?? adjustedBase
-        let adjustedTrend = components.trend ?? adjustedBase
-        let adjustedCross = components.crossBook ?? adjustedBase
-
-        let effective =
-            adjustedBase * weightBase +
-            adjustedGenre * weightGenre +
-            adjustedTrend * weightTrend +
-            adjustedCross * weightCross
-
+        let effective = hasPersonalSpeed ? base : cross
         let volatility = computeVolatility(base: base, cross: cross)
 
         return SpeedModel(
@@ -292,13 +334,7 @@ extension EstimationEngine {
         let baseSpeed = resolveEffectiveSpeed(book: book, allBooks: allBooks)
 
         return book.chapters.map { chapter in
-            let adjusted = applyPositionalAdjustment(
-                chapterIndex: chapter.index,
-                total: book.chapters.count,
-                baseSpeed: baseSpeed
-            )
-
-            let seconds = Double(chapter.pageCount) * adjusted
+            let seconds = Double(chapter.pageCount) * baseSpeed
             let date = Date().addingTimeInterval(seconds)
 
             return ChapterEstimation(
@@ -322,13 +358,7 @@ extension EstimationEngine {
 
         let baseSpeed = resolveEffectiveSpeed(book: book, allBooks: allBooks)
 
-        let adjusted = applyPositionalAdjustment(
-            chapterIndex: chapter.index,
-            total: book.chapters.count,
-            baseSpeed: baseSpeed
-        )
-
-        let seconds = Double(chapter.pageCount) * adjusted
+        let seconds = Double(chapter.pageCount) * baseSpeed
         let date = Date().addingTimeInterval(seconds)
 
         return ChapterEstimation(
@@ -345,113 +375,26 @@ extension EstimationEngine {
     static func estimatePageTime(
         for book: Book,
         page _: Int,
-        context: ReadingContext?,
+        context _: ReadingContext?,
         allBooks: [Book]
     ) -> TimeInterval {
-        let baseSpeed = resolveEffectiveSpeed(book: book, allBooks: allBooks)
-
-        let volatility = computeVolatility(
-            book: book,
-            allBooks: allBooks
-        )
-
-        let contextMultiplier = contextAdjustment(context: context)
-
-        return baseSpeed * volatility * contextMultiplier
-    }
-
-    // MARK: - Context Adjustment
-
-    private static func contextAdjustment(context: ReadingContext?) -> Double {
-        guard let context else { return 1.0 }
-
-        var multiplier = 1.0
-
-        // Time of day adjustment
-        if let hour = context.timeOfDay.map({ Calendar.current.component(.hour, from: $0) }) {
-            switch hour {
-            case 6 ..< 12: multiplier *= 0.95 // morning faster
-            case 12 ..< 17: multiplier *= 1.0
-            case 17 ..< 22: multiplier *= 1.05 // evening slightly slower
-            default: multiplier *= 1.1 // night slower
-            }
-        }
-
-        // Day of week adjustment
-        if let day = context.dayOfWeek {
-            if day == 1 || day == 7 {
-                multiplier *= 0.97 // weekend slight focus boost
-            }
-        }
-
-        // Table of contents mode (non-linear reading)
-        if context.isTableOfContentsMode {
-            multiplier *= 1.08
-        }
-
-        return min(1.5, max(0.7, multiplier))
+        // Context and chapter-position effects are not calibrated against
+        // observed reading outcomes. Use the same pace as the book estimate.
+        resolveEffectiveSpeed(book: book, allBooks: allBooks)
     }
 
     // MARK: - Speed Resolution
 
+    private static func hasPersonalSpeed(for book: Book) -> Bool {
+        book.sessions.flatMap(\.pageTimes)
+            .filter { $0.duration > PageDurationPolicy.minimumSeconds }
+            .count >= AnalyticsConstants.minimumTimingsForPersonalSpeed
+    }
+
     private static func resolveEffectiveSpeed(book: Book, allBooks: [Book]) -> Double {
-        let base = AnalyticsEngine.adjustedReadingSpeed(for: book)
-        let genre = AnalyticsEngine.genreAdjustedReadingSpeed(for: book, books: allBooks)
-        let cross = AnalyticsEngine.crossBookReadingSpeed(allBooks: allBooks)
-
-        let trend = AnalyticsEngine.trendAnalysis(books: allBooks)
-        let trendMultiplier = trendMultiplier(from: trend)
-
-        return base * 0.40 +
-            genre * 0.25 +
-            cross * 0.15 +
-            (base * trendMultiplier) * 0.20
-    }
-
-    // MARK: - Volatility (context-aware)
-
-    private static func computeVolatility(book: Book, allBooks: [Book]) -> Double {
-        let sessions = book.sessions.filter { $0.endTime != nil }
-        guard sessions.count >= 2 else { return 1.0 }
-
-        let speeds = sessions.map { $0.averageSecondsPerPage }
-        let avg = speeds.reduce(0, +) / Double(speeds.count)
-
-        let variance = speeds
-            .map { pow($0 - avg, 2) }
-            .reduce(0, +) / Double(speeds.count)
-
-        let stdDev = sqrt(variance)
-
-        let normalized = avg > 0 ? stdDev / avg : 0
-
-        // Cross-book stabilization
-        let cross = AnalyticsEngine.crossBookReadingSpeed(allBooks: allBooks)
-        let stabilityFactor = cross / max(avg, 1)
-
-        let raw = 1.0 + (normalized * 0.5) + (stabilityFactor * 0.3)
-
-        return min(1.5, max(0.7, raw))
-    }
-
-    // MARK: - Chapter Position Adjustment
-
-    private static func applyPositionalAdjustment(
-        chapterIndex: Int,
-        total: Int,
-        baseSpeed: Double
-    ) -> Double {
-        guard total > 1 else { return baseSpeed }
-
-        let position = Double(chapterIndex) / Double(total - 1)
-
-        // Early chapters slightly faster, later slightly slower
-        let adjustment =
-            position < 0.3 ? 0.95 :
-            position > 0.7 ? 1.05 :
-            1.0
-
-        return baseSpeed * adjustment
+        hasPersonalSpeed(for: book)
+            ? AnalyticsEngine.readingSpeed(for: book)
+            : AnalyticsEngine.crossBookReadingSpeed(allBooks: allBooks)
     }
 }
 
@@ -496,7 +439,9 @@ extension EstimationEngine {
             speedModel: result.speedModel,
             confidence: result.confidence,
 
-            chapterEstimates: cleanedChapters
+            chapterEstimates: cleanedChapters,
+
+            provenance: result.provenance
         )
     }
 
@@ -512,6 +457,8 @@ extension EstimationEngine {
         Remaining Seconds: \(result.remainingSeconds)
         Finish Date: \(result.estimatedCompletionDate)
         Confidence: \(result.confidence.score) (\(result.confidence.level))
+        Status: \(result.provenance.status.rawValue)
+        Model: \(result.provenance.modelVersion)
         Speed: \(result.speedModel.effectiveSpeed)s/page
         Volatility: \(result.speedModel.volatility)
         Chapters: \(result.chapterEstimates.count)

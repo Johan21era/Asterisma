@@ -12,8 +12,8 @@
 //    • Release builds contain none of these symbols: nothing can leak into the
 //      shipping app because nothing here exists in it.
 //
-//  DETERMINISM: all randomness flows through a fixed-seed SplitMix64 keyed on
-//  the persona id — identical output on every run (pinned by tests).
+//  SYNTHESIS: seeded behavior is reproducible for a fixed reference date and
+//  calendar/time zone; model IDs are deliberately fresh UUIDs on each run.
 //
 //  ROADMAP 3.4 / NA-8 (RA-002): two persona catalog entries previously wrote
 //  `?? .fiction` / `?? .business` after NON-OPTIONAL ReadingGenre cases — a
@@ -72,7 +72,7 @@ struct DemoPersona: Identifiable {
     let readDayProbability: Double
     /// Session length range, in minutes.
     let sessionMinutes: ClosedRange<Double>
-    /// Pace range, seconds per page-timing chunk.
+    /// Baseline pace range in seconds per page, before synthetic variation.
     let secondsPerPage: ClosedRange<Double>
 
     var totalCatalogHours: Double { catalog.reduce(0) { $0 + $1.totalHours } }
@@ -84,7 +84,7 @@ struct DemoPersona: Identifiable {
         weekdaysOnly: Bool = false,
         readDayProbability: Double = 0.72,
         sessionMinutes: ClosedRange<Double> = 25...75,
-        secondsPerPage: ClosedRange<Double> = 22...55,
+        secondsPerPage: ClosedRange<Double> = 45...75,
         catalog: [DemoBookSpec]
     ) {
         self.id = id; self.name = name; self.blurb = blurb
@@ -117,11 +117,11 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "winter-romantic", name: "The Winter Romantic",
-            blurb: "~1,000 hours of romance concentrated in the cold months. Reads when the snow falls.",
+            blurb: "Romance concentrated in the cold months.",
             hourBuckets: [(18, 24, 3.0), (12, 18, 1.0), (0, 2, 1.5)],
             monthWeights: [12: 3.4, 1: 3.6, 2: 3.2, 11: 1.4, 3: 1.0, 10: 0.25, 6: 0.1, 7: 0.08,
                            4: 0.25, 5: 0.2, 8: 0.1, 9: 0.15],
-            readDayProbability: 0.9, sessionMinutes: 65...170, secondsPerPage: 26...50,
+            readDayProbability: 0.9, sessionMinutes: 65...170, secondsPerPage: 50...75,
             catalog: [
                 spec("The Gilded Hour", "M. Castellano", .romance, 412, 245, series: "Ashbury"),
                 spec("Letters to June", "R. Okafor", .romance, 338, 180),
@@ -138,7 +138,7 @@ enum DemoProfileCatalog {
             id: "afternoon-devotee", name: "The Afternoon Devotee",
             blurb: "Obsessed with afternoon reads — virtually every session lands between noon and five.",
             hourBuckets: [(12, 17, 12.0), (17, 19, 1.0), (11, 12, 0.8)],
-            readDayProbability: 0.8, sessionMinutes: 35...90, secondsPerPage: 24...48,
+            readDayProbability: 0.8, sessionMinutes: 35...90, secondsPerPage: 48...72,
             catalog: [
                 spec("Teatime Mysteries", "G. Howell", .mystery, 342, 60),
                 spec("The Sunroom", "P. Alcott", .fiction, 298, 45),
@@ -150,10 +150,10 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "fantasy-marathoner", name: "The Fantasy Marathoner",
-            blurb: "Weekend-long fantasy marathons — six-hour sittings, enormous tomes.",
+            blurb: "Long fantasy sessions with enormous tomes.",
             hourBuckets: [(9, 13, 2.0), (13, 18, 2.5), (19, 23, 2.0)],
             monthWeights: [11: 1.4, 12: 1.5, 1: 1.4],
-            readDayProbability: 0.62, sessionMinutes: 120...360, secondsPerPage: 20...42,
+            readDayProbability: 0.62, sessionMinutes: 120...360, secondsPerPage: 42...65,
             catalog: [
                 spec("Emberwake", "T. Valdry", .fantasy, 880, 160, series: "The Cinder Crown"),
                 spec("Salt & Storm", "N. Ferrar", .fantasy, 742, 130, series: "The Cinder Crown"),
@@ -164,9 +164,9 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "commuter-snacker", name: "The Commuter Snacker",
-            blurb: "Weekday rush-hours only — dozens of tiny 8–15 minute nonfiction snacks.",
+            blurb: "Weekday rush-hours and short nonfiction sessions, with occasional interruptions.",
             hourBuckets: [(7, 9, 4.0), (17, 19, 4.0), (12, 13, 1.5)],
-            weekdaysOnly: true, readDayProbability: 0.85, sessionMinutes: 8...15, secondsPerPage: 18...35,
+            weekdaysOnly: true, readDayProbability: 0.85, sessionMinutes: 8...15, secondsPerPage: 40...60,
             catalog: [
                 spec("Atomic Chapters", "J. Clearwater", .selfHelp, 240, 22),
                 spec("The Focus Economy", "R. Delgado", .business, 260, 20),
@@ -178,9 +178,9 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "one-book-wonder", name: "The One-Book Wonder",
-            blurb: "One enormous book. Nothing else exists. 300 hours inside a single world.",
+            blurb: "One enormous book, revisited across many sessions.",
             hourBuckets: [(20, 24, 3.0), (0, 1, 2.0)],
-            readDayProbability: 0.78, sessionMinutes: 45...110, secondsPerPage: 25...48,
+            readDayProbability: 0.78, sessionMinutes: 45...110, secondsPerPage: 48...72,
             catalog: [
                 spec("The Vellum Sea", "E. Marlowe", .fantasy, 1420, 300),
             ]),
@@ -189,7 +189,7 @@ enum DemoProfileCatalog {
             id: "completionist", name: "The Completionist",
             blurb: "Starts books only to finish them — every last page, across every genre.",
             hourBuckets: [(19, 23, 2.0), (7, 9, 1.2), (12, 14, 1.2)],
-            readDayProbability: 0.82, sessionMinutes: 30...80, secondsPerPage: 24...46,
+            readDayProbability: 0.82, sessionMinutes: 30...80, secondsPerPage: 48...72,
             catalog: [
                 spec("Iron Harvest", "B. Novak", .scienceFiction, 380, 34, done: true),
                 spec("The Cartographer's Daughter", "I. Salim", .historical, 340, 30, done: true),
@@ -202,9 +202,9 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "serial-abandoner", name: "The Serial Abandoner",
-            blurb: "Twenty books started. Zero finished. The graveyard of good intentions.",
+            blurb: "Six books started and abandoned at different points.",
             hourBuckets: [(21, 24, 2.5), (12, 13, 1.5)],
-            readDayProbability: 0.7, sessionMinutes: 15...40, secondsPerPage: 26...52,
+            readDayProbability: 0.7, sessionMinutes: 15...40, secondsPerPage: 52...78,
             catalog: [
                 spec("Ulysses, Again", "J. Joyce-Adjacent", .fiction, 780, 12),
                 spec("Being & Boredom", "X. Sartre-Fan", .philosophy, 640, 9),
@@ -219,7 +219,7 @@ enum DemoProfileCatalog {
             id: "night-owl-scholar", name: "The Night Owl Scholar",
             blurb: "Philosophy and science strictly after 10pm. Streaks measured in semesters.",
             hourBuckets: [(22, 24, 4.0), (0, 2, 3.5)],
-            readDayProbability: 0.88, sessionMinutes: 50...110, secondsPerPage: 30...65,
+            readDayProbability: 0.88, sessionMinutes: 50...110, secondsPerPage: 55...90,
             catalog: [
                 spec("Meditations on Attention", "A. Kaur", .philosophy, 264, 55),
                 spec("The Quantum Ladder", "V. Ramanujan-Rao", .science, 388, 48),
@@ -232,7 +232,7 @@ enum DemoProfileCatalog {
             id: "poetry-dabbler", name: "The Poetry Dabbler",
             blurb: "Slim volumes, sporadic moods, short beautiful bursts.",
             hourBuckets: [(6, 8, 1.5), (21, 23, 2.0)],
-            readDayProbability: 0.32, sessionMinutes: 10...30, secondsPerPage: 35...90,
+            readDayProbability: 0.32, sessionMinutes: 10...30, secondsPerPage: 70...120,
             catalog: [
                 spec("Brief Candle", "W. Odum", .poetry, 128, 9),
                 spec("Saltwater Sonnets", "M. Reyes", .poetry, 96, 7),
@@ -242,9 +242,9 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "business-grinder", name: "The Business Grinder",
-            blurb: "5am sharp, every single day. Self-help and business, zero misses.",
+            blurb: "Early mornings, mostly self-help and business, with occasional days off.",
             hourBuckets: [(5, 7, 10.0)],
-            readDayProbability: 0.96, sessionMinutes: 40...70, secondsPerPage: 22...40,
+            readDayProbability: 0.96, sessionMinutes: 40...70, secondsPerPage: 45...65,
             catalog: [
                 spec("The Focused Investor", "L. Tran", .business, 310, 60),
                 spec("Compound Mornings", "G. Winthrop", .selfHelp, 280, 55),
@@ -258,7 +258,7 @@ enum DemoProfileCatalog {
             blurb: "Mystery in summer, horror in autumn, romance in spring, epic fantasy in winter.",
             hourBuckets: [(19, 23, 3.0), (14, 17, 1.5)],
             monthWeights: [6: 1.6, 7: 1.7, 8: 1.5, 9: 1.4, 10: 1.6, 12: 1.3, 4: 1.3, 5: 1.2],
-            readDayProbability: 0.74, sessionMinutes: 35...95, secondsPerPage: 24...50,
+            readDayProbability: 0.74, sessionMinutes: 35...95, secondsPerPage: 48...72,
             catalog: [
                 spec("Beach House Alibis", "S. Marlow", .mystery, 340, 45),
                 spec("The August Guest", "R. Calloway", .mystery, 318, 40),
@@ -273,7 +273,7 @@ enum DemoProfileCatalog {
             id: "rereader", name: "The Rereader",
             blurb: "Three beloved books, endlessly revisited. Comfort over novelty.",
             hourBuckets: [(20, 23, 3.0), (8, 9, 1.0)],
-            readDayProbability: 0.8, sessionMinutes: 30...75, secondsPerPage: 26...55,
+            readDayProbability: 0.8, sessionMinutes: 30...75, secondsPerPage: 52...78,
             catalog: [
                 spec("The Little Prince (Anniversary)", "A. de Saint-Exupéry", .fiction, 96, 60),
                 spec("Pride & Prejudice (Annotated)", "J. Austen", .romance, 432, 80),
@@ -282,9 +282,9 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "speed-demon", name: "The Speed Demon",
-            blurb: "Under 15 seconds a page. Devours entire shelves before lunch.",
+            blurb: "A fast reader with a 30–40 second baseline pace per page.",
             hourBuckets: [(9, 12, 2.5), (13, 16, 2.0), (20, 22, 1.5)],
-            readDayProbability: 0.85, sessionMinutes: 45...120, secondsPerPage: 8...15,
+            readDayProbability: 0.85, sessionMinutes: 45...120, secondsPerPage: 30...40,
             catalog: [
                 spec("Velocity", "J. Abrams-X", .thriller, 420, 55),
                 spec("The Rapid Protocol", "K. Voss", .thriller, 396, 50),
@@ -295,9 +295,9 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "slow-savorer", name: "The Slow Savorer",
-            blurb: "Five minutes a page. Three books a year. Every sentence chewed.",
+            blurb: "A deliberate reader with a slower baseline pace per page.",
             hourBuckets: [(17, 19, 1.5), (20, 22, 2.5)],
-            readDayProbability: 0.6, sessionMinutes: 40...90, secondsPerPage: 240...420,
+            readDayProbability: 0.6, sessionMinutes: 40...90, secondsPerPage: 95...170,
             catalog: [
                 spec("Ulysses (Savored)", "J. Joyce", .fiction, 780, 120),
                 spec("Middlemarch (Chewed)", "G. Eliot", .fiction, 880, 100),
@@ -306,9 +306,9 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "goal-crusher", name: "The Goal Crusher",
-            blurb: "Exactly one focused hour a day. Goals aren't set, they're met.",
+            blurb: "Usually reads around an hour, with occasional interruptions and missed days.",
             hourBuckets: [(6, 8, 2.0), (21, 23, 2.0)],
-            readDayProbability: 0.93, sessionMinutes: 55...65, secondsPerPage: 26...44,
+            readDayProbability: 0.93, sessionMinutes: 55...65, secondsPerPage: 48...72,
             catalog: [
                 spec("The Consistency Engine", "D. Sterling", .selfHelp, 320, 40),
                 spec("Atomic Attention", "J. Clearwick", .selfHelp, 300, 38),
@@ -320,9 +320,9 @@ enum DemoProfileCatalog {
 
         DemoPersona(
             id: "comeback-story", name: "The Comeback Story",
-            blurb: "Four dark silent months… then an unstoppable reading renaissance.",
+            blurb: "A four-month break followed by a return to reading.",
             hourBuckets: [(20, 24, 3.0), (10, 13, 1.5)],
-            readDayProbability: 0.9, sessionMinutes: 50...120, secondsPerPage: 24...48,
+            readDayProbability: 0.9, sessionMinutes: 50...120, secondsPerPage: 48...72,
             catalog: [
                 spec("Renaissance", "A. Phoenix", .fiction, 360, 60),
                 spec("Second Wind", "M. Okafor-Reid", .fiction, 330, 55),
@@ -339,13 +339,15 @@ enum DemoProfileCatalog {
 extension DemoProfileCatalog {
 
     /// Deterministically synthesizes a full library for a persona.
-    /// Validator-clean by construction: totalPages > 0, currentPage clamped to
-    /// valid range, every session closed, no orphan page-timings.
+    /// Sessions are closed and page positions stay within each catalog book.
+    /// Synthetic behavior and its probabilities are not calibrated to people.
     nonisolated static func generateBooks(
         for persona: DemoPersona,
-        referenceDate: Date = Date()
+        referenceDate: Date = Date(),
+        simulationSeed: String? = nil
     ) -> [Book] {
-        var rng = SeededRNG(seed: persona.id)
+        guard !persona.catalog.isEmpty, !persona.hourBuckets.isEmpty else { return [] }
+        var rng = SeededRNG(seed: simulationSeed.map { persona.id + ":" + $0 } ?? persona.id)
         let cal = Calendar(identifier: .gregorian)
 
         // Horizon sized so even 1,000-hour personas have room to breathe:
@@ -357,19 +359,26 @@ extension DemoProfileCatalog {
 
         let today = cal.startOfDay(for: referenceDate)
 
-        // Stable ids per catalog entry up front (sessions must reference them).
         let bookIDs = persona.catalog.map { _ in UUID() }
-        var accumulatedPages = Array(repeating: 0, count: persona.catalog.count)
+        var positions = Array(repeating: 0, count: persona.catalog.count)
+        var completedBooks = Array(repeating: false, count: persona.catalog.count)
         var sessionsPerBook = (0..<persona.catalog.count).map { _ in [ReadingSession]() }
-
+        // Fixed per-book variation and abandonment points, not measurements.
+        let bookPace = persona.catalog.map { _ in 0.85 + rng.double() * 0.3 }
+        let abandonAt = persona.catalog.map { book in
+            max(1, Int(Double(book.totalPages - 1) * (0.12 + rng.double() * 0.43)))
+        }
         let weights = persona.hourBuckets.map(\.weight)
+        var lastSessionEnd: Date?
 
         for offset in (-horizonDays)...(-1) {
             guard let day = cal.date(byAdding: .day, value: offset, to: today) else { continue }
             let month = cal.component(.month, from: day)
             let monthFactor = persona.monthWeights[month] ?? 1.0
 
-            if rng.double() > persona.readDayProbability * monthFactor { continue }
+            // A quiet period before the comeback, ending 60 days ago.
+            if persona.id == "comeback-story", (-180 ... -61).contains(offset) { continue }
+            if rng.double() >= min(1, persona.readDayProbability * monthFactor) { continue }
 
             let weekday = cal.component(.weekday, from: day)
             if persona.weekdaysOnly, !(2...6).contains(weekday) { continue }
@@ -385,50 +394,92 @@ extension DemoProfileCatalog {
                 bySettingHour: hour, minute: minute, second: 0, of: day
             ) else { continue }
 
-            // Book choice biased toward catalog order (early = dominant).
-            let rawPick = rng.double() * rng.double()
-            let bookIndex = min(persona.catalog.count - 1,
-                                Int(rawPick * Double(persona.catalog.count)))
-            let bookSpec = persona.catalog[bookIndex]
+            if let lastSessionEnd, sessionStart < lastSessionEnd { continue }
 
-            let minutes = persona.sessionMinutes.lowerBound
-                + rng.double() * (persona.sessionMinutes.upperBound
-                    - persona.sessionMinutes.lowerBound)
-            let seconds = minutes * 60
-            let sessionEnd = sessionStart.addingTimeInterval(seconds)
-
-            let secPerPage = persona.secondsPerPage.lowerBound
-                + rng.double() * (persona.secondsPerPage.upperBound
-                    - persona.secondsPerPage.lowerBound)
-
-            let remainingPages = max(1, bookSpec.totalPages - accumulatedPages[bookIndex])
-            let pagesRead = min(remainingPages,
-                                max(1, Int(seconds / max(1, secPerPage))))
-
-            // Page-timing chunks at the persona's pace.
-            var timings: [PageTiming] = []
-            let chunkCount = max(1, Int(seconds / max(1, secPerPage)))
-            let chunkLength = seconds / Double(chunkCount)
-            for c in 0..<chunkCount {
-                let t0 = sessionStart.addingTimeInterval(chunkLength * Double(c))
-                timings.append(PageTiming(
-                    pageNumber: min(bookSpec.totalPages - 1,
-                                    accumulatedPages[bookIndex] + (c % max(1, pagesRead))),
-                    startTime: t0,
-                    endTime: t0.addingTimeInterval(chunkLength)
-                ))
+            let candidates = persona.catalog.indices.filter { index in
+                if persona.id == "serial-abandoner" {
+                    return positions[index] < abandonAt[index]
+                }
+                return !completedBooks[index]
+            }
+            let bookIndex: Int
+            if candidates.isEmpty {
+                // Rereading is an explicit behavior, not a forced consequence of
+                // running out of books. Most readers revisit only occasionally.
+                guard persona.id != "serial-abandoner" else { continue }
+                let rereadChance = (persona.id == "rereader" || persona.id == "one-book-wonder" || persona.id == "winter-romantic") ? 0.8 : 0.08
+                guard rng.double() < rereadChance else { continue }
+                bookIndex = rng.int(in: 0...(persona.catalog.count - 1))
+                if positions[bookIndex] >= persona.catalog[bookIndex].totalPages - 1 {
+                    positions[bookIndex] = 0
+                }
+            } else if persona.id == "completionist" {
+                bookIndex = candidates[0]
+            } else {
+                let preferred = candidates.filter { index in
+                    guard persona.id == "seasonal-cyclist" else { return true }
+                    switch month {
+                    case 6...8: return persona.catalog[index].genre == .mystery
+                    case 9...11: return persona.catalog[index].genre == .thriller
+                    case 3...5: return persona.catalog[index].genre == .romance
+                    default: return persona.catalog[index].genre == .fantasy
+                    }
+                }
+                let pool = preferred.isEmpty ? candidates : preferred
+                bookIndex = pool[rng.int(in: 0...(pool.count - 1))]
             }
 
-            let session = ReadingSession(
-                bookID: bookIDs[bookIndex],
-                startTime: sessionStart,
-                endTime: sessionEnd,
-                startPage: accumulatedPages[bookIndex],
-                endPage: accumulatedPages[bookIndex] + pagesRead,
-                pageTimes: timings
-            )
-            sessionsPerBook[bookIndex].append(session)
-            accumulatedPages[bookIndex] += pagesRead
+            let bookSpec = persona.catalog[bookIndex]
+            let maxPage = persona.id == "serial-abandoner" ? abandonAt[bookIndex] : bookSpec.totalPages - 1
+            // A jump between sessions leaves skipped pages untimed rather than
+            // pretending their distance was read during a session.
+            if persona.id != "completionist", positions[bookIndex] > 0, rng.double() < 0.08 {
+                positions[bookIndex] = min(maxPage, positions[bookIndex] + rng.int(in: 1...3))
+            }
+            let startPage = positions[bookIndex]
+            let minutes = persona.sessionMinutes.lowerBound
+                + rng.double() * (persona.sessionMinutes.upperBound - persona.sessionMinutes.lowerBound)
+            // Some sessions end early, as when the reader gets interrupted.
+            let interruptionRoll = rng.double()
+            let interruptionFactor: Double
+            if interruptionRoll < 0.03 {
+                interruptionFactor = 0.002 + rng.double() * 0.008
+            } else if interruptionRoll < 0.12 {
+                interruptionFactor = 0.1 + rng.double() * 0.3
+            } else {
+                interruptionFactor = 1.0
+            }
+            let plannedEnd = min(today, sessionStart.addingTimeInterval(minutes * 60 * interruptionFactor))
+            let pace = (persona.secondsPerPage.lowerBound
+                + rng.double() * (persona.secondsPerPage.upperBound - persona.secondsPerPage.lowerBound))
+                * bookPace[bookIndex]
+            var page = startPage
+            var cursor = sessionStart
+            var timings: [PageTiming] = []
+            while cursor < plannedEnd {
+                let variation = 0.65 + rng.double() * 0.7
+                let rereadDelay = rng.double() < 0.04 ? 1.5 + rng.double() : 1.0
+                let end = min(plannedEnd, cursor.addingTimeInterval(max(1, pace * variation * rereadDelay)))
+                timings.append(PageTiming(pageNumber: page, startTime: cursor, endTime: end))
+                cursor = end
+                if page == maxPage || cursor >= plannedEnd { break }
+                // Occasionally go back a page and reread it, but never leave
+                // the session with an end page before its start page.
+                if persona.id != "completionist", page > startPage + 1, rng.double() < 0.015 {
+                    page -= 1
+                } else {
+                    page += 1
+                }
+            }
+
+            guard !timings.isEmpty else { continue }
+            sessionsPerBook[bookIndex].append(ReadingSession(
+                bookID: bookIDs[bookIndex], startTime: sessionStart, endTime: cursor,
+                startPage: startPage, endPage: page, pageTimes: timings
+            ))
+            lastSessionEnd = cursor
+            positions[bookIndex] = page
+            if page >= bookSpec.totalPages - 1 { completedBooks[bookIndex] = true }
         }
 
         // Assemble books.
@@ -450,23 +501,11 @@ extension DemoProfileCatalog {
             )
             book.wordCountEstimate = catalogEntry.totalPages * 250
 
-            var sessions = sessionsPerBook[index].sorted { $0.startTime < $1.startTime }
-            // Close any trailing open state deterministically.
-            if sessions.isEmpty {
-                let t = today.addingTimeInterval(-86_400)
-                sessions = [ReadingSession(bookID: id, startTime: t,
-                                           endTime: t.addingTimeInterval(1_800),
-                                           startPage: 0, endPage: 1)]
-            }
-            book.sessions = sessions
-
-            let furthest = sessions.map(\.endPage).max() ?? 0
-            if catalogEntry.completed {
-                book.currentPage = catalogEntry.totalPages - 1
-                book.isCompleted = true
-            } else {
-                book.currentPage = min(furthest, catalogEntry.totalPages - 1)
-            }
+            book.sessions = sessionsPerBook[index]
+            book.isCompleted = completedBooks[index]
+            // A completed book stays completed even if it is being reread;
+            // the current page reflects the most recent simulated position.
+            book.currentPage = positions[index]
             return book
         }
     }

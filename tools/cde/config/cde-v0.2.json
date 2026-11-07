@@ -1,0 +1,82 @@
+{
+  "dimensions": {
+    "A": {
+      "features": {
+        "A_abstract": 0.2,
+        "A_morph": 0.25,
+        "A_oov": 0.55
+      },
+      "label": "Lexical load",
+      "lambda": 0.35,
+      "reliability": "B",
+      "weight": 0.16666666666666666
+    },
+    "B": {
+      "features": {
+        "B_clause": 0.3,
+        "B_passive": 0.15,
+        "B_pronoun": 0.15,
+        "B_sentence": 0.4
+      },
+      "label": "Syntactic load",
+      "lambda": 0.35,
+      "reliability": "B",
+      "weight": 0.16666666666666666
+    },
+    "G": {
+      "features": {
+        "G_cooc": 0.5,
+        "G_names": 0.5
+      },
+      "label": "Entity interaction",
+      "lambda": 0.35,
+      "reliability": "B",
+      "weight": 0.16666666666666666
+    },
+    "H": {
+      "features": {
+        "H_discontinuity": 0.4,
+        "H_orphan": 0.3,
+        "H_shift": 0.3
+      },
+      "label": "Continuity and direction",
+      "lambda": 0.35,
+      "reliability": "B",
+      "weight": 0.16666666666666666
+    },
+    "I": {
+      "features": {
+        "I_content": 0.4,
+        "I_novelty": 0.4,
+        "I_np": 0.2
+      },
+      "label": "Information density",
+      "lambda": 0.35,
+      "reliability": "B",
+      "weight": 0.16666666666666666
+    },
+    "K": {
+      "features": {
+        "K_quote": 0.2,
+        "K_speakers": 0.3,
+        "K_tagless": 0.5
+      },
+      "label": "Dialogue load",
+      "lambda": 0.35,
+      "reliability": "B",
+      "weight": 0.16666666666666666
+    }
+  },
+  "interactions": [],
+  "labels": {
+    "bands": [],
+    "provisional": true
+  },
+  "reference_version": "ref-v2",
+  "refusal": {
+    "min_prose_share": 0.6,
+    "min_tokens": 5000,
+    "min_windows": 3
+  },
+  "version": "cde-v0.2"
+}

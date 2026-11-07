@@ -62,7 +62,7 @@ struct DemoProfileLabView: View {
                     .foregroundStyle(ConsolePalette.textPrimary)
                 Spacer()
             }
-            Text("Synthetic reader identities for evaluating analytics surfaces. Installing REPLACES the entire library AND resets goals/achievements/collections — profiles are console-only and never ship.")
+            Text("Synthetic scenarios for exercising analytics, not evidence of real-reader accuracy. Installing REPLACES the entire library AND resets goals/achievements/collections — profiles are console-only and never ship.")
                 .font(.system(.caption, design: .monospaced))
                 .foregroundStyle(ConsolePalette.textSecondary)
         }
@@ -182,7 +182,7 @@ private struct PersonaRow: View {
                     Text(persona.name)
                         .font(.system(.body, design: .monospaced).weight(.medium))
                         .foregroundStyle(isSelected ? ConsolePalette.textPrimary : ConsolePalette.textSecondary)
-                    Text("\(persona.catalog.count) books · ~\(Int(persona.totalCatalogHours))h")
+                    Text("\(persona.catalog.count) books · ~\(Int(persona.totalCatalogHours))h history sizing")
                         .font(.system(.caption2, design: .monospaced))
                         .foregroundStyle(ConsolePalette.textSecondary.opacity(0.8))
                 }
@@ -248,7 +248,7 @@ private struct PersonaDetail: View {
 
                 HStack(spacing: 24) {
                     metric("BOOKS", "\(persona.catalog.count)")
-                    metric("TOTAL HOURS", "~\(Int(persona.totalCatalogHours))")
+                    metric("HISTORY SIZING", "~\(Int(persona.totalCatalogHours))h")
                     metric("GENRES", "\(Set(persona.catalog.map(\.genre)).count)")
                     metric("PACE", "\(Int(persona.secondsPerPage.lowerBound))–\(Int(persona.secondsPerPage.upperBound))s/pg")
                 }
@@ -263,14 +263,14 @@ private struct PersonaDetail: View {
                 ForEach(persona.catalog, id: \.title) { book in
                     HStack {
                         Circle()
-                            .fill(book.completed ? Color.green.opacity(0.7) : ConsolePalette.statusColor(.running))
+                            .fill(ConsolePalette.statusColor(.running))
                             .frame(width: 6, height: 6)
                         Text(book.title)
                             .font(.system(.callout, design: .monospaced))
                             .foregroundStyle(ConsolePalette.textPrimary)
                             .lineLimit(1)
                         Spacer()
-                        Text("\(book.genre.displayName) · \(Int(book.totalHours))h\(book.completed ? " · ✓" : "")")
+                        Text("\(book.genre.displayName) · \(Int(book.totalHours))h catalog input")
                             .font(.system(.caption2, design: .monospaced))
                             .foregroundStyle(ConsolePalette.textSecondary)
                     }

@@ -547,9 +547,9 @@ struct ReadingDeskView: View {
     }
 
     private func timeRemaining(for book: Book) -> String? {
-        let prediction = AnalyticsEngine.predictions(for: book, allBooks: dataStore.books)
-        guard let seconds = prediction.estimatedSecondsToFinish, seconds > 0 else { return nil }
-        return formatDuration(seconds)
+        let estimate = EstimationEngine.estimate(for: book, allBooks: dataStore.books)
+        guard estimate.remainingSeconds > 0 else { return nil }
+        return formatDuration(estimate.remainingSeconds)
     }
 
     private func finishedDetail(_ book: Book) -> String {

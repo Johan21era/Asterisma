@@ -32,3 +32,11 @@ graphify-out/graph-3d-full.html
 # Owner's kept campaign snapshots (frozen at close; canonical, moving copies live in docs/integration/)
 /merge-log.md
 /RT_Mirage_Codebase_Merge_Playbook.md
+
+# Generated stress/CDE run evidence archived 2026-11-07
+/tools/cde/final-stress-20261030/
+/tools/cde/synthetic-batch-*/
+/tools/cde/adversarial-*/
+/tools/cde/corpus-*/
+/tools/cde/archive_fresh_evidence.log
+/.cloud-attachments/

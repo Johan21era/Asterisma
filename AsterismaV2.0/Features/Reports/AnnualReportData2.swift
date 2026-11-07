@@ -506,9 +506,11 @@ enum AnnualReportGenerator {
     }
 
     private static func averageSpeed(book _: Book, sessions: [ReadingSession]) -> Double {
-        let timings = sessions.flatMap(\.pageTimes).map(\.duration).filter { $0 > 0.5 && $0 < 60 }
-        guard !timings.isEmpty else { return AnalyticsConstants.defaultSecondsPerPage }
-        return timings.reduce(0, +) / Double(timings.count)
+        // E2: the same documented policy as every other speed consumer — a
+        // reader is never slower than the policy allows merely because of a
+        // universal one-minute ceiling.
+        PageDurationPolicy.robustMeanSeconds(sessions.flatMap(\.pageTimes).map(\.duration))
+            ?? AnalyticsConstants.defaultSecondsPerPage
     }
 
     private static func longestStreakInYear(
