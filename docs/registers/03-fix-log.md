@@ -1671,3 +1671,43 @@ exit 0 (28 tests); `./scripts/verify-sentinel-surface.sh` exit 0;
 `./scripts/census.sh --unit-only` exit 0 (515 total / 506 passed / 9 skipped /
 0 failed / 719 runs); the full Markdown audit over 103 files exit 0. No commit or
 push occurred at archive time.
+
+## Stage AR — E8 estimate facade, page/difficulty separation, behavior SQLite (2026-11-07)
+
+**Trigger.** Phase 3 of the reading-analytics program: the audit had proved two
+estimate paths disagreed, difficulty was being multiplied into page count, and
+behavior evidence still wrote only JSON.
+
+**What changed (source/test commit `f9b8686`):**
+
+| Path | Change |
+|---|---|
+| `AsterismaV2.0/Engines/EstimationEngine.swift` | Added `effectiveSecondsPerPage(for:allBooks:)`; `estimate` and the chapter/page helpers resolve that one pace. |
+| `AsterismaV2.0/Engines/AnalyticsEngine.swift` | `effectiveReadingSpeed`, `predictions`, `bookForecast`, and `chapterPredictions` delegate to the canonical pace; removed `normalizedPages`, the difficulty-as-pages helper. |
+| `AsterismaV2.0/Features/Library/ContentAnalysis.swift` | `PageEstimationModel` no longer accepts a difficulty multiplier; words convert to pages at 250 wpp. |
+| `AsterismaV2.0/Features/Library/BookImporter.swift`, `tools/real-book-audit/main.swift` | Call sites updated; difficulty remains metadata. |
+| `AsterismaV2.0/Features/BehaviorContext/BehavioralCategory.swift` | `BehaviorContextAccessKit` reads/writes the existing `behavior_events`, `application_sessions`, `inactivity_records`, and `device_state_events` tables; JSON is the import seed and compatibility mirror. |
+| `AsterismaV2.0/Core/DataStore3.swift`, `AsterismaV2.0/App/AsterismaApp.swift` | The app injects its canonical `LibraryDatabase` into the behavior kit. |
+| `AsterismaV2.0Tests/Engines/EstimateFacadeTests.swift` | New E8 pins: measured and cross-book pace parity. |
+| `AsterismaV2.0Tests/Library/PageEstimationModelTests.swift` | Difficulty-is-not-pages pin replaces the old difficulty-increases-pages pin. |
+| `AsterismaV2.0Tests/Behavior/G6EvidencePersistenceTests.swift` | New SQLite-wins-over-JSON pin. |
+
+**Checks.**
+
+| Command | Result |
+|---|---|
+| Focused `xcodebuild test` (E8, E7, E6, G6 suites) | 16 tests in 4 suites passed, exit **0**, `TEST SUCCEEDED` |
+| `./scripts/verify-sentinel-surface.sh` | `sentinel-surface: OK — 15 tables, 8 defaults keys, 5 notification names`, exit **0** |
+| `python3 scripts/comprehension-bench.py --validate-only` | `bank ok: 30 facts, 12 overview facts`, exit **0** |
+| `./scripts/census.sh --unit-only` | `result Passed`; **518 total / 509 passed / 9 skipped / 0 failed / 719 runs**, 100 suites, exit **0**, `rt-census-20261106-213119.xcresult` |
+
+**Limits.** The behavior migration is tested against a temporary `LibraryDatabase`,
+not the owner's live library; the JSON mirror is intentionally retained for older
+builds and Sentinel's BHV-001 probe. No owner visual or real-device acceptance
+was run. The estimate changes are unit-pinned; no independent reader or real-book
+accuracy claim is made.
+
+**Next.** Push this commit and the documentation commit, then watch `census.yml`
+to green. The remaining Phase 3 work is owner-visible acceptance of the new
+behavior store and the collection rename UI; Swift 6 and distribution remain
+separate programs.

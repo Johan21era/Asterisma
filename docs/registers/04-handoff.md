@@ -4,7 +4,7 @@
 
 This document answers the seven questions every close-out should answer, in plain language. It is written so that anyone — whether or not they have ever written code — can pick up the project and know exactly where things stand.
 
-**Refreshed 2026-10-29: the V1.0 release is merged, reorganized, and CI-green, and it carries the Sentinel v2 first tranche; `AsterismaV2.0` is the current working identity, not a shipped release.** The V2.0 tree now also carries the Home/Library shell overhaul, the reader customization pass, the offline contract pass, the ADR-13 Mirage warm-engine/library-scale overhaul, and the environment/Sentinel/console navigation overhaul (live atmosphere, weather layer, deepened daylight palettes with a readability scrim, Sentinel sidebar, Environment Studio, Subsystem Explorer), all compiled and unit-tested but **not committed and not visually accepted**. The current unit census is **515 tests / 99 suites / 719 runs / 506 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; 2026-10-31), after the reading-analytics recalibration and the 200-round stress evaluation. The hand-graded real-library pass that followed was **declared void on 2026-10-29** — see the session close at the end of this file and `docs/audits/new-era-testing.md` §31. The app is usable now. The remaining work is owner acceptance of the shell/reader/offline/Mirage changes, distribution hardening, and the Sentinel holds recorded in SG7 (manual acceptance, v1 removal, localization, menu bar, accessibility, 10× benchmark).
+**Refreshed 2026-11-07: the V1.0 release is merged, reorganized, and CI-green, and it carries the Sentinel v2 first tranche; `AsterismaV2.0` is the current working identity, not a shipped release.** The V2.0 tree now also carries the Home/Library shell overhaul, the reader customization pass, the offline contract pass, the ADR-13 Mirage warm-engine/library-scale overhaul, the environment/Sentinel/console navigation overhaul, and the E8 estimate-facade + behavior-SQLite tranche. The earlier tranches are committed and pushed; owner visual acceptance remains pending. The current unit census is **518 tests / 100 suites / 719 runs / 509 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; 2026-11-07), after the reading-analytics recalibration, the 200-round stress evaluation, and the E8 estimate-facade + behavior-SQLite tranche. The hand-graded real-library pass that followed was **declared void on 2026-10-29** — see the session close at the end of this file and `docs/audits/new-era-testing.md` §31. The app is usable now. The remaining work is owner acceptance of the shell/reader/offline/Mirage changes, distribution hardening, and the Sentinel holds recorded in SG7 (manual acceptance, v1 removal, localization, menu bar, accessibility, 10× benchmark).
 
 ---
 
@@ -76,12 +76,13 @@ An app that can be trusted with years of reading history, with a change process 
 | 3 | **Bundle ID migration** | One focused session | The sandbox ID is still `johan.Reading-Tracker`. Moving to an Asterisma ID requires copying the container to the new sandbox; do not change it casually. |
 | 4 | **Swift 6 strict concurrency** | Multi-session arc | The attempt produced 148 actor-isolation errors; the project stays in Swift 5 mode until those surfaces are fixed. |
 | 5 | **Reader selection highlights/quotes** | 1–2 sessions | Notes, tags, page anchors, and collections work; EPUB/PDF text-selection highlighting is not wired. |
-| 6 | **Behavior evidence to SQLite** | 1 session | Evidence currently persists in a JSON archive; the behavior tables exist but are not the live store. |
-| 7 | **Collection rename UI** | Small | Create/delete/membership work; rename has no UI. |
-| 8 | **Environment/Sentinel/console owner acceptance** | One focused session | Open the app at morning, midday, and afternoon; confirm the background flows, the readability veil is enough, and the Environment Studio can force every weather kind. Then walk the Sentinel sidebar, issue search/filter/Next issue, console sidebar search, and Subsystem Explorer. No screenshot receipt exists; the code and census are the only evidence today. |
-| 9 | **Legacy cleanup + remaining dead code** | 1 short session | Repository graphify cache/backup, duplicate playbook, and OS metadata were removed on 2026-10-29; old P5-G `library.sqlite3`/`.migrated` app-support artifacts and zero-caller fragments remain, none live. |
+| 6 | **Collection rename UI** | Small | Create/delete/membership work; rename has no UI. |
+| 7 | **Environment/Sentinel/console owner acceptance** | One focused session | Open the app at morning, midday, and afternoon; confirm the background flows, the readability veil is enough, and the Environment Studio can force every weather kind. Then walk the Sentinel sidebar, issue search/filter/Next issue, console sidebar search, and Subsystem Explorer. No screenshot receipt exists; the code and census are the only evidence today. |
+| 8 | **Legacy cleanup + remaining dead code** | 1 short session | Repository graphify cache/backup, duplicate playbook, and OS metadata were removed on 2026-10-29; old P5-G `library.sqlite3`/`.migrated` app-support artifacts and zero-caller fragments remain, none live. |
 | 9 | **Mirage standing items** | Process, not code | TB-M0 observation cadence, a perf-budget report, and the engine-side backup-surface gap. The packaged app-embed exercise is done. |
 | 10 | **Mirage ADR-13 owner acceptance** | One focused session | Exercise the warm engine (start, two analyses without a cold restart, idle stop), a library scan, a batch cancel, and a retry-failed run from Settings ▸ Mirage. Record results in `docs/owner-test-results/`; the stage is not accepted until then. |
+
+**Closed 2026-11-07 — Behavior evidence to SQLite:** the four existing behavior tables are now the live store; the JSON archive is an import seed and compatibility mirror. Stage AR in `docs/registers/03-fix-log.md`.
 
 CI runner alignment is complete (2026-10-26): `census` runs on `macos-26` / Xcode 26.6. The remote `census` is green on the Sentinel v2 tranche (run `40758619365`, `bed710a`); the local census after SG8 is **432 tests / 671 runs / 9 skips / 0 failures**, and CI now runs the surface-freshness gate before the census. SG8 adds auto-extending structural coverage but does not close SG7: owner acceptance (row 1) is still the gate. The audit-era NEW-DE-1…NEW-DE-8 punch list is **fixed and pinned**; the old “open” block in the defect register is historical. Sentinel’s remaining holds are tracked in `docs/plans/sentinel/gates/SG7.md`, not in the old defect register.
 
@@ -89,7 +90,7 @@ CI runner alignment is complete (2026-10-26): `census` runs on `macos-26` / Xcod
 
 ## What should the next person know to start instantly?
 
-**Baseline:** `main` carries the original release merge at `aba8aa4` plus the owner-accepted reader build, the preservation-first repository reorganization, CI hardening, the Sentinel v2 first tranche (`6099e4e`), and SG8 (`29dd4f6`); ready tag `asterisma-v1.0-ready-2026-10-26`, release tag `asterisma-v1.0-mvp`. At the SG8 boundary the local unit census was **432 tests / 671 runs / 9 skipped / 0 failed**; the reader boundary was **441 tests / 671 runs / 432 passed / 9 skipped / 0 failed** (Stage AA); the offline boundary was **447 tests / 671 runs / 438 passed / 9 skipped / 0 failed** (Stage AB, historical). The ADR-13 boundary was **459 tests / 671 runs / 450 passed / 9 skipped / 0 failed** (Stage AE). The Phase Zero boundary was **469 tests / 671 runs / 460 passed / 9 skipped / 0 failed** (`rt-census-20261029-183222.xcresult`); the current boundary is **515 tests / 99 suites / 719 runs / 506 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; 2026-10-31), which adds the four Book File Relink tests and the one Phase Zero reading-analytics probe to the Stage AH environment/Sentinel/console boundary of **464 tests / 671 runs / 455 passed / 9 skipped / 0 failed** (Stage AH in `docs/registers/03-fix-log.md`). Release build exit 0 for the earlier boundary; the reader and offline passes have Debug build receipts only. Test isolation was byte-identical at the earlier boundary; it was not re-run after the reader or offline pass. The generated `dist/` package was removed during the 2026-10-28 artifact cleanup; rebuild with `scripts/package-release.sh`. The last documented package SHA-256 is `786832c8049e38ebe03d6220ae0a39b3a0005b010bdce4675e440cea65ef4643`. Canonical census numbers come from `xcrun xcresulttool get test-results summary`; Sentinel evidence is indexed in `docs/plans/sentinel/gates/README.md`. The close-out graph refresh (Stage AI) is **8,156 nodes / 20,371 edges / 389 communities**; the 3D page is 8,579,333 B and all artifact hashes are in the Stage AI receipt. The earlier Stage AG refresh recorded 8,045 / 20,093 / 381; the ADR-13 refresh (Stage AF) recorded 8,037 / 20,085 / 378.
+**Baseline:** `main` carries the original release merge at `aba8aa4` plus the owner-accepted reader build, the preservation-first repository reorganization, CI hardening, the Sentinel v2 first tranche (`6099e4e`), and SG8 (`29dd4f6`); ready tag `asterisma-v1.0-ready-2026-10-26`, release tag `asterisma-v1.0-mvp`. At the SG8 boundary the local unit census was **432 tests / 671 runs / 9 skipped / 0 failed**; the reader boundary was **441 tests / 671 runs / 432 passed / 9 skipped / 0 failed** (Stage AA); the offline boundary was **447 tests / 671 runs / 438 passed / 9 skipped / 0 failed** (Stage AB, historical). The ADR-13 boundary was **459 tests / 671 runs / 450 passed / 9 skipped / 0 failed** (Stage AE). The Phase Zero boundary was **469 tests / 671 runs / 460 passed / 9 skipped / 0 failed** (`rt-census-20261029-183222.xcresult`); the current boundary is **518 tests / 100 suites / 719 runs / 509 passed / 9 skipped / 0 failed** (`./scripts/census.sh --unit-only`, exit 0; 2026-11-07), which adds the two E8 estimate-facade pins and the G6 SQLite persistence pin to the prior 515 boundary; the four Book File Relink tests and the one Phase Zero reading-analytics probe remain part of the count. The Stage AH environment/Sentinel/console boundary is **464 tests / 671 runs / 455 passed / 9 skipped / 0 failed** (Stage AH in `docs/registers/03-fix-log.md`). Release build exit 0 for the earlier boundary; the reader and offline passes have Debug build receipts only. Test isolation was byte-identical at the earlier boundary; it was not re-run after the reader or offline pass. The generated `dist/` package was removed during the 2026-10-28 artifact cleanup; rebuild with `scripts/package-release.sh`. The last documented package SHA-256 is `786832c8049e38ebe03d6220ae0a39b3a0005b010bdce4675e440cea65ef4643`. Canonical census numbers come from `xcrun xcresulttool get test-results summary`; Sentinel evidence is indexed in `docs/plans/sentinel/gates/README.md`. The close-out graph refresh (Stage AI) is **8,156 nodes / 20,371 edges / 389 communities**; the 3D page is 8,579,333 B and all artifact hashes are in the Stage AI receipt. The earlier Stage AG refresh recorded 8,045 / 20,093 / 381; the ADR-13 refresh (Stage AF) recorded 8,037 / 20,085 / 378.
 
 > **History note (2026-10-28):** `main` was rewritten to remove AI co-author trailers from five commits. Trees are byte-identical. Remapped SHAs: `40bc922`→`16d6d16`, `fd524cd`→`5a369e9`, `6aecdc3`→`bed710a`, `2f40a43`→`310b9d3`, `ae4ee36`→`76e8a23`. A local-only `backup/pre-attribution-rewrite` branch may hold the old objects; it is not pushed and is safe to delete.
 
@@ -584,3 +585,30 @@ missing or rejected, shrink recent toward the target's full history, pre-registe
 the rule, and calibrate on the cases where it changes the answer. That experiment
 has not been run. Graph refresh, commit and push remain separately owner-gated
 and were not done; the cleanup and evidence archival are recorded above.
+
+---
+
+## Session close — 2026-11-07 (E8 estimate facade + behavior SQLite)
+
+**Delivered.** One canonical estimate pace (`EstimationEngine.effectiveSecondsPerPage`)
+is now used by the estimate, prediction, forecast, and chapter paths; difficulty
+no longer changes page count (`PageEstimationModel` and the EPUB import call); and
+behavior evidence reads and writes the existing SQLite tables, with the JSON
+archive retained as a seed and compatibility mirror. Source/test commit
+`f9b8686`.
+
+**Verification.** Focused `xcodebuild test` (E8, E7, E6, G6) passed 16 tests in
+4 suites, exit 0. The full local census is **518 tests / 100 suites / 719 runs /
+509 passed / 9 skipped / 0 failed**, exit 0,
+`rt-census-20261106-213119.xcresult`. Surface and comprehension-index gates exit
+0. The previous pushed commit's remote census (`42328460289`, `e0f442d`) is
+green.
+
+**Limits.** The behavior migration is tested against a temporary database, not
+the owner's live library; the JSON mirror is deliberately retained for older
+builds and Sentinel's file probe. No owner visual or real-device acceptance was
+run, and the estimate changes carry no independent real-reader accuracy claim.
+
+**Next.** Commit and push this documentation tranche, then watch `census.yml`
+to green. Collection rename UI remains the next small Phase 3 item; Swift 6 and
+distribution remain separate programs.
