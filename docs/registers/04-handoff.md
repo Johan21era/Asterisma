@@ -644,3 +644,36 @@ The model session produced no handoff file; Buffy reviewed the diff directly.
 
 **Next.** WP-1.2 and WP-1.3 (EPUB and PDF selection bridges) in parallel, then
 WP-1.4 annotation UI. G1 closes only after the owner 10-step script runs.
+
+## Session close — 2026-11-07 (reader selection bridges)
+
+**Delivered.** The EPUB reader now captures a settled text selection in its
+chapter web view and reduces it to a quote plus a dense
+`ch:<chapter>:<start>:<end>` locator; the PDF reader captures a selection and
+reduces it to a page index plus a crop-box-relative normalized rect. Both expose
+an `onSelection` hook, clear the selection on page change, truncate quotes at
+4,000 characters, and add no schema change. Merged in `3a82d50` and `a010a72`.
+
+**Verified.** Each worktree built at exit 0; `EPUBSelectionTests` plus
+`ReaderAppearanceTests` passed **16 tests**, `PDFSelectionGeometryTests` plus
+`ReaderAppearanceTests` passed **14 tests**; `git diff --check` exit 0 in both.
+The full census after both merges is **536 tests / 527 passed / 9 skipped /
+0 failed**, exit 0. CI run `42337879182` (P1.1) succeeded.
+
+**Defect caught in review.** The PDF packet shipped `pdfViewSelectionChanged(_:)`
+on the `PDFViewDelegate` Coordinator. `PDFViewDelegate` has no such callback, so
+it compiled and never fired. Buffy replaced it with a
+`.PDFViewSelectionChanged` observer bound to the view, added teardown, and added
+a sixth PDF test that posts the notification. A first verification attempt also
+silently matched no PDF test type and ran only the appearance suite; that false
+pass was caught and rerun.
+
+**Limits.** No reader UI consumes the selection yet, so there is no owner visual
+receipt and G1 stays open. The injected JavaScript is verified by review and
+compilation only (no `WKWebView` in tests). The notification observer's
+*registration* is verified by review, not by the test, which exercises the
+handler. No live-library migration was run.
+
+**Next.** WP-1.4 annotation UI: note editor, inline highlight, sidebar list,
+filters, and quote copy, wiring both `onSelection` hooks to the frozen
+`BookNoteAnchor` schema.

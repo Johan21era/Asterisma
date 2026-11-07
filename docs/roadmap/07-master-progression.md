@@ -504,6 +504,19 @@ statements were applied to a populated v1 `notes` table in `sqlite3` with the
 existing row preserved. G1's remaining boxes are the two reader bridges, the
 annotation UI, and the owner script.
 
+**WP-1.2/WP-1.3 receipts (2026-11-07): merged in `3a82d50` and `a010a72`.** The
+EPUB bridge captures a settled selection in the chapter web view and reduces it
+to `ch:<chapter>:<start>:<end>` plus the quote; the PDF bridge reads
+`.PDFViewSelectionChanged` and reduces the selection to a page index plus a
+crop-box-relative normalized rect. Both expose `onSelection`, clear on page
+change, truncate at 4,000 characters, and leave the note schema untouched.
+Review found one real defect in the PDF work: `PDFViewDelegate` declares no
+selection callback, so the delegate method the model wrote could never fire.
+Buffy replaced it with a `NotificationCenter` observer registered against the
+view, added the teardown, and added a notification-path test. Seven EPUB
+selection tests and six PDF geometry/anchor tests pass; the full census is
+**536 tests / 527 passed / 9 skipped / 0 failed**.
+
 **Technical guardrails**
 
 - Store annotation anchors as logical locators (chapter/CFI or page + normalized
