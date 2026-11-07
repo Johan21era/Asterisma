@@ -313,7 +313,7 @@ nonisolated final class LibraryDatabase: @unchecked Sendable {
                 for note in book.notes {
                     try db.execute(
                         sql: """
-                            INSERT INTO notes
+                            INSERT OR REPLACE INTO notes
                             (id, book_id, page_number, text, tag, selected_text,
                              color, anchor_json, created_at, modified_at)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -406,6 +406,16 @@ nonisolated final class LibraryDatabase: @unchecked Sendable {
         enc: JSONEncoder,
         validCollectionIDs: Set<UUID>
     ) throws {
+        // CR-1 finding 6: a payload with two notes sharing an id used to abort
+        // the whole library save on the notes primary key. Normalize once
+        // here, keeping the last write per id, so the authoritative payload
+        // and the flat rows agree and a duplicate costs one note, not the
+        // library.
+        var book = book
+        var seenNoteIDs = Set<UUID>()
+        book.notes = book.notes.reversed()
+            .filter { seenNoteIDs.insert($0.id).inserted }
+            .reversed()
         let payload = try enc.encode(Self.summary(of: book))
         try db.execute(
             sql: """
@@ -481,7 +491,7 @@ nonisolated final class LibraryDatabase: @unchecked Sendable {
         for note in book.notes {
             try db.execute(
                 sql: """
-                    INSERT INTO notes
+                    INSERT OR REPLACE INTO notes
                     (id, book_id, page_number, text, tag, selected_text,
                      color, anchor_json, created_at, modified_at)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)

@@ -748,3 +748,39 @@ owner visual pass exists, and no live library was migrated.
 
 **Next.** WP-1.5 (persistence, backup, recovery) or WP-1.6 (accessibility and
 owner acceptance script). G1 still needs the owner's 10-step script.
+
+## Session close — 2026-11-07 (bug hunt and full suite)
+
+**Delivered.** A sweep of the annotation tranche, the persistence path, the
+whole app's unsafe constructs, the analyzer, and the full unit + UI scheme.
+Two real defects are fixed:
+
+1. A duplicated note id could abort the library save, and the authoritative
+   `payload_json` carried both copies even after the row write deduped. Both
+   note INSERT sites now use `INSERT OR REPLACE`, and `writeBook` normalises
+   `book.notes` by id (last write wins) before encoding the payload. The new
+   test `duplicateNoteIDDoesNotAbortSave` failed with only the table fix in
+   place, which is what proved the payload half was needed.
+2. The library note editor overwrote `pageNumber` on anchored notes, creating
+   the second location CR-1 finding 7 named. The editorial page field now
+   applies only to notes without an anchor.
+
+A third, red full-suite run was self-inflicted: two `xcodebuild` runs were
+alive at once and the stress test took a SIGTERM. It passes alone (137.749 s),
+and the clean re-run is green. Nothing in that failure was a product defect.
+
+**Verified.** Full scheme (`./scripts/census.sh`) exit 0, **Passed**: 561 tests,
+552 passed, 9 skipped, 0 failed, 721 runs (`rt-census-20261107-005854.xcresult`).
+Unit-only earlier: 557 / 548 / 9 / 0. `FreshStressBundleTests` in isolation:
+2 passed. `AnnotationSchemaTests`: 6 passed. `xcodebuild analyze` exit 0 with
+one AppIntents tooling warning. `verify-test-isolation.sh` exit 0 with the real
+store byte-identical (620 KB). `git diff --check` exit 0.
+
+**Limits.** Still no live `WKWebView` or `PDFView` run. The four UI tests only
+launch the app and measure launch time; none drives the annotation UI, so the
+561-test figure is broad at the model layer, not deep at the UI layer. No
+performance measurement was taken for EPUB resolution, which runs
+`O(notes × chapter length)` in the view body. `benchmark.sh` was not run.
+
+**Next.** The owner's 10-step G1 script, then WP-1.5 (export, orphan recovery,
+backup) or WP-1.6 (accessibility).

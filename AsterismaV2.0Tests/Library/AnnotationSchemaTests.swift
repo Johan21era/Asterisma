@@ -258,4 +258,40 @@ final class AnnotationSchemaTests {
         // The AnnotationColor palette is exactly the WP-1.1 set.
         #expect(AnnotationColor.allCases == [.yellow, .green, .blue, .pink, .purple])
     }
+
+    /// 6. CR-1 finding 6: a duplicated note id must not abort the whole library
+    /// save. The mirror writes notes with `INSERT OR REPLACE`, so the last
+    /// write for an id wins and exactly one row survives — a corrupt payload
+    /// costs one note, never the library.
+    @Test("A duplicated note id saves without aborting the library")
+    func duplicateNoteIDDoesNotAbortSave() throws {
+        let dir = try tempDirectory()
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let dbURL = dir.appendingPathComponent("duplicate-notes.sqlite3")
+
+        let bookID = UUID()
+        let sharedID = UUID()
+        var book = Book(
+            title: "Duplicate carrier",
+            author: "A",
+            fileURL: URL(fileURLWithPath: "/tmp/wp11-dup.epub"),
+            fileType: .epub,
+            totalPages: 10)
+        book.id = bookID
+        book.notes = [
+            BookNote(id: sharedID, bookID: bookID, text: "first", tag: .general),
+            BookNote(id: sharedID, bookID: bookID, text: "second", tag: .general),
+        ]
+
+        let first = try LibraryDatabase(url: dbURL)
+        try first.saveAll(books: [book], state: LibraryState())
+        try first.close()
+
+        let second = try LibraryDatabase(url: dbURL)
+        defer { try? second.close() }
+        let reloaded = try #require(try second.loadBooks().first)
+        #expect(reloaded.notes.count == 1)
+        #expect(reloaded.notes.first?.id == sharedID)
+        #expect(reloaded.notes.first?.text == "second")
+    }
 }

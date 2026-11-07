@@ -539,6 +539,18 @@ passed; full census exit 0 at **557 tests / 548 passed / 9 skipped / 0 failed**
 (`rt-census-20261107-002415.xcresult`). No live reader run or owner visual pass
 exists; the EPUB renderer and PDF drawing are compiled and reviewed only.
 
+**Bug hunt receipt (2026-11-07).** Two real defects fixed: a duplicate note id
+aborted the library save and `payload_json` retained both copies (CR-1 finding
+6; both INSERT sites now `INSERT OR REPLACE` and `writeBook` normalises notes
+by id, pinned by `duplicateNoteIDDoesNotAbortSave`), and the library editor
+overwrote `pageNumber` on anchored notes (CR-1 finding 7; editorial page now
+applies only without an anchor). A red full-suite run was self-inflicted by two
+concurrent `xcodebuild` runs and is explained in
+`docs/audits/2026-11-07-bughunt-and-full-suite.md`. Clean full scheme exit 0,
+**Passed**: 561 tests / 552 passed / 9 skipped / 0 failed / 721 runs; analyzer
+exit 0; test isolation proves the real store byte-identical. No live reader run
+and no annotation UI automation exist.
+
 **Technical guardrails**
 
 - Store annotation anchors as logical locators (chapter/CFI or page + normalized

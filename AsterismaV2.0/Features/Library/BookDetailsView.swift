@@ -220,7 +220,12 @@ struct BookDetailsView: View {
             // anchor, selectedText, and color are never touched here.
             existing.text = trimmed
             existing.tag = noteTag
-            existing.pageNumber = page
+            // CR-1 finding 7: an anchored highlight's page lives in its
+            // anchor. Writing the editorial page field here would create a
+            // second, divergent location for the same note.
+            if existing.anchor == nil {
+                existing.pageNumber = page
+            }
             existing.modifiedAt = Date()
             dataStore.upsertNote(existing, inBook: bookID)
         } else {

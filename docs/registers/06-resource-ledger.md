@@ -137,6 +137,30 @@ Checks: build exit 0; focused run 29 tests in 3 suites passed; full census exit
 tests in 105 suites; `rt-census-20261107-002415.xcresult`); `git diff --check`
 exit 0. No live reader run, no owner visual pass, no live-library migration.
 
+## Bug hunt + full suite — 2026-11-07 (Buffy)
+
+No model was used: this was Buffy-run inspection and testing. Scope: annotation
+tranche, DataStore/SQLite persistence, unsafe constructs app-wide, analyzer,
+full unit + UI scheme, test isolation.
+
+Two defects fixed. (1) CR-1 finding 6: duplicate note ids aborted the library
+save, and `payload_json` kept both copies even after the row write deduped; both
+note INSERT sites now use `INSERT OR REPLACE` and `writeBook` normalises notes
+by id before encoding. New test `duplicateNoteIDDoesNotAbortSave`; it failed
+with only the table fix, which proved the payload half. (2) CR-1 finding 7: the
+library editor overwrote `pageNumber` on anchored notes; the field now applies
+only when `anchor == nil`.
+
+One red run is explained, not hidden: two concurrent `xcodebuild` runs caused a
+SIGTERM in `testFreshDemoRounds`; alone it passes in
+137.749 s and the clean full run is green.
+
+Checks: full scheme exit 0, **Passed** — 561 tests, 552 passed, 9 skipped, 0
+failed, 721 runs (`rt-census-20261107-005854.xcresult`); unit-only 557 / 548 /
+9 / 0; analyzer exit 0 with one AppIntents tooling warning; test isolation exit
+0 with the real store byte-identical; `git diff --check` exit 0. No live reader
+run and no annotation UI automation exist.
+
 ## Baseline build — 2026-11-07
 
 | Check | Result |
