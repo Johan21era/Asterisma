@@ -26,10 +26,109 @@
 //            later window resizes.
 //   Nothing in security-scoped access, polling cadence, the onPageChange /
 //   onLoadError contracts, document loading, or teardown logic was touched.
+// WP-1.3 (this pass):
+//   Selection — PDFViewSelectionChanged arrives as a Notification; the
+//            PDFViewDelegate protocol has no selection callback, so makeNSView
+//            registers the Coordinator for its own view and deinit removes it.
+//   Geometry — PDFSelectionGeometry is pure and testable: it normalizes a
+//            page-space rect into a NormalizedRect (Book2.swift anchor shape)
+//            clamped to 0…1, invariant to zoom, fit mode, and window size.
+//   Camera   — PDFReaderScreen holds the latest selection in @State and logs
+//            it only under #if DEBUG. WP-1.4 owns the UI; nothing persists yet.
+//   Untouched — appearance panel, layout, fit, RTL, page-turn, polling, zoom,
+//            security-scoped access, and teardown logic.
 
 import AppKit
 import PDFKit
 import SwiftUI
+
+// MARK: - PDFTextSelection (WP-1.3)
+
+/// A reader text selection reduced to everything a durable note anchor needs:
+/// the 0-based page index, the selected text (truncated), and the selection's
+/// bounding rectangle in normalized page coordinates. Zoom, fit mode, and
+/// window size never affect these values.
+///
+/// WP-1.4 owns the note editor and persistence; this value is the hand-off
+/// point at the Swift boundary.
+struct PDFTextSelection: Equatable {
+    /// 0-based PDF page index (`document.index(for: page)`) of the first page
+    /// the selection touches.
+    let pageIndex: Int
+    /// Selected text, truncated to `PDFSelectionGeometry.maxSelectedTextLength`
+    /// characters.
+    let text: String
+    /// Selection bounding rectangle normalized to 0…1 against
+    /// `page.bounds(for: .cropBox)`.
+    let rect: NormalizedRect
+}
+
+// MARK: - PDFSelectionGeometry (WP-1.3)
+
+/// Pure, side-effect-free geometry for PDF selection anchoring. Tests target
+/// these functions with `CGRect` fixtures; nothing here touches a live
+/// `PDFView`.
+enum PDFSelectionGeometry {
+    /// WP-1.3: the quote text is truncated to this many characters before it
+    /// leaves the selection bridge, so a runaway selection can never blow up
+    /// note payloads, persistence, or the UI. Applied with `prefix` on
+    /// String, which counts Characters (grapheme clusters), so no partial
+    /// emoji/surrogate pair is ever emitted.
+    static let maxSelectedTextLength = 4_000
+
+    /// Tolerance (in normalized units) used when checking containment against
+    /// page bounds, absorbing PDFKit floating-point drift at page edges.
+    private static let containmentTolerance = 0.001
+
+    /// Maps a page-space rect plus the page's bounds to a `NormalizedRect`.
+    ///
+    /// The result is relative to `pageBounds` (use `page.bounds(for: .cropBox)`),
+    /// so a non-zero cropBox origin is subtracted rather than baked into the
+    /// output. Every component is clamped to 0…1: a rect extending past the
+    /// page is cut at the page edge instead of producing out-of-range values,
+    /// and degenerate or non-finite page bounds produce a zero rect.
+    static func normalized(rect: CGRect, in pageBounds: CGRect) -> NormalizedRect {
+        guard pageBounds.width > 0, pageBounds.height > 0 else {
+            return NormalizedRect(x: 0, y: 0, width: 0, height: 0)
+        }
+
+        func clamp01(_ value: Double) -> Double {
+            guard value.isFinite else { return 0 }
+            return min(1.0, max(0.0, value))
+        }
+
+        let x = clamp01(Double((rect.minX - pageBounds.minX) / pageBounds.width))
+        let y = clamp01(Double((rect.minY - pageBounds.minY) / pageBounds.height))
+        let maxX = clamp01(Double((rect.maxX - pageBounds.minX) / pageBounds.width))
+        let maxY = clamp01(Double((rect.maxY - pageBounds.minY) / pageBounds.height))
+
+        return NormalizedRect(
+            x: x,
+            y: y,
+            width: maxX - x,
+            height: maxY - y
+        )
+    }
+
+    /// Reports whether a page-space rect is usable as a selection anchor:
+    /// finite and non-empty (positive width and height), and contained by the
+    /// page bounds within a small tolerance. A rect extending past the page
+    /// is unusable; the live path drops those rather than anchoring a note to
+    /// geometry outside the page.
+    static func isUsable(rect: CGRect, in pageBounds: CGRect) -> Bool {
+        guard rect.width.isFinite, rect.height.isFinite, !rect.isEmpty, rect.width > 0, rect.height > 0 else { return false }
+        guard pageBounds.width > 0, pageBounds.height > 0 else { return false }
+
+        let tolerance = containmentTolerance
+        func contains(_ r: CGRect, _ bounds: CGRect) -> Bool {
+            r.minX >= bounds.minX - tolerance
+                && r.minY >= bounds.minY - tolerance
+                && r.maxX <= bounds.maxX + tolerance
+                && r.maxY <= bounds.maxY + tolerance
+        }
+        return contains(rect, pageBounds)
+    }
+}
 
 // MARK: - ReaderPDFView
 
@@ -89,13 +188,17 @@ struct PDFReaderView: NSViewRepresentable {
     /// LIVE-TEST LT-3b: fired exactly once per successful document open so the
     /// screen can start its reading session on REALITY instead of optimism.
     let onLoadSuccess: (() -> Void)?
+    /// WP-1.3: fired when the user changes the text selection to a usable,
+    /// non-whitespace selection. nil quiets the hook (unused call sites).
+    let onSelection: ((PDFTextSelection) -> Void)?
 
     init(book: Book,
          currentPage: Int,
          settings: PDFReaderSettings = .defaults,
          onPageChange: @escaping (Int) -> Void,
          onLoadError: ((String) -> Void)? = nil,
-         onLoadSuccess: (() -> Void)? = nil)
+         onLoadSuccess: (() -> Void)? = nil,
+         onSelection: ((PDFTextSelection) -> Void)? = nil)
     {
         self.book = book
         self.currentPage = currentPage
@@ -103,6 +206,7 @@ struct PDFReaderView: NSViewRepresentable {
         self.onPageChange = onPageChange
         self.onLoadError = onLoadError
         self.onLoadSuccess = onLoadSuccess
+        self.onSelection = onSelection
     }
 
     func makeNSView(context: Context) -> ReaderPDFView {
@@ -114,6 +218,14 @@ struct PDFReaderView: NSViewRepresentable {
         view.displayMode = settings.layout.displayMode
         view.displayDirection = .vertical
         view.delegate = context.coordinator
+        // WP-1.3: PDFViewDelegate has no selection callback. PDFKit delivers
+        // selection changes only as this notification, observed on this view
+        // so the Coordinator can never receive another view's selections.
+        NotificationCenter.default.addObserver(
+            context.coordinator,
+            selector: #selector(Coordinator.selectionDidChange(_:)),
+            name: .PDFViewSelectionChanged,
+            object: view)
 
         // READER POLISH: visual presentation.
         // Stock PDFView has no page insets and no contrast against its own
@@ -264,13 +376,16 @@ struct PDFReaderView: NSViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(onPageChange: onPageChange)
+        Coordinator(onPageChange: onPageChange,
+                    onSelection: onSelection)
     }
 
     // MARK: - Coordinator
 
     final class Coordinator: NSObject, PDFViewDelegate {
         let onPageChange: (Int) -> Void
+        /// WP-1.3: published whenever the selection becomes a usable anchor.
+        let onSelection: ((PDFTextSelection) -> Void)?
 
         // B1: polling state
         private var pollingTimer: Timer?
@@ -285,12 +400,15 @@ struct PDFReaderView: NSViewRepresentable {
         private var lastKnownBoundsSize: CGSize?
         private var lastKnownScaleFactor: CGFloat?
 
-        init(onPageChange: @escaping (Int) -> Void) {
+        init(onPageChange: @escaping (Int) -> Void,
+             onSelection: ((PDFTextSelection) -> Void)? = nil) {
             self.onPageChange = onPageChange
+            self.onSelection = onSelection
         }
 
         deinit {
             // Defensive cleanup — dismantleNSView should have fired first.
+            NotificationCenter.default.removeObserver(self)
             pollingTimer?.invalidate()
             securityScopedURL?.stopAccessingSecurityScopedResource()
         }
@@ -373,6 +491,38 @@ struct PDFReaderView: NSViewRepresentable {
             userHasCustomZoom = true
             view.autoScales = false
         }
+
+        // MARK: PDFViewDelegate — selection (WP-1.3)
+
+        /// WP-1.3: `PDFViewDelegate` declares no selection callback, so this is
+        /// reached through the `.PDFViewSelectionChanged` observer that
+        /// `makeNSView` registers for this Coordinator's own view. nil and
+        /// whitespace-only selections are ignored; a usable selection is
+        /// reduced to a PDFTextSelection and published.
+        @objc func selectionDidChange(_ notification: Notification) {
+            guard let view = notification.object as? PDFView else { return }
+
+            guard let selection = view.currentSelection,
+                  let doc = view.document,
+                  let page = selection.pages.first
+            else { return }
+
+            // Empty / whitespace-only selections are not anchors.
+            let rawText = selection.string ?? ""
+            guard !rawText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+
+            let pageBounds = page.bounds(for: .cropBox)
+            let selectionRect = selection.bounds(for: page)
+            guard PDFSelectionGeometry.isUsable(rect: selectionRect, in: pageBounds) else { return }
+
+            let truncated = String(rawText.prefix(PDFSelectionGeometry.maxSelectedTextLength))
+            let value = PDFTextSelection(
+                pageIndex: doc.index(for: page),
+                text: truncated,
+                rect: PDFSelectionGeometry.normalized(rect: selectionRect, in: pageBounds)
+            )
+            onSelection?(value)
+        }
     }
 }
 
@@ -390,6 +540,11 @@ struct PDFReaderScreen: View {
 
     /// TASK 19: Populated when PDFReaderView signals a load failure.
     @State private var errorMessage: String?
+
+    /// WP-1.3: the latest usable text selection from the PDF view. The packet
+    /// ends here — no persistence, no note editor; WP-1.4 owns the UI.
+    /// Cleared whenever the page changes so a stale anchor is never shown.
+    @State private var latestSelection: PDFTextSelection?
 
     @AppStorage("reader.pdf.layout") private var pdfLayout: String = PDFPageLayout.continuous.rawValue
     @AppStorage("reader.pdf.fit") private var pdfFit: String = PDFFitMode.page.rawValue
@@ -436,6 +591,10 @@ struct PDFReaderScreen: View {
                     currentPage: coordinator.currentPage, // read-only; coordinator is the writer
                     settings: pdfSettings,
                     onPageChange: { newPage in
+                        // WP-1.3: a changed page invalidates the selection —
+                        // clear before the coordinator turns, so a stale
+                        // normalized rect can never outlive its page.
+                        latestSelection = nil
                         // onPageChange callback → coordinator is the only entity that
                         // writes currentPage, which in turn updates DataStore.
                         coordinator.turnToPage(newPage)
@@ -448,6 +607,14 @@ struct PDFReaderScreen: View {
                     // document EXISTS — never while an error screen is showing.
                     onLoadSuccess: {
                         coordinator.startReading(bookID: book.id, page: coordinator.currentPage)
+                    },
+                    // WP-1.3: hold the latest selection; DEBUG logging only.
+                    onSelection: { selection in
+                        latestSelection = selection
+                        #if DEBUG
+                        let r = selection.rect
+                        print("📝 [PDFReaderScreen] selection captured — page \(selection.pageIndex + 1), \(selection.text.count) chars (cap \(PDFSelectionGeometry.maxSelectedTextLength)), rect (\(r.x), \(r.y), \(r.width), \(r.height))")
+                        #endif
                     }
                 )
                 .overlay {
