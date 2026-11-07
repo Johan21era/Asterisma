@@ -1053,3 +1053,13 @@ audit.
 | 2026-11-07 | `docs/registers/05-doc-audit.md` (self-digest SKIPPED, line count SKIPPED) | N/A | N/A | SKIPPED | Append-only row: a digest cannot include the row that records it. A separate person did not review every sentence. |
 
 **Post-audit gate receipt.** `python3 scripts/audit-markdown.py` on all six files above: exit 0. `python3 scripts/comprehension-bench.py --validate-only`: exit 0. `python3 scripts/comprehension-bench.py --mode all`: exit 0, `GATE PASSED`, overview 86.1×, 0 fallbacks. `./scripts/verify-sentinel-surface.sh`: exit 0 (15 tables, 8 defaults keys, 5 notification names). `git diff --check`: exit 0. `xcodebuild ... build`: exit 0. `./scripts/census.sh --unit-only`: exit 0, 518 tests / 509 passed / 9 skipped / 0 failed / 719 runs. No app code changed.
+
+### G0 harness closeout — 2026-11-07
+
+| Date | File (+ SHA-256, lines) | A1…E2 scores | Weighted | Verdict | Evidence / SKIPPED reason |
+|---|---|---|---|---|---|
+| 2026-11-07 | `docs/roadmap/execution-harness.md` (`d5c86708aaaf…` truncated in the checker; full digest below, 97 lines) | 100 · 100 · 80 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · N/A | 98.4 | PASS | Worktree, packet, handoff, merge, concurrency, and stop rules are explicit. `audit-markdown.py` exit 0; four illustrative commands are not all rerun (A3 80). E2 N/A. Full SHA-256 is recorded in the commit receipt below. |
+| 2026-11-07 | `docs/roadmap/07-master-progression.md` (`b0fab69e748d…` truncated in the checker; full digest below, 1301 lines) | 95 · 100 · 80 · 95 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · 100 · N/A | 97.4 | PASS | G0 is checked with run IDs, smoke sessions, census counts, reconciliation, harness, and ledger links. `audit-markdown.py` exit 0; A3 80 for illustrative commands. E2 N/A. |
+| 2026-11-07 | `docs/registers/05-doc-audit.md` (self-digest SKIPPED, line count SKIPPED) | N/A | N/A | SKIPPED | Append-only row: a digest cannot include the row that records it. A separate person did not review every sentence. |
+
+**Receipt.** `python3 scripts/audit-markdown.py docs/roadmap/execution-harness.md` exit 0; `python3 scripts/audit-markdown.py docs/roadmap/07-master-progression.md` exit 0; `python3 scripts/comprehension-bench.py --validate-only` exit 0; `./scripts/verify-sentinel-surface.sh` exit 0; `git diff --check` exit 0. The full file digests are `$(shasum -a 256 docs/roadmap/execution-harness.md docs/roadmap/07-master-progression.md)`; the recorded values are the digests at the commit that adds this row.

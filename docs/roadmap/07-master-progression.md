@@ -439,14 +439,25 @@ is larger than any single bug. P0 is the cheapest possible insurance.
 
 **Validation gate G0**
 
-- [ ] Docs CI run `42333251100` is green; rename run `42332377245` is green.
-- [ ] `./scripts/verify-sentinel-surface.sh` exits 0.
-- [ ] `python3 scripts/comprehension-bench.py --validate-only` exits 0.
-- [ ] `./scripts/census.sh --unit-only` exits 0 with the baseline count.
-- [ ] GLM smoke session recorded with a session ID and a successful response.
-- [ ] Crouton preflight recorded, including any 402/quota refusal and fallback.
-- [ ] Every stale open item has a code path or an explicit "still open" receipt.
-- [ ] The worktree protocol and resource ledger exist in the repo.
+- [x] Docs CI run `42333251100` is green; rename run `42332377245` is green.
+- [x] `./scripts/verify-sentinel-surface.sh` exits 0.
+- [x] `python3 scripts/comprehension-bench.py --validate-only` exits 0.
+- [x] `./scripts/census.sh --unit-only` exits 0 with the baseline count.
+- [x] GLM smoke session recorded with a session ID and a successful response.
+- [x] Crouton preflight recorded, including the earlier 402 and the successful
+  minimal smoke.
+- [x] Every stale open item has a code path or an explicit "still open" receipt.
+- [x] The worktree protocol and resource ledger exist in the repo.
+
+**G0 receipt (2026-11-07):** Docs run `42333251100` success; rename run
+`42332377245` success; surface exit 0; index validation exit 0; census exit 0
+(**518 tests / 509 passed / 9 skipped / 0 failed / 719 runs**); GLM smoke
+`ses_e4bea8366ffegZHg4pXCbazItP`; Crouton smoke
+`ses_e4bea78ddffetH7olv1j7NqkID`; stale-item dispositions in
+`docs/audits/2026-11-07-open-work-reconciliation.md`; worktree protocol in
+`docs/roadmap/execution-harness.md`; resource ledger in
+`docs/registers/06-resource-ledger.md`. **G0 passed.** P1.1 may start; no feature
+code has been merged yet.
 
 **Exit criteria.** G0 passes; no feature code has been merged yet; the first
 phase packet is ready for P1.

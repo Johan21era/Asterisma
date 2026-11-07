@@ -40,3 +40,6 @@ graphify-out/graph-3d-full.html
 /tools/cde/corpus-*/
 /tools/cde/archive_fresh_evidence.log
 /.cloud-attachments/
+
+# Local agent handoffs; never commit these
+.agent-handoff/
