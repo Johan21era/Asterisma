@@ -45,6 +45,8 @@ same oversized request; fit the ceiling or use `opencode/crouton-alpha-free`.
 | GLM | `ses_e4bcf9dc0ffeFPW3wHs7GX9LMV` | WP-1.1 annotation schema | ended without a handoff file | worktree `shiny-nebula` at `bd40080`; diff reviewed directly by Buffy, merged in `6e35429` |
 | GLM | `ses_e4bc3d173ffeCDOk8y56smWROo` | WP-1.2 EPUB selection | completed | worktree `calm-lagoon` at `b81fc99`; merged in `3a82d50` |
 | GLM | `ses_e4bc3d036ffewaz2oeFsMJzyFO` | WP-1.3 PDF selection | completed | worktree `kind-orchid` at `b81fc99`; one dead-callback defect corrected by Buffy; merged in `a010a72` |
+| Crouton | `ses_e4bad8f47ffemS5k67Um9XkLyR` | CR-1 annotation review | completed | read-only; three S1 findings confirmed and fixed in `98aaaf3`; dispositions in `docs/audits/2026-11-07-cr1-annotation-review.md` |
+| Crouton | `ses_e4bad8ec1ffdlUh6HdHcTxrXHl` | CR-2 annotation UI design | completed | design only; brief folded into `docs/roadmap/packets/WP-1.4.md` |
 
 The message count is taken from `opencode session export <session-id>`, not from
 memory. The GLM window uses the 80/100/120/160-message checkpoints in the master
@@ -99,6 +101,24 @@ test list was insufficient.
 `-only-testing:AsterismaV2.0Tests/PDFSelectionTests`; no such type exists, so
 only the nine appearance tests ran and `TEST SUCCEEDED` was reported. Buffy
 reran with `PDFSelectionGeometryTests` and got the five PDF tests.
+
+## CR-1 / CR-2 — Crouton review lane, 2026-11-07
+
+| Session | Worktree | Role | Output |
+|---|---|---|---|
+| `ses_e4bad8f47ffemS5k67Um9XkLyR` | `cr1-review` | read-only review of `6e35429`, `3a82d50`, `a010a72` | three S1 findings, all confirmed by Buffy and fixed in `98aaaf3` |
+| `ses_e4bad8ec1ffdlUh6HdHcTxrXHl` | `cr2-design` | WP-1.4 design brief | file plan, restore semantics, test list; adopted with two parts dropped (selection-menu extension, 2,000-character limit) |
+
+CR-1's confirmed findings: chapter-absolute EPUB offsets were clamped to the
+quote length; a multi-page PDF quote was paired with a first-page rect; and an
+unknown `Quote` tag would have made the library unreadable in an older build.
+Buffy verified each against the code before changing anything and fixed all
+three. Two findings are deferred (duplicate-id save abort, edge-selection
+tolerance) and two are assigned to WP-1.4 (EPUB deselect clearing, the single
+`upsertNote` path writing `pageNumber` and `anchor` together).
+
+Checks after the fix: build exit 0; five focused suites **32 tests passed**;
+census exit 0 with **537 tests / 528 passed / 9 skipped / 0 failed / 719 runs**.
 
 ## Baseline build — 2026-11-07
 

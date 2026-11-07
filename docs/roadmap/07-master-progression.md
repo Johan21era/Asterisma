@@ -517,6 +517,15 @@ view, added the teardown, and added a notification-path test. Seven EPUB
 selection tests and six PDF geometry/anchor tests pass; the full census is
 **536 tests / 527 passed / 9 skipped / 0 failed**.
 
+**Crouton CR-1/CR-2 receipts (2026-11-07).** Crouton ran alongside the GLM
+builders: CR-1 reviewed the merged tranche as code, CR-2 designed WP-1.4. CR-1's
+three S1 findings were confirmed by Buffy and fixed in `98aaaf3` — chapter-
+absolute EPUB offsets clamped to the quote length, a multi-page PDF quote paired
+with a first-page rect, and an unknown `Quote` tag that could make the library
+unreadable after a downgrade. Four further findings are deferred with reasons in
+`docs/audits/2026-11-07-cr1-annotation-review.md`; two are assigned to WP-1.4.
+The census after the fixes is **537 tests / 528 passed / 9 skipped / 0 failed**.
+
 **Technical guardrails**
 
 - Store annotation anchors as logical locators (chapter/CFI or page + normalized

@@ -677,3 +677,38 @@ handler. No live-library migration was run.
 **Next.** WP-1.4 annotation UI: note editor, inline highlight, sidebar list,
 filters, and quote copy, wiring both `onSelection` hooks to the frozen
 `BookNoteAnchor` schema.
+
+## Session close — 2026-11-07 (Crouton review lane)
+
+**Delivered.** Crouton ran two read-only sessions alongside the GLM builders: an
+adversarial review of the merged annotation tranche (CR-1) and the WP-1.4 UI
+design (CR-2). Three S1 findings from CR-1 were confirmed by Buffy and fixed in
+`98aaaf3`:
+
+1. EPUB offsets were clamped to the quote's own length instead of the chapter's,
+   so any selection starting past the quote stored a collapsed locator. The
+   script now posts the chapter length and offsets clamp to it.
+2. A multi-page PDF selection paired all-pages text with a first-page rect. The
+   quote now comes from the first page's own selection.
+3. One note tagged `Quote` would have made the library unreadable in an older
+   build, because unknown tags failed the whole book decode. `NoteTag` and
+   `AnnotationColor` now degrade unknown values instead.
+
+Also fixed: a PDF deselection now clears the stored anchor instead of leaving a
+stale one, and the selection observer comes off in `dismantleNSView` rather than
+only in `deinit`.
+
+**Verified.** Debug build exit 0; five focused suites **32 tests**; census exit 0
+with **537 tests / 528 passed / 9 skipped / 0 failed / 719 runs**. Dispositions,
+including four deferred findings with reasons, are in
+`docs/audits/2026-11-07-cr1-annotation-review.md`.
+
+**Limits.** CR-1's raw report is model output and is not committed; it is
+reproducible with `opencode session export ses_e4bad8f47ffemS5k67Um9XkLyR`. EPUB
+deselect clearing, the `pageNumber`/`anchor` divergence, a duplicate-id save
+abort, and an edge-selection tolerance case remain open; the first two are
+assigned to WP-1.4. The EPUB JavaScript is still reviewed, not tested. No owner
+visual pass exists.
+
+**Next.** WP-1.4 (packet written, not started): factory, one `upsertNote` path,
+extracted editor, idempotent restore, and the two new test suites.
