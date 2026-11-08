@@ -21,6 +21,7 @@
 //  overlay here would render two close controls on one sheet. The LT-2 invariant
 //  "a dead-end sheet is structurally impossible" holds for all sheets.
 
+import Combine
 import SwiftUI
 import UniformTypeIdentifiers
 import WebKit
@@ -68,7 +69,14 @@ struct ContentView: View {
     /// owned here via @StateObject exactly as EnvironmentBackgroundView2's header
     /// prescribes ("ContentView owns the single instance"; a default argument or
     /// ObservedObject-owned engine would multiply 45s recompute loops).
-    @StateObject private var environmentEngine = EnvironmentEngine()
+    @StateObject private var environmentEngine = EnvironmentEngine(
+        liveWeatherEnabled: true,
+        coordinateProvider: { WeatherKitService.shared.cachedCoordinate }
+    )
+
+    /// The shared weather service owns Core Location. The engine reads its
+    /// coordinate; this view only forwards location-driven reevaluation.
+    @ObservedObject private var weatherService = WeatherKitService.shared
 
     /// Used by the Sentinel launch card to open the Health Center window.
     @Environment(\.openWindow) private var openWindow
@@ -824,18 +832,35 @@ struct ContentView: View {
                 mainCanvas
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .animation(.easeInOut(duration: 0.2), value: readerBookID == nil)
+            .animation(AsterismaMotion.standard, value: readerBookID == nil)
         }
         .background(WindowChromeConfigurator())
         .background(WindowToolbarVisibility(visible: false))
         .background(KeyNavigationConfigurator(isEnabled: readerBookID == nil, onCommand: handleKeyCommand))
         .toolbarBackgroundVisibility(.hidden, for: .windowToolbar)
         .environmentObject(environmentEngine) // Phase 2: downstream consumers read the same instance
+        .onReceive(weatherService.$ambientCoordinate) { _ in
+            // Geographic recalibration: the engine recomputes the solar day,
+            // season, and weather provenance against the new coordinate.
+            environmentEngine.refreshNow()
+        }
+        .onReceive(
+            NotificationCenter.default.publisher(for: EnvironmentOverrideStore.didChangeNotification)
+                .debounce(for: .milliseconds(80), scheduler: RunLoop.main)
+        ) { _ in
+            // A Studio control is an explicit inspection action. Refresh the
+            // live window immediately and settle over the Studio's short fade
+            // instead of waiting for the next 10 s ambient tick.
+            environmentEngine.refreshNow(
+                transitionDuration: EnvironmentPresentation.studioOverrideTransitionDuration
+            )
+        }
         // P5 Feature 5: first-run wizard when library is empty and never dismissed.
         .onChange(of: dataStore.books.isEmpty) { _, empty in
             showOnboarding = empty && !onboardingDismissed
         }
         .onAppear {
+            weatherService.startAmbientLocationUpdates()
             showOnboarding = OnboardingView.shouldShow(
                 books: dataStore.books, dismissed: onboardingDismissed
             )
@@ -848,6 +873,9 @@ struct ContentView: View {
                 sentinelReport = sentinelHealth.launchSummary()
             }
 
+        }
+        .onDisappear {
+            weatherService.stopAmbientLocationUpdates()
         }
         .onChange(of: selectedBookID) { _, _ in
             // A different selection supersedes any hover estimate.

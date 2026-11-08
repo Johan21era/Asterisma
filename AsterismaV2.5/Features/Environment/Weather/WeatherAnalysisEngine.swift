@@ -53,7 +53,7 @@ public enum WeatherConditionCategory: String, Codable, CaseIterable, Hashable {
     case unknown
 }
 
-public enum SeasonalPeriod: String, Codable, CaseIterable, Hashable {
+public enum SeasonalPeriod: String, Codable, CaseIterable, Hashable, Sendable {
     case spring
     case summer
     case autumn

@@ -78,6 +78,20 @@ struct WeatherEnvironmentModifier: Sendable, Equatable {
 
     static let neutral = WeatherEnvironmentModifier()
 
+    /// Maps a captured snapshot onto the modifier without performing any I/O.
+    /// Used by the environment's live ambient fetch and by tests.
+    init(snapshot: WeatherSnapshot) {
+        self.init(
+            cloudCoverFraction: snapshot.cloudCover,
+            condition: snapshot.condition,
+            precipitationMillimeters: snapshot.precipitationMillimeters,
+            snowfallMillimeters: snapshot.snowfallMillimeters,
+            visibilityKilometers: snapshot.visibilityKilometers,
+            windSpeedKPH: snapshot.windSpeedKPH,
+            stormActivityIndex: snapshot.stormActivityIndex,
+            capturedAt: snapshot.timestamp)
+    }
+
     /// Caps every modifier at a 15-20% maximum influence over the
     /// time-of-day-driven values, per Part 8.
     private static let maximumInfluence = 0.18

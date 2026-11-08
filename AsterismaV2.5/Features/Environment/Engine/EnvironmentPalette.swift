@@ -31,7 +31,7 @@ import Foundation
 
 /// A single named palette snapshot — one "keyframe" the Environment Engine
 /// interpolates from or toward.
-struct EnvironmentPaletteSnapshot: Sendable, Equatable {
+nonisolated struct EnvironmentPaletteSnapshot: Sendable, Equatable {
     var gradientStops: [EnvironmentGradientStop]
     var ambientLightColor: EnvironmentColor
     var shadowIntensity: Double
@@ -69,7 +69,7 @@ struct EnvironmentPaletteSnapshot: Sendable, Equatable {
 
 // MARK: - EnvironmentPalette
 
-enum EnvironmentPalette {
+nonisolated enum EnvironmentPalette {
 
     // MARK: Named snapshots (Part 5.4)
 

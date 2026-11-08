@@ -45,6 +45,22 @@ public final class WeatherKitService: ObservableObject {
     private let locationProvider: LocationProvider
     private let provider: WeatherProviding
 
+    /// The active provider is explicitly named so the scaffold's honesty is
+    /// visible at the service boundary. Open-Meteo is the only configured
+    /// source today; WeatherKit is a throwing placeholder until the app is
+    /// entitled and the provider body is implemented.
+    private let providerKind: WeatherProviderKind
+
+    /// Latest continuously-updated coordinate. The environment engine reads
+    /// this to recalibrate the solar day without issuing its own location
+    /// request; the app shell observes it and calls `refreshNow()`.
+    @Published private(set) var ambientCoordinate: SolarCoordinate?
+
+    /// Ambient reads are shared by the app's environment engine and (in DEBUG)
+    /// the Environment Studio. A five-minute cache keeps those two consumers
+    /// from issuing duplicate network calls for the same weather.
+    private var ambientCache: (snapshot: WeatherSnapshot, at: Date)?
+
     #if DEBUG
     private(set) var consoleLastAttemptAt: Date?
     private(set) var consoleLastSuccessAt: Date?
@@ -54,7 +70,16 @@ public final class WeatherKitService: ObservableObject {
     private init() {
         store = WeatherSnapshotStore()
         locationProvider = LocationProvider()
-        provider = OpenMeteoProvider()
+        providerKind = .openMeteo
+        provider = WeatherProviderFactory.make(kind: providerKind)
+        locationProvider.onLocationChange = { [weak self] location in
+            self?.ambientCoordinate = SolarCoordinate(
+                latitude: location.coordinate.latitude,
+                longitude: location.coordinate.longitude)
+            // The ambient cache is location-sensitive. A moved user must not
+            // receive the previous place's cached weather for up to 5 minutes.
+            self?.ambientCache = nil
+        }
 
         #if DEBUG
         DeveloperConsoleRegistry.shared.register(self)
@@ -66,6 +91,7 @@ public final class WeatherKitService: ObservableObject {
     func resetStore() {
         store.close()
         store = WeatherSnapshotStore()
+        ambientCache = nil
     }
 
     /// Honest availability surface for the weather panel.
@@ -98,6 +124,61 @@ public final class WeatherKitService: ObservableObject {
 
         return snapshot
     }
+
+    // MARK: - Ambient Environment Read
+
+    /// The environment's read-only current-conditions path. It never writes a
+    /// session row and never prompts for location: it uses a manual/cached
+    /// coordinate, or an already-authorized one-time fetch. If no location is
+    /// available it throws, and the caller falls back to persisted weather.
+    public func currentAmbientSnapshot() async throws -> WeatherSnapshot {
+        if let ambientCache, Date().timeIntervalSince(ambientCache.at) < 5 * 60 {
+            return ambientCache.snapshot
+        }
+
+        let location: CLLocation
+        if let manual = locationProvider.manualLocation {
+            location = manual
+        } else if let cached = locationProvider.cachedLocation {
+            location = cached
+        } else if locationProvider.authorizationStatus == .authorized {
+            location = try await locationProvider.currentLocation()
+        } else {
+            throw WeatherKitServiceError.locationUnavailable
+        }
+
+        let snapshot = try await provider.snapshot(at: Date(), location: location)
+        ambientCache = (snapshot, Date())
+        return snapshot
+    }
+
+    /// Cached/manual coordinate for the solar-day model. Internal because
+    /// SolarCoordinate is an implementation detail of the environment engine.
+    var cachedCoordinate: SolarCoordinate? {
+        if let manual = locationProvider.manualLocation {
+            return SolarCoordinate(
+                latitude: manual.coordinate.latitude,
+                longitude: manual.coordinate.longitude)
+        }
+        if let ambientCoordinate { return ambientCoordinate }
+        guard let location = locationProvider.cachedLocation else { return nil }
+        return SolarCoordinate(
+            latitude: location.coordinate.latitude,
+            longitude: location.coordinate.longitude)
+    }
+
+    /// Starts automatic geographic recalibration. The first call may request
+    /// when-in-use permission; once authorized, Core Location supplies
+    /// updates and the app shell reevaluates the environment.
+    public func startAmbientLocationUpdates() {
+        locationProvider.startAmbientUpdates()
+    }
+
+    public func stopAmbientLocationUpdates() {
+        locationProvider.stopAmbientUpdates()
+    }
+
+    var activeProviderKind: WeatherProviderKind { providerKind }
 
     // MARK: - Historical Backfill
 
@@ -629,6 +710,12 @@ final class WeatherSnapshotStore {
 final class LocationProvider: NSObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
 
+    /// Called on the main actor after each accepted update. WeatherKitService
+    /// publishes the coordinate; the environment engine consumes it.
+    var onLocationChange: ((CLLocation) -> Void)?
+
+    private var ambientUpdatesRequested = false
+
     /// AUDIT F-05 (Phase 1): was a single optional continuation — an overlapping
     /// request overwrote it and the first caller's task hung forever. All pending
     /// requests are now queued and resumed exactly once together.
@@ -692,6 +779,27 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
         }
     }
 
+    /// Continuous, low-accuracy updates for the background environment. This
+    /// is separate from the one-time fetch used to attach weather to a session.
+    func startAmbientUpdates() {
+        ambientUpdatesRequested = true
+        manager.desiredAccuracy = kCLLocationAccuracyKilometer
+
+        switch manager.authorizationStatus {
+        case .authorized:
+            manager.startUpdatingLocation()
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        default:
+            break
+        }
+    }
+
+    func stopAmbientUpdates() {
+        ambientUpdatesRequested = false
+        manager.stopUpdatingLocation()
+    }
+
     private func fetchOneTimeLocation() async throws -> CLLocation {
         // HOTFIX (stall report): if CLLocationManager never delivers a callback
         // (radio off, driver hiccup), the queued continuation previously hung
@@ -742,7 +850,19 @@ final class LocationProvider: NSObject, CLLocationManagerDelegate {
         Task { @MainActor in
             if let location = locations.last {
                 self.cachedLocation = location
+                self.onLocationChange?(location)
                 self.resumePending(returning: location)
+            }
+        }
+    }
+
+    nonisolated func locationManagerDidChangeAuthorization(
+        _ manager: CLLocationManager
+    ) {
+        Task { @MainActor in
+            guard self.ambientUpdatesRequested else { return }
+            if manager.authorizationStatus == .authorized {
+                manager.startUpdatingLocation()
             }
         }
     }

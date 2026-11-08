@@ -5,8 +5,8 @@
 //  Regenerate: ./scripts/sentinel-surface.py --write
 //  Freshness:  ./scripts/verify-sentinel-surface.sh
 //
-//  Source-derived surface inventory: 28 surfaces
-//  (15 tables, 8 defaults keys, 5 notification names).
+//  Source-derived surface inventory: 29 surfaces
+//  (15 tables, 8 defaults keys, 6 notification names).
 //  SQL-016 and SELF-011 read this catalog; nothing here is hand-maintained.
 
 import Foundation
@@ -46,7 +46,7 @@ nonisolated enum SentinelSurfaceRegistry {
     /// Generated from source at commit checkout. Never mutated at runtime.
     static let current = SentinelSurfaceCatalog(
         schemaVersion: 1,
-        digest: "6c3230edd3a9d253",
+        digest: "f1445c8927f17a15",
         sqlTables: [
             "achievements",
             "application_sessions",
@@ -77,6 +77,7 @@ nonisolated enum SentinelSurfaceRegistry {
         notificationNames: [
             "com.apple.screenIsLocked",
             "com.apple.screenIsUnlocked",
+            "environment.studio.overridesDidChange",
             "library.incident.didChange",
             "library.recovery.didChange",
             "sentinel.runtime.didUpdate",

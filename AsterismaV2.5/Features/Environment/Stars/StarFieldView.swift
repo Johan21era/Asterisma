@@ -11,8 +11,8 @@
 //
 //  Environment Engine — Phase C (Part 6.3 of the build spec)
 //
-//  Renders a StarField using Canvas, animated by TimelineView. Only
-//  subscribes to per-frame updates while starVisibility > 0 — during full
+//  Renders a StarField using Canvas, driven by the environment's shared 60 Hz
+//  elapsed time. Only draws while starVisibility > 0 — during full
 //  daylight this view does effectively no work, per Part 6.3 / Part 13.
 //  When reducedMotion is set, twinkle is skipped entirely and every star is
 //  drawn once at its base brightness (Part 11).
@@ -24,21 +24,18 @@ struct StarFieldView: View {
     let starField: StarField
     let starVisibility: Double
     let reducedMotion: Bool
+    let elapsed: Double
 
     var body: some View {
         Group {
             if starVisibility > 0.001 {
-                if reducedMotion {
-                    Canvas { context, size in
-                        draw(starField.stars, at: 0, animated: false, into: &context, size: size)
-                    }
-                } else {
-                    TimelineView(.animation) { timeline in
-                        Canvas { context, size in
-                            let elapsed = timeline.date.timeIntervalSinceReferenceDate
-                            draw(starField.stars, at: elapsed, animated: true, into: &context, size: size)
-                        }
-                    }
+                Canvas { context, size in
+                    draw(
+                        starField.stars,
+                        at: reducedMotion ? 0 : elapsed,
+                        animated: !reducedMotion,
+                        into: &context,
+                        size: size)
                 }
             }
         }

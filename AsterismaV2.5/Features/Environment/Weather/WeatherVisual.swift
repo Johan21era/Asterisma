@@ -190,6 +190,17 @@ nonisolated struct WeatherVisual: Equatable, Sendable {
             kind: kind, intensity: intensity, wind: kind == .wind ? 0.8 : 0.35,
             cloud: kind == .clear ? 0 : 0.6, isLive: false)
     }
+
+    /// Applies a temporal envelope to the drawn strength. Kind, wind, cloud,
+    /// and provenance are untouched; only the particle intensity breathes.
+    func applyingIntensityMultiplier(_ multiplier: Double) -> WeatherVisual {
+        WeatherVisual(
+            kind: kind,
+            intensity: intensity * multiplier,
+            wind: wind,
+            cloud: cloud,
+            isLive: isLive)
+    }
 }
 
 // MARK: - EnvironmentOverrideStore
@@ -203,7 +214,12 @@ nonisolated struct EnvironmentOverrideStore {
         static let minute = "environment.studio.minute"
         static let weatherKind = "environment.studio.weatherKind"
         static let weatherIntensity = "environment.studio.weatherIntensity"
+        static let season = "environment.studio.season"
     }
+
+    /// Posted after every persisted override mutation. The app shell listens
+    /// for this so a Studio change does not wait for the next 10 s ambient tick.
+    static let didChangeNotification = Notification.Name("environment.studio.overridesDidChange")
 
     let defaults: UserDefaults
 
@@ -232,29 +248,60 @@ nonisolated struct EnvironmentOverrideStore {
         return .forced(kind, intensity: intensity)
     }
 
-    var hasOverrides: Bool { minuteOverride != nil || weatherOverride != nil }
+    /// Nil means "use the calendar season".
+    var seasonOverride: SeasonalPeriod? {
+        guard let raw = defaults.string(forKey: Key.season),
+              let season = SeasonalPeriod(rawValue: raw)
+        else { return nil }
+        return season
+    }
+
+    var hasOverrides: Bool {
+        minuteOverride != nil || weatherOverride != nil || seasonOverride != nil
+    }
 
     func setMinuteOverride(_ minute: Int) {
         defaults.set(min(1439, max(0, minute)), forKey: Key.minute)
+        notifyDidChange()
     }
 
     func clearMinuteOverride() {
         defaults.removeObject(forKey: Key.minute)
+        notifyDidChange()
     }
 
     func setWeatherOverride(_ kind: WeatherVisualKind, intensity: Double) {
         defaults.set(kind.rawValue, forKey: Key.weatherKind)
         defaults.set(EnvironmentMath.clampUnit(intensity), forKey: Key.weatherIntensity)
+        notifyDidChange()
     }
 
     func clearWeatherOverride() {
         defaults.removeObject(forKey: Key.weatherKind)
         defaults.removeObject(forKey: Key.weatherIntensity)
+        notifyDidChange()
+    }
+
+    func setSeasonOverride(_ season: SeasonalPeriod) {
+        defaults.set(season.rawValue, forKey: Key.season)
+        notifyDidChange()
+    }
+
+    func clearSeasonOverride() {
+        defaults.removeObject(forKey: Key.season)
+        notifyDidChange()
     }
 
     func clearAll() {
-        clearMinuteOverride()
-        clearWeatherOverride()
+        defaults.removeObject(forKey: Key.minute)
+        defaults.removeObject(forKey: Key.weatherKind)
+        defaults.removeObject(forKey: Key.weatherIntensity)
+        defaults.removeObject(forKey: Key.season)
+        notifyDidChange()
+    }
+
+    private func notifyDidChange() {
+        NotificationCenter.default.post(name: Self.didChangeNotification, object: nil)
     }
 
     /// The minute the engine should render: the studio override when present,

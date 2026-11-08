@@ -11,7 +11,7 @@
 
 import SwiftUI
 
-struct EnvironmentColor: Sendable, Equatable {
+nonisolated struct EnvironmentColor: Sendable, Equatable {
     var red: Double
     var green: Double
     var blue: Double
@@ -85,7 +85,7 @@ struct EnvironmentColor: Sendable, Equatable {
 /// stop count at the same fixed positions (see that file's header comment),
 /// which is what makes cross-snapshot interpolation well-defined: stop N in
 /// one snapshot always blends with stop N in the other.
-struct EnvironmentGradientStop: Sendable, Equatable {
+nonisolated struct EnvironmentGradientStop: Sendable, Equatable {
     var color: EnvironmentColor
     var location: Double // 0...1 — matches SwiftUI's Gradient.Stop(location:) semantics
 }

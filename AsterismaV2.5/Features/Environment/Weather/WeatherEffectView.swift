@@ -7,30 +7,49 @@
 //  wind streaks, and a rare storm flash are all procedural and deterministic,
 //  so the same state produces the same frame and reduced motion can freeze it.
 //
+//  2026-11-08 — continuous presentation pass:
+//    • Weather kinds can no longer switch discretely. This view receives the
+//      outgoing and incoming visuals plus the shared transition progress and
+//      draws both, cross-fading their opacity. Clear → storm and storm → clear
+//      are therefore continuous, not a cut.
+//    • The view no longer owns a 30 fps TimelineView. One 60 Hz clock in
+//      EnvironmentBackgroundView supplies `elapsed` to every layer.
+//
 //  Intensity and wind come from the engine (a real WeatherSnapshot or a studio
 //  override); a `.clear` visual draws nothing at all.
 
 import SwiftUI
 
 struct WeatherEffectView: View {
-    let visual: WeatherVisual
+    let from: WeatherVisual
+    let to: WeatherVisual
+    let progress: Double
+    let elapsed: Double
     let reducedMotion: Bool
 
     var body: some View {
-        Group {
-            if visual.kind == .clear {
-                EmptyView()
-            } else if reducedMotion {
-                Canvas { context, size in
-                    draw(at: 0, into: &context, size: size)
-                }
+        Canvas { context, size in
+            let t = EnvironmentMath.clampUnit(progress)
+            let time = reducedMotion ? 0.0 : elapsed
+
+            if from.kind == to.kind {
+                // Same vocabulary: interpolate intensity/wind/cloud and draw
+                // one layer. Two half-opacity copies would double the particle
+                // count and make the blend slightly non-linear.
+                let visual = WeatherVisual(
+                    kind: from.kind,
+                    intensity: EnvironmentMath.lerp(
+                        from.intensity, to.intensity, fraction: t),
+                    wind: EnvironmentMath.lerp(from.wind, to.wind, fraction: t),
+                    cloud: EnvironmentMath.lerp(from.cloud, to.cloud, fraction: t),
+                    isLive: t < 0.5 ? from.isLive : to.isLive)
+                draw(visual, at: time, opacity: 1, into: &context, size: size)
             } else {
-                TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { timeline in
-                    Canvas { context, size in
-                        draw(
-                            at: timeline.date.timeIntervalSinceReferenceDate,
-                            into: &context, size: size)
-                    }
+                if t < 0.999 {
+                    draw(from, at: time, opacity: 1 - t, into: &context, size: size)
+                }
+                if t > 0.001 {
+                    draw(to, at: time, opacity: t, into: &context, size: size)
                 }
             }
         }
@@ -40,24 +59,37 @@ struct WeatherEffectView: View {
 
     // MARK: - Drawing
 
-    private func draw(at elapsed: Double, into context: inout GraphicsContext, size: CGSize) {
-        guard size.width > 1, size.height > 1 else { return }
-        let intensity = visual.intensity
-        guard intensity > 0.01 else { return }
+    private func draw(
+        _ visual: WeatherVisual,
+        at elapsed: Double,
+        opacity: Double,
+        into context: inout GraphicsContext,
+        size: CGSize
+    ) {
+        guard size.width > 1, size.height > 1,
+              opacity > 0.001, visual.intensity > 0.01 else { return }
 
-        drawCloudField(at: elapsed, intensity: intensity, into: &context, size: size)
-        drawFogBanks(at: elapsed, into: &context, size: size)
+        let previousOpacity = context.opacity
+        context.opacity = previousOpacity * opacity
+        defer { context.opacity = previousOpacity }
+
+        drawCloudField(
+            at: elapsed, visual: visual, intensity: visual.intensity,
+            into: &context, size: size)
+        drawFogBanks(at: elapsed, visual: visual, into: &context, size: size)
 
         switch visual.kind {
         case .clear, .cloudy, .fog:
             break
         case .rain, .heavyRain, .storm:
-            drawRain(at: elapsed, into: &context, size: size)
-            if visual.kind == .storm { drawStormFlash(at: elapsed, into: &context, size: size) }
+            drawRain(at: elapsed, visual: visual, into: &context, size: size)
+            if visual.kind == .storm {
+                drawStormFlash(at: elapsed, visual: visual, into: &context, size: size)
+            }
         case .snow, .heavySnow:
-            drawSnow(at: elapsed, into: &context, size: size)
+            drawSnow(at: elapsed, visual: visual, into: &context, size: size)
         case .wind:
-            drawWind(at: elapsed, into: &context, size: size)
+            drawWind(at: elapsed, visual: visual, into: &context, size: size)
         }
     }
 
@@ -65,6 +97,7 @@ struct WeatherEffectView: View {
     /// so it darkens the scene without becoming a grey filter.
     private func drawCloudField(
         at elapsed: Double,
+        visual: WeatherVisual,
         intensity: Double,
         into context: inout GraphicsContext,
         size: CGSize
@@ -95,6 +128,7 @@ struct WeatherEffectView: View {
 
     private func drawFogBanks(
         at elapsed: Double,
+        visual: WeatherVisual,
         into context: inout GraphicsContext,
         size: CGSize
     ) {
@@ -125,6 +159,7 @@ struct WeatherEffectView: View {
 
     private func drawRain(
         at elapsed: Double,
+        visual: WeatherVisual,
         into context: inout GraphicsContext,
         size: CGSize
     ) {
@@ -150,6 +185,7 @@ struct WeatherEffectView: View {
 
     private func drawSnow(
         at elapsed: Double,
+        visual: WeatherVisual,
         into context: inout GraphicsContext,
         size: CGSize
     ) {
@@ -174,6 +210,7 @@ struct WeatherEffectView: View {
 
     private func drawWind(
         at elapsed: Double,
+        visual: WeatherVisual,
         into context: inout GraphicsContext,
         size: CGSize
     ) {
@@ -197,6 +234,7 @@ struct WeatherEffectView: View {
 
     private func drawStormFlash(
         at elapsed: Double,
+        visual: WeatherVisual,
         into context: inout GraphicsContext,
         size: CGSize
     ) {
@@ -226,28 +264,19 @@ struct WeatherEffectView: View {
 
 // MARK: - LiveAtmosphereView
 
-/// The continuous "flow" layer. The palette itself only changes on the engine's
-/// recompute tick (now 10 s), so before this layer the background looked like a
-/// still image between ticks. This draws two very slow, large ambient glows that
-/// drift over tens of seconds, independent of the palette cadence.
+/// The continuous "flow" layer. The palette itself changes on the engine's
+/// recompute tick, so this draws two very slow, large ambient glows that drift
+/// over tens of seconds. It receives the shared 60 Hz elapsed time rather than
+/// owning a 20 fps clock of its own.
 struct LiveAtmosphereView: View {
     let ambientColor: Color
     let atmosphericOpacity: Double
     let reducedMotion: Bool
+    let elapsed: Double
 
     var body: some View {
-        Group {
-            if reducedMotion {
-                Canvas { context, size in draw(at: 0, into: &context, size: size) }
-            } else {
-                TimelineView(.animation(minimumInterval: 1.0 / 20.0)) { timeline in
-                    Canvas { context, size in
-                        draw(
-                            at: timeline.date.timeIntervalSinceReferenceDate,
-                            into: &context, size: size)
-                    }
-                }
-            }
+        Canvas { context, size in
+            draw(at: reducedMotion ? 0 : elapsed, into: &context, size: size)
         }
         .allowsHitTesting(false)
         .accessibilityHidden(true)

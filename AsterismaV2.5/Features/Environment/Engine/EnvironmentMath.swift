@@ -13,7 +13,7 @@
 
 import Foundation
 
-enum EnvironmentMath {
+nonisolated enum EnvironmentMath {
 
     static func clampUnit(_ value: Double) -> Double {
         min(max(value, 0.0), 1.0)
@@ -25,6 +25,12 @@ enum EnvironmentMath {
 
     static func lerp(_ a: Double, _ b: Double, _ fraction: Double) -> Double {
         a + (b - a) * clampUnit(fraction)
+    }
+
+    /// Labeled convenience for the presentation layer. The original positional
+    /// form is retained because the palette and weather math use it.
+    static func lerp(_ a: Double, _ b: Double, fraction: Double) -> Double {
+        lerp(a, b, fraction)
     }
 
     /// Classic cubic smoothstep: eases a raw 0...1 fraction so interpolation
@@ -40,7 +46,7 @@ enum EnvironmentMath {
 /// Shooting Star System so a field can optionally be regenerated identically
 /// (e.g. for previews) instead of always reseeding from the wall clock.
 /// Declared here rather than per-file since both systems need it.
-struct SeededGenerator: RandomNumberGenerator {
+nonisolated struct SeededGenerator: RandomNumberGenerator {
     private var state: UInt64
 
     init(seed: UInt64) {

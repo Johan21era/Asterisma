@@ -134,6 +134,7 @@ nonisolated enum SentinelSurfacePolicy {
         "notification.name.com.apple.screenIsUnlocked": "system notification, observe-only",
         "notification.name.library.incident.didChange": "UI refresh signal, no persisted state",
         "notification.name.library.recovery.didChange": "UI refresh signal, no persisted state",
+        "notification.name.environment.studio.overridesDidChange": "UI refresh signal, no persisted state",
         "notification.name.sentinel.runtime.didUpdate": "UI refresh signal, no persisted state",
     ]
 

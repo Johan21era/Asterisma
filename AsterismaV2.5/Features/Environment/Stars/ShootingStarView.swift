@@ -12,14 +12,13 @@ import SwiftUI
 
 struct ShootingStarView: View {
     let shootingStar: ShootingStar?
+    let now: Date
 
     var body: some View {
         Group {
             if let shootingStar {
-                TimelineView(.animation) { timeline in
-                    Canvas { context, size in
-                        draw(shootingStar, now: timeline.date, into: &context, size: size)
-                    }
+                Canvas { context, size in
+                    draw(shootingStar, now: now, into: &context, size: size)
                 }
             }
         }

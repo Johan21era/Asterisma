@@ -16,6 +16,26 @@
 
 import Foundation
 
+/// Whether the weather driving the scene came from a live fetch, a recent
+/// persisted capture, an older capture, or a Debug-studio override.
+nonisolated enum WeatherFreshness: String, CaseIterable, Sendable, Equatable {
+    case live
+    case recent
+    case stale
+    case unavailable
+    case forced
+
+    var displayName: String {
+        switch self {
+        case .live: return "Live"
+        case .recent: return "Recent capture"
+        case .stale: return "Stale capture"
+        case .unavailable: return "Unavailable"
+        case .forced: return "Forced"
+        }
+    }
+}
+
 struct EnvironmentState: Sendable, Equatable {
 
     /// Weights describing how much of each named anchor period is currently
@@ -73,6 +93,44 @@ struct EnvironmentState: Sendable, Equatable {
     var reducedMotion: Bool
     var reducedTransparency: Bool
 
+    // MARK: - Seasonal / solar layer
+
+    /// The dominant season and the continuous weights behind the tint. The
+    /// weights always sum to 1.0; two seasons share the scene near a boundary.
+    var season: SeasonalPeriod
+    var seasonalWeights: [SeasonalPeriod: Double]
+
+    /// Seasonal tint and the opacity of the full-screen grade drawn by the
+    /// background. The palette has already been lightly tinted; this overlay
+    /// is the visible seasonal temperature.
+    var seasonalTint: EnvironmentColor
+    var seasonalTintStrength: Double
+    var seasonalParticleIntensity: Double
+
+    /// How deep into the dominant season this snapshot sits (0 at its edge,
+    /// 1 at its peak) and the named third. The background renders the already
+    /// scaled values; the Studio reads these to explain what it is showing.
+    var seasonalMaturity: Double
+    var seasonalPhase: SeasonalPhase
+
+    /// Real sunrise/sunset/solar-noon for the cached coordinate, or `.fixed`
+    /// when no coordinate is available.
+    var solarDaylight: SolarDaylight
+
+    /// The wall-clock minute that produced this snapshot. `minuteOfDay` is the
+    /// palette minute: it equals this value when no coordinate is available,
+    /// and is stretched onto the fixed day track when one is.
+    var clockMinuteOfDay: Double
+
+    /// Honest provenance for the weather layer: live fetch, recent persisted
+    /// capture, older capture, no capture, or a studio override.
+    var weatherFreshness: WeatherFreshness
+
+    /// Moving celestial glow color/opacity. Position comes from
+    /// `solarDaylight.glowX/glowY`.
+    var celestialGlowColor: EnvironmentColor
+    var celestialGlowOpacity: Double
+
     /// A safe default used only before the engine's first real computation
     /// completes (the engine's init computes a real value synchronously, so
     /// in practice this is visible for well under a frame).
@@ -90,7 +148,19 @@ struct EnvironmentState: Sendable, Equatable {
         minuteOfDay: 0,
         readabilityScrim: 0,
         reducedMotion: false,
-        reducedTransparency: false
+        reducedTransparency: false,
+        season: .winter,
+        seasonalWeights: [.winter: 1.0],
+        seasonalTint: EnvironmentColor(hex: "#9CB6D9"),
+        seasonalTintStrength: 0.0,
+        seasonalParticleIntensity: 0.0,
+        seasonalMaturity: 1.0,
+        seasonalPhase: .prime,
+        solarDaylight: .fixed,
+        clockMinuteOfDay: 0.0,
+        weatherFreshness: .unavailable,
+        celestialGlowColor: EnvironmentPalette.night.ambientLightColor,
+        celestialGlowOpacity: 0.55
     )
 
     /// Perceived luminance of the rendered gradient (0 = black, 1 = white).
